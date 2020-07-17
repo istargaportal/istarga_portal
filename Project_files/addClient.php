@@ -390,7 +390,7 @@ else
                         <div class="col-md-4">
                           <div class="form-group">
                             <label class="bmd-label-floating">Client SPOC</label>
-                            <input name="Client SPOC" type="text" class="form-control" value="<?php echo $Client_SPOC; ?>" />
+                            <input name="Client SPOC" type="text" class="form-control" value="<?php echo @$Client_SPOC; ?>" />
                           </div> 
                         </div>
                       </div>
