@@ -1,0 +1,26 @@
+if ($result === TRUE) {
+        $last_id = $this->conn->insert_id;
+        if(isset($_FILES["myfiles"]))
+        {
+            foreach($_FILES["myfiles"]["tmp_name"] as $key=>$value){
+                $targetpath="../uploads/" . basename($_FILES["myfiles"]["name"][$key]);
+                move_uploaded_file($value,$targetpath);
+            }
+        }
+
+        print_r($_FILES["myfiles"]["name"]);
+       
+      } else {
+        echo "Error: " . $query . "<br>" . $result->error;
+      }
+
+
+      let servicetype = document.getElementById('select_service_type');
+  servicetype.length = 0;
+
+let defaultservicetype = document.createElement('option');
+defaultservicetype.text = 'Choose Service Type';
+defaultservicetype.value="0";
+
+servicetype.add(defaultservicetype);
+servicetype.selectedIndex = 0;

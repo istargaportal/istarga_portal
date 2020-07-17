@@ -1,0 +1,36 @@
+.preview-modal {
+  background: #fff;
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  z-index: 10000;
+  transition: .4s;  
+  height: 80vh !important; 
+  overflow-y: scroll;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.preview-modal table tr:nth-child(odd) {
+  background: #631c7614;
+}
+.preview-modal.active {
+  opacity: 1;
+  pointer-events: all;
+  top: 50px;
+}
+.preview-modal table {
+  margin: 10px auto !important;
+  /* height: 50%; */
+  width: 70%;
+}
+.preview-modal tbody tr td {
+  color: #000000;
+}
+.preview-btns {
+  position: sticky;
+  bottom: 10px;
+  width: 100%;
+}

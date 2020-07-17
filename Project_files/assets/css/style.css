@@ -1,0 +1,491 @@
+html {
+    --btn: #9141A6;
+    --contentColor: rgba(255, 255, 255, 0.849);
+    --cardBackgroundColor: rgba(255, 255, 255, 0.897);
+    --sidebarBackground: #1f283e !important;
+    --sidebarOpacity: .77 !important;
+
+    --backgroundA: #1488CC !important;
+    --backgroundB: -webkit-linear-gradient(to right, rgb(79, 85, 196), #1488CC) !important;
+    --backgroundC: linear-gradient(to right, rgb(61, 69, 218), #1488CC) !important;
+
+    --buttonColor: rgba(159, 58, 161, 0.89) !important;
+    --buttonShadow: 8px 8px 15px rgba(0, 0, 0, 0.1) !important;
+
+    --tableColor: black !important;
+
+    --text-primary: rgba(255, 255, 255, 0.342) !important;
+
+    --textColor: black !important;
+
+    --navLinkColor: white !important;
+
+    --formControl: rgba(128, 128, 128, 0.24) !important;
+
+    --borderTable: rgba(128, 128, 128, 0.295) !important;
+
+    --blackColor: black !important;
+
+    --pannel: #D8ECD8 !important;
+
+    --navLinkColor: linear-gradient(to right, #1488CC, rgb(21, 21, 78)) !important;
+    --navLinkopacity: 0.6 !important;
+
+    --textAreaBorder: black !important;
+    --textAreaBackgroundColor: #F1F4F1 !important;
+    --textAreaColor: black !important;
+
+    --tdColor: black !important;
+    --thcolor: white !important;
+
+
+
+}
+
+html[data-theme='dark'] {
+    --contentColor: #060c24;
+    --cardBackgroundColor: rgba(30, 41, 63, 0.651) !important;
+    --sidebarBackground: black !important;
+    --sidebarOpacity: .78 !important;
+
+    --backgroundA: rgba(140, 63, 162, 0.904) !important;
+    --backgroundB: -webkit-linear-gradient(to right, to lrft, rgba(140, 63, 162, 0.966), rgba(128, 0, 128, 0.952), ) !important;
+    --backgroundC: linear-gradient(to right, rgb(141, 63, 162), #1488CC) !important;
+
+    --buttonColor: rgba(99, 26, 119, 0.966) !important;
+    --buttonShadow: 20px 20px 0.75 rgb(59, 111, 190) !important;
+
+    --tableColor: rgba(255, 255, 255, 0.589) !important;
+
+    --text-primary: rgba(30, 41, 63, 0.651) !important;
+
+    --textColor: rgba(255, 255, 255, 0.589) !important;
+
+    --navLinkColor: rgba(255, 255, 255, 0.712) !important;
+
+    --formControl: 1px solid rgba(128, 128, 128, 0.63) !important;
+
+    --blackColor: white !important;
+
+    --pannel: #060C24 !important;
+
+    --navLinkColor: linear-gradient(to right, rgb(141, 63, 162), #1488CC) !important;
+    --textAreaBorder: grey !important;
+    --textAreaBackgroundColor: #060B22 !important;
+    --textAreaColor: white !important;
+
+    --tdColor: rgba(255, 255, 255, 0.753) !important;
+    --thcolor: rgba(255, 255, 255, 0.74) !important;
+
+
+}
+
+.optColor {
+    color: var(--textColor) !important;
+}
+
+.textlight {
+    color: black !important;
+    background-color: white !important;
+}
+
+
+.logo img {
+    opacity: 0.5 !important;
+    background: #060C24;
+}
+
+.col-md-5 p {
+    color: var(--textColor) !important;
+}
+
+thead th {
+    text-align: center !important;
+    color: var(--thcolor) !important;
+    font-size: 15px !important;
+}
+
+.tdth {
+    color: var(--tdColor) !important;
+}
+
+#previewDiv,
+#Email {
+    border: 1px solid var(--textAreaBorder) !important;
+    padding: 8px !important;
+    background-color: var(--textAreaBackgroundColor) !important;
+    color: var(--textAreaColor) !important;
+}
+
+
+.content {
+    background-color: var(--contentColor) !important;
+}
+
+
+.card {
+    background-color: var(--cardBackgroundColor) !important;
+}
+
+.sidebar-background:after {
+    background: var(--sidebarBackground) !important;
+    opacity: var(--sidebarOpacity) !important;
+}
+
+
+div.card-header.card-header-primary,
+.navbar.navbar-transparent {
+    background: var(--backgroundA) !important;
+    /* fallback for old browsers */
+    background: var(--backgroundB) !important;
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: var(--backgroundC) !important;
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.btn {
+    background-color: var(--buttonColor) !important;
+    box-shadow: var(--buttonShadow) !important;
+}
+
+
+th td {
+    color: var(--tableColor) !important;
+}
+
+tbody tr td {
+    text-align: center;
+}
+
+.tablehead1 {
+    background-color: var(--cardBackgroundColor) !important;
+    color: var(--tableColor) !important;
+    border-top: 1px solid var(--borderTable) !important;
+    border-bottom: 1px solid var(--borderTable) !important;
+}
+
+.text-primary {
+    background-color: var(--text-primary) !important;
+}
+
+.bmd-label-floating {
+    color: var(--textColor) !important;
+}
+
+
+.dark-edition .text-muted,
+.dark-edition .bmd-help {
+    color: var(--navLinkColor) !important;
+
+}
+
+.simple-text {
+    color: var(--navLinkColor) !important;
+    font-weight: 700 !important;
+}
+
+
+.nav-link {
+    color: white !important;
+}
+
+
+.form-control {
+    border-bottom: 2px solid var(--formControl) !important;
+
+}
+
+input.form-control {
+    color: var(--blackColor) !important;
+}
+
+label {
+    color: var(--textColor) !important;
+}
+
+.icon {
+    color: var(--blackColor) !important;
+}
+
+.mainP {
+    background-color: var(--pannel) !important;
+}
+
+.nav-link:hover {
+    background: var(--navLinkColor) !important;
+    opacity: var(--navLinkopacity) !important;
+}
+
+.custom-file-label::after {
+    margin-right: 30px;
+    cursor: pointer;
+
+}
+
+.png {
+    margin-left: 20px;
+}
+
+.logo {
+    background: var(--sidebarBackground) !important;
+    /* opacity: 0.2 !important; */
+    opacity: 0.4 !important;
+    /* opacity: 0.6 !important; */
+    /* opacity: 0.5 !important; */
+
+    height: 70px;
+
+}
+
+
+
+
+
+
+
+
+
+/* .body{  
+     background-color: black !important;
+}
+
+.row{
+    background-color:rgba(30, 41, 63,0.904) !important;
+    
+}
+.tabl{
+    background-color: black !important  ;
+}
+thead.text-primary{
+    background-color:rgba(30, 41, 63, 0.904) !important;
+}
+td.text-primary{
+    background-color:rgba(30, 41, 63, 0.904) !important;
+}
+.sidebar-background:after {
+    background:  rgba(30, 41, 63, 0.925)!important
+}
+th td{
+    color: white !important;
+}
+
+.tablehead1{
+    color: rgba(255, 255, 255, 0.555) !important;
+}
+div.row {
+    color: white;
+}
+.bmd-label-floating{
+    color: rgba(255, 255, 255, 0.651) !important;
+}
+div.card-header.card-header-primary,
+.navbar.navbar-transparent{
+    background: rgb(141, 63, 162) !important;
+}
+
+.btn{
+    background: rgb(141, 63, 162) !important;
+}
+.content{
+    background-color: black;
+}
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* middle */
+input[type=checkbox] {
+    visibility: hidden;
+    height: 0;
+    width: 0;
+}
+
+input:checked+label {
+    background: rgba(159, 58, 161, 0.89) !important;
+}
+
+input:checked+label:after {
+    left: calc(100% - 5px) !important;
+    transform: translateX(-100%) !important;
+}
+
+#toggleButton {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+    position: relative;
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 55px;
+    height: 30px;
+    background: var(--btn);
+}
+
+#toggleButton:after {
+    border-radius: 50%;
+    position: absolute;
+    content: '';
+    background: #fff;
+    width: 20px;
+    height: 20px;
+    top: 5px;
+    left: 4px;
+    transition: ease-in-out 200ms;
+}
+
+
+html.transition,
+html.transition *,
+html.transition *:before,
+html.transition *:after {
+    transition: all 750ms !important;
+    transition-delay: 0 !important;
+}
+
+/* middle */
+
+.eye {
+    cursor: pointer;
+    margin-top: 9px;
+    position: relative;
+    left: -19px;
+    z-index: 10;
+}
+
+.search-client .input {
+    /* position: absolute; */
+    width: 300px;
+    top: 5px;
+    z-index: -1;
+}
+
+.search-client .input.active {
+    background: #161F36;
+    z-index: 1;
+}
+
+.search-client .search .client-select {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    width: 300px;
+    z-index: 10;
+    transition: .4s;
+}
+
+.search-client .search.active .client-select {
+    opacity: 1;
+    pointer-events: all;
+    max-height: 46vh;
+    background: #000;
+    overflow-y: scroll;
+}
+
+.custom-scroll::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.custom-scroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.custom-scroll::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.search-client .client-select>div, .multiple-select-dd .select>div {
+    cursor: pointer;
+    padding: 8px 15px;
+    transition: 0.4s;
+} 
+
+.search-client .client-select>div:hover, .multiple-select-dd .select>div:hover {
+    background: #3d4145 !important;
+    padding-left: 25px;
+    transition: 0.4s;
+}
+
+.search-field {
+    color: #495057;
+    border: none;
+    margin-top: 19px;
+    border-radius: 0.25rem;
+    /* border: 2px solid black; */
+    padding: 9px 10px;
+    background: #fff;
+    display: flex;
+    flex-flow: row wrap;
+}
+.search-field {
+    width: 100%;
+}
+.search-field::placeholder {
+    font-weight: 100;
+    font-style: italic;
+}
+.multiple-select-dd .selected {
+    color: #c3c5c7;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 9px 10px;
+    display: flex;
+    flex-flow: row wrap;
+}
+.multiple-select-dd .selected .doc {
+    background: #3d4145;
+    color: #ffffff;
+    border-radius: 100px;
+    padding: 3px 8px 3px 13px;
+    display: flex;
+    align-items: center;
+    margin: 0 7px 7px 0;
+}
+.multiple-select-dd .selected .remove {
+    color: #ffffff;
+    cursor: pointer;
+    padding-left: 6px;
+    transition: .4s;
+}
+.multiple-select-dd .selected .remove:hover {
+    color: #e3e3e3;
+}
+.multiple-select-dd .select {
+    max-height: 50vh;
+    overflow-y: scroll;
+}
+.multiple-select-dd .select>div {
+    display: flex;
+    justify-content: space-between;
+}
+select{
+    padding: 4px !important;
+    height: 35px !important;
+}
