@@ -40,11 +40,27 @@ if(!isset($_SESSION['email']))
 	<link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="popup.css">
     
+    <style type="text/css">
+        .btn-xs{
+            font-size: 8pt;
+            padding: 4px 8px;
+        }
+        .btn-xs .material-icons{
+            font-size: 8pt;
+        }
+        .dropdown-item{
+            cursor: pointer;
+        }
+        .btn-default{
+            background:#ccc !important;
+        }
+    </style>
 	
 </head>
 
 <body class="dark-edition">
-	<div class="wrapper">
+	<div id="print_result"></div>
+    <div class="wrapper">
 		<div class="sidebar" data-color="purple" data-background-color="black" data-image="assets/img/sidebar-2.jpg">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"

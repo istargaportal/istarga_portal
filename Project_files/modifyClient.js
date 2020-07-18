@@ -224,3 +224,21 @@ tbody ? tbody.onclick = (e) => {
 
 
 console.log('working all');
+
+function block_unblock_click(client_id, condition)
+{
+  var r = confirm('Are you sure to make change in client status?')
+  if(r == true)
+  {
+    var load_condition = "block_client";
+    $.ajax({
+      type:'POST',
+      url:'./API/client_action.php',
+      data:{load_condition, client_id, condition},
+      success:function(html){
+        $('#print_result').html(html);
+        getAllClientData();
+      }
+    });
+  }
+}

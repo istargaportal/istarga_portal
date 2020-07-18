@@ -25,13 +25,13 @@ const sendRequest = (url) => {
     .then(response => response.text())
     .then(data => {
       if (data.trim() == "Bank Details Added Successfully" || data.trim() == "Deleted Successfully") {
-        getAllBankDetails(`https://www.bgvhwd.xyz/Project_files/API/viewbankdetails.php?id=${id}&internal_reference_id=${internalReferenceId}`)
         modalLabel.innerHTML = data
         modalLaunchButton.click()
       } else {
         modalLabel.innerHTML = data
         modalLaunchButton.click()
       }
+      getAllBankDetails(`./API/viewbankdetails.php?id=${id}&internal_reference_id=${internalReferenceId}`)
 
       console.log('Success:', data);
     })
@@ -54,7 +54,7 @@ const submit = (url) => {
   }
 }
 
-form && form.addEventListener('submit', submit('https://www.bgvhwd.xyz/Project_files/API/bankdetails.php'))
+form && form.addEventListener('submit', submit('./API/bankdetails.php'))
 
 console.log("working 2")
 
@@ -76,17 +76,18 @@ const getAllBankDetails = (url) => {
       console.error('Error:', error);
     });
 }
-getAllBankDetails(`https://www.bgvhwd.xyz/Project_files/API/viewbankdetails.php?id=${id}&internal_reference_id=${internalReferenceId}`)
+getAllBankDetails(`./API/viewbankdetails.php?id=${id}&internal_reference_id=${internalReferenceId}`)
 
 const tbody = document.querySelector("#table-body")
 const setAllBankDetails = (d) => {
   console.log(d)
   tbody ? tbody.innerHTML = '' : false
   d.map((value, i) => {
+    // ${i + 1}
     tbody ? tbody.innerHTML += `
     <tr class="edit-table" id=${value.id} data-Sr="${i + 1}">
       <td class="tablehead1">
-        ${i + 1}
+        ${value.bank_name}
       </td>
       <td class="tablehead1">
         ${value.address_line_1}
@@ -157,7 +158,7 @@ tbody ? tbody.onclick = (e) => {
       console.log("delete")
       console.log("json data", data)
       deleteModalCloseButton.click()
-      sendRequest("https://www.bgvhwd.xyz/Project_files/API/modifybankdetail.php")
+      sendRequest("./API/modifybankdetail.php")
       data = {}
     }
   }
@@ -175,10 +176,12 @@ const edit = (e) => {
 
   console.log(currentEdit)
   currentEdit.map((value, i) => {
+    // ${e.target.parentElement.getAttribute("data-Sr")}
     document.querySelector(`[data-sr='${target}']`).innerHTML = `
       <tr class="edit-table" id=${value.id}>
         <td class="tablehead1">
-          ${e.target.parentElement.getAttribute("data-Sr")}
+          <input type="hidden" name="id" value="${value.id}" >
+          <input type="text" name="bank_name" value="${value.bank_name}" class="form-control" id="" >
         </td>
         <td class="tablehead1">
           <input type="text" name="address-line-1" value="${value.address_line_1}" class="form-control" id="" >
@@ -233,8 +236,7 @@ const edit = (e) => {
       inputFieldsArray2 ? inputFieldsArray2.map((value) => {
         data[value.name] = value.value
       }) : false
-      sendRequest(url)
-
+      sendRequest(url);
       data = {}
     }
   }
@@ -242,7 +244,6 @@ const edit = (e) => {
   let saveButton = document.querySelector(".edit-table button[type='submit']")
   console.log(saveButton)
   saveButton && saveButton.addEventListener('click', editOnchange("API/editBankDetails.php"))
-
   data = {}
 }
 tbody ? tbody.addEventListener("dblclick", edit) : null

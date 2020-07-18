@@ -125,25 +125,28 @@ class country
                     $country[$i]['is_block']=$row['is_block'];
                     if($row['is_block'] == 0)
                     {
-                        $block_unblock_btn = '<a class="dropdown-item block" href="#" id="'.$row["id"].'">Block</a>';
+                        $block_unblock_btn = '<a class="dropdown-item block" onclick="block_unblock_click('.$row['id'].',1)" id="'.$row["id"].'">Block</a>';
+                        $block_btn = "";
                     }
                     else
                     {
-                        $block_unblock_btn = '<a class="dropdown-item block" href="#" id="'.$row["id"].'">Unblock</a>';
+                        $block_unblock_btn = '<a class="dropdown-item block" onclick="block_unblock_click('.$row['id'].',0)" id="'.$row["id"].'">Unblock</a>';
+                        $block_btn = "<a style='background:#eb1e2f !important;' class='btn btn-danger btn-xs'> <span class='material-icons'>remove_circle_outline</span> Blocked</a>";
                     }
 
                     echo '
-                    <tr>
+                    <tr">
                         <td>'.$i.'</td>
                         <td>'.$row["Client_Name"].'</td>
                         <td>'.$row["Client_Code"].'</td>
                         <td>'.$row["Client_SPOC"].'</td>
                         <td>'.$row["Live_DateDate"].'</td>
                         <td class="text-primary tablehead1">
-                          <ul style="list-style: none;">
+                        '.@$block_btn.'
+                          <ul style="list-style: none;padding:0;" >
                             <li class="nav-item dropdown">
                               <a
-                                class="nav-link"
+                                class="btn btn-sm btn-default"
                                 href="javascript:;"
                                 id="navbarDropdownProfile"
                                 data-toggle="dropdown"
