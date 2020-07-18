@@ -123,7 +123,7 @@ form.addEventListener('submit', function (e) {
 	// }	
 	getFormData()
 	console.log(data)
-	fetch('https://www.bgvhwd.xyz/Client/API/createorder.php', {
+	fetch('./API/createorder.php', {
 			method: 'post',
 			body: JSON.stringify(data)
 		})

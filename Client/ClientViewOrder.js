@@ -68,19 +68,30 @@ const hiddenInput = document.querySelector("#user_id")
 
 
 const getAllClientData = () => {
-  fetch("https://www.bgvhwd.xyz/Client/API/viewclienttable.php", {
-    method: 'POST',
-    body: JSON.stringify({"client_id": hiddenInput.value}),
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data)
-    modifyClientData = data
-    updateModifyClientData(modifyClientData)
-    console.log('Success:', data);
-  })
-  .catch((error) => {
-    console.error('Error:', error);
+  // fetch("./API/viewclienttable.php", {
+  //   method: 'POST',
+  //   body: JSON.stringify({"client_id": hiddenInput.value}),
+  // })
+  // .then(response => response.json())
+  // .then(data => {
+  //   console.log(data)
+  //   modifyClientData = data
+  //   updateModifyClientData(modifyClientData)
+  //   console.log('Success:', data);
+  // })
+  // .catch((error) => {
+  //   console.error('Error:', error);
+  // });
+
+  var load_condition = "load_all_clients";
+  $.ajax({
+    type:'POST',
+    url:'./API/viewclienttable.php',
+    data:{load_condition},
+    success:function(html){
+      $('#table').html(html);
+      load_datatable();
+    }
   });
 }
 getAllClientData()
@@ -169,7 +180,7 @@ tbody ? tbody.onclick = (e) => {
     e.preventDefault()
     data["id"] = e.target.id
     data["action"] = "delete"
-    sendRequest("https://www.bgvhwd.xyz/client/API/editOrder.php")
+    sendRequest("./API/editOrder.php")
   }
   data = {}
   if (e.target.classList.contains('edit')) {
@@ -234,4 +245,25 @@ console.log("working 2")
 
 console.log("working all") 
 
-
+function delete_order(id)
+{
+  var r = confirm('Are you sure to delete this order!')
+  if(r == true)
+  {
+    $.ajax({
+      type:'POST',
+      url:'./API/delete_order.php',
+      data:{id},
+      success:function(html){
+        if(html == "success")
+        {
+          getAllClientData();
+        }
+        else
+        {
+          alert('Error occurred!');
+        }
+      }
+    });
+  }
+}

@@ -273,40 +273,40 @@ body {font-family: Verdana, sans-serif;}
 
                     <div class="row">
                         <div class="col-xl-3 col-lg-12">
-                          <div class="card card-chart" style="background-color:green !important;" id="total-cases">     
+                          <div class="card card-chart" style="background-color:#54b058 !important;" id="total-cases">     
                             <div class="card-body">
-                              <h4 class="card-title"style="color:#1A2035;">Total Cases</h4>
-                                <p class="card-category"style="color:#1A2035;">Loading</p>
+                              <h4 class="card-title"style="color:#fff;">Total Cases</h4>
+                                <p class="card-category"style="color:#fff;">Loading</p>
                             </div>
                             <div class="card-footer">
-                              <div class="stats"style="color:#1A2035;">
-                                <i class="material-icons"style="color:#1A2035;">access_time</i> Loading
+                              <div class="stats"style="color:#fff;">
+                                <i class="material-icons"style="color:#fff;">access_time</i> Loading
                               </div>
                             </div>
                           </div>
                         </div>
                         <div class="col-xl-3 col-lg-12">
-                          <div class="card card-chart" style="background-color: orangered !important;" id="total-resolved" >               
+                          <div class="card card-chart" style="background-color: #eb1e2f !important;" id="total-resolved" >               
                             <div class="card-body" >
-                              <h4 class="card-title"style="color:#1A2035;">Total Resolved</h4>
-                              <p class="card-category"style="color:#1A2035;">Loading</p>
+                              <h4 class="card-title"style="color:#fff;">Total Resolved</h4>
+                              <p class="card-category"style="color:#fff;">Loading</p>
                             </div>
                             <div class="card-footer">
-                              <div class="stats"style="color:#1A2035;">
-                                <i class="material-icons"style="color:#1A2035;">access_time</i> Loading
+                              <div class="stats"style="color:#fff;">
+                                <i class="material-icons"style="color:#fff;">access_time</i> Loading
                               </div>
                             </div>
                           </div>
                         </div>
                         <div class="col-xl-3 col-lg-12">
-                          <div class="card card-chart" style="background-color: yellow !important;" id="total-in-progress">              
+                          <div class="card card-chart" style="background-color: #fe9601 !important;" id="total-in-progress">              
                             <div class="card-body" >
-                              <h4 class="card-title"style="color:#1A2035;">Total In Progress</h4>
-                              <p class="card-category"style="color:#1A2035;">Loading</p>
+                              <h4 class="card-title"style="color:#fff;">Total In Progress</h4>
+                              <p class="card-category"style="color:#fff;">Loading</p>
                             </div>
                             <div class="card-footer">
-                              <div class="stats"style="color:#1A2035;">
-                                <i class="material-icons"style="color:#1A2035;">access_time</i> campaign sent 2 days ago
+                              <div class="stats"style="color:#fff;">
+                                <i class="material-icons"style="color:#fff;">access_time</i> campaign sent 2 days ago
                               </div>
                             </div>
                           </div>
@@ -451,7 +451,7 @@ body {font-family: Verdana, sans-serif;}
         <li class="button-container">
           <a href="https://www.creative-tim.com/product/material-dashboard-dark" target="_blank" class="btn btn-primary btn-block">Free Download</a>
         </li>
-        <!-- <li class="header-title">Want more components?</li>
+        <li class="header-title">Want more components?</li>
             <li class="button-container">
                 <a href="https://www.creative-tim.com/product/material-dashboard-pro" target="_blank" class="btn btn-warning btn-block">
                   Get the pro version

@@ -1,5 +1,5 @@
-<script type="text/javascript" src="datatable/datatables.min.js"></script>
-<link rel="stylesheet" type="text/css" href="datatable/buttons.dataTables.min.css">
+<script type="text/javascript" src="../datatable/datatables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../datatable/buttons.dataTables.min.css">
 <!-- Latest compiled and minified CSS -->
 <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
 <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/f3e99a6c02/integration/bootstrap/3/dataTables.bootstrap.js"></script>

@@ -207,7 +207,7 @@ else
       <!-- End Navbar -->
       <div class="content">
         <div class="container-fluid">
-          <div class="row">
+          <div hidden="" class="row">
             <div class="col-md-12">
               <div class="card">
                 <div class="card-body">
@@ -324,38 +324,8 @@ else
                 <h4 class="card-title mt-0"> Order Details</h4>
               </div>
               <div class="card-body">
-                <div class="table-responsive" id="table">
-                  <table class="table table-hover" style="margin-top: 2%;">
-                    <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.822) !important;">
-                      <th>
-                        Sr. No
-                      </th>
-                      <th>
-                        First Name & last Name
-                      </th>
-                      <th>
-                        Internal Reference Id
-                      </th>
-                      <th>
-                        Email id
-                      </th>
-                      <th>
-                        Order Creation Date Time
-                      </th>
-                      <th>
-                        Order Completion Date
-                      </th>
-                      <th>
-                        Order status
-                      </th>
-                      <th>
-                        Actions
-                      </th>
-                    </thead>
-                    <tbody id="table-body">
-
-                    </tbody>
-                  </table>
+                <div class="table-responsive" style="overflow-y: hidden;">
+                  <div id='table'></div>
                 </div>
               </div>
             </div>
@@ -413,7 +383,7 @@ else
         <li class="button-container">
           <a href="https://www.creative-tim.com/product/material-dashboard-dark" target="_blank" class="btn btn-primary btn-block">Free Download</a>
         </li>
-        <!-- <li class="header-title">Want more components?</li>
+        <li class="header-title">Want more components?</li>
             <li class="button-container">
                 <a href="https://www.creative-tim.com/product/material-dashboard-pro" target="_blank" class="btn btn-warning btn-block">
                   Get the pro version
@@ -493,6 +463,9 @@ else
         <script src="assets/js/material-dashboard.js?v=2.1.0"></script>
         <!-- Latest compiled and minified JavaScript -->
         <script src="ClientViewOrder.js"></script>
+        <?php
+          include '../datatable/_datatable.php';
+        ?>
         <!-- <script>
           let p = 0
           for (let i = 0; i < 1000000000; i++) {
@@ -503,7 +476,7 @@ else
         <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
         <!-- (Optional) Latest compiled and minified JavaScript translation files -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
-
+        
         <script>
           console.log("frame")
           function test() {
@@ -821,8 +794,6 @@ else
               });
             });
           });
-
-          /*Time Picker */
         </script>
         <script>
           showCustomer();

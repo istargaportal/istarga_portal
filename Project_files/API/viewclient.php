@@ -135,7 +135,7 @@ class country
                     }
 
                     echo '
-                    <tr">
+                    <tr>
                         <td>'.$i.'</td>
                         <td>'.$row["Client_Name"].'</td>
                         <td>'.$row["Client_Code"].'</td>

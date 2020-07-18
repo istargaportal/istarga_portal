@@ -104,7 +104,7 @@
   <script src="assets/demo/demo.js"></script>
   <script src="modifyClient.js"></script>
   <?php
-    include 'datatable/_datatable.php';
+    include '../datatable/_datatable.php';
   ?>
   <script>
     T2();
