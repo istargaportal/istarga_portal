@@ -68,10 +68,12 @@ const getAllClientData = () => {
   let id = pageUrl.searchParams.get('id');
   var load_condition = "load_all_clients";
   var client_id = $('#client_id').val() || 0;
+  var default_client_id = $('#default_client_id').val() || 0;
+
   $.ajax({
     type:'POST',
     url:'./API/viewclienttable.php',
-    data:{load_condition, client_id},
+    data:{load_condition, client_id, default_client_id},
     success:function(html){
       $('#table').html(html);
       load_datatable();
@@ -112,11 +114,12 @@ getAllClientData()
 
 function load_all_clients()
 {
+  var default_client_id = $('#default_client_id').val() || 0;
   var load_condition = "all_client_list";
   $.ajax({
     type:'POST',
     url:'./API/viewclienttable.php',
-    data:{load_condition},
+    data:{load_condition, default_client_id},
     success:function(html){
       $('#client_id').html(html);
     }

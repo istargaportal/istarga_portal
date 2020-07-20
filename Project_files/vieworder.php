@@ -16,9 +16,8 @@ include 'Header.php';
               <label>Client</label>
             </div>
             <div class="col-md-3">
-              <select class="browser-default custom-select" onchange="getAllClientData()" id="client_id">
-                <option value="">All</option>
-              </select>
+              <input type="hidden" id="default_client_id" value="<?php echo @$_GET['id']; ?>">
+              <select class="browser-default custom-select" onchange="getAllClientData()" id="client_id"></select>
             </div>
           </div>
           <br>

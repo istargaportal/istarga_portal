@@ -28,6 +28,9 @@ class States
                     Sr. No
                     </th>
                     <th>
+                        Client
+                    </th>
+                    <th>
                     Applicant Name
                     </th>
                     <th>
@@ -51,9 +54,13 @@ class States
                     </thead>';
                     if($client_id != 0)
                     {
-                        $sql_condition = " WHERE client_id = '$client_id' "; 
+                        $sql_condition = " WHERE o.client_id = '$client_id' "; 
                     }
-                    $query="SELECT * FROM `order` ".@$sql_condition;
+                    if($default_client_id != 0)
+                    {
+                        $sql_condition = " WHERE o.client_id = '$default_client_id' "; 
+                    }
+                    $query="SELECT o.*, c.Client_Name FROM `order` o INNER JOIN client c ON c.id = o.client_id ".@$sql_condition;
                     $result=$this->conn->query($query);
                     if($result->num_rows>0)
                     {
@@ -86,13 +93,6 @@ class States
                             $country[$i]['Reports']=$row['Reports'];
                             $country[$i]['generated_reference_id']=$row['generated_reference_id'];
                             $country[$i]['client_id']=$row['client_id'];
-                            $name="SELECT Client_Name FROM client where id='".$row['client_id']."'";
-                            $getname=$this->conn->query($name);
-                            $nameresult=$getname->fetch_assoc();
-                            $country[$i]['client_name']=$nameresult['Client_Name'];
-                            $country[$i]['is_rush']=$row['is_rush'];
-                            $country[$i]['contactable_person']=$row['contactable_person'];
-                            $country[$i]['order_creation_date_time']=$row['order_creation_date_time'];
                             $i++;
                             $Order_Status = "";
                             if($row["Order_Status"] == 0) { $Order_Status = "Pending"; }
@@ -102,6 +102,9 @@ class States
                             <tr>
                             <td class="tablehead1">
                             '.$inc.'
+                            </td>
+                            <td class="tablehead1">
+                            '.$row["Client_Name"].'
                             </td>
                             <td class="tablehead1">
                             '.$row["first_Name"].' '.$row["last_Name"].' 
@@ -156,11 +159,15 @@ class States
         
         if($load_condition == "all_client_list")
         {
-            $query="SELECT id, Client_Name FROM client WHERE is_block = '0' ORDER BY Client_Name ";
+            if($default_client_id != "0")
+            {
+                $client_condition = " AND id = '$default_client_id' ";
+            }
+            $query="SELECT id, Client_Name FROM client WHERE is_block = '0' ".@$client_condition." ORDER BY Client_Name ";
             $result=$this->conn->query($query);
             if($result->num_rows>0)
             {
-                echo '<option>All</option>';
+                if($default_client_id == "0") { echo '<option>All</option>'; }
                 while($row = $result->fetch_assoc())
                 {
                     echo '<option value="'.$row['id'].'">'.$row['Client_Name'].'</option>';
