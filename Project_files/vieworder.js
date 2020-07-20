@@ -65,40 +65,64 @@ service.addEventListener("change", (e) => {
 
 const getAllClientData = () => {
   const pageUrl = new URL(window.location.href);
-  let id = pageUrl.searchParams.get('id')
-  // const hiddenInput = document.querySelector("#user_id")
-  if (id) {
-    fetch("https://www.bgvhwd.xyz/Client/API/viewclienttable.php", {
-        method: 'POST',
-        body: JSON.stringify({
-          "client_id": id
-        }),
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        modifyClientData = data
-        updateModifyClientData(modifyClientData)
-        console.log('Success:', data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  } else {
-    fetch("https://www.bgvhwd.xyz/Client/API/viewclienttable.php")
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        modifyClientData = data
-        updateModifyClientData(modifyClientData)
-        console.log('Success:', data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  }
+  let id = pageUrl.searchParams.get('id');
+  var load_condition = "load_all_clients";
+  var client_id = $('#client_id').val() || 0;
+  $.ajax({
+    type:'POST',
+    url:'./API/viewclienttable.php',
+    data:{load_condition, client_id},
+    success:function(html){
+      $('#table').html(html);
+      load_datatable();
+    }
+  });
+  // if (id) {
+  //   fetch("./API/viewclienttable.php", {
+  //       method: 'POST',
+  //       body: JSON.stringify({
+  //         "client_id": id
+  //       }),
+  //     })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       console.log(data)
+  //       modifyClientData = data
+  //       updateModifyClientData(modifyClientData)
+  //       console.log('Success:', data);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  // } else {
+  //   fetch("./API/viewclienttable.php")
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       console.log(data)
+  //       modifyClientData = data
+  //       updateModifyClientData(modifyClientData)
+  //       console.log('Success:', data);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error);
+  //     });
+  // }
 }
 getAllClientData()
+
+function load_all_clients()
+{
+  var load_condition = "all_client_list";
+  $.ajax({
+    type:'POST',
+    url:'./API/viewclienttable.php',
+    data:{load_condition},
+    success:function(html){
+      $('#client_id').html(html);
+    }
+  });
+}
+load_all_clients();
 
 // getModifyClientData(0)
 
@@ -189,7 +213,7 @@ tbody ? tbody.onclick = (e) => {
     e.preventDefault()
     data["id"] = e.target.id
     data["action"] = "delete"
-    sendRequest("https://www.bgvhwd.xyz/client/API/editOrder.php")
+    sendRequest("./API/editOrder.php")
   }
   data = {}
 } : false

@@ -83,7 +83,7 @@ class States
                         Sr. No
                       </th>
                       <th>
-                        First Name & last Name
+                        Applicant Name
                       </th>
                       <th>
                         Internal Reference Id
@@ -92,7 +92,7 @@ class States
                         Email id
                       </th>
                       <th>
-                        Order Creation Date Time
+                        Order Creation
                       </th>
                       <th>
                         Order Completion Date

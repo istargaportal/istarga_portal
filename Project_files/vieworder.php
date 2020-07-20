@@ -1,175 +1,36 @@
 <?php
-  $page_name = "View Order";
-  include 'Header.php';
+$page_name = "View Order";
+include 'Header.php';
 ?>
-      <div class="content">
-        <div class="container-fluid">
+<input type="hidden" name="Service" id="Service" class="form-control" id="exampleFormControlSelect1" onchange="myFunction(event)" />
+<div class="content">
+  <div class="container-fluid">
+    <div class="col-md-12">
+      <div class="card card-plain">
+        <div class="card-header card-header-primary">
+          <h4 class="card-title mt-0"> Order Details</h4>
+        </div>
+        <div class="card-body">
           <div class="row">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-body">
-                  <form id="vieworder" method="post">
-                    <div class="row">
-                      <div class="col-md-4">
-                        <!--                         
-                    <div class="form-group"style="margin-top:12%;">
-                    <label class="bmd-label-floating"style="color:white;font-size:15px;">Search By</label>
-                    <select class="browser-default custom-select" size="14" type="select"name="searchBy" id="Service"style="color:#202940;margin-top:3%;" onchange="myFunction(event)">
-                    <option style="margin-top:3.2%;">First Name Last Name</option>
-                    <option style="margin-top:3.2%;">Internal Reference Id</option>
-                    <option style="margin-top:3.2%;">Joing Location</option>
-                   
-                    </select>
-                          
-                    </div> -->
-
-                        <div class="form-group" style="margin-top:9%;">
-                          <label for="Service ">Search By</label>
-                          <select name="Service" id="Service" class="form-control" style="margin-top:3%;"
-                            id="exampleFormControlSelect1" onchange="myFunction(event)">
-                            <option value="NULL_OPT" selected="" class=" bg-secondary text-light">---Select Search
-                              Criteria---</option>
-                            <option value="First_Name_Last_Name" class=" bg-secondary text-light">First Name Last Name
-                            </option>
-                            <option value="internal_reference_id" class=" bg-secondary text-light">Internal Reference Id
-                            </option>
-                            <option value="Joing_Location" class=" bg-secondary text-light">Joing Location</option>
-                            <option value="Case_Ref_ID" class=" bg-secondary text-light">Case Ref ID</option>
-                            <option value="order_creation_date_time" class=" bg-secondary text-light">Order Creation
-                              Date</option>
-                            <option value="Order_Completion_Date" class=" bg-secondary text-light">Order Completion Date
-                            </option>
-                            <option value="email_id" class=" bg-secondary text-light">Email ID</option>
-                            <option value="Order_Status" class=" bg-secondary text-light">Order Status</option>
-                          </select>
-                        </div>
-
-
-                      </div>
-
-                      <!--Ist Row Closes Here-->
-
-                      <div class="col-md-4" style="margin-top:2.5%;">
-
-                        <div id="hide">
-                          <div class="form-group">
-                            <label>Search Criteria</label>
-                            <input type="text" name="SearchCriteria" style="display:none;" id="SearchCriteria"
-                              class="form-control" placeholder="Enter As Per Search Criteria" onkeyup="showCustomer()">
-                          </div>
-                        </div>
-
-                        <div class="card" id="DateOne" style="background-color:#1A2035;padding:2%;display:none;">
-
-                          <div class="form-group">
-                            <label class="bmd-label-static"></label>
-                            <!--<input id="user_id" name="user_id" type="hidden" value="<?php // echo $unsa;
-                                                                                        ?>">-->
-                            <input onchange="showCustomer();" type="date" name="OrderCreation" id="dateofbirth"
-                              class="form-control">
-                          </div>
-                        </div>
-
-
-                      </div>
-
-                      <!--2nd Row closes Here-->
-
-
-                      <div class="col-md-4">
-
-                        <div class="card" id="order" value="" style="background-color:#1A2035;padding:4%;display:none;">
-
-                          <div class="form-group" style="margin-top:6%;">
-                            <label>Order Status</label>
-                            <select name="OrderStatus" onchange="showCustomer()" id="OrderStatus" class="form-control"
-                              style="margin-top:3%;" id="exampleFormControlSelect1">
-
-                              <option value="Education" class=" bg-secondary text-light">Education</option>
-                              <option value="Criminal" class=" bg-secondary text-light">Criminal</option>
-                              <option value="Data Base" class=" bg-secondary text-light">Data Base</option>
-                              <option value="Employment" class=" bg-secondary text-light">Employment</option>
-                              <option value="Address" class=" bg-secondary text-light">Address</option>
-                              <option value="Civil Litigation" class=" bg-secondary text-light">Civil Litigation
-                              </option>
-                            </select>
-
-                          </div>
-
-                        </div>
-
-                      </div>
-
-                      <!--Third Row- closes Here-->
-
-                    </div>
-                    <!--Main Row Closes Here-->
-
-                    <!-- <button type="submit" class="btn btn-primary pull-right" onclick="showCustomer()">Search</button>-->
-
-                </div>
-                </form>
-              </div>
+            <div class="col-md-1">
+              <label>Client</label>
+            </div>
+            <div class="col-md-3">
+              <select class="browser-default custom-select" onchange="getAllClientData()" id="client_id">
+                <option value="">All</option>
+              </select>
             </div>
           </div>
-
-          <!--Horizontal Line Part Starts Here-->
-
-          <div class="col-md-12">
-            <div class="card card-plain">
-              <div class="card-header card-header-primary">
-                <h4 class="card-title mt-0"> Order Details</h4>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive" id="table">
-                  <table class="table table-hover" style="margin-top: 4%;">
-                    <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
-                      <th>
-                        Sr. No
-                      </th>
-                      <th>
-                        First Name & last Name
-                      </th>
-                      <th>
-                        Internal Reference Id
-                      </th>
-                      <th>
-                        Email id
-                      </th>
-                      <th>
-                        Assign to
-                      </th>
-                      <th>
-                        Order Creation Date Time
-                      </th>
-                      <th>
-                        Order Completion Date
-                      </th>
-                      <th>
-                        Order status
-                      </th>
-                      <th>
-                        Actions
-                      </th>
-                    </thead>
-                    <tbody id="table-body">
-
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <!--Table closes Here-->
-
-
-
-            <script>
-              const x = new Date().getFullYear();
-              let date = document.getElementById('date');
-              date.innerHTML = '&copy; ' + x + date.innerHTML;
-            </script>
+          <br>
+          <div class="table-responsive">
+            <div id='table'></div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
         <!--<div class="fixed-plugin">
     <div class="dropdown show-dropdown">
       <a href="#" data-toggle="dropdown">
@@ -213,7 +74,7 @@
         <li class="button-container">
           <a href="https://www.creative-tim.com/product/material-dashboard-dark" target="_blank" class="btn btn-primary btn-block">Free Download</a>
         </li>
-        <!-- <li class="header-title">Want more components?</li>
+        <li class="header-title">Want more components?</li>
             <li class="button-container">
                 <a href="https://www.creative-tim.com/product/material-dashboard-pro" target="_blank" class="btn btn-warning btn-block">
                   Get the pro version
@@ -237,30 +98,34 @@
       </ul>
     </div>
   </div>-->
-        <!--   Core JS Files   -->
-        <script src="assets/js/core/jquery.min.js"></script>
-        <script src="assets/js/core/popper.min.js"></script>
-        <script src="assets/js/core/bootstrap-material-design.min.js"></script>
-        <script src="https://unpkg.com/default-passive-events"></script>
-        <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-        <!-- Place this tag in your head or just before your close body tag. -->
-        <script async defer src="https://buttons.github.io/buttons.js"></script>
-        <!--  Google Maps Plugin    -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-        <!-- Chartist JS -->
-        <script src="assets/js/plugins/chartist.min.js"></script>
-        <!--  Notifications Plugin    -->
-        <script src="assets/js/plugins/bootstrap-notify.js"></script>
-        <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-        <script src="assets/js/material-dashboard.js?v=2.1.0"></script>
-        <!-- Material Dashboard DEMO methods, don't include it in your project! -->
-        <script src="assets/demo/demo.js"></script>
-        <script src="vieworder.js"></script>
-        <script>
-          function test() {
-            var dob = document.getElementById("dateofbirth");
-            console.log(dob.value + "value");
-          }
+  <!--   Core JS Files   -->
+  <script src="assets/js/core/jquery.min.js"></script>
+  <script src="assets/js/core/popper.min.js"></script>
+  <script src="assets/js/core/bootstrap-material-design.min.js"></script>
+  <script src="https://unpkg.com/default-passive-events"></script>
+  <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!--  Google Maps Plugin    -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  <!-- Chartist JS -->
+  <script src="assets/js/plugins/chartist.min.js"></script>
+  <!--  Notifications Plugin    -->
+  <script src="assets/js/plugins/bootstrap-notify.js"></script>
+  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="assets/js/material-dashboard.js?v=2.1.0"></script>
+  <!-- Material Dashboard DEMO methods, don't include it in your project! -->
+  <script src="assets/demo/demo.js"></script>
+  <script src="vieworder.js"></script>
+
+  <?php
+  include '../datatable/_datatable.php';
+  ?>
+  <script>
+    function test() {
+      var dob = document.getElementById("dateofbirth");
+      console.log(dob.value + "value");
+    }
 
           //this is a sample data
 
@@ -478,32 +343,32 @@
                     $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
                     $sidebar_img_container.fadeIn('fast');
                   });
-                }
+              }
 
-                if ($full_page_background.length != 0 && $('.switch-sidebar-image input:checked').length !=
-                  0) {
-                  var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data(
-                    'src');
+              if ($full_page_background.length != 0 && $('.switch-sidebar-image input:checked').length !=
+                0) {
+                var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data(
+                  'src');
 
-                  $full_page_background.fadeOut('fast', function () {
-                    $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
-                    $full_page_background.fadeIn('fast');
-                  });
-                }
-
-                if ($('.switch-sidebar-image input:checked').length == 0) {
-                  var new_image = $('.fixed-plugin li.active .img-holder').find("img").attr('src');
-                  var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data(
-                    'src');
-
-                  $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
-                  $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
-                }
-
-                if ($sidebar_responsive.length != 0) {
-                  $sidebar_responsive.css('background-image', 'url("' + new_image + '")');
-                }
+              $full_page_background.fadeOut('fast', function () {
+                $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
+                $full_page_background.fadeIn('fast');
               });
+            }
+
+            if ($('.switch-sidebar-image input:checked').length == 0) {
+              var new_image = $('.fixed-plugin li.active .img-holder').find("img").attr('src');
+              var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data(
+                'src');
+
+              $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
+              $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
+            }
+
+            if ($sidebar_responsive.length != 0) {
+              $sidebar_responsive.css('background-image', 'url("' + new_image + '")');
+            }
+          });
 
               $('.switch-sidebar-image input').change(function () {
                 $full_page_background = $('.full-page-background');
@@ -571,13 +436,13 @@
 
               });
             });
-          });
+});
 
-          /*Time Picker */
-        </script>
-        <script>
-          showCustomer();
-        </script>
+/*Time Picker */
+</script>
+<script>
+  showCustomer();
+</script>
 </body>
 
 </html>
