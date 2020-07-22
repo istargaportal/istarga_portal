@@ -9,10 +9,8 @@ if(!isset($_SESSION['email']))
 	';
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="utf-8" />
 	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png" />
@@ -42,12 +40,26 @@ if(!isset($_SESSION['email']))
     
     <style type="text/css">
         .btn-xs{
-            font-size: 8pt;
-            padding: 4px 8px;
+            font-size: 9pt;
+            padding: 6px 8px;
         }
         .btn-xs .material-icons{
-            font-size: 8pt;
+            font-size: 9pt;
         }
+
+        .btn-round{
+            border-radius: 100%;
+        }
+        .btn-danger{
+            background:#eb1e2f !important;
+        }
+        .btn-warning i, .btn-danger i{
+            color: #fff !important;
+        }
+        .btn-warning{
+            background:#feaf31 !important;
+        }
+
         .dropdown-item{
             cursor: pointer;
         }

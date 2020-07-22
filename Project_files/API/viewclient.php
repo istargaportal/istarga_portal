@@ -18,7 +18,7 @@ class country
     {
         $json=file_get_contents("php://input");
         $data=json_decode($json,true);
-
+        extract($_POST);
         if(isset($data['id']))
         {
             $checbk='SELECT * FROM client WHERE user_status="1" and id="'.$data['id'].'" ORDER BY Id DESC';
@@ -64,7 +64,9 @@ class country
         }
         else
         {
-            echo '<table id="datatable_tbl" class="table table-hover" style="margin-top: 4%;">
+            if(@$load_condition != "list_all_clients")
+            {
+                echo '<table id="datatable_tbl" class="table table-hover" style="margin-top: 4%;">
                       <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
                         <th>
                           Sr. No
@@ -86,6 +88,11 @@ class country
                         </th>
                       </thead>
                     ';
+            }
+            else
+            {
+                echo '<option value="">Choose...</option>';
+            }
             $check='SELECT * FROM client WHERE user_status="1" ORDER BY id DESC';
             $result=$this->conn->query($check);
             if($result->num_rows>0)
@@ -134,55 +141,63 @@ class country
                         $block_btn = "<a style='background:#eb1e2f !important;' class='btn btn-danger btn-xs'> <span class='material-icons'>remove_circle_outline</span> Blocked</a>";
                     }
 
-                    echo '
-                    <tr>
-                        <td>'.$i.'</td>
-                        <td>'.$row["Client_Name"].'</td>
-                        <td>'.$row["Client_Code"].'</td>
-                        <td>'.$row["Client_SPOC"].'</td>
-                        <td>'.$row["Live_DateDate"].'</td>
-                        <td class="text-primary tablehead1">
-                        '.@$block_btn.'
-                          <ul style="list-style: none;padding:0;" >
-                            <li class="nav-item dropdown">
-                              <a
-                                class="btn btn-sm btn-default"
-                                href="javascript:;"
-                                id="navbarDropdownProfile"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                              >
-                                <i  class="material-icons icon">tune</i>
-                                <p class="d-lg-none d-md-block">
-                                  Account
-                                </p>
-                                <div class="ripple-container"></div
-                              ></a>
-                              <div
-                                class="dropdown-menu dropdown-menu-left"
-                                aria-labelledby="navbarDropdownProfile" 
-                              >
-                                <a class="dropdown-item view-order" href="#" id="'.$row["id"].'">View Order</a>
-                                <a class="dropdown-item edit1" href="addClient.php?id='.$row["id"].'">View / Edit</a>
-                                <!-- <div class="dropdown-divider"></div> -->
-                                <a
-                                  id="'.$row["id"].'"
-                                  data-internal-reference-id="'.$row["Internal_Reference_ID"].'"
-                                  class="dropdown-item add-bank-details1"
-                                  href="./bankDetails.php?id='.$row["id"].'"
-                                  >Add bank details</a
-                                >
-                                <div class="dropdown-divider"></div>
-                                '.$block_unblock_btn.'
-                                <a class="dropdown-item soft-delete1" href="#" id="'.$row["id"].'">Soft Delete</a>
-                                <a class="dropdown-item hard-delete1" href="#" id="'.$row["id"].'">Hard Delete</a>
-                              </div>
-                            </li>
-                          </ul>
-                        </td>
-                    </tr>
-                    ';
+                    if(@$load_condition != "list_all_clients")
+                    {
+                        echo '
+                        <tr>
+                            <td>'.$i.'</td>
+                            <td>'.$row["Client_Name"].'</td>
+                            <td>'.$row["Client_Code"].'</td>
+                            <td>'.$row["Client_SPOC"].'</td>
+                            <td>'.$row["Live_DateDate"].'</td>
+                            <td class="text-primary tablehead1">
+                            '.@$block_btn.'
+                              <ul style="list-style: none;padding:0;" >
+                                <li class="nav-item dropdown">
+                                  <a
+                                    class="btn btn-sm btn-default"
+                                    href="javascript:;"
+                                    id="navbarDropdownProfile"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                  >
+                                    <i  class="material-icons icon">tune</i>
+                                    <p class="d-lg-none d-md-block">
+                                      Account
+                                    </p>
+                                    <div class="ripple-container"></div
+                                  ></a>
+                                  <div
+                                    class="dropdown-menu dropdown-menu-left"
+                                    aria-labelledby="navbarDropdownProfile" 
+                                  >
+                                    <a class="dropdown-item view-order" href="#" id="'.$row["id"].'">View Order</a>
+                                    <a class="dropdown-item edit1" href="addClient.php?id='.$row["id"].'">View / Edit</a>
+                                    <!-- <div class="dropdown-divider"></div> -->
+                                    <a
+                                      id="'.$row["id"].'"
+                                      data-internal-reference-id="'.$row["Internal_Reference_ID"].'"
+                                      class="dropdown-item add-bank-details1"
+                                      href="./bankDetails.php?id='.$row["id"].'"
+                                      >Add bank details</a
+                                    >
+                                    <div class="dropdown-divider"></div>
+                                    '.$block_unblock_btn.'
+                                    <a class="dropdown-item soft-delete1" href="#" id="'.$row["id"].'">Soft Delete</a>
+                                    <a class="dropdown-item hard-delete1" href="#" id="'.$row["id"].'">Hard Delete</a>
+                                  </div>
+                                </li>
+                              </ul>
+                            </td>
+                        </tr>
+                        ';
+                    }
+                    else
+                    {
+                        echo '<option value="'.$row['id'].'">'.$row['Client_Name'].'</option>';
+                        // echo json_encode($country);
+                    }
                     $i++;
                 }
             }
@@ -190,7 +205,10 @@ class country
             {
                 echo "0 results";
             }
-            echo '</table>';
+            if(@$load_condition != "list_all_clients")
+            {
+                echo '</table>';
+            }
         }
     }
 }

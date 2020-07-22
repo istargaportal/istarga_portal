@@ -17,47 +17,46 @@ class country
 
    public function update_details()
    {
- 
-            $check='SELECT * FROM `assigned_service` ORDER BY Id DESC';
+        echo '<table id="datatable_tbl" class="table table-hover" style="margin-top: 4%;">
+                <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
+                  <th width="10">SR.NO</th>
+                  <th>Client Name</th>
+                  <th>Country</th>
+                  <th>Service Type</th>
+                  <th>Service Name</th>
+                  <th>Price</th>
+                  <th>SLA</th>
+                  <th>Action</th>
+                </thead>
+              ';
+            $check='SELECT a.id, a.price, a.SLA, c.Client_Name, cm.name, st.name AS Service_type_name, sl.service_name FROM assigned_service a INNER JOIN client c ON c.id = a.client_id INNER JOIN countries cm ON cm.id = a.country_id INNER JOIN service_type st ON st.id = a.service_type_id INNER JOIN service_list sl ON sl.id = a.service_id ORDER BY a.Id DESC';
             $result=$this->conn->query($check);
             if($result->num_rows>0)
             {
-                $i=0;
+                $inc = 0;
                 while($row = $result->fetch_assoc())
                 {
-                    $country[$i]['id']=$row['id'];
-                    $country[$i]['client_id']=$row['client_id'];
-                    $dfa='SELECT * FROM client WHERE id="'.$row['client_id'].'"';
-                    $dfsa=$this->conn->query($dfa);
-                    $eeewa=$dfsa->fetch_assoc();
-                    $country[$i]['country_id']=$row['country_id'];
-                    $dfb='SELECT * FROM countries WHERE id="'.$row['country_id'].'"';
-                    $dfsb=$this->conn->query($dfb);
-                    $eeewb=$dfsb->fetch_assoc();
-                    $country[$i]['Service_type_id']=$row['service_type_id'];
-                    $dfc='SELECT * FROM service_type WHERE id="'.$row['service_type_id'].'"';
-                    $dfsc=$this->conn->query($dfc);
-                    $eeewc=$dfsc->fetch_assoc();
-                    $country[$i]['service_id']=$row['service_id'];
-                    $dfd='SELECT * FROM `service_list` WHERE id="'.$row['service_id'].'"';
-                    $dfsd=$this->conn->query($dfd);
-                    $eeewd=$dfsd->fetch_assoc();
-                    $country[$i]['Service_type_name']=$eeewc['name'];
-                    $country[$i]['service_name']=$eeewd['name'];
-                    $country[$i]['client_name']=$eeewa['Client_Name'];
-                    $country[$i]['country_name']=$eeewb['name'];
-                    $country[$i]['price']=$row['price'];
-                    $country[$i]['SLA']=$row['SLA'];  
-                    $i++;
+                    $inc++;
+                    echo '
+                    <tr>
+                        <td>'.$inc.'</td>
+                        <td>'.$row['Client_Name'].'</td>
+                        <td>'.$row['name'].'</td>
+                        <td>'.$row['Service_type_name'].'</td>
+                        <td>'.$row['service_name'].'</td>
+                        <td>'.$row['price'].'</td>
+                        <td>'.$row['SLA'].'</td>
+                        <td>
+                            <a title="Edit Assigned Service" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>
+                            <a onclick="delete_assigned_service('.$row["id"].')" title="Delete Assigned Service" class="btn btn-xs btn-round btn-danger"><i class="material-icons icon">delete</i></a>
+                        </td>
+                    </tr>
+                    ';    
                 }
-                echo json_encode($country);
-            }
-            else {
-                echo "0 results";
+                // echo json_encode($country);
             }
             
-            
-
+            echo '</table>';
     }
 }
             $basic_details=new country($db);

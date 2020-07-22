@@ -377,10 +377,6 @@ include 'Header.php';
             </div>
           </div>
         </div>
-
-        <!-- Button trigger modal --> 
-
-
         <script>
           const x = new Date().getFullYear();
           let date = document.getElementById("date");
