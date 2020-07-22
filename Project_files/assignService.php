@@ -1,6 +1,73 @@
 <?php
-$page_name = "Assign Service";
+
+if(isset($_GET['id']))
+{
+  $page_name = "Edit Assign Service";
+  $id = base64_decode($_GET['id']);
+
+  require_once "config/config.php";
+
+  $get_connection=new connectdb;
+  $db=$get_connection->connect();
+
+  class country
+  {
+    public function __construct($db)
+    {
+      $this->conn=$db;
+    }
+
+    public function update_details()
+    {
+      global $id; global $country; global $service_type_id; global $service_id; global $client_id; global $currency; global $price; global $SLA; global $all_document_id;
+      $json=file_get_contents("php://input");
+      $data=json_decode($json,true);
+      if(isset($id))
+      {
+        $checbk='SELECT a.id, a.price, a.SLA, c.Client_Name, cm.name, st.name AS Service_type_name, sl.service_name, a.country_id, a.service_type_id, a.service_id, a.client_id, a.currency FROM assigned_service a INNER JOIN client c ON c.id = a.client_id INNER JOIN countries cm ON cm.id = a.country_id INNER JOIN service_type st ON st.id = a.service_type_id INNER JOIN service_list sl ON sl.id = a.service_id AND a.id="'.$id.'" ORDER BY Id DESC';
+        $result1=$this->conn->query($checbk);
+        if($result1->num_rows>0)
+        {
+          $row=$result1->fetch_assoc();
+          $country = $row['country_id'];
+          $service_type_id = $row['service_type_id'];
+          $service_id = $row['service_id'];
+          $client_id = $row['client_id'];
+          $currency = $row['currency'];
+          $price = $row['price'];
+          $SLA = $row['SLA'];
+        }
+        else
+        {
+          echo "No client Found";
+        }
+
+        $all_document_id = array();
+        $check='SELECT documentlist_id FROM assigned_service_documents WHERE assigned_service_id = '.$id.' ';
+        $this->conn->query("SET CHARACTER SET utf8"); 
+        $result=$this->conn->query($check);
+        if($result->num_rows>0)
+        {
+          $i = 1;
+          while($row = $result->fetch_assoc())
+          {
+            $all_document_id[$i] = $row['documentlist_id'];
+            $i++;
+          }
+        }
+      }
+    }
+  }
+  $basic_details=new country($db);
+  $basic_details->update_details();
+}
+else
+{
+  $page_name = "Assign Service";
+}
+
 include 'Header.php';
+
 ?>
 <div class="content" id="wapud">
   <div class="container-fluid">
@@ -8,10 +75,17 @@ include 'Header.php';
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-            <h4 class="card-title">Assign Service</h4>
+            <h4 class="card-title"><?php echo $page_name; ?></h4>
           </div>
           <div class="card-body">
-            <form id="ajax">
+            <form id="assign_service">
+              <input type="hidden" id="edit_client_id" value="<?php echo @$client_id; ?>">
+              <input type="hidden" id="edit_country" value="<?php echo @$country; ?>">
+              <input type="hidden" id="edit_service_type_id" value="<?php echo @$service_type_id; ?>">
+              <input type="hidden" id="edit_service_id" value="<?php echo @$service_id; ?>">
+              <input type="hidden" id="edit_currency" value="<?php echo @$currency; ?>">
+              <input type="hidden" name="edit_id" value="<?php echo @$id; ?>">
+
               <div class="row justify-content-between">
                 <div class="form-group col-md-4">
                   <label for="Client Name">Client Name</label>
@@ -23,13 +97,13 @@ include 'Header.php';
 
                 <div class="form-group col-md-4">
                   <label for="Country">Country</label>
-                  <select style="margin-top:5%" class="browser-default custom-select" id="locality-dropdown" name="locality-dropdown" onchange="getpackage(this.value)" class="form-control" required>
+                  <select style="margin-top:5%" class="browser-default custom-select" id="locality-dropdown" name="locality-dropdown" onchange="getservice(this.value)" class="form-control" required>
                     <option value="">Choose...</option>
                   </select>
                 </div>
                 <div class="form-group col-md-4">
                   <label for="Service Type">Service Type</label>
-                  <select style="margin-top:5%" id="select_service_type" class="browser-default custom-select" name="select_service_type" onchange="getservice(this.value)" class="form-control" required>
+                  <select style="margin-top:5%" id="select_service_type" class="browser-default custom-select" name="select_service_type" onchange="load_service_name()" class="form-control" required>
                     <option value="" class='bg-secondary'  default not selected>Choose...</option>
                   </select>
                 </div>
@@ -38,36 +112,86 @@ include 'Header.php';
                   <label for="Service Name">Service Name</label>
                   <select style="margin-top:5%" id="select_service_name" class="browser-default custom-select" name="select_service_name" onchange="getservicename(this.value)" class="form-control" required>
                     <option value="" class='bg-secondary text-light' default not selected>Choose...</option>
-
                   </select>
                 </div>
                 <div class="form-group col-md-4">
                   <label for="Price" >Price</label>
-                  <input name="Price" type="number" style="margin-top: 2% !important;" id="Price" class="form-control mt-4" min="0" required placeholder="" />
+                  <input name="Price" type="number" style="margin-top: 0 !important;" id="Price" class="form-control mt-4" value="<?php echo @$price; ?>" value="<?php echo @$price; ?>" min="0" required placeholder="" />
                 </div>
                 <div class="form-group col-md-4"> 
                   <label for="currency">Currency</label>
                   <select style="margin-top:5%" id="currency" class="browser-default custom-select" name="currency" onchange="getservicename(this.value)" class="form-control" required>
-                    <option value="" class='bg-secondary text-light' default not selected>Choose...</option>
                   </select>
+                </div>
+                
+                <div class="form-group col-md-4">
+                  <label for="Service Type">Document name</label>
+                  <div id="document_div">
+                    <select multiple="" name="document_id[]" class="chosen-select">
+                      <?php
+                        
+                        require_once "config/config.php";
+
+                        $get_connection=new connectdb;
+                        $db=$get_connection->connect();
+
+                        class States
+                        {
+                            public function __construct($db)
+                            {
+                                $this->conn=$db;
+                            }
+
+                            public function get_document()
+                            {
+                              global $all_document_id;
+                              $getdata=file_get_contents("php://input");
+                              $data=json_decode($getdata,true);
+
+                              $check='SELECT * FROM documentlist';
+                              $result=$this->conn->query($check);
+                              if($result->num_rows>0)
+                              {
+                                while($row = $result->fetch_assoc())
+                                {
+                                  $selected = "";
+                                  $res_ar = array_search($row['id'],$all_document_id);
+                                  if($res_ar != '')
+                                  {
+                                    $selected = "selected";
+                                  }
+                                  echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['document_name'].'</option>';
+                                }
+                              }
+                            }
+                        }
+                        $basic_details=new States($db);
+                        $basic_details->get_document();
+                      ?>
+                    </select>
+                  </div>
                 </div>
 
                 <div class="form-group col-md-4">
                   <label for="SLA">SLA</label>
-                  <input name="SLA" id="SLA" style="margin-top: 2% !important;" type="text" class="form-control mt-4" placeholder="" />
+                  <input name="SLA" id="SLA" style="margin-top: 0 !important;" type="text" class="form-control mt-4" value="<?php echo @$SLA; ?>" placeholder="" required="" />
                 </div>
-
-                <div class="form-group col-md-4" style="text-align: right;">
-                  <button type="submit" id="assignSubmit" class="btn btn-primary mx-2">
-                    Add
-                  </button>
-
-                  <button type="button" onclick="formReset()" class="btn btn-primary">
-                    Reset
-                  </button>
+                <div class="form-group col-md-4">
+                  <br><br>
+                  <?php
+                  if(isset($_GET['id']))
+                  {
+                    echo '<a onclick="save_assign_service(2)" name="update_btn" type="submit" id="assignSubmit" class="btn btn-warning btn-sm"><i class="material-icons icon">edit</i> Update</a>';
+                  }
+                  else
+                  {
+                    echo '<a onclick="save_assign_service(1)" name="add_btn" type="submit" id="assignSubmit" class="btn btn-success btn-sm"><i class="material-icons icon">note_add</i> Add</a>';
+                  }
+                  ?>
+                  <a href="" class="btn btn-primary btn-sm"><i class="material-icons icon">refresh</i> Reset</a>
+                  <a href="assignService.php" class="btn btn-default btn-sm"><i class="material-icons icon">close</i> Cancel</a>
                 </div>
               </div>
-
 
               <!--table starts-->
               <div class="row">
@@ -187,6 +311,9 @@ include 'Header.php';
     </script>
     <!--mode change end-->
     <script src="assets/js/core/jquery.min.js"></script>
+    <?php
+      include '../search_select/select_javascript.php';
+    ?>
     <script src="assets/js/core/popper.min.js"></script>
     <script src="assets/js/core/bootstrap-material-design.min.js"></script>
     <script src="https://unpkg.com/default-passive-events"></script>
@@ -392,29 +519,77 @@ include 'Header.php';
               });
         });
 });
-          const form = document.getElementById("ajax");
-          form.addEventListener("submit", function(e) {
-            e.preventDefault();
-            const xhr = new XMLHttpRequest();
-            let formData = new FormData(form);
-            let data = {};
-            for (let entry of formData.entries()) {
-              data[entry[0]] = entry[1];
-            }
-            let jsonData = JSON.stringify(data);
-            xhr.open("POST", "./API/assignService.php");
-            xhr.setRequestHeader("Content-type", "application/json; charset=utf-8");
-            xhr.send(jsonData);
+const form = document.getElementById("ajax");
+form.addEventListener("submit", function(e) {
+  e.preventDefault();
+  const xhr = new XMLHttpRequest();
+  let formData = new FormData(form);
+  let data = {};
+  for (let entry of formData.entries()) {
+    data[entry[0]] = entry[1];
+  }
+  let jsonData = JSON.stringify(data);
+  xhr.open("POST", "./API/assignService.php");
+  xhr.setRequestHeader("Content-type", "application/json; charset=utf-8");
+  xhr.send(jsonData);
             // var response = "";
             // xhr.onreadystatechange = (e) => {
             //   response = xhr.responseText;
             //   alert(response);
             // }
-          
+
             alert("Service Assigned Successfully!");
+            // formReset();
             getAllAssignService(`./API/viewassignedservice.php`);
             
           });
+
+        function save_assign_service(save_condition)
+        {
+          var error = 0;
+          $("input, select").each(function ()
+          {
+            if($(this).prop('required'))
+            {
+              if($(this).val() == '')
+              {
+                alert('Please enter data');
+                $(this).focus();
+                error++;
+                exit();
+              }
+            }
+          })
+
+          if(error == 0)
+          {
+            $('button').prop('disabled', true);
+            var myform = document.getElementById("assign_service");
+            var fd = new FormData(myform );
+            $.ajax({
+              url: "./API/assignService.php",
+              data: fd,
+              cache: false,
+              processData: false,
+              contentType: false,
+              type: 'POST',
+              success: function (html) {
+                if(html == "inserted")
+                {
+                  alert('Service assigned successfully!');
+                }
+                else if(html == "updated")
+                {
+
+                }
+                else
+                {
+                  alert('');
+                }
+              }
+            });
+          }
+        }
         </script>
       </body>
 

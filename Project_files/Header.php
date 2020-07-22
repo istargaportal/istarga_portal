@@ -39,6 +39,9 @@ if(!isset($_SESSION['email']))
     <link rel="stylesheet" href="popup.css">
     
     <style type="text/css">
+        .custom-select{
+            margin-top: 0 !important;
+        }
         .btn-xs{
             font-size: 9pt;
             padding: 6px 8px;
@@ -63,8 +66,22 @@ if(!isset($_SESSION['email']))
         .dropdown-item{
             cursor: pointer;
         }
+        .btn-success{
+            background:#346bd6 !important
+        }
+        .btn-success i, .btn-primary i{
+            color: #fff !important;
+        }
+        .btn-default i{
+            color: #000 !important;
+        }
+
         .btn-default{
+            color: #000 !important;
             background:#ccc !important;
+        }
+        .btn-sm{
+            padding: 7px 10px !important
         }
         .container_checkbox {
   display: block;
@@ -133,10 +150,12 @@ if(!isset($_SESSION['email']))
   border-radius: 50%;
   background: white;
 }
+.chosen-container{width:100%!important}.chosen-container-multi .chosen-choices,.chosen-container-single .chosen-single{padding:5px 8px!important;background:linear-gradient(#fff 20%,#f6f6f6 50%,#eee 52%,#f4f4f4 100%)!important}.chosen-container-single .chosen-single div{top:4px!important}.chosen-container .chosen-drop{z-index:9999999!important}.
     </style>
-	
+    <?php
+        include '../search_select/select_css.php';
+    ?>
 </head>
-
 <body class="dark-edition">
 	<div id="print_result"></div>
     <div class="wrapper">

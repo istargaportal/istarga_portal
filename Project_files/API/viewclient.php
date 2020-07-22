@@ -185,7 +185,7 @@ class country
                                     <div class="dropdown-divider"></div>
                                     '.$block_unblock_btn.'
                                     <a class="dropdown-item soft-delete1" href="#" id="'.$row["id"].'">Soft Delete</a>
-                                    <a class="dropdown-item hard-delete1" href="#" id="'.$row["id"].'">Hard Delete</a>
+                                    <a class="dropdown-item hard-delete1" href="#" id="'.$row["id"].'"edit_client_id>Hard Delete</a>
                                   </div>
                                 </li>
                               </ul>
@@ -195,7 +195,12 @@ class country
                     }
                     else
                     {
-                        echo '<option value="'.$row['id'].'">'.$row['Client_Name'].'</option>';
+                        $selected = "";
+                        if($edit_client_id == $row['id'])
+                        {
+                            $selected = "selected";
+                        }
+                        echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['Client_Name'].'</option>';
                         // echo json_encode($country);
                     }
                     $i++;

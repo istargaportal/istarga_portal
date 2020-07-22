@@ -135,7 +135,7 @@ let newServices = []
 
 let countrySelect = document.querySelector("#locality-dropdown")
 let countries
-fetch("https://www.bgvhwd.xyz/Project_files/API/country.php")
+fetch("./API/country.php")
   .then(res => res.json())
   .then(data => {
     // console.log(data)
@@ -309,7 +309,7 @@ searchField.onkeyup = () => {
   setDocumentNames()
 }
 
-fetch("https://www.bgvhwd.xyz/Project_files/API/assigndocuments.php")
+fetch("./API/assigndocuments.php")
   .then(response => response.json())
   .then(data => {
     documentNames = data
@@ -382,7 +382,7 @@ const sendRequest = (url) => {
     .then(data => {
       if (data.trim() == "Service Assigned Successfully") {
         alert(data)
-        getAllAssignService(`https://www.bgvhwd.xyz/Project_files/API/viewassignedservice.php`)
+        getAllAssignService(`./API/viewassignedservice.php`)
       } else {
         alert(data)
       }

@@ -143,7 +143,6 @@ function getservice(x) {
   }).then(function (response) {
     return response.text();
   }).then(function (text) {
-    //	console.log(text);
 
     let stat = JSON.parse(text);
     var wrap = document.getElementById('select_state')

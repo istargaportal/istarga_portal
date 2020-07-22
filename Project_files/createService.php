@@ -612,7 +612,7 @@
         servicetype.add(defaultservicetype);
         servicetype.selectedIndex = 0;
 
-        service = "https://www.bgvhwd.xyz/Project_files/API/servicetypelist.php";
+        service = "./API/servicetypelist.php";
 
         fetch(service)
           .then(

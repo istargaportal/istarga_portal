@@ -47,7 +47,7 @@ class country
                         <td>'.$row['price'].'</td>
                         <td>'.$row['SLA'].'</td>
                         <td>
-                            <a title="Edit Assigned Service" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>
+                            <a href="assignService.php?id='.base64_encode($row["id"]).'" title="Edit Assigned Service" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>
                             <a onclick="delete_assigned_service('.$row["id"].')" title="Delete Assigned Service" class="btn btn-xs btn-round btn-danger"><i class="material-icons icon">delete</i></a>
                         </td>
                     </tr>
