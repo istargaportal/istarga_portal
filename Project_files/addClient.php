@@ -3,7 +3,7 @@
 if(isset($_GET['id']))
 {
   $page_name = "Edit Clients";
-  $id = $_GET['id'];
+  $id = base64_decode($_GET['id']);
 
   require_once "config/config.php";
 
@@ -340,16 +340,14 @@ include 'Header.php';
                         <?php
                         if(isset($_GET['id']))
                         {
-                          echo '<button id="update-client" name="update-client" type="submit" class="btn btn-primary" style="margin-right: 1%;">Update</button>';
+                          echo '<button id="update-client" name="update-client" type="submit" class="btn btn-warning btn-sm" style="margin-right: 1%;"><i class="material-icons icon">edit</i> Update</button>';
                         }
                         else
                         {
-                          echo '<button id="add-client" name="add-client" type="submit" class="btn btn-primary" style="margin-right: 1%;">Submit</button>';
+                          echo '<button id="add-client" name="add-client" type="submit" class="btn btn-success btn-sm" style="margin-right: 1%;"><i class="material-icons icon">note_add</i> Save</button>';
                         }
                         ?>
-                        <a href="" class="btn btn-primary" style="margin-right: 2%;" onclick="formReset()">
-                          Cancel
-                        </a>
+                        <a href="" class="btn btn-default btn-sm" style="margin-right: 2%;" onclick="formReset()"><i class="material-icons icon">refresh</i> Reset</a>
                       </div>
                       <div class="clearfix"></div>
                     </form>

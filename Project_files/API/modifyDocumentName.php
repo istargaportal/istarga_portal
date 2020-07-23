@@ -22,25 +22,37 @@ class States
         switch ($data['action']) {
 
             case "delete":
-                $query = "DELETE FROM documentlist WHERE id='" . $data['id'] . "'";
-                $result = $this->conn->query($query);
-                if ($result) {
-                    echo "Deleted Successfully";
-                } else {
-                    echo "Could not delete";
-                }
-                break;
+            $query = "DELETE FROM documentlist WHERE id='" . $data['id'] . "'";
+            $result = $this->conn->query($query);
+            if ($result) {
+                echo "deleted";
+            } else {
+                echo "error";
+            }
+            break;
             case "edit":
-                $value = $data['value'];
-                $name = mysqli_real_escape_string($this->conn, $value);
+            $value = $data['value'];
+            $name = mysqli_real_escape_string($this->conn, $value);
+            $check='SELECT document_name FROM documentlist WHERE document_name = "'.$name.'" AND id != "' . $data['id'] . '" ';
+            $result=$this->conn->query($check);
+            if($result->num_rows>0)
+            {
+                if($row = $result->fetch_assoc())
+                {
+                    echo "already";
+                }
+            }
+            else
+            {
                 $query = "UPDATE documentlist SET document_name='" . $name . "' WHERE id='" . $data['id'] . "'";
                 $result = $this->conn->query($query);
                 if ($result) {
-                    echo "Edit Successfully";
+                    echo "updated";
                 } else {
-                    echo "Could not Change Status";
+                    echo "error";
                 }
-                break;
+            }
+            break;
         }
     }
 }

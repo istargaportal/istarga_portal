@@ -1,5 +1,5 @@
 <?php
-  $page_name = "View Order";
+  $page_name = "Standard Macro";
   include 'Header.php';
 ?>
       <div class="content">
@@ -24,70 +24,35 @@
                         <select  style="margin-top:1%" name="MacroType" id="Macro Type" class="browser-default custom-select" required>
                         </select>
                       </div>
-                    </div>
-                    <div class="row justify-content-between">
                       <div class="form-group col-md-4">
                         <label for="Service" style="margin-left: 4%;">Scenario</label>
                         <input name="Scenario" id="Scenario" type="text" class="form-control" placeholder="" required />
                       </div>        
                     </div>
                     <div class="row">
-                      <div class="col-md-10">               
+                      <div class="col-md-8">
                         <label class="bmd-label-floating" for="Service">Comment</label>
                         <input name="Comment" id="Comment" type="text" class="form-control" placeholder="" required />
                       </div>
+                      <div class="col-md-4 form_right" style="margin-top: 2%;">
+                        <button type="submit" class="btn btn-sm btn-success"><i class="material-icons icon">note_add</i> Save</button>
+                        <button type="button" class="btn btn-sm btn-default" onclick="reset()" ><i class="material-icons icon">close</i> Reset</button>
+                        <!-- <button type="button" class="btn btn-sm btn-primary" > Search</button> -->
+                      </div>
                     </div>
-
-
-                    <div class="row justify-content-end" style="margin-right:1%; margin-top:4%">
-                      <button type="submit" class="btn btn-primary">
-                        Save
-                      </button>
-
-                      <button type="button" class="btn btn-primary" onclick="reset()" style="margin-left: 1%;">
-                        Reset
-                      </button>
-                      <button id="download-excel" type="button" class="btn btn-primary" style="margin-left: 1%;">
-                        Export
-                      </button>
-                      <button type="button" class="btn btn-primary" style="margin-left: 1%;">
-                        Search
-                      </button>
-                    </div>
-                    <hr />
                     <div class="row">
                       <div class="col-md-12">
-                        <div class="card">
-                          <div class="card-header card-header-primary">
-                            <h4 style="color: white;" class="card-title">Standard Macro</h4>
+                        <div >
+                          <div class="form_center">
+                            <br>
+                            <button id="download-excel" type="button" class="btn btn-success btn-sm" >Export</button>
                           </div>
-                          <table id="downloadable-table" style="display: none">
-                            <thead>
-                              <th>
-                                Scenario
-                              </th>
-
-                              <th>
-                                Comments
-                              </th>
-                              <th>
-                                Service Type
-                              </th>
-                              <th>
-                                Macro Type
-                              </th>
-                            </thead>
-                            <tbody>
-                              
-                            </tbody>
-                          </table>
-                          <table class="table table-hover" style="width: 97%; margin-left: 1.5%; margin-top: 2%;">
+                          <table class="table table-hover">
                             <thead class="text-light" style="background-color: rgba(15, 13, 13, 0.856) !important;">
-                              <th>
+                              <th width="150">
                                 Scenario
                               </th>
-
-                              <th>
+                              <th width="250">
                                 Comments
                               </th>
                               <th>
@@ -183,6 +148,7 @@
   <script src="assets/js/plugins/chartist.min.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="assets/js/material-dashboard.js?v=2.1.0"></script>
+  <script>
     function reset() {
       document.getElementById("ajax").reset();
     }

@@ -1,4 +1,3 @@
-
 <?php
 
 require_once "../config/config.php";
@@ -9,7 +8,6 @@ $db = $get_connection->connect();
 
 class service
 {
-
     public function __construct($db)
     {
         $this->conn = $db;
@@ -18,25 +16,33 @@ class service
     public function add_Service()
     {
 
-
         $json_data = file_get_contents("php://input");
 
-        // Checks if it's empty or not
-        if (!empty($json_data)) {
-
-            // Decodes the JSON object to an Array
+        if (!empty($json_data))
+        {
             $data = json_decode($json_data, true);
             $name1 = $data['document_name'];
             $name = mysqli_real_escape_string($this->conn, $name1);
-            if ($name != "") {
-                $check = "INSERT INTO documentlist(document_name) values('$name')";
-
-
-                $result = $this->conn->query($check);
-                if ($result) {
-                    echo "sucess";
-                } else {
-                    echo "  error";
+            if ($name != "")
+            {
+                $check='SELECT document_name FROM documentlist WHERE document_name = "'.$name.'" ';
+                $result=$this->conn->query($check);
+                if($result->num_rows>0)
+                {
+                    if($row = $result->fetch_assoc())
+                    {
+                        echo "already";
+                    }
+                }
+                else
+                {
+                    $check = "INSERT INTO documentlist(document_name) values('$name')";
+                    $result = $this->conn->query($check);
+                    if ($result) {
+                        echo "success";
+                    } else {
+                        echo "error";
+                    }
                 }
             }
         } else {

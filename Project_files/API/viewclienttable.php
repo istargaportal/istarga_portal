@@ -22,35 +22,17 @@ class States
         if($load_condition == "load_all_clients")
         {
             $client_id = $_POST['client_id'];
-            echo '<table id="datatable_tbl" class="table table-hover" >
+            echo '<br><table id="datatable_tbl" class="table table-hover" >
                     <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.822) !important;">
-                    <th>
-                    Sr. No
-                    </th>
-                    <th>
-                        Client
-                    </th>
-                    <th>
-                    Applicant Name
-                    </th>
-                    <th>
-                    Internal Reference Id
-                    </th>
-                    <th>
-                    Email id
-                    </th>
-                    <th>
-                    Order Creation
-                    </th>
-                    <th>
-                    Order Completion Date
-                    </th>
-                    <th>
-                    Order status
-                    </th>
-                    <th>
-                    Actions
-                    </th>
+                    <th style="width:15px;">Sr.No.</th>
+                    <th>Client</th>
+                    <th>Applicant Name</th>
+                    <th>Internal Ref. ID</th>
+                    <th>Email id</th>
+                    <th>Order Creation</th>
+                    <th>Order Completion Date</th>
+                    <th>Order status</th>
+                    <th>Actions</th>
                     </thead>';
                     if($client_id != 0)
                     {
@@ -103,10 +85,10 @@ class States
                             <td class="tablehead1">
                             '.$inc.'
                             </td>
-                            <td class="tablehead1">
+                            <td class="tablehead1 form_left">
                             '.$row["Client_Name"].'
                             </td>
-                            <td class="tablehead1">
+                            <td class="tablehead1 form_left">
                             '.$row["first_Name"].' '.$row["last_Name"].' 
                             </td>
                             <td class="tablehead1">
@@ -124,31 +106,8 @@ class States
                             <td class="tablehead1">
                             '.$Order_Status.'
                             </td>
-                            <td class="text-primary tablehead1">
-                            <ul style="list-style: none;">
-                            <li class="nav-item dropdown">
-                            <a
-                            class="nav-link"
-                            href="javascript:;"
-                            id="navbarDropdownProfile"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                            >
-                            <i  class="material-icons icon">tune</i>
-                            <div class="ripple-container"></div
-                            ></a>
-                            <div
-                            class="dropdown-menu dropdown-menu-left"
-                            aria-labelledby="navbarDropdownProfile" 
-                            >
-                            <a
-                            class="dropdown-item edit1"
-                            > View</a
-                            >
-                            </div>
-                            </li>
-                            </ul>
+                            <td>
+                            <a class="btn btn-default btn-round btn-sm "><i class="material-icons icon">visibility</i> View</a>
                             </td>
                             </tr>
                             ';

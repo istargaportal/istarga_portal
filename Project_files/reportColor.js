@@ -1,18 +1,15 @@
 
-console.log('working')
-
-let data = {}
-
-let clients
-const clientName = document.querySelector('#ClientName')
-
-fetch('https://www.bgvhwd.xyz/Project_files/API/viewclient.php')
-.then(response => response.json())
-.then(data => {
-  clients = data
-  // console.log('clients', clients)
-    clients.map(v => {
-      // code change
-      clientName.innerHTML += `<option value="${v.Id}" class="bg-secondary text-light" >${v.Client_Name}</option>`
-    })
+function load_all_clients()
+{
+  var default_client_id = $('#default_client_id').val() || 0;
+  var load_condition = "all_client_list";
+  $.ajax({
+    type:'POST',
+    url:'./API/viewclienttable.php',
+    data:{load_condition, default_client_id},
+    success:function(html){
+      $('#client_id').html(html);
+    }
   });
+}
+load_all_clients();

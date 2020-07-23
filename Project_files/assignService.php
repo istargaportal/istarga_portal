@@ -185,7 +185,7 @@ include 'Header.php';
                   }
                   else
                   {
-                    echo '<a onclick="save_assign_service(1)" name="add_btn" type="submit" id="assignSubmit" class="btn btn-success btn-sm"><i class="material-icons icon">note_add</i> Add</a>';
+                    echo '<a onclick="save_assign_service(1)" name="add_btn" type="submit" id="assignSubmit" class="btn btn-success btn-sm"><i class="material-icons icon">note_add</i> Save</a>';
                   }
                   ?>
                   <a href="" class="btn btn-primary btn-sm"><i class="material-icons icon">refresh</i> Reset</a>
@@ -580,11 +580,11 @@ form.addEventListener("submit", function(e) {
                 }
                 else if(html == "updated")
                 {
-
+                  alert('Service updated successfully!');
                 }
                 else
                 {
-                  alert('');
+                  alert('Error occurred');
                 }
               }
             });

@@ -120,18 +120,53 @@ include 'Header.php';
   <?php
   include '../datatable/_datatable.php';
   ?>
+  <!--mode changing-->
+    <script>
+      let darkmode = localStorage.getItem("darkmode");
+      const darkmodetoggle = document.querySelector('input[name=theme]');
+
+      const enabledarkmode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        localStorage.setItem("darkmode", "enabled");
+      }
+
+
+      const disabledarkmode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        localStorage.setItem("darkmode", null);
+      }
+
+
+      if (darkmode === "enabled") {
+        enabledarkmode();
+      }
+
+
+      darkmodetoggle.addEventListener("change", () => {
+        darkmode = localStorage.getItem("darkmode");
+        if (darkmode !== "enabled") {
+          trans()
+          enabledarkmode();
+        } else {
+          trans()
+          disabledarkmode();
+        }
+      })
+
+      let trans = () => {
+        document.documentElement.classList.add('transition');
+        window.setTimeout(() => {
+          document.documentElement.classList.remove('transition');
+        }, 1000)
+      }
+    </script>
   <script>
     function test() {
       var dob = document.getElementById("dateofbirth");
       console.log(dob.value + "value");
     }
 
-          //this is a sample data
-
-
-
-
-          // thilm is 
+            // thilm is 
 
           // function showCustomer(){
           // var e = document.getElementById("Service");

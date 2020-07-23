@@ -113,19 +113,17 @@ const setAllBankDetails = (d) => {
       <td class="text-primary tablehead1" id=${value.id} data-Sr="${i + 1}">
         <button
           type="button"
-          class="btn btn-primary btn-sm edit"  
-          
-        >
-          Edit
+          class="btn btn-warning btn-xs edit">
+          <i class="material-icons icon">edit</i> Edit
         </button>
       </td>
       <td class="text-primary tablehead1" >
         <button
           id=${value.id}
           type="button"
-          class="btn btn-primary btn-sm delete"
+          class="btn btn-danger btn-xs delete"
         >
-          Delete
+         <i class="material-icons icon">delete</i> Delete
         </button>
       </td>
     </tr>
@@ -205,21 +203,10 @@ const edit = (e) => {
           <input type="text" name="favour-of" value="${value.favour_of}" class="form-control" id="" >
         </td>
         <td class="text-primary tablehead1">
-          <button
-            type="submit"
-            class="btn btn-primary btn-sm edit"
-          >
-            Save
-          </button>
+          <button type="submit" class="btn btn-success btn-xs edit"> <i class="material-icons icon">note_add</i> Save</button>
         </td>
         <td class="text-primary tablehead1">
-          <button
-            id=${value.id}
-            type="button"
-            class="btn btn-primary btn-sm delete"
-          >
-            Delete
-          </button>
+          <button id=${value.id} type="button" class="btn btn-danger btn-xs delete"><i class="material-icons icon">delete</i> Delete</button>
         </td>
       </tr>
   `

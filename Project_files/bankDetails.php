@@ -62,12 +62,12 @@
                         </div>
                       </div>
                       <div class="col-md-4">
-                        <button type="submit" class="btn btn-primary" style="margin-right: 3%;">
-                          Save
+                        <button type="submit" class="btn btn-success btn-sm" style="margin-right: 3%;">
+                          <i class="material-icons icon">note_add</i> Save
                         </button>
 
-                        <button type="button" class="btn btn-primary reset" onclick="formReset()" style="margin-right: 3%;">
-                          Reset
+                        <button type="button" class="btn btn-default btn-sm reset" onclick="formReset()" style="margin-right: 3%;">
+                          <i class="material-icons icon">refresh</i> Reset
                         </button>
                       </div>
                     </div>
@@ -111,51 +111,7 @@
                                 Delete
                               </th>
                             </thead>
-                            <tbody id="table-body">
-                              <!-- <tr>
-                                  <td>
-                                    1
-                                  </td>
-                                  <td>
-                                    Dakota Rice
-                                  </td>
-                                  <td>
-                                    Niger
-                                  </td>
-                                  <td>
-                                    Oud-Turnhout
-                                  </td>
-                                  <td>
-                                    5asd515646
-                                  </td>
-                                  <td>
-                                    safa65466
-                                  </td>
-                                  <td>
-                                    665466
-                                  </td>
-                                  <td>
-                                    Niger
-                                  </td>
-                                  <td class="text-primary">
-                                    <button
-                                      type="button"
-                                      class="btn btn-primary btn-sm"
-                                    >
-                                      Edit
-                                    </button>
-                                  </td>
-                                  <td class="text-primary">
-                                    <button
-                                      id="1"
-                                      type="button"
-                                      class="btn btn-primary btn-sm delete"
-                                    >
-                                      Delete
-                                    </button>
-                                  </td>
-                                </tr> -->
-                            </tbody>
+                            <tbody id="table-body"></tbody>
                           </table>
                         </div>
                       </div>

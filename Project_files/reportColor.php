@@ -13,139 +13,32 @@
                 <div class="card-body">
                   <form id="ajax">
                     <div class="row justify-content-start">
-                      <div class="form-group col-md-4">
-                        <label for="Client Name" style="margin-left: 4%;">Client Name</label>
-                        <select id="ClientName" class="form-control" required>
-                          <option selected>Choose...</option>
-                        </select>
+                      <div class="col-md-4">
+                        <label for="Client Name">Client Name</label>
+                        <select style="margin-top:5%" class="browser-default custom-select" name="client_id" id="client_id" class="form-control" required></select>
                       </div>
-                      <div class="form-group col-md-4">
-                        <div class="form-check form-check-radio">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" name="OrderLevel" id="OrderLevel" value="" />
-                            Order Level
-                            <span class="circle">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
+                      <div class="form-group col-md-5">
+                        <a href="javascript:load_report_color()" style="margin-top:4%" class="btn btn-primary btn-sm"><i class="material-icons icon">search</i> Load</a>
                       </div>
-                    </div>
-                    <div class="row justify-content-start">
-                      <div class="form-check" style="margin-left: 1%; margin-top: 1.6%;">
-                        <label class="form-check-label">
-                          <input id="Default value" class="form-check-input" type="checkbox" value="" />
+                      <div class="form-group col-md-3">
+                        <label style="margin-top:4%" class="material_checkbox">
+                          <input type="checkbox" name="default_report_color" value="1" />
                           Default Value
-                          <span class="form-check-sign">
-                            <span class="check"></span>
-                          </span>
+                          <span class="checkmark"></span>
                         </label>
                       </div>
-                      <div class="form-group col-md-4" style="margin-left: 22%;">
-                        <div class="form-check form-check-radio">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" name="CheckLevel" id="CheckLevel" value="" />
-                            check Level
-                            <span class="circle">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </div>
                     </div>
-                    <div class="row justify-content-end" style="margin-right: 1%;">
-                      <button type="submit" class="btn btn-primary mx-2">
-                        Save
-                      </button>
-
-                      <button type="button" class="btn btn-primary" onclick="reset()">
-                        Reset
-                      </button>
-                    </div>
-                    <hr />
                     <div class="row">
                       <div class="col-md-12">
                         <div class="card">
-                          <div class="card-header card-header-primary">
-                             <h4 style="color: white;" class="card-title">Report Color</h4>
-                          </div>
-                            <table
-                              class="table table-hover"
-                              style="margin-top: 4%; width:96%;margin-left:2%"
-                            >
+                            <table class="table table-hover">
                               <thead class="text-primary " 
                               style="background-color: rgba(15, 13, 13, 0.856) !important;" 
                               >
-                                <th>
-                                  Order Status
-                                </th>
-
-                                <th>
-                                  Color Code
-                                </th>
-                                <th>
-                                  Report Text
-                                </th>
+                                <th>Order Status</th>
+                                <th>Color Code</th>
+                                <th>Report Text</th>
                               </thead>
-                              <tbody>
-                                <tr>
-                                  <td  class="tablehead1">
-                                    Dakota Rice
-                                  </td>
-
-                                  <td  class="tablehead1">
-                                    <select
-                                      id="Colors"
-                                      class="form-control"
-                                      required
-                                    >
-                                      <option selected>Yellow</option>
-                                      <option>Green</option>
-                                    </select>
-                                  </td>
-                                  <td  class="tablehead1">
-                                    <input
-                                      id="Report Text"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder=""
-                                      required
-                                    />
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td  class="tablehead1">
-                                    Minerva Hooper
-                                  </td>
-
-                                  <td  class="tablehead1">
-                                    <select
-                                      id="Colors"
-                                      class="form-control"
-                                      required
-                                    >
-                                      <option selected>Yellow</option>
-                                      <option>Green</option>
-                                    </select>
-                                  </td>
-                                  <td  class="tablehead1">
-                                    <input
-                                      id="Report Text"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder=""
-                                      required
-                                    />
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td></td>
-                                  <td></td>
-                                  <td> <button type="button" class="btn btn-primary;" style="float: right;margin-right: 1%;" >
-                                    Save
-                                  </button></td>
-                                </tr>
-                              </tbody>
                             </table>
                         </div>
                       </div>

@@ -152,7 +152,7 @@ class country
                             <td>'.$row["Live_DateDate"].'</td>
                             <td class="text-primary tablehead1">
                             '.@$block_btn.'
-                              <ul style="list-style: none;padding:0;" >
+                              <ul class="list_none" style="padding:0;" >
                                 <li class="nav-item dropdown">
                                   <a
                                     class="btn btn-sm btn-default"
@@ -172,7 +172,7 @@ class country
                                     class="dropdown-menu dropdown-menu-left"
                                     aria-labelledby="navbarDropdownProfile" 
                                   >
-                                    <a class="dropdown-item view-order" href="#" id="'.$row["id"].'">View Order</a>
+                                    <a class="dropdown-item view-order" href="#" id="'.base64_encode($row["id"]).'">View Order</a>
                                     <a class="dropdown-item edit1" href="addClient.php?id='.$row["id"].'">View / Edit</a>
                                     <!-- <div class="dropdown-divider"></div> -->
                                     <a

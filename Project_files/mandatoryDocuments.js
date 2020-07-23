@@ -5,12 +5,22 @@ const onSave = (id, action, value) => {
   fetch('./API/modifyDocumentName.php', {
     method: 'post',
     body: JSON.stringify(obj)
-  }).then(function (res) {
-    //alert("Edited successfully")
-    //console.log(res);
-    popuTable();
+  }).then(response => response.text())
+  .then(data => {
+    if(data == "updated")
+    {
+      alert('Mandatory Document updated Successfully');
+      popuTable();
+    }
+    else if(data == "already")
+    {
+      alert('Mandatory Document already exists');
+    }
+    else
+    {
+      alert('Error occurred');
+    }
   }).catch(err => {
-    //console.log(err);
     return err;
   })
 }
@@ -32,10 +42,10 @@ const onEdit = (id, action) => {
   edit.innerHTML="";
 
   //elem.appendChild(br);
-  let btn2= document.createElement('input');
+  let btn2= document.createElement('button');
       btn2.type = "button";
-      btn2.className = "btn btn-primary btn-sm";
-      btn2.value = "SAVE";
+      btn2.className = "btn btn-success btn-xs";
+      btn2.innerHTML = "<i class='material-icons icon'>note_add</i> SAVE";
       btn2.onclick = (() => {confirm('Are you sure you want to Save it?')?onSave(id, action,document.getElementById(id+"a").value):popuTable()});
       edit.appendChild(btn2);
 }
@@ -45,10 +55,17 @@ const onDelete = (id, action) => {
   fetch('./API/modifyDocumentName.php', {
     method: 'post',
     body: JSON.stringify(obj)
-  }).then(function (res) {
-
-    //console.log(res.text());
-    popuTable();
+  }).then(response => response.text())
+    .then(data => {
+      if(data == "deleted")
+      {
+        alert('Mandatory Document deleted successfully!');
+        popuTable();
+      }
+      else
+      {
+        alert('Error occurred');
+      }
   }).catch(err => {
     //console.log(err);
     return err;
@@ -70,17 +87,17 @@ const popuTable = () => {
       var cell3 = row.insertCell(2);
       cell1.innerHTML = stat[i].document_name;
       cell1.setAttribute("id",stat[i].id);
-      var btn1= document.createElement('input');
+      var btn1= document.createElement('button');
       btn1.type = "button";
-      btn1.className = "btn btn-primary btn-sm";
-      btn1.value = "EDIT";
+      btn1.className = "btn btn-warning btn-xs";
+      btn1.innerHTML = "<i class='material-icons icon'>edit</i> EDIT";
       btn1.onclick = (() => { onEdit(stat[i].id, "edit")});
       cell2.appendChild(btn1);
       cell2.setAttribute("id",stat[i].id+"c");
-      var btn = document.createElement('input');
+      var btn = document.createElement('button');
       btn.type = "button";
-      btn.className = "btn btn-primary btn-sm";
-      btn.value = "DELETE";
+      btn.className = "btn btn-danger btn-xs";
+      btn.innerHTML = "<i class='material-icons icon'>delete</i> DELETE";
       btn.onclick = (() => { confirm('Are you sure you want to delete it?') ? onDelete(stat[i].id, "delete") : ''; });
       cell3.appendChild(btn);
     }

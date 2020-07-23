@@ -50,7 +50,7 @@ servicetype.length = 0;
 
 let defaultservicetype = document.createElement('option');
 defaultservicetype.text = 'Select Service Type';
-defaultservicetype.value = "0";
+defaultservicetype.value = "";
 
 servicetype.add(defaultservicetype);
 servicetype.selectedIndex = 0;
@@ -81,7 +81,7 @@ macrotype.length = 0;
 
 let defaultmacrotype = document.createElement('option');
 defaultmacrotype.text = 'Select Macro Type';
-defaultmacrotype.value = "0";
+defaultmacrotype.value = "";
 
 macrotype.add(defaultmacrotype);
 macrotype.selectedIndex = 0;
@@ -107,22 +107,32 @@ fetch(macro).then(function(response) {
   console.error(error);
 })
 
-
 const onSave = (id, action, j) => {
     fn = document.getElementById(id + "afn").value;
     ln = document.getElementById(id + "aln").value;
-    //console.log(fn);
+    fn = fn.trim();
+    ln = ln.trim();
+    if(fn == "")
+    {
+      alert('Please enter Scenario!');
+      $("#"+ id + "afn").focus();
+      return;
+    }
+    if(ln == "")
+    {
+      alert('Please enter Comments!');
+      $("#"+ id + "aln").focus();
+      return;
+    }
+    
     obj = { "id": id, "action": action, "scenario": fn, "comment": ln };
-    //console.log(obj.id);
+
     fetch('./API/modifyStandardMacro.php', {
       method: 'post',
       body: JSON.stringify(obj)
     }).then(function (res) {
-      //alert("Edited successfully")
-      //console.log(res.text());
       popuTable();
     }).catch(err => {
-      //console.log(err);
       return err;
     })
   }
@@ -148,14 +158,15 @@ const onSave = (id, action, j) => {
     x2.setAttribute("class", "form-control focus");
     x2.style.maxWidth = "80%";
     elem2.innerHTML = "";
-    elem2.appendChild(x2).focus();
+    elem2.appendChild(x2);
+    // x1.focus()
     edit.innerHTML = "";
   
     //elem.appendChild(br);
-    let btn2 = document.createElement('input');
+    let btn2 = document.createElement('button');
     btn2.type = "button";
-    btn2.className = "btn btn-primary btn-sm";
-    btn2.value = "SAVE";
+    btn2.className = "btn btn-success btn-xs";
+    btn2.innerHTML = "<i class='material-icons icon'>note_add</i> SAVE";
     btn2.onclick = (() => { confirm('Are you sure you want to Save it?') ? onSave(id, action, j) : popuTable() });
     edit.appendChild(btn2);
   }
@@ -196,25 +207,25 @@ const onSave = (id, action, j) => {
         var cell5 = row.insertCell(4);
         var cell6 = row.insertCell(5);
         //cell0.innerHTML = j;
-        cell1.innerHTML = stat[i].Scenario;
+        cell1.innerHTML = "<div class='form_left tablehead1'>"+stat[i].Scenario+"</div>";
         cell1.setAttribute("id", stat[i].id + "fn");
-        cell2.innerHTML = stat[i].Comment;
+        cell2.innerHTML = "<div class='form_left tablehead1'>"+stat[i].Comment+"</div>";
         cell2.setAttribute("id", stat[i].id + "ln");
         cell3.innerHTML = stat[i].service_name;
         //cell3.setAttribute("id", stat[i].id + "em");
         cell4.innerHTML = stat[i].macro_name;
         //cell4.setAttribute("id", stat[i].id + "gp"+j);
-        var btn1 = document.createElement('input');
+        var btn1 = document.createElement('button');
         btn1.type = "button";
-        btn1.className = "btn btn-primary btn-sm";
-        btn1.value = "EDIT";
+        btn1.className = "btn btn-warning btn-xs";
+        btn1.innerHTML = "<i class='material-icons icon'>edit</i> EDIT";
         btn1.onclick = (() => { onEdit(stat[i].id, "edit",j) });
         cell5.appendChild(btn1);
         cell5.setAttribute("id", stat[i].id + "c");
-        var btn = document.createElement('input');
+        var btn = document.createElement('button');
         btn.type = "button";
-        btn.className = "btn btn-primary btn-sm";
-        btn.value = "DELETE";
+        btn.className = "btn btn-danger btn-xs";
+        btn.innerHTML = "<i class='material-icons icon'>delete</i> DELETE";
         btn.onclick = (() => { confirm('Are you sure you want to delete it?') ? onDelete(stat[i].id, "delete") : ''; });
         cell6.appendChild(btn);
       }

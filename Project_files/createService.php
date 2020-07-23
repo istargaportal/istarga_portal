@@ -1,5 +1,5 @@
 <?php
-  $page_name = "Service Type";
+  $page_name = "Service";
   include 'Header.php';
 ?>
       <div class="content">
@@ -59,48 +59,6 @@
                               </th>
                             </thead>
                             <tbody></tbody>
-                            <!-- <tbody>
-                                <tr>
-                                  <td>
-                                    india
-                                  </td>
-                                  <td>
-                                    7th marksheet
-                                  </td>
-                                  <td>
-                                    education verification
-                                  </td>
-                                  <td>
-                                    300
-                                  </td>
-                                  <td>
-                                    INR
-                                  </td>
-                                  <td>
-                                    7th, 10th
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    india
-                                  </td>
-                                  <td>
-                                    8th marksheet
-                                  </td>
-                                  <td>
-                                    education verification
-                                  </td>
-                                  <td>
-                                    500
-                                  </td>
-                                  <td>
-                                    INR
-                                  </td>
-                                  <td>
-                                    5th, 8th
-                                  </td>
-                                </tr>
-                              </tbody> -->
                           </table>
                         </div>
                       </div>

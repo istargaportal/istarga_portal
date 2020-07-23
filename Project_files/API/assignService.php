@@ -63,7 +63,14 @@ class assignService
                     }
                 }
             }
-            echo "inserted";
+            if($edit_id > 0)
+            {
+                echo "updated";
+            }
+            else
+            {
+                echo "inserted";
+            }
         }
         else
         {
@@ -75,4 +82,3 @@ $basic_details=new assignService($db);
 $basic_details->assign_service();
 
 ?>
-

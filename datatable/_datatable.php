@@ -49,6 +49,9 @@
     position: absolute !important;
     right: 45%;
   }
+  .dataTables_filter, .dataTables_length{
+    padding-bottom: 10px;
+  }
   .dataTables_filter input{
     padding: 6px 8px;
     border-radius: 40px;

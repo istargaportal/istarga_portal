@@ -17,32 +17,16 @@
                         <label for="DocumentName" style="margin-left: 4%;" class="bmd-label-floating">Document
                           Name</label>
                         <input type="text" class="form-control" name="document_name" id="DocumentName" required>
-                        <!-- <select
-                            class="form-control"
-                            
-                          >
-                            <option selected>Mr</option>
-                            <option>Mrs</option>
-                          </select> -->
                       </div>
+                    <div class="form-group col-md-4">
+                      <button type="submit" class="btn btn-success btn-sm"><i class="material-icons icon">note_add</i> Add</button>
+                      <button type="button" onclick="formReset()" class="btn btn-default btn-sm"><i class="material-icons icon">close</i> Reset</button>
                     </div>
-                    <div class="row justify-content-end" style="margin-right: 1%;">
-                      <button type="submit" class="btn btn-primary mx-2">
-                        Add
-                      </button>
-
-                      <button type="button" onclick="formReset()" class="btn btn-primary">
-                        Reset
-                      </button>
                     </div>
-                    <hr />
                     <div class="row">
                       <div class="col-md-12">
-                        <div class="card">
-                          <div class="card-header card-header-primary">
-                            <h4 style="color: white;" class="card-title">Mandatory Documents</h4>
-                          </div>
-                          <table class="table table-hover" style="margin-top: 4%;">
+                        <div >
+                          <table class="table table-hover" style="margin-top: 2%;">
                             <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
                               <th>
                                 Document Name
@@ -334,22 +318,29 @@
       //console.log(formdata);
       var data = {};
       $(formdata).each(function(index, obj) {
-
-
         data[obj.name] = obj.value;
       });
 
-      //console.log(data);
       fetch('./API/addMandatoryDocument.php', {
         method: 'post',
         body: JSON.stringify(data)
-      }).then(function(res) {
-        //console.log(res);
-        alert('Mandatory Document saved Successfully');
-        popuTable();
-        formReset();
-      }).catch(err => {
-        //console.log(err);
+      }).then(response => response.text())
+        .then(data => {
+          if(data == "success")
+          {
+            alert('Mandatory Document saved Successfully');
+            popuTable();
+            formReset();
+          }
+          else if(data == "already")
+          {
+            alert('Mandatory Document already exists');
+          }
+          else
+          {
+            alert('Error occurred');
+          }
+        }).catch(err => {
         return err;
       })
       event.preventDefault();

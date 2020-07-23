@@ -39,15 +39,27 @@ if(!isset($_SESSION['email']))
     <link rel="stylesheet" href="popup.css">
     
     <style type="text/css">
+        .tablehead1{
+            border:none !important;
+            background: transparent !important; 
+        }
+        b{ font-weight: bold !important; }
+        .form_center{ text-align: center; }
+        .form_left{ text-align: left; }
+        .form_right{ text-align: right; }
         .custom-select{
             margin-top: 0 !important;
         }
+        .btn-small{
+            font-size: 8pt !important;
+            padding: 3px 5px !important;
+        }
         .btn-xs{
-            font-size: 9pt;
-            padding: 6px 8px;
+            font-size: 10pt !important;
+            padding: 6px 8px !important;
         }
         .btn-xs .material-icons{
-            font-size: 9pt;
+            font-size: 10pt !important;
         }
 
         .btn-round{
@@ -83,83 +95,133 @@ if(!isset($_SESSION['email']))
         .btn-sm{
             padding: 7px 10px !important
         }
+        .btn-sm .material-icons{
+            font-size: 11pt;
+        }
         .container_checkbox {
-  display: block;
-  position: relative;
-  float: left;
-  padding: 3px 10px;
-  padding-left: 35px;
-  cursor: pointer;
-  font-size: 22px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background: #fff;
-  border:solid 1px #aaa;
-  border-radius: 40px;
-  margin-right: 4px;
-}
+          display: block;
+          position: relative;
+          float: left;
+          padding: 3px 10px;
+          padding-left: 35px;
+          cursor: pointer;
+          font-size: 12pt;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          background: #fff;
+          border:solid 1px #aaa;
+          border-radius: 40px;
+          margin-right: 4px;
+      }
 
-/* Hide the browser's default radio button */
-.container_checkbox input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
+      .container_checkbox input {
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+      }
 
-/* Create a custom radio button */
-.checkmark {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  height: 25px;
-  width: 25px;
-  background-color: #eee;
-  border-radius: 50%;
-}
+      .checkmark {
+          position: absolute;
+          top: 6px;
+          left: 6px;
+          height: 25px;
+          width: 25px;
+          background-color: #eee;
+          border-radius: 50%;
+      }
 
-/* On mouse-over, add a grey background color */
-.container_checkbox:hover input ~ .checkmark {
-  background-color: #ccc;
-}
+      .container_checkbox:hover input ~ .checkmark {
+          background-color: #ccc;
+      }
 
-/* When the radio button is checked, add a blue background */
-.container_checkbox input:checked ~ .checkmark {
-  background-color: #2196F3;
-}
+      .container_checkbox input:checked ~ .checkmark {
+          background-color: #2196F3;
+      }
 
-/* Create the indicator (the dot/circle - hidden when not checked) */
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
+      .checkmark:after {
+          content: "";
+          position: absolute;
+          display: none;
+      }
 
-/* Show the indicator (dot/circle) when checked */
-.container_checkbox input:checked ~ .checkmark:after {
-  display: block;
-}
+      .container_checkbox input:checked ~ .checkmark:after {
+          display: block;
+      }
 
-/* Style the indicator (dot/circle) */
-.container_checkbox .checkmark:after {
-  top: 9px;
-  left: 9px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: white;
-}
-.chosen-container{width:100%!important}.chosen-container-multi .chosen-choices,.chosen-container-single .chosen-single{padding:5px 8px!important;background:linear-gradient(#fff 20%,#f6f6f6 50%,#eee 52%,#f4f4f4 100%)!important}.chosen-container-single .chosen-single div{top:4px!important}.chosen-container .chosen-drop{z-index:9999999!important}.
-    </style>
-    <?php
-        include '../search_select/select_css.php';
-    ?>
+      .container_checkbox .checkmark:after {
+          top: 9px;
+          left: 9px;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: white;
+      }
+      .material_checkbox {
+          display: block;
+          position: relative;
+          padding: 8px 10px;
+          padding-left: 35px;
+          margin-bottom: 12px;
+          cursor: pointer;
+          font-size: 12pt;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          border: solid 1px #000;
+          float: left;
+          border-radius: 45px;
+      }
+      .material_checkbox input {
+          position: absolute;
+          opacity: 0;
+          cursor: pointer;
+          height: 0;
+          width: 0;
+      }
+
+      .material_checkbox:hover input ~ .checkmark {
+          background-color: #ccc;
+      }
+      .material_checkbox input:checked ~ .checkmark {
+          background-color: #2196F3;
+      }
+      .checkmark:after {
+          content: "";
+          position: absolute;
+          display: none;
+      }
+      .material_checkbox input:checked ~ .checkmark:after {
+          display: block;
+      }
+      .material_checkbox .checkmark:after {
+          left: 8px;
+          top: 2px;
+          width: 10px;
+          height: 15px;
+          border: solid white;
+          border-width: 0 3px 3px 0;
+          -webkit-transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+      }
+
+      .chosen-container{width:100%!important}.chosen-container-multi .chosen-choices,.chosen-container-single .chosen-single{padding:5px 8px!important;background:linear-gradient(#fff 20%,#f6f6f6 50%,#eee 52%,#f4f4f4 100%)!important}.chosen-container-single .chosen-single div{top:4px!important}.chosen-container .chosen-drop{z-index:9999999!important}
+      .list_none ul, .list_none li
+      {
+        list-style: none !important;
+    }
+</style>
+<?php
+include '../search_select/select_css.php';
+?>
 </head>
 <body class="dark-edition">
 	<div id="print_result"></div>
     <div class="wrapper">
-		<div class="sidebar" data-color="purple" data-background-color="black" data-image="assets/img/sidebar-2.jpg">
+      <div class="sidebar" data-color="purple" data-background-color="black" data-image="assets/img/sidebar-2.jpg">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
@@ -248,9 +310,9 @@ if(!isset($_SESSION['email']))
     					<li class="nav-item">
     						<a class="nav-link" name href="./standardMacro.php">Standard Macro</a>
     					</li>
-    					<li class="nav-item">
+    					<!-- <li class="nav-item">
     						<a class="nav-link" name href="#">Auto SLA</a>
-    					</li>
+    					</li> -->
     					<li class="nav-item">
     						<a class="nav-link" name href="./reportColor.php">Report Color Code</a>
     					</li>
