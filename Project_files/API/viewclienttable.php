@@ -38,7 +38,7 @@ class States
                     {
                         $sql_condition = " WHERE o.client_id = '$client_id' "; 
                     }
-                    if($default_client_id != 0)
+                    if(@$default_client_id != 0)
                     {
                         $sql_condition = " WHERE o.client_id = '$default_client_id' "; 
                     }
@@ -118,15 +118,16 @@ class States
         
         if($load_condition == "all_client_list")
         {
-            if($default_client_id != "0")
+            if(@$default_client_id != "0" && @$client_select != "1")
             {
-                $client_condition = " AND id = '$default_client_id' ";
+                $client_condition = " AND id = ".@$default_client_id;
             }
             $query="SELECT id, Client_Name FROM client WHERE is_block = '0' ".@$client_condition." ORDER BY Client_Name ";
             $result=$this->conn->query($query);
             if($result->num_rows>0)
             {
-                if($default_client_id == "0") { echo '<option>All</option>'; }
+                if(@$default_client_id == "0") { echo '<option value="">All</option>'; }
+                if(@$client_select == "1"){ echo '<option value="">Default</option>'; }
                 while($row = $result->fetch_assoc())
                 {
                     echo '<option value="'.$row['id'].'">'.$row['Client_Name'].'</option>';

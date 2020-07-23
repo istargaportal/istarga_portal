@@ -213,6 +213,18 @@ if(!isset($_SESSION['email']))
       {
         list-style: none !important;
     }
+    .disabled
+    {
+      pointer-events:none !important;
+      cursor: not-allowed !important;
+      opacity: 0.5 !important;
+      filter: blur(0.8px);
+      outline: none !important;
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;            
+    }
 </style>
 <?php
 include '../search_select/select_css.php';
