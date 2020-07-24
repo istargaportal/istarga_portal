@@ -20,7 +20,6 @@ include 'Header.php';
               <select class="browser-default custom-select" onchange="getAllClientData()" id="client_id"></select>
             </div>
           </div>
-          <br>
           <div class="table-responsive">
             <div id='table'></div>
           </div>

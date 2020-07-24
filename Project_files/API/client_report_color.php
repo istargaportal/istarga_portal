@@ -90,29 +90,24 @@ class country
             while($row = $result->fetch_assoc())
             {
             	$yel_selected = $red_selected = $gre_selected = $amb_selected = $wht_selected = $blu_selected = ""; 
-            	if($row["color_code"] == "Yellow"){ $yel_selected = "selected"; }
             	if($row["color_code"] == "Red"){ $red_selected = "selected"; }
             	if($row["color_code"] == "Green"){ $gre_selected = "selected"; }
-            	if($row["color_code"] == "Orange"){ $amb_selected = "selected"; }
-            	if($row["color_code"] == "White"){ $wht_selected = "selected"; }
-            	if($row["color_code"] == "Blue"){ $blu_selected = "selected"; }
+            	if($row["color_code"] == "Amber"){ $amb_selected = "selected"; }
             	echo '
             	<tr>
             		<input type="hidden" name="default_report_color_id[]" value="'.$row["default_report_color_id"].'" />
             		<td class="form_left tablehead1">'.$row["order_status"].'</td>
             		<td class="form_left row tablehead1">
             			<div class="col-md-2" style="padding:0;">
-            				<div id="bg_color_div_'.$row["default_report_color_id"].'" style="padding:16px 14px;  border:solid 1px #aaa; background:'.$row["color_code"].'"> </div>
+            				<div id="bg_color_div_'.$row["default_report_color_id"].'" style="padding:16px 14px;  border:solid 1px #aaa;"> </div>
             			</div>
             			<div class="col-md-9" style="padding:0;">
 	            			<select id="color_code_'.$row["default_report_color_id"].'" onchange="change_color_selection('.$row["default_report_color_id"].')" class="browser-default custom-select" name="color_code[]">
-	            				<option '.$yel_selected.'>Yellow</option>
-	            				<option '.$red_selected.'>Red</option>
 	            				<option '.$gre_selected.'>Green</option>
-	            				<option '.$amb_selected.'>Orange</option>
-	            				<option '.$wht_selected.'>White</option>
-	            				<option '.$blu_selected.'>Blue</option>
+	            				<option '.$red_selected.'>Red</option>
+	            				<option '.$amb_selected.'>Amber</option>
 	            			</select>
+                            <script>change_color_selection('.$row["default_report_color_id"].');</script>
             			</div>
         			</td>
             		<td class="form_left tablehead1">

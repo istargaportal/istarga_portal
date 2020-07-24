@@ -7,7 +7,8 @@ function load_all_clients()
 		url:'./API/viewclienttable.php',
 		data:{load_condition, client_select},
 		success:function(html){
-			$('#client_id').html(html);
+			$('#client_id_div').html(html);
+			$(".chosen-select").chosen();
 		}
 	});
 }
@@ -24,7 +25,11 @@ function load_report_color()
 			$('#report_table').html(html);
 			$('#submit_btn').removeClass('disabled');
 			$(".custom-select option").each(function() {
-			  $(this).css("background-color", $(this).val())
+			  var color_code = $(this).val();
+			  if(color_code == "Red"){ color_code = "#eb1e2f"; }
+			  if(color_code == "Green"){ color_code = "#25ce60"; }
+			  if(color_code == "Amber"){ color_code = "#ffbf00"; }
+			  $(this).css("background-color", color_code);
 			})
 		}
 	});
@@ -34,6 +39,9 @@ load_report_color();
 function change_color_selection(default_report_color_id)
 {
 	var color_code = $('#color_code_'+default_report_color_id).val();
+	if(color_code == "Red"){ color_code = "#eb1e2f"; }
+	if(color_code == "Green"){ color_code = "#25ce60"; }
+	if(color_code == "Amber"){ color_code = "#ffbf00"; }
 	$('#bg_color_div_'+default_report_color_id).css('background', color_code);
 }
 

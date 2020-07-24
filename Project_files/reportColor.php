@@ -15,10 +15,10 @@ include 'Header.php';
               <div class="row justify-content-start">
                 <div class="col-md-4">
                   <label for="Client Name">Client Name</label>
-                  <select style="margin-top:5%" class="browser-default custom-select" name="client_id" id="client_id" class="form-control" required></select>
+                  <div id="client_id_div"></div>
                 </div>
                 <div class="form-group col-md-5">
-                  <a href="javascript:load_report_color()" style="margin-top:4%" class="btn btn-primary btn-sm"><i class="material-icons icon">search</i> Load</a>
+                  <a href="javascript:load_report_color()" style="margin-top:6%" class="btn btn-primary btn-sm"><i class="material-icons icon">search</i> Load</a>
                 </div>
                 <div class="form-group col-md-3">
                   <label style="margin-top:4%;float: right;" id="default_report_color_panel" class="material_checkbox disabled">
@@ -94,10 +94,13 @@ include 'Header.php';
 </script>
 <!--mode change end-->
 <!--   Core JS Files   -->
-<script src="assets/js/core/jquery.min.js"></script>
+<script type="text/javascript">
+  $('.chosen-select').chosen();
+</script>
+<!-- <script src="assets/js/core/jquery.min.js"></script> -->
 <script src="assets/js/core/popper.min.js"></script>
 <script src="assets/js/core/bootstrap-material-design.min.js"></script>
-<script src="https://unpkg.com/default-passive-events"></script>
+<!-- <script src="https://unpkg.com/default-passive-events"></script> -->
 <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>

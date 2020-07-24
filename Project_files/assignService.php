@@ -90,9 +90,7 @@ include 'Header.php';
                 <div class="form-group col-md-4">
                   <label for="Client Name">Client Name</label>
                   <!-- code change -->
-                  <select style="margin-top:5%" class="browser-default custom-select" name="ClientName" id="ClientName" class="form-control" onchange="T3();" required>
-                    <option value="" class="bg-secondary text-light">Choose...</option>
-                  </select>
+                  <div id="client_id_div"></div>
                 </div>
 
                 <div class="form-group col-md-4">
@@ -310,10 +308,10 @@ include 'Header.php';
       }
     </script>
     <!--mode change end-->
-    <script src="assets/js/core/jquery.min.js"></script>
-    <?php
-      include '../search_select/select_javascript.php';
-    ?>
+    <script type="text/javascript">
+      $('.chosen-select').chosen();
+    </script>
+    <!-- <script src="assets/js/core/jquery.min.js"></script> -->
     <script src="assets/js/core/popper.min.js"></script>
     <script src="assets/js/core/bootstrap-material-design.min.js"></script>
     <script src="https://unpkg.com/default-passive-events"></script>

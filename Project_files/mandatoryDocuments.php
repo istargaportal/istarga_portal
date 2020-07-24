@@ -14,8 +14,7 @@
                   <form id="ajax">
                     <div class="row justify-content-start">
                       <div class="form-group col-md-4">
-                        <label for="DocumentName" style="margin-left: 4%;" class="bmd-label-floating">Document
-                          Name</label>
+                        <label for="DocumentName" style="margin-left: 4%;" class="bmd-label-floating">Document Name</label>
                         <input type="text" class="form-control" name="document_name" id="DocumentName" required>
                       </div>
                     <div class="form-group col-md-4">
@@ -26,7 +25,7 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div >
-                          <table class="table table-hover" style="margin-top: 2%;">
+                          <table class="table table-hover" >
                             <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
                               <th>
                                 Document Name

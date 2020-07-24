@@ -7,7 +7,6 @@ $db = $get_connection->connect();
 
 class States
 {
-
     public function __construct($db)
     {
         $this->conn = $db;
@@ -15,31 +14,42 @@ class States
 
     public function get_document()
     {
-
         $getdata = file_get_contents("php://input");
         $data = json_decode($getdata, true);
 
         switch ($data['action']) {
 
             case "delete":
-                $query = "DELETE FROM service_type WHERE id='" . $data['id'] . "'";
-                $result = $this->conn->query($query);
-                if ($result) {
-                    echo "Deleted Successfully";
-                } else {
-                    echo "Could not delete";
-                }
-                break;
+            $query = "DELETE FROM service_type WHERE id='" . $data['id'] . "'";
+            $result = $this->conn->query($query);
+            if ($result) {
+                echo "deleted";
+            } else {
+                echo "error";
+            }
+            break;
             case "edit":
-                $value = $data['value'];
+            $value = $data['value'];
+            $check='SELECT name FROM service_type WHERE name = "'.$value.'" AND id != "' . $data['id'] . '" ';
+            $result=$this->conn->query($check);
+            if($result->num_rows>0)
+            {
+                if($row = $result->fetch_assoc())
+                {
+                    echo "already";
+                }
+            }
+            else
+            {
                 $query = "UPDATE service_type SET name='" . $value . "' WHERE id='" . $data['id'] . "'";
                 $result = $this->conn->query($query);
                 if ($result) {
-                    echo "Edit Successfully";
+                    echo "updated";
                 } else {
-                    echo "Could not Change Status";
+                    echo "error";
                 }
-                break;
+            }
+            break;
         }
     }
 }

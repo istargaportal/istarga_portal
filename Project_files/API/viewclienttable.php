@@ -118,6 +118,10 @@ class States
         
         if($load_condition == "all_client_list")
         {
+            if(@$client_select == "1")
+            {
+                echo '<select style="margin-top:5%" class="browser-default chosen-select custom-select" name="client_id" id="client_id" required>';
+            }
             if(@$default_client_id != "0" && @$client_select != "1")
             {
                 $client_condition = " AND id = ".@$default_client_id;
@@ -137,8 +141,11 @@ class States
             {
                 echo '<option>No Clients Available</option>';
             }
+            if(@$client_select == "1")
+            {
+                echo '</select>';
+            }
         }
-
     }
 }
 

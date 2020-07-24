@@ -1,8 +1,6 @@
-
 <?php
 
 require_once "../config/config.php";
-
 
 $get_connection = new connectdb;
 $db = $get_connection->connect();
@@ -17,7 +15,6 @@ class service
 
     public function add_Service()
     {
-
         $queryew = 'SELECT * FROM service_type';
         $rer = $this->conn->query($queryew);
         $i = 0;

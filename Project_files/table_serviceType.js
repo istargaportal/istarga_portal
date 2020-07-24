@@ -4,19 +4,33 @@ let deleteModalModalLabel = document.querySelector(".delete-modal #exampleModalL
 let deleteModalLaunchButton = document.querySelector(".delete-modal .launch")
 let deleteModalCloseButton = document.querySelector(".delete-modal .close")
 
-
 const onSave = (id, action, value) => {
-  //console.log(value);
+  if(value.trim() == "")
+  {
+    alert("Please enter service type!");
+    $('#'+id+'a').focus();
+    return;
+  }
   obj = { "id": id, "action": action, "value": value };
-  //console.log(obj.id);
   fetch('./API/modifyServiceType.php', {
     method: 'post',
     body: JSON.stringify(obj)
-  }).then(function (res) {
-    //alert("Edited successfully")
-    //console.log(res.text());
-    popuTable();
-  }).catch(err => {
+  }).then(response => response.text())
+    .then(data => {
+      if(data == "updated")
+      {
+        alert('Service Type updated Successfully');
+        popuTable();
+      }
+      else if(data == "already")
+      {
+        alert('Service Type already exists');
+      }
+      else
+      {
+        alert('Error occurred');
+      }
+    }).catch(err => {
     //console.log(err);
     return err;
   })
@@ -33,6 +47,7 @@ const onEdit = (id, action) => {
   x.setAttribute("type", "text");
   x.setAttribute("value",elem.textContent);
   x.setAttribute("id",id+"a")
+  x.setAttribute("required","");
   x.setAttribute("class","form-control focus");
   x.style.maxWidth="80%"
   elem.innerHTML="";
@@ -41,10 +56,10 @@ const onEdit = (id, action) => {
   edit.innerHTML="";
 
   //elem.appendChild(br);
-  let btn2= document.createElement('input');
+  let btn2= document.createElement('button');
       btn2.type = "button";
-      btn2.className = "btn btn-primary btn-sm";
-      btn2.value = "SAVE";
+      btn2.className = "btn btn-success btn-sm";
+      btn2.innerHTML = "<i class='material-icons icon'>note_add</i> SAVE";
       btn2.onclick = (() => {confirm('Are you sure you want to Save it?')?onSave(id, action,document.getElementById(id+"a").value):popuTable()});
       edit.appendChild(btn2);
 }
@@ -54,14 +69,20 @@ const onDelete = (id, action,c) => {
   // //console.log(cnf);
   // if (cnf){
     obj = { "id": id, "action": action };
-    console.log(obj.id);
     fetch('./API/modifyServiceType.php', {
       method: 'post',
       body: JSON.stringify(obj)
-    }).then(function (res) {
-      popuTable();
-      //console.log(res.text());
-      
+    }).then(response => response.text())
+    .then(data => {
+      if(data == "deleted")
+      {
+        alert('Service Type deleted successfully!');
+        popuTable();
+      }
+      else
+      {
+        alert('Error occurred');
+      }
     }).catch(err => {
       //console.log(err);
       return err;
@@ -90,17 +111,17 @@ const popuTable = () => {
       cell0.innerHTML = j;
       cell1.innerHTML = stat[i].servicetype;
       cell1.setAttribute("id",stat[i].id)
-      var btn1= document.createElement('input');
+      var btn1= document.createElement('button');
       btn1.type = "button";
-      btn1.className = "btn btn-primary btn-sm";
-      btn1.value = "EDIT";
+      btn1.className = "btn btn-warning btn-sm";
+      btn1.innerHTML = "<i class='material-icons icon'>edit</i> EDIT";
       btn1.onclick = (() => { onEdit(stat[i].id, "edit")});
       cell2.appendChild(btn1);
       cell2.setAttribute("id",stat[i].id+"c");
-      var btn = document.createElement('input');
+      var btn = document.createElement('button');
       btn.type = "button";
-      btn.className = "btn btn-primary btn-sm";
-      btn.value = "DELETE";
+      btn.className = "btn btn-danger btn-sm";
+      btn.innerHTML = "<i class='material-icons icon'>delete</i> DELETE";
       //btn.addEventListener(onclick,deleteModalLaunchButton1);
       //btn.addEventListener(onclick,deleteModalOkBtn1(stat[i].id, "delete"));
       //addHandler("click", btn, deleteModalLaunchButton.click);
@@ -112,14 +133,15 @@ const popuTable = () => {
 }
 //let c = 0;
 const deleteModalOkBtn1 = (id, action,c) => {
-  deleteModalLaunchButton.click();
-  $(deleteModalOkBtn).click(function(){
-    console.log("delete")
-    // //console.log("json data", jsonData)
-    // onDelete(stat[i].id, "delete")
-    deleteModalCloseButton.click()
-    // jsonData = {}
-    if(c==0)onDelete(id, action, c);
-    c=1;
-   })
+  // deleteModalLaunchButton.click();
+  // $(deleteModalOkBtn).click(function(){
+  //   deleteModalCloseButton.click()
+  //   if(c==0)onDelete(id, action, c);
+  //   c=1;
+  //  })
+  var r = confirm('Are you sure to delete this Service Type!');
+  if(r == true)
+  {
+    onDelete(id, action, c);
+  }
 }

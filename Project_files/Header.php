@@ -212,7 +212,7 @@ if(!isset($_SESSION['email']))
       .list_none ul, .list_none li
       {
         list-style: none !important;
-    }
+      }
     .disabled
     {
       pointer-events:none !important;
@@ -225,9 +225,13 @@ if(!isset($_SESSION['email']))
       -ms-user-select: none !important;
       user-select: none !important;            
     }
+    .chosen-container-single .chosen-single{
+      padding: 5px 5px !important;
+      height: 35px !important;
+    }
 </style>
 <?php
-include '../search_select/select_css.php';
+include '../search_select/select_contorl.php';
 ?>
 </head>
 <body class="dark-edition">

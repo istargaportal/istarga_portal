@@ -82,13 +82,15 @@ load_service_name();
 
 function load_clients()
 {
+  var client_select = 1;
   var load_condition = "list_all_clients";
   $.ajax({
     type:'POST',
     url:'./API/viewclient.php',
-    data:{load_condition, edit_client_id},
+    data:{load_condition, edit_client_id, client_select},
     success:function(html){
-      $('#ClientName').html(html);
+      $('#client_id_div').html(html);
+      $('.chosen-select').chosen();
     }
   });
 }

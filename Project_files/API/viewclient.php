@@ -64,6 +64,11 @@ class country
         }
         else
         {
+            if(@$client_select == "1")
+            {
+                echo '<select style="margin-top:5%" class="browser-default chosen-select custom-select" name="ClientName" id="ClientName" onchange="T3();" required>
+                    <option value="" >Choose...</option>';
+            }
             if(@$load_condition != "list_all_clients")
             {
                 echo '<table id="datatable_tbl" class="table table-hover" style="margin-top: 4%;">
@@ -213,6 +218,10 @@ class country
             if(@$load_condition != "list_all_clients")
             {
                 echo '</table>';
+            }
+            if(@$client_select == "1")
+            {
+                echo '</select>';
             }
         }
     }

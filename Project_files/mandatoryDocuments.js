@@ -50,8 +50,13 @@ const onEdit = (id, action) => {
       edit.appendChild(btn2);
 }
 const onDelete = (id, action) => {
+  if(value.trim() == "")
+  {
+    alert("Please enter Mandatory Document!");
+    $('#'+id+'a').focus();
+    return;
+  }
   obj = { "id": id, "action": action };
-  //console.log(obj.id);
   fetch('./API/modifyDocumentName.php', {
     method: 'post',
     body: JSON.stringify(obj)
