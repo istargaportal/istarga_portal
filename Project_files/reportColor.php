@@ -11,7 +11,7 @@ include 'Header.php';
             <h4 class="card-title">Report Color</h4>
           </div>
           <div class="card-body">
-            <form id="ajax">
+            <form id="report_color_form">
               <div class="row justify-content-start">
                 <div class="col-md-4">
                   <label for="Client Name">Client Name</label>
@@ -21,8 +21,8 @@ include 'Header.php';
                   <a href="javascript:load_report_color()" style="margin-top:4%" class="btn btn-primary btn-sm"><i class="material-icons icon">search</i> Load</a>
                 </div>
                 <div class="form-group col-md-3">
-                  <label style="margin-top:4%;float: right;" class="material_checkbox">
-                    <input type="checkbox" name="default_report_color" value="1" />
+                  <label style="margin-top:4%;float: right;" id="default_report_color_panel" class="material_checkbox disabled">
+                    <input checked type="checkbox" onchange="select_default_report_color()" name="default_report_color" id="default_report_color" value="1" />
                     Default Value
                     <span class="checkmark"></span>
                   </label>
@@ -32,8 +32,8 @@ include 'Header.php';
                 <div class="col-md-12">
                   <div id="report_table"></div>
                   <div class="form_center">
-                    <a id="submit_btn" class="btn btn-success btn-sm disabled"><i class="material-icons icon">note_add</i> Save</a>
-                    <a href="" class="btn btn-default btn-sm"><i class="material-icons icon">close</i> Reset</a>
+                    <a id="submit_btn" href="javascript:save_report_color()" class="btn btn-success btn-sm"><i class="material-icons icon">note_add</i> Save</a>
+                    <a href="javascript:reset_form()" class="btn btn-default btn-sm"><i class="material-icons icon">close</i> Reset</a>
                   </div>
                 </div>
               </div>

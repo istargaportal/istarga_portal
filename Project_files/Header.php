@@ -217,8 +217,8 @@ if(!isset($_SESSION['email']))
     {
       pointer-events:none !important;
       cursor: not-allowed !important;
-      opacity: 0.5 !important;
-      filter: blur(0.8px);
+      opacity: 0.7 !important;
+      filter: blur(0.7px);
       outline: none !important;
       -webkit-user-select: none !important;
       -moz-user-select: none !important;
