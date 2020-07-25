@@ -19,6 +19,9 @@ class assignService
         {
             $check='DELETE FROM assigned_service WHERE id = '.$assigned_service_id.' ';
             $result=$this->conn->query($check);
+
+            $check='DELETE FROM assigned_service_documents WHERE assigned_service_id = '.$assigned_service_id.' ';
+            $result=$this->conn->query($check);
             if($result) { echo "success"; } else { echo "error"; }
         }
     }

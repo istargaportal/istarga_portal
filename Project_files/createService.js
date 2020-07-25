@@ -1,4 +1,8 @@
-let tableData = [
+var edit_country = $('#edit_country').val() || 0;
+var edit_service_type_id = $('#edit_service_type_id').val() || 0;
+var edit_currency = $('#edit_currency').val() || 0;
+
+  let tableData = [
   {
     id: 1,
     random_data: "random data",
@@ -134,20 +138,81 @@ let notify
 let newServices = []
 
 let countrySelect = document.querySelector("#locality-dropdown")
-let countries
-fetch("./API/country.php")
-  .then(res => res.json())
-  .then(data => {
-    // console.log(data)
 
-    countries = data
-validateNewServices()
+const country = './API/country.php';
+fetch(country).then(
+  function (response)
+  {
+    if (response.status !== 200)
+    {
+      console.warn('Looks like there was a problem. Status Code: ' +
+        response.status);
+      return;
+    }
+    response.json().then(function (data) {
+      let option;
+      var selected_idx = 0;
+      for (let i = 0; i < data.length; i++) {
+        option = document.createElement('option');
+        option.text = data[i].country_name;
+        option.value = data[i].id;
+        dropdown.add(option);
+        if(data[i].id == edit_country)
+        {
+          selected_idx = i;
+        }
+      }
+      dropdown.selectedIndex = selected_idx;
+      setDDData(1)
+    });
+  }
+  )
+.catch(function (err) {
+  console.error('Fetch Error -', err);
+});
 
-    data.map(v => {
+const country = './API/country.php';
+let currency = document.getElementById('currency');
+currency.lenght = 0;
+let currencytype = document.createElement('option');
+if(edit_currency == 0)
+{
+  currencytype.text = 'Select Currency';
+  currencytype.value = "";
+  currency.add(currencytype);
+  currency.selectedIndex = 0;
+}
+fetch(country)
+.then(
+  function (response) {
+    if (response.status !== 200) {
+      console.warn('Looks like there was a problem. Status Code: ' +
+        response.status);
+      return;
+    }
 
-      countrySelect.innerHTML += `<option value="${v.id}">${v.country_name}</option>`
-    })
-  })
+    response.json().then(function (data) {
+      let option;
+      var selected_idx = 0;
+      for (let i = 0; i < data.length; i++) {
+        option = document.createElement('option');
+        option.text = data[i].currency;
+        option.value = data[i].id;
+        currency.add(option);
+        if(data[i].id == edit_currency)
+        {
+          selected_idx = i;
+        }
+      }
+      currency.selectedIndex = selected_idx;
+
+      setDDData(1)
+    });
+  }
+  )
+.catch(function (err) {
+  console.error('Fetch Error -', err);
+});
 
 const validateNewServices = () => {
   console.log(countries)
@@ -566,8 +631,3 @@ $('#tr'+id+' td').each(function(){
 });
 */
 }
-
-
-
-
-

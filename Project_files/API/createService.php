@@ -1,111 +1,113 @@
-
 <?php
- require_once "../config/config.php";
-//$con = mysqli_connect("localhost","pesrsxttfd","Demo@123","pesrsxttfd");
-  
-   $get_connection=new connectdb;
-   $db=$get_connection->connect();
+require_once "../config/config.php";
 
-   if (mysqli_connect_errno($db)){
-      echo "Failed to connect to MySQL: " . mysqli_connect_error();
-   }
-   
-   $SerT=$_POST["ServiceT"];
-   $ServiceN=$_POST["servicename"];
-   $Date=date('Y-m-d');
-   $Sr=0;
-   
-   if($_POST["Action"]=='delete'){
-    $service=$_POST["service"];
-    $sql = "DELETE FROM `service_list` WHERE `id`='$service'";  
-    $result = mysqli_query($db,$sql);
-    echo $sql;
-    if($result){echo  "deleted-".$service;}else{echo 'error at'.$service;}
+$get_connection=new connectdb;
+$db=$get_connection->connect();
+
+if (mysqli_connect_errno($db)){
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
 
- 
- if($_POST["Action"]=='Add'){
-    $sql1 = "SELECT `id` FROM `service_type` WHERE `name`='$SerT'";
-    $result1 = mysqli_query($db,$sql1);
-    $r =mysqli_fetch_row($result1);
-//    echo var_dump($r);
-    //echo $sql1;
-   if($ServiceN!=NULL){
-    $sql = "INSERT INTO `service_list`(`name`, `service_type_id` , `service_creation_date`) VALUES ('$ServiceN','".$r[0]."','$Date')";
-    $result = mysqli_query($db,$sql);
-    if($result){echo "inserted";}else{echo "error".mysqli_error();}
-    echo $sql;
- }
-    
+extract($_POST);
+$SerT=@$_POST["ServiceT"];
+$ServiceN=@$_POST["service_name"];
+$Date=date('Y-m-d');
+$Sr=0;
+
+if($_POST["Action"]=='delete'){
+  $service_id=$_POST["service_id"];
+  $sql = "DELETE FROM `service_list` WHERE `id`='$service_id'";  
+  $result = mysqli_query($db,$sql);
+  $sql = "DELETE FROM `service_list_documents` WHERE `service_id`='$service_id'";  
+  $result = mysqli_query($db,$sql);
+  
+  echo $sql;
+  if($result){echo  "deleted";}else{echo 'error at'.$service;}
+}
+
+if($_POST["Action"]=='Add')
+{
+  $sql = "INSERT INTO service_list(service_name, service_type_id, country_id, price, currency_id) VALUES ('$service_name','$service_type_id','$country', '$Price', '$currency')";
+  $result = mysqli_query($db,$sql);
+  $service_id = $db->insert_id;
+  if(isset($document_id))
+  {
+    foreach ($document_id as $document_id_s)
+    {
+      if($document_id_s != "")
+      {
+        $check="INSERT INTO service_list_documents (service_id, documentlist_id) VALUES('$service_id', '$document_id_s') ";
+        $result = mysqli_query($db,$check);
+      }
+    }
+  }
+  if($result){echo "inserted";}else{echo "error".mysqli_error();}
 }
 else if($_POST["Action"]=='edit'){
-    $dbid=$_POST["id"];
-    //$Service=$_POST["Client"];
-    //$Service_Type=$_POST["Country"];
-    $country=$_POST["ServiceT"];
-    $Currency=$_POST["ServiceN"];
-    $Price=$_POST["Price"];
-     $sqg="SELECT id FROM `countries` WHERE name ='$country'";
-          $res = mysqli_query($db,$sqg);
-           $r =mysqli_fetch_row($res);
-     var_dump("sad".$r);
-         $s = "UPDATE `service_list` SET `country_id`='" .$r[0]. "',`Currency`='" . $Currency . "',`Price`='" . $Price."' WHERE `id`='$dbid'";                                                    
-            $result1 = mysqli_query($db,$s);
-             echo $s;  
-         if($result1){echo  "Edited-".$dbid;}else{echo 'error at'.$dbid;
-        
-         }  
+  $sql = "UPDATE service_list SET service_name = '$service_name', service_type_id = '$service_type_id', country_id = '$country', price = '$Price', currency_id = '$currency' WHERE `id`='$edit_id' ";
+  $result = mysqli_query($db,$sql);
+  $service_id = $db->insert_id;
+  if(isset($document_id))
+  {
+    $check="DELETE FROM service_list_documents WHERE service_id = '$edit_id' ";
+    $result = mysqli_query($db,$check);
+    foreach ($document_id as $document_id_s)
+    {
+      if($document_id_s != "")
+      {
+        $check="INSERT INTO service_list_documents (service_id, documentlist_id) VALUES('$edit_id', '$document_id_s') ";
+        $result = mysqli_query($db,$check);
+      }
+    }
+  }
+  if($result){echo  "updated";}else{echo 'error at'.$dbid;
+}  
+}
+
+else if($_POST["Action"]=='Display')
+{
+  echo '<table id="datatable_tbl" class="table table-hover" style="margin-top: 4%;">
+          <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
+            <th width="10">SR.NO.</th>
+            <th>Service Name</th>
+            <th>Country</th>
+            <th>Service Type</th>
+            <th>Price</th>
+            <th>Documents</th>
+            <th>Action</th>
+          </thead>
+        ';
+  $sr = 0;
+  $sq="SELECT s.id, s.service_name, st.name AS service_type_name, c.name AS country_name, cc.currency, s.price FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cc ON cc.id = s.currency_id ORDER BY s.id ";
+  $resul = mysqli_query($db,$sq); 
+  while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+  {
+    $all_documents = "";
+    $check_1='SELECT d.document_name FROM service_list_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.service_id = '.$row['id'].'  ';
+    $resul_1 = mysqli_query($db,$check_1);
+    while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+    {
+      $all_documents.="<a class='btn btn-default btn-small'>".$row_1['document_name']."</a><br>";
     }
 
-else if($_POST["Action"]=='Display'){
-    
-    if($ServiceN == NULL)
-    { 
-    $sq="SELECT service_list.id AS id, service_list.name AS name, service_type.name AS stname, service_list.Currency AS Currency, `service_list`.`Price` AS `Price`,`service_list`.`country_id` AS `country` FROM 
-    service_list INNER JOIN service_type ON service_type.id=service_list.service_type_id WHERE `service_type`.name='$SerT'";
-    /*
-    $sq="SELECT service_list.id AS id, service_list.name AS name, service_type.name AS stname, 
-    countries.name AS country, service_list.Currency AS Currency, `service_list`.`Price` 
-    AS `Price` FROM service_list INNER JOIN service_type ON service_type.id=service_list.service_type_id 
-    INNER JOIN countries ON countries.id=service_list.country_id WHERE `service_type`.name='$SerT'";*/
-    }
-    else
-    {
-    $sq="SELECT service_list.id AS id, service_list.name AS name, service_type.name AS stname, service_list.Currency AS Currency, `service_list`.`Price` AS `Price`,`service_list`.`country_id` AS `country` FROM 
-    service_list INNER JOIN service_type ON service_type.id=service_list.service_type_id WHERE `service_type`.name='$SerT' and `service_list`.name='$ServiceN'";
-     /*$sq="SELECT service_list.id AS id, service_list.name AS name, service_type.name AS stname, 
-    countries.name AS country, service_list.Currency AS Currency, `service_list`.`Price` 
-    AS `Price` FROM service_list INNER JOIN service_type ON service_type.id=service_list.service_type_id 
-    INNER JOIN countries ON countries.id=service_list.country_id WHERE `service_list`.name='$ServiceN' and `service_type`.name='$SerT'";
-     */
-     }
-	echo '<!-- '.$sq.' -->';
-   $resul = mysqli_query($db,$sq); 
-   //echo $sq;            
-     while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC)){
-        $Sr++;
-        echo"<tr id='tr$Sr' scope='row'>";
-         $sqg="Select name from countries where id=".$row['country']."";
-          $res = mysqli_query($db,$sqg);
-           $r =mysqli_fetch_row($res);
-            echo "<td>" . $Sr. "</td>";
-            echo "<td id='cn'>" . $row['name'] . "</td>";
-            echo "<td id='co'>" . $row['stname'] . "</td>";
-            echo "<td id='countryl'><select id='locality-dropdown' onchange='getpackage(this.value)'
-            class='form-control' required ><option >" . $r[0] . "</option></td>";
-            echo "<td id='sn' contenteditable='true' class='text-primary'>" . $row['Currency'] . "</td>";
-            echo "<td id='sla' contenteditable='true' class='text-primary'>" . $row['Price']. "</td>"; 
-            //echo "'editUpdate(".$Sr.",".$row['Id'].");'";
-            echo "<td class='text-primary'> <button id='$Sr' type='button' class='btn btn-primary btn-sm' onclick='editUpdate(".$Sr.",".$row['id'].");'";
-            echo "'> Edit </button></td>";  
-            echo "<td class='text-primary'> <button type='button' class='btn btn-primary btn-sm' onclick='deleteRow(".$row['id'].");'> Delete </button></td>";    
-            echo "<td class='text-primary'> <button type='button' class='btn btn-primary btn-sm' onclick='d1(".$row['id'].");'> Add Documents </button></td>";    
-            echo "</tr>";}                          
+    $sr++;
+    echo "<tr>";
+      echo "<td>".$sr."</td>";
+      echo "<td>".$row['service_name']."</td>";
+      echo "<td>".$row['service_type_name']."</td>";
+      echo "<td>".$row['country_name']."</td>";
+      echo "<td>".$row['price']." <b>".$row['currency']."</b></td>";
+      echo "<td>".$all_documents."</td>";
+      echo '<td>
+                <a href="createService.php?id='.base64_encode($row["id"]).'" title="Edit Assigned Service" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>
+                <a onclick="delete_service('.$row["id"].')" title="Delete Assigned Service" class="btn btn-xs btn-round btn-danger"><i class="material-icons icon">delete</i></a>
+            </td>';
+    echo "</tr>";
+  }
+  echo '</table>';  
 }   
 else
 {
-    echo "Problem";
+  echo "Problem";
 }
 ?>
-                              
-                                

@@ -90,7 +90,6 @@ const onDelete = (id, action,c) => {
   //}
 }
 const popuTable = () => {
-  console.log("hi");
   document.getElementById("table").innerHTML = "";
   let table = document.getElementById('table');
   //let cell = document.createElement('td');
@@ -98,18 +97,16 @@ const popuTable = () => {
     return res.text();
   }).then(text => {
     let id = [];
-    //console.table(text);
     let stat = JSON.parse(text);
     for (let i = 0, j = stat.length; i < stat.length; i++, j--) {
       id.push(stat[i].id);
-      console.log(id);
       var row = table.insertRow(0);
       var cell0 = row.insertCell(0);
       var cell1 = row.insertCell(1);
       var cell2 = row.insertCell(2);
       var cell3 = row.insertCell(3);
       cell0.innerHTML = j;
-      cell1.innerHTML = stat[i].servicetype;
+      cell1.innerHTML = "<div class='form_left'>"+stat[i].servicetype+"</div>";
       cell1.setAttribute("id",stat[i].id)
       var btn1= document.createElement('button');
       btn1.type = "button";

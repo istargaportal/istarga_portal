@@ -3,79 +3,63 @@
 if(isset($_GET['id']))
 {
   $page_name = "Edit Clients";
-  $id = base64_decode($_GET['id']);
+  $id = $_GET['id'];
 
   require_once "config/config.php";
 
   $get_connection=new connectdb;
   $db=$get_connection->connect();
 
-  class country
+  if(isset($id))
   {
-    public function __construct($db)
+    $checbk='SELECT * FROM client WHERE user_status="1" and id="'.$id.'" ORDER BY Id DESC';
+    $resul = mysqli_query($db,$checbk); 
+    if ($reed = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
-      $this->conn=$db;
-    }
-
-    public function update_details()
-    {
-      global $id; global $Client_Name; global $Client_Code; global $country; global $Client_SPOC; global $State; global $city; global $Zip_Code; global $Contact_Number; global $App_Response_Time; global $Inv_Address; global $Inv_Bank; global $Inv_Due_Days; global $Inv_Code; global $Is_GSTIN; global $email; global $Currency; global $DOB; global $password;
-      $json=file_get_contents("php://input");
-      $data=json_decode($json,true);
-      if(isset($id))
+      $Company=$reed['Company'];
+      $User_name=$reed['User_name'];
+      $first_name=$reed['first_name'];
+      $Last_name=$reed['Last_name'];
+      $Client_Name = $reed['Client_Name'];
+      $Address=$reed['Address'];
+      $postal_code=$reed['postal_code'];
+      $about_me=$reed['about_me'];
+      $password=$reed['password'];
+      $Client_Code=$reed['Client_Code'];
+      $Client_SPOC=$reed['Client_SPOC'];
+      $country=$reed['country'];
+      $State=$reed['State'];
+      $city=$reed['city'];
+      $Zip_Code=$reed['Zip_Code'];
+      $Contact_Number = $reed['Contact_Number'];
+      $email=$reed['email'];
+      $App_Response_Time=$reed['App_Response_Time'];
+      $Inv_Address=$reed['Inv_Address'];
+      $Inv_Bank=$reed['Inv_Bank'];
+      $Inv_Due_Days = $reed['Inv_Due_Days'];
+      $Inv_Code=$reed['Inv_Code'];
+      $Is_GSTIN = $reed['Is_GSTIN'];
+      $Contact_Applicant=$reed['Contact_Applicant'];
+      $Is_Bulk_Upload=$reed['Is_Bulk_Upload'];
+      $DOB=$reed['DOB'];
+      if($DOB != "0000-00-00")
       {
-        $checbk='SELECT * FROM client WHERE user_status="1" and id="'.$id.'" ORDER BY Id DESC';
-        $result1=$this->conn->query($checbk);
-        if($result1->num_rows>0)
-        {
-          $reed=$result1->fetch_assoc();
-          $Company=$reed['Company'];
-          $User_name=$reed['User_name'];
-          $first_name=$reed['first_name'];
-          $Last_name=$reed['Last_name'];
-          $Client_Name = $reed['Client_Name'];
-          $Address=$reed['Address'];
-          $postal_code=$reed['postal_code'];
-          $about_me=$reed['about_me'];
-          $password=$reed['password'];
-          $Client_Code=$reed['Client_Code'];
-          $Client_SPOC=$reed['Client_SPOC'];
-          $country=$reed['country'];
-          $State=$reed['State'];
-          $city=$reed['city'];
-          $Zip_Code=$reed['Zip_Code'];
-          $Contact_Number = $reed['Contact_Number'];
-          $email=$reed['email'];
-          $App_Response_Time=$reed['App_Response_Time'];
-          $Inv_Address=$reed['Inv_Address'];
-          $Inv_Bank=$reed['Inv_Bank'];
-          $Inv_Due_Days = $reed['Inv_Due_Days'];
-          $Inv_Code=$reed['Inv_Code'];
-          $Is_GSTIN = $reed['Is_GSTIN'];
-          $Contact_Applicant=$reed['Contact_Applicant'];
-          $Is_Bulk_Upload=$reed['Is_Bulk_Upload'];
-          $DOB=$reed['DOB'];
-          if($DOB != "0000-00-00")
-          {
-            $DOB = date('Y-m-d', strtotime($DOB));
-          }
-          $Live_DateDate=$reed['Live_DateDate'];
-          $Currency=$reed['Currency'];
-          $Internal_Reference_ID=$reed['Internal_Reference_ID'];
-          $Email_ID=$reed['Email_ID'];
-          $user_status=$reed['user_status'];
-          $is_block=$reed['is_block'];
-          $email = $reed['email'];
-        }
-        else
-        {
-          echo "No client Found";
-        }
+        $DOB = date('Y-m-d', strtotime($DOB));
       }
+      $Live_DateDate=$reed['Live_DateDate'];
+      $Currency=$reed['Currency'];
+      $Internal_Reference_ID=$reed['Internal_Reference_ID'];
+      $Email_ID=$reed['Email_ID'];
+      $user_status=$reed['user_status'];
+      $is_block=$reed['is_block'];
+      $email = $reed['email'];
+    }
+    else
+    {
+      echo "No client Found";
     }
   }
-  $basic_details=new country($db);
-  $basic_details->update_details();
+
 }
 else
 {

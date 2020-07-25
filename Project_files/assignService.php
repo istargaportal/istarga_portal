@@ -1,65 +1,41 @@
 <?php
 
+require_once "config/config.php";
+
+$get_connection=new connectdb;
+$db=$get_connection->connect();
+
 if(isset($_GET['id']))
 {
   $page_name = "Edit Assign Service";
   $id = base64_decode($_GET['id']);
 
-  require_once "config/config.php";
-
-  $get_connection=new connectdb;
-  $db=$get_connection->connect();
-
-  class country
+  if(isset($id))
   {
-    public function __construct($db)
+    $checbk='SELECT a.id, a.price, a.SLA, c.Client_Name, cm.name, st.name AS Service_type_name, sl.service_name, a.country_id, a.service_type_id, a.service_id, a.client_id, a.currency FROM assigned_service a INNER JOIN client c ON c.id = a.client_id INNER JOIN countries cm ON cm.id = a.country_id INNER JOIN service_type st ON st.id = a.service_type_id INNER JOIN service_list sl ON sl.id = a.service_id AND a.id="'.$id.'" ORDER BY Id DESC';
+    $resul = mysqli_query($db,$checbk); 
+    if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
-      $this->conn=$db;
+      $country = $row['country_id'];
+      $service_type_id = $row['service_type_id'];
+      $service_id = $row['service_id'];
+      $client_id = $row['client_id'];
+      $currency = $row['currency'];
+      $price = $row['price'];
+      $SLA = $row['SLA'];
     }
+    
 
-    public function update_details()
+    $all_document_id = array();
+    $check='SELECT documentlist_id FROM assigned_service_documents WHERE assigned_service_id = '.$id.' ';
+    $resul = mysqli_query($db,$check); 
+    $i = 1;
+    while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
-      global $id; global $country; global $service_type_id; global $service_id; global $client_id; global $currency; global $price; global $SLA; global $all_document_id;
-      $json=file_get_contents("php://input");
-      $data=json_decode($json,true);
-      if(isset($id))
-      {
-        $checbk='SELECT a.id, a.price, a.SLA, c.Client_Name, cm.name, st.name AS Service_type_name, sl.service_name, a.country_id, a.service_type_id, a.service_id, a.client_id, a.currency FROM assigned_service a INNER JOIN client c ON c.id = a.client_id INNER JOIN countries cm ON cm.id = a.country_id INNER JOIN service_type st ON st.id = a.service_type_id INNER JOIN service_list sl ON sl.id = a.service_id AND a.id="'.$id.'" ORDER BY Id DESC';
-        $result1=$this->conn->query($checbk);
-        if($result1->num_rows>0)
-        {
-          $row=$result1->fetch_assoc();
-          $country = $row['country_id'];
-          $service_type_id = $row['service_type_id'];
-          $service_id = $row['service_id'];
-          $client_id = $row['client_id'];
-          $currency = $row['currency'];
-          $price = $row['price'];
-          $SLA = $row['SLA'];
-        }
-        else
-        {
-          echo "No client Found";
-        }
-
-        $all_document_id = array();
-        $check='SELECT documentlist_id FROM assigned_service_documents WHERE assigned_service_id = '.$id.' ';
-        $this->conn->query("SET CHARACTER SET utf8"); 
-        $result=$this->conn->query($check);
-        if($result->num_rows>0)
-        {
-          $i = 1;
-          while($row = $result->fetch_assoc())
-          {
-            $all_document_id[$i] = $row['documentlist_id'];
-            $i++;
-          }
-        }
-      }
+      $all_document_id[$i] = $row['documentlist_id'];
+      $i++;
     }
   }
-  $basic_details=new country($db);
-  $basic_details->update_details();
 }
 else
 {
@@ -127,44 +103,18 @@ include 'Header.php';
                   <div id="document_div">
                     <select multiple="" name="document_id[]" class="chosen-select">
                       <?php
-                        
-                        require_once "config/config.php";
-
-                        $get_connection=new connectdb;
-                        $db=$get_connection->connect();
-
-                        class States
+                      $check='SELECT * FROM documentlist';
+                      $resul = mysqli_query($db,$check); 
+                      while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                      {
+                        $selected = "";
+                        $res_ar = array_search($row['id'],@$all_document_id);
+                        if($res_ar != '')
                         {
-                            public function __construct($db)
-                            {
-                                $this->conn=$db;
-                            }
-
-                            public function get_document()
-                            {
-                              global $all_document_id;
-                              $getdata=file_get_contents("php://input");
-                              $data=json_decode($getdata,true);
-
-                              $check='SELECT * FROM documentlist';
-                              $result=$this->conn->query($check);
-                              if($result->num_rows>0)
-                              {
-                                while($row = $result->fetch_assoc())
-                                {
-                                  $selected = "";
-                                  $res_ar = array_search($row['id'],$all_document_id);
-                                  if($res_ar != '')
-                                  {
-                                    $selected = "selected";
-                                  }
-                                  echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['document_name'].'</option>';
-                                }
-                              }
-                            }
+                          $selected = "selected";
                         }
-                        $basic_details=new States($db);
-                        $basic_details->get_document();
+                        echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['document_name'].'</option>';
+                      }
                       ?>
                     </select>
                   </div>
@@ -542,53 +492,53 @@ form.addEventListener("submit", function(e) {
             
           });
 
-        function save_assign_service(save_condition)
+function save_assign_service(save_condition)
+{
+  var error = 0;
+  $("input, select").each(function ()
+  {
+    if($(this).prop('required'))
+    {
+      if($(this).val() == '')
+      {
+        alert('Please enter data');
+        $(this).focus();
+        error++;
+        exit();
+      }
+    }
+  })
+
+  if(error == 0)
+  {
+    $('button').prop('disabled', true);
+    var myform = document.getElementById("assign_service");
+    var fd = new FormData(myform );
+    $.ajax({
+      url: "./API/assignService.php",
+      data: fd,
+      cache: false,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: function (html) {
+        if(html == "inserted")
         {
-          var error = 0;
-          $("input, select").each(function ()
-          {
-            if($(this).prop('required'))
-            {
-              if($(this).val() == '')
-              {
-                alert('Please enter data');
-                $(this).focus();
-                error++;
-                exit();
-              }
-            }
-          })
-
-          if(error == 0)
-          {
-            $('button').prop('disabled', true);
-            var myform = document.getElementById("assign_service");
-            var fd = new FormData(myform );
-            $.ajax({
-              url: "./API/assignService.php",
-              data: fd,
-              cache: false,
-              processData: false,
-              contentType: false,
-              type: 'POST',
-              success: function (html) {
-                if(html == "inserted")
-                {
-                  alert('Service assigned successfully!');
-                }
-                else if(html == "updated")
-                {
-                  alert('Service updated successfully!');
-                }
-                else
-                {
-                  alert('Error occurred');
-                }
-              }
-            });
-          }
+          alert('Service assigned successfully!');
         }
-        </script>
-      </body>
+        else if(html == "updated")
+        {
+          alert('Service updated successfully!');
+        }
+        else
+        {
+          alert('Error occurred');
+        }
+      }
+    });
+  }
+}
+</script>
+</body>
 
-      </html>
+</html>

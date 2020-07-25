@@ -36,183 +36,190 @@ if(!isset($_SESSION['email']))
 
 	<!--Switching modes-->
 	<link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="popup.css">
-    
-    <style type="text/css">
-        .tablehead1{
-            border:none !important;
-            background: transparent !important; 
-        }
-        b{ font-weight: bold !important; }
-        .form_center{ text-align: center; }
-        .form_left{ text-align: left; }
-        .form_right{ text-align: right; }
-        .custom-select{
-            margin-top: 0 !important;
-        }
-        .btn-small{
-            font-size: 8pt !important;
-            padding: 3px 5px !important;
-        }
-        .btn-xs{
-            font-size: 10pt !important;
-            padding: 6px 8px !important;
-        }
-        .btn-xs .material-icons{
-            font-size: 10pt !important;
-        }
+  <?php
+  include '../search_select/select_contorl.php';
+  ?>
+  <link rel="stylesheet" href="popup.css">
 
-        .btn-round{
-            border-radius: 100%;
-        }
-        .btn-danger{
-            background:#eb1e2f !important;
-        }
-        .btn-warning i, .btn-danger i{
-            color: #fff !important;
-        }
-        .btn-warning{
-            background:#feaf31 !important;
-        }
+  <style type="text/css">
+    .tablehead1{
+      border:none !important;
+      background: transparent !important; 
+    }
+    b{ font-weight: bold !important; }
+    .form_center{ text-align: center; }
+    .form_left{ text-align: left; }
+    .form_right{ text-align: right; }
+    .custom-select{
+      margin-top: 0 !important;
+    }
+    .btn-small{
+      font-size: 8pt !important;
+      padding: 3px 5px !important;
+    }
+    .btn-xs{
+      font-size: 10pt !important;
+      padding: 6px 8px !important;
+    }
+    .btn-xs .material-icons{
+      font-size: 10pt !important;
+    }
 
-        .dropdown-item{
-            cursor: pointer;
-        }
-        .btn-success{
-            background:#346bd6 !important
-        }
-        .btn-success i, .btn-primary i{
-            color: #fff !important;
-        }
-        .btn-default i{
-            color: #000 !important;
-        }
+    .btn-round{
+      border-radius: 100%;
+    }
+    .btn-danger{
+      background:#eb1e2f !important;
+    }
+    .btn-warning i, .btn-danger i{
+      color: #fff !important;
+    }
+    .btn-warning{
+      background:#feaf31 !important;
+    }
 
-        .btn-default{
-            color: #000 !important;
-            background:#ccc !important;
-        }
-        .btn-sm{
-            padding: 7px 10px !important
-        }
-        .btn-sm .material-icons{
-            font-size: 11pt;
-        }
-        .container_checkbox {
-          display: block;
-          position: relative;
-          float: left;
-          padding: 3px 10px;
-          padding-left: 35px;
-          cursor: pointer;
-          font-size: 12pt;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-          background: #fff;
-          border:solid 1px #aaa;
-          border-radius: 40px;
-          margin-right: 4px;
-      }
+    .dropdown-item{
+      cursor: pointer;
+    }
+    .btn-success{
+      background:#346bd6 !important
+    }
+    .btn-success i, .btn-primary i{
+      color: #fff !important;
+    }
+    .btn-default i{
+      color: #000 !important;
+    }
 
-      .container_checkbox input {
-          position: absolute;
-          opacity: 0;
-          cursor: pointer;
-      }
+    .btn-default{
+      color: #000 !important;
+      background:#ccc !important;
+    }
+    .btn-sm{
+      padding: 7px 10px !important
+    }
+    .btn-sm .material-icons{
+      font-size: 11pt;
+    }
+    .container_checkbox {
+      display: block;
+      position: relative;
+      float: left;
+      padding: 3px 10px;
+      padding-left: 35px;
+      cursor: pointer;
+      font-size: 12pt;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      background: #fff;
+      border:solid 1px #aaa;
+      border-radius: 40px;
+      margin-right: 4px;
+    }
 
-      .checkmark {
-          position: absolute;
-          top: 6px;
-          left: 6px;
-          height: 25px;
-          width: 25px;
-          background-color: #eee;
-          border-radius: 50%;
-      }
+    .container_checkbox input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
 
-      .container_checkbox:hover input ~ .checkmark {
-          background-color: #ccc;
-      }
+    .checkmark {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      height: 25px;
+      width: 25px;
+      background-color: #eee;
+      border-radius: 50%;
+    }
 
-      .container_checkbox input:checked ~ .checkmark {
-          background-color: #2196F3;
-      }
+    .container_checkbox:hover input ~ .checkmark {
+      background-color: #ccc;
+    }
 
-      .checkmark:after {
-          content: "";
-          position: absolute;
-          display: none;
-      }
+    .container_checkbox input:checked ~ .checkmark {
+      background-color: #2196F3;
+    }
 
-      .container_checkbox input:checked ~ .checkmark:after {
-          display: block;
-      }
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
 
-      .container_checkbox .checkmark:after {
-          top: 9px;
-          left: 9px;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: white;
-      }
-      .material_checkbox {
-          display: block;
-          position: relative;
-          padding: 8px 10px;
-          padding-left: 35px;
-          margin-bottom: 12px;
-          cursor: pointer;
-          font-size: 12pt;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-          border: solid 1px #000;
-          float: left;
-          border-radius: 45px;
-      }
-      .material_checkbox input {
-          position: absolute;
-          opacity: 0;
-          cursor: pointer;
-          height: 0;
-          width: 0;
-      }
+    .container_checkbox input:checked ~ .checkmark:after {
+      display: block;
+    }
 
-      .material_checkbox:hover input ~ .checkmark {
-          background-color: #ccc;
-      }
-      .material_checkbox input:checked ~ .checkmark {
-          background-color: #2196F3;
-      }
-      .checkmark:after {
-          content: "";
-          position: absolute;
-          display: none;
-      }
-      .material_checkbox input:checked ~ .checkmark:after {
-          display: block;
-      }
-      .material_checkbox .checkmark:after {
-          left: 8px;
-          top: 2px;
-          width: 10px;
-          height: 15px;
-          border: solid white;
-          border-width: 0 3px 3px 0;
-          -webkit-transform: rotate(45deg);
-          -ms-transform: rotate(45deg);
-          transform: rotate(45deg);
-      }
+    .container_checkbox .checkmark:after {
+      top: 9px;
+      left: 9px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: white;
+    }
+    .material_checkbox {
+      display: block;
+      position: relative;
+      padding: 8px 10px;
+      padding-left: 35px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-size: 12pt;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      border: solid 1px #000;
+      float: left;
+      border-radius: 45px;
+    }
+    .material_checkbox input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
 
-      .chosen-container{width:100%!important}.chosen-container-multi .chosen-choices,.chosen-container-single .chosen-single{padding:5px 8px!important;background:linear-gradient(#fff 20%,#f6f6f6 50%,#eee 52%,#f4f4f4 100%)!important}.chosen-container-single .chosen-single div{top:4px!important}.chosen-container .chosen-drop{z-index:9999999!important}
-      .list_none ul, .list_none li
-      {
-        list-style: none !important;
-      }
+    .material_checkbox:hover input ~ .checkmark {
+      background-color: #ccc;
+    }
+    .material_checkbox input:checked ~ .checkmark {
+      background-color: #2196F3;
+    }
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+    .material_checkbox input:checked ~ .checkmark:after {
+      display: block;
+    }
+    .material_checkbox .checkmark:after {
+      left: 8px;
+      top: 2px;
+      width: 10px;
+      height: 15px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+
+    .chosen-container{width:100%!important}.chosen-container-multi .chosen-choices,.chosen-container-single .chosen-single{padding:5px 8px!important;background:linear-gradient(#fff 20%,#f6f6f6 50%,#eee 52%,#f4f4f4 100%)!important}.chosen-container-single .chosen-single div{top:4px!important}.chosen-container .chosen-drop{z-index:9999999!important}
+    .chosen-container-single .chosen-single{
+      padding: 4px 5px !important;
+      height: 35px !important;
+    }
+    .list_none ul, .list_none li
+    {
+      list-style: none !important;
+    }
     .disabled
     {
       pointer-events:none !important;
@@ -225,118 +232,125 @@ if(!isset($_SESSION['email']))
       -ms-user-select: none !important;
       user-select: none !important;            
     }
-    .chosen-container-single .chosen-single{
-      padding: 5px 5px !important;
-      height: 35px !important;
+    
+    .dark-edition .table>thead>tr>th, .dark-edition .table>tbody>tr>th, .dark-edition .table>tfoot>tr>th, .dark-edition .table>thead>tr>td, .dark-edition .table>tbody>tr>td, .dark-edition .table>tfoot>tr>td{
+      padding: 4px !important;
     }
-</style>
-<?php
-include '../search_select/select_contorl.php';
-?>
+    .dark-edition .table>thead>tr>td, .dark-edition .table>tbody>tr>td, .dark-edition .table>tfoot>tr>td{
+      /*color: #000;*/
+    }
+    .dark-edition .sidebar[data-background-color="black"] .nav li:not(.active) a, .dark-edition .sidebar[data-background-color="black"] .nav li:not(.active) .dropdown-menu a{
+      margin: 0;
+    }
+    .sidebar .nav{
+      margin-top: 0;
+    }
+    .nav-link .material-icons{
+      color: #9094a3 !important;
+    }
+    .list-unstyled{
+      background: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3));
+    }
+    .chosen-container-multi .chosen-choices li.search-field{
+      width: auto;
+      background:transparent;
+    }
+  </style>
+
 </head>
 <body class="dark-edition">
 	<div id="print_result"></div>
-    <div class="wrapper">
-      <div class="sidebar" data-color="purple" data-background-color="black" data-image="assets/img/sidebar-2.jpg">
+  <div class="wrapper">
+    <div class="sidebar" data-color="purple" data-background-color="black" data-image="assets/img/sidebar-2.jpg">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
         Tip 2: you can also add an image using data-image tag
-    -->
-    <div class="logo"> <a class="navbar-brand" href="#">
-    	<img src="assets/img/logo.png" width="100%" height="100%" style="margin-left: 2%;" alt="">
-    </a></div>
-    <!--Side Bar-->
-    <div class="sidebar-wrapper">
-    	<ul class="nav">
-    		<li class="nav-item">
-    			<a class="nav-link" href="./adminDashboard_sidebar.php">
-    				<i class="material-icons">dashboard</i>
-    				<p>Dashboard</p>
-    			</a>
-    		</li>
-    		<li class="nav-item">
-    			<a href="#client" class="nav-link" data-toggle="collapse"><i class="material-icons">person</i>
-    				<p>Client</p>
-    			</a>
-    			<div class="collapse" id="client">
-    				<ul class="list-unstyled nav">
-    					<li class="nav-item">
-    						<a class="nav-link" name href="./addClient.php">Add Client</a>
-    					</li>
-    					<li class="nav-item">
-    						<a class="nav-link" href="./modifyClient.php">Modify Client</a>
-    					</li>
-    					<li class="nav-item">
-    						<a class="nav-link" href="./vieworder.php">View Order</a>
-    					</li>
-    					<li class="nav-item">
-    						<a class="nav-link" href="./assignService.php">Assign Services</a>
-    					</li>
-    					<li class="nav-item">
-    						<a class="nav-link" href="./LOB.php">LOB</a>
-    					</li> 
-    					<li class="nav-item">
-    						<a class="nav-link" href="./createPackage.php">Assign Package</a>
-    					</li>
-    				</ul>
-    			</div>
-    		</li>
-    		<li class="navbar-item">
-    			<a href="#services" class="nav-link" data-toggle="collapse">
-    				<i class="material-icons">supervisor_account</i>
-    				<p>Services</p>
-    			</a>
-    			<div class="collapse" id="services">
-    				<ul class="list-unstyled nav">
-    					<li class="nav-item">
-    						<a class="nav-link" name href="./serviceType.php">Add Service Type</a>
-    					</li>
-    					<li class="nav-item">
-    						<a class="nav-link" href="./createService.php">Add Services</a>
-    					</li>
-    					<li class="nav-item">
-    						<a class="nav-link" href="./service.php
-    						">Modify Service</a>
-    					</li>
-    					<li class="nav-item">
-    						<a class="nav-link" href="./package.php">Create/Modilfy Package </a>
-    					</li>
-    					<li class="nav-item">
-    						<a class="nav-link" href="#">Auto SLA </a>
-    					</li>
-    					<li class="nav-item">
-    						<a class="nav-link" href="./vieworder2.php">View Order</a>
-    					</li>
-    				</ul>
-    			</div>
-    		</li>
-    		<!-- <i class="material-icons">bubble_chart</i> -->
-    		<li class="navbar-item">
-    			<a href="#master" class="nav-link" data-toggle="collapse">
-    				<i class="material-icons">library_books</i>
-    				<p>Master</p>
-    			</a>
+      -->
+      <div class="logo"> <a class="navbar-brand" href="#">
+       <img src="assets/img/logo.png" width="100%" height="100%" style="margin-left: 2%;" alt="">
+     </a></div>
+     <!--Side Bar-->
+     <div class="sidebar-wrapper">
+       <ul class="nav">
+        <li class="nav-item">
+         <a class="nav-link" href="./adminDashboard_sidebar.php">
+          <i class="material-icons">dashboard</i>
+          <p>Dashboard</p>
+        </a>
+      </li>
+      <li class="nav-item">
+       <a href="#client" class="nav-link" data-toggle="collapse"><i class="material-icons">person</i>
+        <p>Client</p>
+      </a>
+      <div class="collapse" id="client">
+        <ul class="list-unstyled nav">
+         <li class="nav-item">
+          <a class="nav-link" name href="./addClient.php"><i class="material-icons icon">launch</i> Add Client</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./modifyClient.php"><i class="material-icons icon">launch</i> Modify Client</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./vieworder.php"><i class="material-icons icon">launch</i> View Order</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./assignService.php"><i class="material-icons icon">launch</i> Assign Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="./LOB.php"><i class="material-icons icon">launch</i> LOB</a>
+        </li> 
+        <li class="nav-item">
+          <a class="nav-link" href="./createPackage.php"><i class="material-icons icon">launch</i> Assign Package</a>
+        </li>
+      </ul>
+    </div>
+  </li>
+  <li class="navbar-item">
+   <a href="#services" class="nav-link" data-toggle="collapse">
+    <i class="material-icons">supervisor_account</i>
+    <p>Services</p>
+  </a>
+  <div class="collapse" id="services">
+    <ul class="list-unstyled nav">
+     <li class="nav-item">
+      <a class="nav-link" name href="./serviceType.php"><i class="material-icons icon">launch</i> Add / Modify Service Type</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="./createService.php"><i class="material-icons icon">launch</i> Add / Modify Services</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="./package.php"><i class="material-icons icon">launch</i> Add / Modify Package</a>
+    </li>
+  </ul>
+</div>
+</li>
+<!-- <i class="material-icons">bubble_chart</i> -->
+<li class="navbar-item">
+ <a href="#master" class="nav-link" data-toggle="collapse">
+  <i class="material-icons">library_books</i>
+  <p>Master</p>
+</a>
 
-    			<div class="collapse" id="master">
-    				<ul class="list-unstyled nav">
-    					<li class="nav-item">
-    						<a class="nav-link" name href="./mandatoryDocuments.php">Mandatory Documents</a>
-    					</li>
-    					<li class="nav-item">
-    						<a class="nav-link" name href="./standardMacro.php">Standard Macro</a>
-    					</li>
+<div class="collapse" id="master">
+  <ul class="list-unstyled nav">
+   <li class="nav-item">
+    <a class="nav-link" name href="./mandatoryDocuments.php"><i class="material-icons icon">launch</i> Mandatory Documents</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" name href="./standardMacro.php"><i class="material-icons icon">launch</i> Standard Macro</a>
+  </li>
     					<!-- <li class="nav-item">
     						<a class="nav-link" name href="#">Auto SLA</a>
     					</li> -->
     					<li class="nav-item">
-    						<a class="nav-link" name href="./reportColor.php">Report Color Code</a>
+    						<a class="nav-link" name href="./reportColor.php"><i class="material-icons icon">launch</i> Report Color Code</a>
     					</li>
     					<li class="nav-item">
-    						<a class="nav-link" name href="./reportConfig.php">Report Configuration Master</a>
+    						<a class="nav-link" name href="./reportConfig.php"><i class="material-icons icon">launch</i> Report Configuration Master</a>
     					</li>
     					<li class="nav-item">
-    						<a class="nav-link" name href="#">Insufficient Emial Triggers</a>
+    						<a class="nav-link" name href="#"><i class="material-icons icon">launch</i> Insufficient Emial Triggers</a>
     					</li>
     				</ul>
     			</div>
@@ -389,28 +403,28 @@ include '../search_select/select_contorl.php';
     	</ul>
     </div>
     <!--Side Bar End-->
-</div>
-<div class="main-panel">
-	<!-- Navbar -->
-	<link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  </div>
+  <div class="main-panel">
+   <!-- Navbar -->
+   <link rel="icon" type="image/png" href="assets/img/favicon.png" />
 
-	<!--toggle button-->
-	<div class="toggle-container" style="margin-bottom: 10%; position: fixed;z-index: 100; top: 8.5%; right: 0;">
-		<input type="checkbox" id="switch" name="theme">
-		<label id="toggleButton" for="switch">Toggle</label>
-	</div>
-	<nav style="padding:0; margin:0; border:0" class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top" id="navigation-example">
-		<div class="container-fluid">
-			<div class="navbar-wrapper" style="height: 70px;">
-				<a class="navbar-brand" href="javascript:void(0)" style="color: white;"><?php echo $page_name; ?></a>
-			</div>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" data-target="#navigation-example">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="navbar-toggler-icon icon-bar"></span>
-				<span class="navbar-toggler-icon icon-bar"></span>
-				<span class="navbar-toggler-icon icon-bar"></span>
-			</button>
-			<div class="collapse navbar-collapse justify-content-end">
+   <!--toggle button-->
+   <div class="toggle-container" style="margin-bottom: 10%; position: fixed;z-index: 100; top: 8.5%; right: 0;">
+    <input type="checkbox" id="switch" name="theme">
+    <label id="toggleButton" for="switch">Toggle</label>
+  </div>
+  <nav style="padding:0; margin:0; border:0" class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top" id="navigation-example">
+    <div class="container-fluid">
+     <div class="navbar-wrapper" style="height: 70px;">
+      <a class="navbar-brand" href="javascript:void(0)" style="color: white;"><?php echo $page_name; ?></a>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation" data-target="#navigation-example">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end">
             <!-- <form class="navbar-form">
                 <div class="input-group no-border">
                   <input
@@ -427,49 +441,49 @@ include '../search_select/select_contorl.php';
                     <div class="ripple-container"></div>
                   </button>
                 </div>
-            </form> -->
-            <ul class="navbar-nav">
-            	<li class="nav-item">
-            		<a class="nav-link" href="/client_Side_Files/adminDashboard_sidebar.php">
-            			<i style="color: white;" class="material-icons">dashboard</i>
-            			<p class="d-lg-none d-md-block">
-            				Stats
-            			</p>
-            		</a>
-            	</li>
-            	<li class="nav-item dropdown">
-            		<a class="nav-link" href="javscript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            			<i style="color: white;" class="material-icons">notifications</i>
-            			<span class="notification">5</span>
-            			<p class="d-lg-none d-md-block">
-            				Some Actions
-            			</p>
-            		</a>
-            		<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-            			<a class="dropdown-item" href="javascript:void(0)">Mike John responded to your email</a>
-            			<a class="dropdown-item" href="javascript:void(0)">You have 5 new tasks</a>
-            			<a class="dropdown-item" href="javascript:void(0)">You're now friend with Andrew</a>
-            			<a class="dropdown-item" href="javascript:void(0)">Another Notification</a>
-            			<a class="dropdown-item" href="javascript:void(0)">Another One</a>
-            		</div>
-            	</li>
-            	<li class="nav-item dropdown">
-            		<a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            			<i style="color: white;" class="material-icons">person</i>
-            			<p class="d-lg-none d-md-block">
-            				Account
-            			</p>
-            			<div class="ripple-container"></div>
-            		</a>
-            		<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-            			<a class="dropdown-item" href="MyProfile.php">Profile</a>
-            			<a class="dropdown-item" href="#">Settings</a>
-            			<div class="dropdown-divider"></div>
-            			<a class="dropdown-item" href="API/db_logout.php">Log out</a>
-            		</div>
-            	</li>
-            </ul>
-        </div>
-    </div>
+              </form> -->
+              <ul class="navbar-nav">
+               <li class="nav-item">
+                <a class="nav-link" href="/client_Side_Files/adminDashboard_sidebar.php">
+                 <i style="color: white;" class="material-icons">dashboard</i>
+                 <p class="d-lg-none d-md-block">
+                  Stats
+                </p>
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" href="javscript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               <i style="color: white;" class="material-icons">notifications</i>
+               <span class="notification">5</span>
+               <p class="d-lg-none d-md-block">
+                Some Actions
+              </p>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+             <a class="dropdown-item" href="javascript:void(0)">Mike John responded to your email</a>
+             <a class="dropdown-item" href="javascript:void(0)">You have 5 new tasks</a>
+             <a class="dropdown-item" href="javascript:void(0)">You're now friend with Andrew</a>
+             <a class="dropdown-item" href="javascript:void(0)">Another Notification</a>
+             <a class="dropdown-item" href="javascript:void(0)">Another One</a>
+           </div>
+         </li>
+         <li class="nav-item dropdown">
+          <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           <i style="color: white;" class="material-icons">person</i>
+           <p class="d-lg-none d-md-block">
+            Account
+          </p>
+          <div class="ripple-container"></div>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+         <a class="dropdown-item" href="MyProfile.php">Profile</a>
+         <a class="dropdown-item" href="#">Settings</a>
+         <div class="dropdown-divider"></div>
+         <a class="dropdown-item" href="API/db_logout.php">Log out</a>
+       </div>
+     </li>
+   </ul>
+ </div>
+</div>
 </nav>
         <!-- End Navbar -->
