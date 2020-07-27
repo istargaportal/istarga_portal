@@ -20,8 +20,7 @@ if($_POST["Action"]=='delete'){
   $result = mysqli_query($db,$sql);
   $sql = "DELETE FROM `service_list_documents` WHERE `service_id`='$service_id'";  
   $result = mysqli_query($db,$sql);
-  
-  echo $sql;
+
   if($result){echo  "deleted";}else{echo 'error at'.$service;}
 }
 
@@ -46,7 +45,6 @@ if($_POST["Action"]=='Add')
 else if($_POST["Action"]=='edit'){
   $sql = "UPDATE service_list SET service_name = '$service_name', service_type_id = '$service_type_id', country_id = '$country', price = '$Price', currency_id = '$currency' WHERE `id`='$edit_id' ";
   $result = mysqli_query($db,$sql);
-  $service_id = $db->insert_id;
   if(isset($document_id))
   {
     $check="DELETE FROM service_list_documents WHERE service_id = '$edit_id' ";
@@ -70,8 +68,8 @@ else if($_POST["Action"]=='Display')
           <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
             <th width="10">SR.NO.</th>
             <th>Service Name</th>
-            <th>Country</th>
             <th>Service Type</th>
+            <th>Country</th>
             <th>Price</th>
             <th>Documents</th>
             <th>Action</th>
@@ -93,14 +91,14 @@ else if($_POST["Action"]=='Display')
     $sr++;
     echo "<tr>";
       echo "<td>".$sr."</td>";
-      echo "<td>".$row['service_name']."</td>";
+      echo "<td class='form_left'>".$row['service_name']."</td>";
       echo "<td>".$row['service_type_name']."</td>";
       echo "<td>".$row['country_name']."</td>";
-      echo "<td>".$row['price']." <b>".$row['currency']."</b></td>";
-      echo "<td>".$all_documents."</td>";
+      echo "<td class='form_right'>".$row['price']." <b>".$row['currency']."</b></td>";
+      echo "<td class='form_left'>".$all_documents."</td>";
       echo '<td>
-                <a href="createService.php?id='.base64_encode($row["id"]).'" title="Edit Assigned Service" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>
-                <a onclick="delete_service('.$row["id"].')" title="Delete Assigned Service" class="btn btn-xs btn-round btn-danger"><i class="material-icons icon">delete</i></a>
+                <a href="createService.php?id='.base64_encode($row["id"]).'" title="Edit Service" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>
+                <a onclick="delete_service('.$row["id"].')" title="Delete Service" class="btn btn-xs btn-round btn-danger"><i class="material-icons icon">delete</i></a>
             </td>';
     echo "</tr>";
   }

@@ -62,12 +62,12 @@ include 'Header.php';
               <input type="hidden" name="edit_id" value="<?php echo @$id; ?>">
 
               <div class="row justify-content-between">
-                <div class="form-group col-md-4">
+                <div class=" col-md-4">
                   <label>Service Name</label>
-                  <input style="margin-top: 2% !important;" name="service_name" value="<?php echo @$service_name; ?>" type="text" class="form-control" required>
+                  <input style="margin-top: 1% !important;" name="service_name" value="<?php echo @$service_name; ?>" type="text" class="form-control" required>
                 </div>
 
-                <div class="form-group col-md-4">
+                <div class="col-md-4">
                   <label for="Service Type" >Service Type</label>
                   <select style="margin-top: 2% !important;" id="select_service_type" name="service_type_id" class="browser-default custom-select chosen-select" required>
                     <option value="">Select Service Type</option>
@@ -87,7 +87,7 @@ include 'Header.php';
                   </select>
                 </div>
 
-                <div class="form-group col-md-4">
+                <div class="col-md-4">
                   <label for="Service Name">Country</label>
                   <select style="margin-top: 2% !important;" id="locality-dropdown" name="country" class="browser-default custom-select chosen-select" required>
                   <option value="">Select Country</option>
@@ -106,11 +106,11 @@ include 'Header.php';
                   ?>
                 </select>
               </div>
-              <div class="form-group col-md-3">
+              <div class="col-md-3">
                 <label>Price</label>
-                <input style="margin-top: 2% !important;" name="Price" type="number" class="form-control" value="<?php echo @$price; ?>" required>  
+                <input style="margin-top: 1% !important;" name="Price" type="number" class="form-control" value="<?php echo @$price; ?>" required>  
               </div>   
-              <div class="form-group col-md-3">
+              <div class="col-md-3">
                 <label for="Service Type">Currency</label>
                 <select style="margin-top: 2% !important;" id="currency" name="currency"
                 class="browser-default custom-select chosen-select" required="">
@@ -130,9 +130,9 @@ include 'Header.php';
                     ?>
               </select>
             </div>
-            <div class="form-group col-md-6">
-              <label for="Service Type">Document name</label>
-              <div style="margin-top: 1%;" id="document_div">
+            <div class="col-md-6">
+              <label for="Service Type">Attach Documents</label>
+              <div id="document_div">
                 <select multiple="" name="document_id[]" class="chosen-select">
                   <?php
                   $check='SELECT * FROM documentlist';
@@ -196,7 +196,7 @@ include 'Header.php';
         </form>
       </div>
       <div class="col-md-12 form_center">
-        <button id="download-excel" type="button" class="btn btn-sm btn-primary"><i class="material-icons icon">get_app</i> Download Excel</button>
+
         <button id="download-format" type="button" class="btn btn-sm btn-primary">
           <i class="material-icons icon">get_app</i> Download Format
         </button>
@@ -313,10 +313,12 @@ include 'Header.php';
           if(html == "inserted")
           {
             alert('Service assigned successfully!');
+            location.reload();
           }
           else if(html == "updated")
           {
             alert('Service updated successfully!');
+            location.reload();
           }
           else
           {

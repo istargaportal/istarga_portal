@@ -21,7 +21,7 @@ include 'Header.php';
             </div>
           </div>
           <div class="table-responsive">
-            <div id='table'></div>
+            <div id='data_table'></div>
           </div>
         </div>
       </div>

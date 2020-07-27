@@ -63,42 +63,42 @@ include 'Header.php';
               <input type="hidden" name="edit_id" value="<?php echo @$id; ?>">
 
               <div class="row justify-content-between">
-                <div class="form-group col-md-4">
+                <div class=" col-md-4">
                   <label for="Client Name">Client Name</label>
                   <!-- code change -->
                   <div id="client_id_div"></div>
                 </div>
 
-                <div class="form-group col-md-4">
+                <div class="col-md-4">
                   <label for="Country">Country</label>
                   <select style="margin-top:5%" class="browser-default custom-select" id="locality-dropdown" name="locality-dropdown" onchange="getservice(this.value)" class="form-control" required>
                     <option value="">Choose...</option>
                   </select>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="col-md-4">
                   <label for="Service Type">Service Type</label>
                   <select style="margin-top:5%" id="select_service_type" class="browser-default custom-select" name="select_service_type" onchange="load_service_name()" class="form-control" required>
                     <option value="" class='bg-secondary'  default not selected>Choose...</option>
                   </select>
                 </div>
 
-                <div class="form-group col-md-4">
+                <div class="col-md-4">
                   <label for="Service Name">Service Name</label>
                   <select style="margin-top:5%" id="select_service_name" class="browser-default custom-select" name="select_service_name" onchange="getservicename(this.value)" class="form-control" required>
                     <option value="" class='bg-secondary text-light' default not selected>Choose...</option>
                   </select>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="col-md-4">
                   <label for="Price" >Price</label>
                   <input name="Price" type="number" style="margin-top: 0 !important;" id="Price" class="form-control mt-4" value="<?php echo @$price; ?>" value="<?php echo @$price; ?>" min="0" required placeholder="" />
                 </div>
-                <div class="form-group col-md-4"> 
+                <div class="col-md-4"> 
                   <label for="currency">Currency</label>
                   <select style="margin-top:5%" id="currency" class="browser-default custom-select" name="currency" onchange="getservicename(this.value)" class="form-control" required>
                   </select>
                 </div>
                 
-                <div class="form-group col-md-4">
+                <div class="col-md-4">
                   <label for="Service Type">Document name</label>
                   <div id="document_div">
                     <select multiple="" name="document_id[]" class="chosen-select">
@@ -120,12 +120,12 @@ include 'Header.php';
                   </div>
                 </div>
 
-                <div class="form-group col-md-4">
+                <div class="col-md-4">
                   <label for="SLA">SLA</label>
                   <input name="SLA" id="SLA" style="margin-top: 0 !important;" type="text" class="form-control mt-4" value="<?php echo @$SLA; ?>" placeholder="" required="" />
                 </div>
                 <div class="form-group col-md-4">
-                  <br><br>
+                  <br>
                   <?php
                   if(isset($_GET['id']))
                   {

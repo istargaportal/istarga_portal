@@ -1,4 +1,10 @@
-<script type="text/javascript" src="../datatable/datatables.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script> -->
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
+
+<!-- <script type="text/javascript" src="../datatable/datatables.min.js"></script> -->
 <link rel="stylesheet" type="text/css" href="../datatable/buttons.dataTables.min.css">
 <script type="text/javascript">
   function load_datatable()
@@ -19,6 +25,14 @@
           }
         },
         {
+          extend: 'excel',
+          title: document.title,
+          orientation: 'landscape',
+          exportOptions: {
+            columns: "thead th:not(.noExport)"
+          }
+        },
+        {
           extend: 'print',
           title: document.title,
           orientation: 'landscape',
@@ -28,7 +42,6 @@
           exportOptions: {
             columns: "thead th:not(.noExport)"
           }
-
         }
         ]
       }
@@ -36,15 +49,31 @@
       "lengthMenu": [[10, 50, 100, 1000, -1], [10, 50, 100, 1000, "All"]],
     } );
   }
+
+  function export_to_excel() 
+  {
+    var url = 'data:application/vnd.ms-excel,' + encodeURIComponent($('#datatable_tbl').html())
+    location.href = url
+    return false
+  }
+
+  $('#data_table').before('<a class="btn btn-success export_btn btn-sm" onclick="export_to_excel()"><i class="fa fa-file-excel"></i> Export To Excel</a>');
+
 </script>
 <style type="text/css">
+  #data_table{
+    position: relative;
+  }
+  .export_btn{
+    position: absolute;
+    bottom: 0;
+    z-index: 99999999 !important;
+    left: 20%;
+  }
   select.form-control:not([size]):not([multiple]){
     color: #000 !important;
   }
-  .dt-buttons{
-    position: absolute !important;
-    right: 45%;
-  }
+  
   .dataTables_filter, .dataTables_length{
     padding-bottom: 10px;
   }
@@ -63,9 +92,12 @@
   .dataTables_length select{ 
     height: 30px !important;
   }
-  #datatable_tbl_info, #datatable_tbl_filter{
+  #datatable_tbl_info, #datatable_tbl_filter {
     width: 50%;
     float: left;
+  }
+  #datatable_tbl_info, #datatable_tbl_filter label{
+    float: left !important;
   }
   #datatable_tbl_length{
     width: 50%;
@@ -73,18 +105,17 @@
     text-align: right;
   }
   .paginate_button{
-    background-color: #eee;
-    border:solid #346bd6 1px;
+    background-color: #eee !important;
+    border:solid #346bd6 1px !important;
     padding: 6px 10px;
     cursor: pointer;
-    background-color: #346bd6;
-    color: #fff;
+    color: #fff !important;
     font-weight: bold;
     border-radius: 5px;
     margin-right: 3px;
   }
   .current{
-    background-color: #fff;
+    background-color: #fff !important;
     color: #346bd6 !important;
     border:solid #346bd6 1px;
   }
@@ -98,4 +129,9 @@
     background-size: contain !important;
   }
 
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover, .disabled{
+    background: #eee !important;
+    opacity: 0.5;
+    cursor: not-allowed !important;
+  }
 </style>

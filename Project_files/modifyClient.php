@@ -27,7 +27,7 @@
                         <input type="text" id="ClientCode" name="ClientCode" class="form-control" placeholder="" /> -->
                       </div>
                     </div>
-                    <div id='table'></div>
+                    <div id='data_table'></div>
                   </form>
                 </div>
               </div>

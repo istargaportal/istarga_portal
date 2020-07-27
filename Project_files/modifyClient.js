@@ -51,7 +51,7 @@ const getAllClientData = () =>
     url:'./API/viewclient.php',
     data:{load_condition},
     success:function(html){
-      $('#table').html(html);
+      $('#data_table').html(html);
       load_datatable();
     }
   });
@@ -62,7 +62,7 @@ getAllClientData()
 clientCode && clientCode.addEventListener('keyup', getModifyClientData(0))
 inputState && inputState.addEventListener('keyup', getModifyClientData(0))
 
-const tbody = document.querySelector('#table')
+const tbody = document.querySelector('#data_table')
 
 const updateModifyClientData = (d) => {
   console.log(d)
