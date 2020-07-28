@@ -27,10 +27,10 @@ if(!isset($_SESSION['email']))
 	<link href="assets/css/material-dashboard.css?v=2.1.0" rel="stylesheet" />
 	<script src="https://kit.fontawesome.com/3aaaecc22c.js" crossorigin="anonymous"></script>
 	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css" />
+	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css" /> -->
 
 	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+	<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script> -->
 	<!-- CSS Just for demo purpose, don't include it in your project -->
 	<link href="assets/demo/demo.css" rel="stylesheet" />
 
@@ -255,6 +255,51 @@ if(!isset($_SESSION['email']))
       width: auto;
       background:transparent;
     }
+    .dark-edition .form-control, textarea, input, select
+    {
+      box-shadow: 0 0 4px #ccc;
+    }
+
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 99999; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      padding: 10px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    .close {
+      color: #000;
+      float: right;
+      font-size: 16pt;
+      font-weight: bold;
+      float: right;
+      padding: 0 4px;
+      transition: 0.4s all ease;
+    }
+    .close .fa{
+      color: #000;
+    }
+    .close:hover,
+    .close:focus {
+      font-size: 20pt;
+    }
+    .no_padding{
+      padding: 0;
+    }
+    .modal .tile-stats,.modal-content{-webkit-animation-name:animatetop!important;-webkit-animation-duration:.2s!important;animation-name:animatetop!important;animation-duration:.2s!important}@-webkit-keyframes animatetop{from{transform:scale(0)}to{transform:scale(1)}}@keyframes animatetop{from{transform:scale(0)}to{transform:scale(1)}}
   </style>
 
 </head>
@@ -349,9 +394,6 @@ if(!isset($_SESSION['email']))
     					<li class="nav-item">
     						<a class="nav-link" name href="./reportConfig.php"><i class="material-icons icon">launch</i> Report Configuration Master</a>
     					</li>
-    					<li class="nav-item">
-    						<a class="nav-link" name href="#"><i class="material-icons icon">launch</i> Insufficient Emial Triggers</a>
-    					</li>
     				</ul>
     			</div>
     		</li>
@@ -378,12 +420,6 @@ if(!isset($_SESSION['email']))
     				<ul class="list-unstyled nav">
     					<li class="nav-item">
     						<a class="nav-link" name href="./settings1.php">Mandatory Fields Manager</a>
-    					</li>
-    					<li class="nav-item">
-    						<a class="nav-link" name href="./settings2.php">Email Trigger Settings</a>
-    					</li>
-    					<li class="nav-item">
-    						<a class="nav-link" name href="./settings3.php">Servicewise Document</a>
     					</li>
     				</ul>
     			</div>

@@ -218,7 +218,7 @@ include 'Header.php';
           else if(html == "updated")
           {
             alert('Package updated successfully!');
-            // location.reload();
+            load_package();
           }
           else
           {

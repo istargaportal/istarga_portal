@@ -12,6 +12,7 @@ if(isset($_GET['id']))
 
   if(isset($id))
   {
+    @$readonly = "readonly";
     $checbk='SELECT * FROM client WHERE user_status="1" and id="'.$id.'" ORDER BY Id DESC';
     $resul = mysqli_query($db,$checbk); 
     if ($reed = mysqli_fetch_array($resul, MYSQLI_ASSOC))
@@ -206,7 +207,7 @@ include 'Header.php';
                           <div class="col-md-4">
                             <div class="form-group">
                               <label class="bmd-label-floating">Email ID</label>
-                              <input name="Email ID" type="email" class="form-control" autocomplete="off" value="<?php echo @$email; ?>" />
+                              <input name="Email ID" type="email" class="form-control" autocomplete="off" value="<?php echo @$email; ?>" <?php echo @$readonly; ?> />
                             </div>
                           </div>
                           <!--checkBoxes-->
@@ -312,7 +313,7 @@ include 'Header.php';
                           <div class="form-group">
                             <label for="Password" class="bmd-label-floating">Password</label>
                             <div class="input-group">
-                              <input name="Password" type="password" class="form-control" autocomplete="off" value="<?php echo @$password; ?>" />
+                              <input name="Password" <?php echo @$readonly; ?> type="password" class="form-control" autocomplete="off" value="<?php echo @$password; ?>" />
                               <div class="input-group-addon eye">
                                 <i class="fas fa-eye-slash"></i>
                               </div>

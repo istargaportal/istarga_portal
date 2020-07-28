@@ -1,9 +1,7 @@
 let eye = document.querySelector(".eye")
 let passwordInput = document.querySelector("[name='Password']")
 eye.onclick = () => {
-  console.log("click eye")
   if (passwordInput.type == "text") {
-    console.log(passwordInput.type)
     passwordInput.type = "password"
     eye.innerHTML = "<i class='fas fa-eye-slash'></i>"
   } else { 
@@ -11,8 +9,6 @@ eye.onclick = () => {
     eye.innerHTML = "<i class='fas fa-eye'></i>"
   }
 }
-
-console.log('working')
 
 const addClientSubmit = document.querySelector('#ajax button'),
 inputFields = document.querySelectorAll('#ajax input:not([type="radio"] )'),
@@ -434,11 +430,6 @@ setDDData(0)
 
 const addBankDetails = document.querySelector('#ajax')
 addBankDetails && addBankDetails.addEventListener('submit', submit("API/addBankDetails.php"))
-
-console.log("working 4");
-
-console.log('working all');
-
 
 // const submitBankDetails = (e) => {
 //   e.preventDefault()

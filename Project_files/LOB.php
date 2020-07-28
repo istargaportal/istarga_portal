@@ -1,374 +1,256 @@
 <?php
-  $page_name = "LOB";
-  include 'Header.php';
+
+require_once "config/config.php";
+
+$get_connection=new connectdb;
+$db=$get_connection->connect();
+
+if(isset($_GET['lob_id']))
+{
+  $page_name = "Edit LOB";
+  $lob_id = base64_decode($_GET['lob_id']);
+  $action = "edit";
+
+  if(isset($lob_id))
+  {
+    $checbk='SELECT lob_name FROM lob_master WHERE lob_id = '.$lob_id.' ';
+    $resul = mysqli_query($db,$checbk); 
+    if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+    {
+      $lob_name = $row['lob_name'];
+    }
+
+    $all_client_id = 0;
+    $check='SELECT client_id FROM lob_details WHERE lob_id = '.$lob_id.' ';
+    $resul = mysqli_query($db,$check); 
+    $i = 1;
+    while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+    {
+      $all_client_id.= $row['client_id'].','.$all_client_id;
+      $i++;
+    }
+  }
+}
+else
+{
+  $page_name = "Add LOB";
+  $action = "add";
+}
+include 'Header.php';
 ?>
-      <div class="content">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-header card-header-primary" style="padding: 1%; margin: 0;">
-                  <h4 class="card-title">LOB</h4>
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary">
+            <h4 class="card-title"><?php echo $page_name; ?></h4>
+          </div>
+          <div class="card-body">
+            <form id="lob_form">
+              <input type="hidden" name="edit_id" value="<?php echo @$lob_id; ?>">
+              <input type="hidden" name="action" value="<?php echo @$action; ?>" />
+              <div class="row justify-content-between">
+                <div class="col-md-4">
+                  <label>LOB Name</label>
+                  <span class="bmd-form-group"><input name="lob_name" required="" value="<?php echo @$lob_name; ?>" type="text" class="form-control"></span>
                 </div>
-                <div class="card-body">
-                  <form id="ajax">
-                    <div class="row justify-content-around">
-                      <div class="form-group col-md-4">
-                        <label style="margin-left: 3%; font-size: 13px;" class="bmd-label-floating">Client Name</label>
-                        <select  class="browser-default custom-select" type="select" id="Client Name" name="Id" style="color:#202940; margin-top: 2%;" required>
-                        </select>
-                      </div>
-
-                      <div class="form-group col-md-4">
-                        <label for="LOB" style="margin-left: 4%;">LOB</label>
-                        <input type="text" class="form-control" name="lob" placeholder="" required />
-                      </div>
-                    </div>
-                    <div class="row justify-content-around">
-                      <div class="form-group col-md-4">
-                        <label for="PO" style="margin-left: 4%;">PO</label>
-                        <input type="text" class="form-control" name="po" placeholder="" />
-                      </div>
-
-                      <div class="form-group col-md-4">
-                        <label for="Address" style="margin-left: 4%;">Address</label>
-                        <input type="text" class="form-control" name="address" placeholder="" />
-                      </div>
-                    </div>
-                    <div class="row justify-content-around">
-                    <div class="form-group col-md-4">
-                        <label style="margin-left: 3%;font-size: 13px;" class="bmd-label-floating">Country</label>
-                        <select class="browser-default custom-select" type="select" id="country" name="country" style="color:#202940;margin-top: 2%;" required>
-                          <option value="0">Select Country</option>
-                        </select>
-                      </div>              
-                      <div class="form-group col-md-4">
-                        <label style="margin-left: 3%;font-size: 13px;" class="bmd-label-floating">State</label>
-                        <select class="browser-default custom-select" type="select" id="state" name="state" style="color:#202940;margin-top: 2%;" required>
-                          <option value="0">Select State</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="row justify-content-around">
-                        <div class="form-group col-md-4">
-                        <label style="margin-left: 3%; font-size: 13px;" class="bmd-label-floating">City</label>
-                        <select class="browser-default custom-select" type="select" id="city" name="city" style="color:#202940; margin-top: 2%;" required>
-                          <option value="0">Select City</option>
-                        </select>
-                      </div>  
-                      <div class="form-group col-md-4">
-                        <label for="GST" style="margin-left: 4%;">GST</label>
-                        <input type="text" class="form-control" name="gst" placeholder="" />
-                      </div>               
-                    </div>
-                    <div class="row justify-content-around">
-                      <div class="form-group col-md-4">
-                        <label for="ZipCode" style="margin-left: 4%;">ZipCode</label>
-                        <input type="text" class="form-control" name="zipcode" placeholder="" />
-                      </div>
-
-                      <div class="form-group col-md-4">
-                        <label for="Address" style="margin-left: 4%;">Address</label>
-                        <input type="text" class="form-control" name="address" placeholder="" />
-                      </div>
-                    </div>
-                    <div class="row justify-content-end">
-                      <button type="submit" class="btn btn-primary mx-2" style="margin-right: 3%;">
-                        Save
-                      </button>
-
-                      <button type="button" class="btn btn-primary" style="margin-right: 3%;" onclick="formReset()">
-                        Reset
-                      </button>
-                    </div>
-                  </form>
+                <div class="col-md-4">
+                  <label>Clients</label>
+                  <div id="client_div" >
+                    <select multiple="" name="client_id[]" class="chosen-select">
+                      <?php    
+                        if(isset($_GET['lob_id']))
+                        {
+                          $check = "SELECT c.id, c.Client_Name FROM client c WHERE c.id IN($all_client_id) ";
+                          $resul = mysqli_query($db,$check); 
+                          while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                          {
+                            echo '<option selected value="'.$row['id'].'">'.$row['Client_Name'].'</option>';
+                          }
+                        }
+                        $check = "SELECT c.id, c.Client_Name FROM client c WHERE c.is_block = 0 AND c.id NOT IN (SELECT client_id FROM lob_details) ";
+                        $resul = mysqli_query($db,$check); 
+                        while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                        {
+                          echo '<option value="'.$row['id'].'">'.$row['Client_Name'].'</option>';
+                        }
+                      ?>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4 form_center" style="margin-top: 3%">
+                  <?php
+                  if(isset($_GET['lob_id']))
+                  {
+                    echo '<a onclick="save_lob()" class="btn btn-warning btn-sm"><i class="material-icons icon">create</i> Edit</a>';
+                  }
+                  else
+                  {
+                    echo '<a onclick="save_lob()" class="btn btn-success btn-sm"><i class="material-icons icon">note_add</i> Add</a>';
+                  }
+                  ?> 
+                  <a href="" class="btn btn-primary btn-sm"><i class="material-icons icon">refresh</i> Reset</a> 
+                  <a href="LOB.php" class="btn btn-default btn-sm"><i class="material-icons icon">close</i> Cancel</a>
                 </div>
               </div>
-            </div>
+            </form>
+            <br>
+            <div id="data_table"></div>
           </div>
         </div>
       </div>
-
-      <script>
-        const x = new Date().getFullYear();
-        let date = document.getElementById("date");
-        date.innerHTML = "&copy; " + x + date.innerHTML;
-      </script>
     </div>
   </div>
-  <!--mode changing-->
-  <script>
-    let darkmode = localStorage.getItem("darkmode");
-    const darkmodetoggle = document.querySelector('input[name=theme]');
+</div>
 
-    const enabledarkmode = () => {
-      document.documentElement.setAttribute('data-theme', 'dark')
-      localStorage.setItem("darkmode", "enabled");
-    }
+<script>
+  let darkmode = localStorage.getItem("darkmode");
+  const darkmodetoggle = document.querySelector('input[name=theme]');
 
+  const enabledarkmode = () => {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    localStorage.setItem("darkmode", "enabled");
+  }
 
-    const disabledarkmode = () => {
-      document.documentElement.setAttribute('data-theme', 'light')
-      localStorage.setItem("darkmode", null);
-    }
+  const disabledarkmode = () => {
+    document.documentElement.setAttribute('data-theme', 'light')
+    localStorage.setItem("darkmode", null);
+  }
 
+  if (darkmode === "enabled") {
+    enabledarkmode();
+  }
 
-    if (darkmode === "enabled") {
+  darkmodetoggle.addEventListener("change", () => {
+    darkmode = localStorage.getItem("darkmode");
+    if (darkmode !== "enabled") {
+      trans()
       enabledarkmode();
+    } else {
+      trans()
+      disabledarkmode();
     }
+  })
 
+  let trans = () => {
+    document.documentElement.classList.add('transition');
+    window.setTimeout(() => {
+      document.documentElement.classList.remove('transition');
+    }, 1000)
+  }
+</script>
+<script type="text/javascript">
+  $('.chosen-select').chosen();
+</script>
+<script type="text/javascript">
 
-    darkmodetoggle.addEventListener("change", () => {
-      darkmode = localStorage.getItem("darkmode");
-      if (darkmode !== "enabled") {
-        trans()
-        enabledarkmode();
-      } else {
-        trans()
-        disabledarkmode();
+  function delete_lob(lob_id)
+  {
+    var r = confirm("Are you sure to delete this LOB?")
+    if(r == true)
+    {
+      var action = "delete";
+      $.ajax({
+        type:'POST',
+        url: "./API/Action-LOB.php",
+        data:{lob_id, action},
+        success:function(html){
+          if(html == "deleted")
+          {
+            alert("LOB deleted successfully!");
+            load_lob();
+          }
+          else
+          {
+            alert("Error occurred!");
+          }
+        }
+      });
+    }
+  }
+
+  function save_lob()
+  {
+    var error = 0;
+    $("input, select").each(function ()
+    {
+      if($(this).prop('required'))
+      {
+        if($(this).val() == '')
+        {
+          alert('Please enter data');
+          $(this).focus();
+          error++;
+          exit();
+        }
       }
     })
 
-    let trans = () => {
-      document.documentElement.classList.add('transition');
-      window.setTimeout(() => {
-        document.documentElement.classList.remove('transition');
-      }, 1000)
-    }
-  </script>
-  <!--mode change end-->
-  <!--   Core JS Files   -->
-  <script src="assets/js/core/jquery.min.js"></script>
-  <script src="assets/js/core/popper.min.js"></script>
-  <script src="assets/js/core/bootstrap-material-design.min.js"></script>
-  <script src="https://unpkg.com/default-passive-events"></script>
-  <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!-- Place this tag in your head or just before your close body tag. -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-  <!-- Chartist JS -->
-  <script src="assets/js/plugins/chartist.min.js"></script>
-  <!--  Notifications Plugin    -->
-  <script src="assets/js/plugins/bootstrap-notify.js"></script>
-  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="assets/js/material-dashboard.js?v=2.1.0"></script>
-  <!-- Material Dashboard DEMO methods, don't include it in your project! -->
-  <script src="assets/demo/demo.js"></script>
-  <script src="data2.js"></script>
-  <script src="LOB.js"></script>
-  <script>
-    function formReset() {
-      document.getElementById("ajax").reset();
-    }
-    $(document).ready(function() {
-      $().ready(function() {
-        $sidebar = $(".sidebar");
-
-        $sidebar_img_container = $sidebar.find(".sidebar-background");
-
-        $full_page = $(".full-page");
-
-        $sidebar_responsive = $("body > .navbar-collapse");
-
-        window_width = $(window).width();
-
-        $(".fixed-plugin a").click(function(event) {
-          // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
-          if ($(this).hasClass("switch-trigger")) {
-            if (event.stopPropagation) {
-              event.stopPropagation();
-            } else if (window.event) {
-              window.event.cancelBubble = true;
-            }
+    if(error == 0)
+    {
+      var myform = document.getElementById("lob_form");
+      var fd = new FormData(myform );
+      $.ajax({
+        url: "./API/Action-LOB.php",
+        data: fd,
+        cache: false,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function (html) {
+          if(html == "inserted")
+          {
+            alert('LOB assigned successfully!');
+            location.reload();
           }
-        });
-
-        $(".fixed-plugin .active-color span").click(function() {
-          $full_page_background = $(".full-page-background");
-
-          $(this).siblings().removeClass("active");
-          $(this).addClass("active");
-
-          var new_color = $(this).data("color");
-
-          if ($sidebar.length != 0) {
-            $sidebar.attr("data-color", new_color);
+          else if(html == "updated")
+          {
+            alert('LOB updated successfully!');
+            load_lob();
           }
-
-          if ($full_page.length != 0) {
-            $full_page.attr("filter-color", new_color);
+          else
+          {
+            alert('Error occurred');
           }
-
-          if ($sidebar_responsive.length != 0) {
-            $sidebar_responsive.attr("data-color", new_color);
-          }
-        });
-
-        $(".fixed-plugin .background-color .badge").click(function() {
-          $(this).siblings().removeClass("active");
-          $(this).addClass("active");
-
-          var new_color = $(this).data("background-color");
-
-          if ($sidebar.length != 0) {
-            $sidebar.attr("data-background-color", new_color);
-          }
-        });
-
-        $(".fixed-plugin .img-holder").click(function() {
-          $full_page_background = $(".full-page-background");
-
-          $(this).parent("li").siblings().removeClass("active");
-          $(this).parent("li").addClass("active");
-
-          var new_image = $(this).find("img").attr("src");
-
-          if (
-            $sidebar_img_container.length != 0 &&
-            $(".switch-sidebar-image input:checked").length != 0
-          ) {
-            $sidebar_img_container.fadeOut("fast", function() {
-              $sidebar_img_container.css(
-                "background-image",
-                'url("' + new_image + '")'
-              );
-              $sidebar_img_container.fadeIn("fast");
-            });
-          }
-
-          if (
-            $full_page_background.length != 0 &&
-            $(".switch-sidebar-image input:checked").length != 0
-          ) {
-            var new_image_full_page = $(".fixed-plugin li.active .img-holder")
-              .find("img")
-              .data("src");
-
-            $full_page_background.fadeOut("fast", function() {
-              $full_page_background.css(
-                "background-image",
-                'url("' + new_image_full_page + '")'
-              );
-              $full_page_background.fadeIn("fast");
-            });
-          }
-
-          if ($(".switch-sidebar-image input:checked").length == 0) {
-            var new_image = $(".fixed-plugin li.active .img-holder")
-              .find("img")
-              .attr("src");
-            var new_image_full_page = $(".fixed-plugin li.active .img-holder")
-              .find("img")
-              .data("src");
-
-            $sidebar_img_container.css(
-              "background-image",
-              'url("' + new_image + '")'
-            );
-            $full_page_background.css(
-              "background-image",
-              'url("' + new_image_full_page + '")'
-            );
-          }
-
-          if ($sidebar_responsive.length != 0) {
-            $sidebar_responsive.css(
-              "background-image",
-              'url("' + new_image + '")'
-            );
-          }
-        });
-
-        $(".switch-sidebar-image input").change(function() {
-          $full_page_background = $(".full-page-background");
-
-          $input = $(this);
-
-          if ($input.is(":checked")) {
-            if ($sidebar_img_container.length != 0) {
-              $sidebar_img_container.fadeIn("fast");
-              $sidebar.attr("data-image", "#");
-            }
-
-            if ($full_page_background.length != 0) {
-              $full_page_background.fadeIn("fast");
-              $full_page.attr("data-image", "#");
-            }
-
-            background_image = true;
-          } else {
-            if ($sidebar_img_container.length != 0) {
-              $sidebar.removeAttr("data-image");
-              $sidebar_img_container.fadeOut("fast");
-            }
-
-            if ($full_page_background.length != 0) {
-              $full_page.removeAttr("data-image", "#");
-              $full_page_background.fadeOut("fast");
-            }
-
-            background_image = false;
-          }
-        });
-
-        $(".switch-sidebar-mini input").change(function() {
-          $body = $("body");
-
-          $input = $(this);
-
-          if (md.misc.sidebar_mini_active == true) {
-            $("body").removeClass("sidebar-mini");
-            md.misc.sidebar_mini_active = false;
-
-            $(".sidebar .sidebar-wrapper, .main-panel").perfectScrollbar();
-          } else {
-            $(".sidebar .sidebar-wrapper, .main-panel").perfectScrollbar(
-              "destroy"
-            );
-
-            setTimeout(function() {
-              $("body").addClass("sidebar-mini");
-
-              md.misc.sidebar_mini_active = true;
-            }, 300);
-          }
-
-          // we simulate the window Resize so the charts will get updated in realtime.
-          var simulateWindowResize = setInterval(function() {
-            window.dispatchEvent(new Event("resize"));
-          }, 180);
-
-          // we stop the simulation of Window Resize after the animations are completed
-          setTimeout(function() {
-            clearInterval(simulateWindowResize);
-          }, 1000);
-        });
+        }
       });
-    });
+    }
+  }
 
-    $("form").submit(function(event) {
-      var formdata = $("form").serializeArray();
-      var data = {};
-      $(formdata).each(function(index, obj) {
-        data[obj.name] = obj.value;
-      });
-
-      console.log(data);
-      fetch('./API/LOB.php', {
-        method: 'post',
-        body: JSON.stringify(data)
-      }).then(function(res) {
-        //console.log(res.text());
-        formReset();
-      }).catch(err => {
-        //console.log(err);
-        return err;
-      })
-      event.preventDefault();
+  function load_lob()
+  {
+    var action = "display";
+    $.ajax({
+      type:'POST',
+      url:'./API/Action-LOB.php',
+      data:{action},
+      success:function(html){
+        $('#data_table').html(html);
+        load_datatable();
+      }
     });
-    $.ajax;
-  </script>
+  }
+</script>
+<script src="assets/js/core/popper.min.js"></script>
+<script src="assets/js/core/bootstrap-material-design.min.js"></script>
+<script src="https://unpkg.com/default-passive-events"></script>
+<script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Chartist JS -->
+<script src="assets/js/plugins/chartist.min.js"></script>
+<!--  Notifications Plugin    -->
+<script src="assets/js/plugins/bootstrap-notify.js"></script>
+<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="assets/js/material-dashboard.js?v=2.1.0"></script>
+<!-- Material Dashboard DEMO methods, don't include it in your project! -->
+
+<?php
+include '../datatable/_datatable.php';
+?>
+<script type="text/javascript">
+  load_lob();
+</script>
 </body>
-
 </html>

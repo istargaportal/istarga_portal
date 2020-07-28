@@ -40,6 +40,7 @@ class States
                     }
                     if(@$default_client_id != 0)
                     {
+                        $default_client_id = base64_decode($default_client_id);
                         $sql_condition = " WHERE o.client_id = '$default_client_id' "; 
                     }
                     $query="SELECT o.*, c.Client_Name FROM `order` o INNER JOIN client c ON c.id = o.client_id ".@$sql_condition;
@@ -124,9 +125,14 @@ class States
             }
             if(@$default_client_id != "0" && @$client_select != "1")
             {
-                $client_condition = " AND id = ".@$default_client_id;
+                $default_client_id = base64_decode($default_client_id);
+                $client_condition = " id = ".@$default_client_id;
             }
-            $query="SELECT id, Client_Name FROM client WHERE is_block = '0' ".@$client_condition." ORDER BY Client_Name ";
+            else
+            {
+                $client_condition = " is_block = '0' ";
+            }
+            $query="SELECT id, Client_Name FROM client WHERE ".@$client_condition." ORDER BY Client_Name ";
             $result=$this->conn->query($query);
             if($result->num_rows>0)
             {

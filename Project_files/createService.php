@@ -54,7 +54,7 @@ include 'Header.php';
             <h4 class="card-title"><?php echo $page_name; ?></h4>
           </div>
           <div class="row col-md-12">
-            <form id="create_service" style="display: block;" class="row col-md-12">
+            <form id="create_service" style="display: block;" class="col-md-12">
               <input type="hidden" name="Action" value="<?php echo @$Action; ?>" />
               <input type="hidden" id="edit_country" value="<?php echo @$country; ?>">
               <input type="hidden" id="edit_service_type_id" value="<?php echo @$service_type_id; ?>">
@@ -90,70 +90,70 @@ include 'Header.php';
                 <div class="col-md-4">
                   <label for="Service Name">Country</label>
                   <select style="margin-top: 2% !important;" id="locality-dropdown" name="country" class="browser-default custom-select chosen-select" required>
-                  <option value="">Select Country</option>
+                    <option value="">Select Country</option>
+                    <?php
+                    $check='SELECT * FROM countries ';
+                    $resul = mysqli_query($db,$check); 
+                    while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                    {
+                      $selected = "";
+                      if($row["id"] == @$country)
+                      {
+                        $selected = "selected";
+                      }
+                      echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['name'].'</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label>Price</label>
+                  <input style="margin-top: 1% !important;" name="Price" type="number" class="form-control" value="<?php echo @$price; ?>" required>  
+                </div>   
+                <div class="col-md-3">
+                  <label for="Service Type">Currency</label>
+                  <select style="margin-top: 2% !important;" id="currency" name="currency"
+                  class="browser-default custom-select chosen-select" required="">
+                  <option value="">Select Currency</option>
                   <?php
                   $check='SELECT * FROM countries ';
                   $resul = mysqli_query($db,$check); 
                   while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
                   {
                     $selected = "";
-                    if($row["id"] == @$country)
+                    if($row["id"] == @$currency_id)
                     {
                       $selected = "selected";
                     }
-                    echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['name'].'</option>';
+                    echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['currency'].'</option>';
                   }
                   ?>
                 </select>
               </div>
-              <div class="col-md-3">
-                <label>Price</label>
-                <input style="margin-top: 1% !important;" name="Price" type="number" class="form-control" value="<?php echo @$price; ?>" required>  
-              </div>   
-              <div class="col-md-3">
-                <label for="Service Type">Currency</label>
-                <select style="margin-top: 2% !important;" id="currency" name="currency"
-                class="browser-default custom-select chosen-select" required="">
-                  <option value="">Select Currency</option>
-                <?php
-                    $check='SELECT * FROM countries ';
+              <div class="col-md-6">
+                <label for="Service Type">Attach Documents</label>
+                <div id="document_div">
+                  <select multiple="" name="document_id[]" class="chosen-select">
+                    <?php
+                    $check='SELECT * FROM documentlist';
                     $resul = mysqli_query($db,$check); 
                     while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
                     {
                       $selected = "";
-                      if($row["id"] == @$currency_id)
+                      $res_ar = array_search($row['id'],@$all_document_id);
+                      if($res_ar != '')
                       {
                         $selected = "selected";
                       }
-                      echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['currency'].'</option>';
+                      echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['document_name'].'</option>';
                     }
                     ?>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label for="Service Type">Attach Documents</label>
-              <div id="document_div">
-                <select multiple="" name="document_id[]" class="chosen-select">
-                  <?php
-                  $check='SELECT * FROM documentlist';
-                  $resul = mysqli_query($db,$check); 
-                  while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                  {
-                    $selected = "";
-                    $res_ar = array_search($row['id'],@$all_document_id);
-                    if($res_ar != '')
-                    {
-                      $selected = "selected";
-                    }
-                    echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['document_name'].'</option>';
-                  }
-                  ?>
-                </select>
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="row justify-content-end">
-            <?php
+            <div class="row justify-content-end">
+              <?php
               if(isset($_GET['id']))
               {
                 echo '<a onclick="save_create_service()" class="btn btn-warning btn-sm"><i class="material-icons icon">create</i> Edit</a>';
@@ -162,55 +162,49 @@ include 'Header.php';
               {
                 echo '<a onclick="save_create_service()" class="btn btn-success btn-sm"><i class="material-icons icon">note_add</i> Add</a>';
               }
-            ?> 
-            <a href="" class="btn btn-primary btn-sm"><i class="material-icons icon">refresh</i> Reset</a> 
-            <a href="createService.php" class="btn btn-default btn-sm"><i class="material-icons icon">close</i> Cancel</a>
-          </div>
-          <div class="form-group col-md-12">
-            <div class="row justify-content-around">
-              <table id="upload-excel-table" class="sr-only">
-                <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
-                  <th>
-                    country_name
-                  </th>
-                  <th>
-                    service
-                  </th>
-                  <th>
-                    service_type
-                  </th>
-                  <th>
-                    price
-                  </th>
-                  <th>
-                    currency
-                  </th>
-                  <th>
-                    add_documents
-                  </th>
-                </thead>
-                <tbody></tbody>
-              </table>
+              ?> 
+              <a href="" class="btn btn-primary btn-sm"><i class="material-icons icon">refresh</i> Reset</a> 
+              <a href="createService.php" class="btn btn-default btn-sm"><i class="material-icons icon">close</i> Cancel</a>
             </div>
+          </form>
+          <div class="col-md-12 form_center">
+            <a href="../docs/Add-Service.xlsx" id="download-format" class="btn btn-sm btn-primary">
+              <i class="material-icons icon">get_app</i> Download Format
+            </a>
+            <button onclick="import_service_modal()" type="button" class="btn btn-sm btn-primary" id="upload-btn">
+              <i class="material-icons icon">backup</i> Upload Excel
+            </button>
           </div>
-        </form>
+          <br>
+          <div class="col-md-12">
+            <div id="data_table"></div>
+          </div>
+        </div>
       </div>
-      <div class="col-md-12 form_center">
-
-        <button id="download-format" type="button" class="btn btn-sm btn-primary">
-          <i class="material-icons icon">get_app</i> Download Format
-        </button>
-        <button type="button" class="btn btn-sm btn-primary" id="upload-btn">
-          <i class="material-icons icon">backup</i> Upload Excel
-          <input type="file" name="" id="input-excel" style="cursor: pointer; display: none;">
-        </button>
-      </div>
-      <br>
-      <div id="data_table"></div>
     </div>
   </div>
 </div>
-</div>
+  <div class="modal" id="service_modal" >
+    <div class="row">
+      <div class="col-md-4">
+        <br>
+      </div>
+      <div class="col-md-4">
+        <div class="modal-content">
+          <h4 style="border-bottom: solid 1px #000;padding: 5px 0;"><i class="fa fa-file-excel"></i> Upload Excel
+            <a class="close" onclick="close_excel_import()"><i class="fa fa-remove"></i></a>
+          </h4>
+          <label>Select File</label>
+          <input type="file" id="upload_file" class="form-control" />
+          <br>
+          <div class="no_padding col-md-12">
+            <button onclick="import_services()" id="import_btn" class="btn btn-success btn-sm"><i class="fa fa-upload"></i> Upload </button>
+            <a href="javascript:close_excel_import()" class="btn btn-default btn-sm"><i class="fa fa-remove"></i> Close </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -274,11 +268,55 @@ include 'Header.php';
 <!-- <script src="updateservice.js"></script> -->
 <script src="createService.js"></script>
 <?php
-  include '../datatable/_datatable.php';
+include '../datatable/_datatable.php';
 ?>
 <script>
   function formReset() {
     document.getElementById("ajax").reset();
+  }
+
+  function close_excel_import()
+  {
+    $('#service_modal').css('display', 'none');
+  }
+
+  function import_service_modal()
+  {
+    $('#service_modal').css('display', 'block');
+  }
+
+  function import_services()
+  {
+    var upload_file = $('#upload_file').prop('files')[0] || 0;
+    var form_data = new FormData();   
+    form_data.append('upload_file', upload_file);
+   
+    if(upload_file == "0")
+    {
+      alert('Please select File!!!');
+      $('#upload_file').focus();
+    }
+    else
+    {
+      $('#import_btn').prop('disabled', true);
+      $('#modal_loading').css('display', 'block');
+      $.ajax({
+        url:'Import-Service.php',
+        dataType: 'text',  
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: form_data,
+        type: 'POST',
+        success: function(html){
+          $('#modal_loading').css('display', 'none');
+          $('#print_result').html(html);
+          close_excel_import();
+          getAllAssignService(`./API/createService.php`);
+          $('#import_btn').prop('disabled', false);
+        }
+      });
+    }
   }
 
   function save_create_service()

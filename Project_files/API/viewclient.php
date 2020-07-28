@@ -189,14 +189,14 @@ class country
                                     >
                                     <div class="dropdown-divider"></div>
                                     '.$block_unblock_btn.'
-                                    <a class="dropdown-item soft-delete1" href="#" id="'.$row["id"].'">Soft Delete</a>
-                                    <a class="dropdown-item hard-delete1" href="#" id="'.$row["id"].'"edit_client_id>Hard Delete</a>
                                   </div>
                                 </li>
                               </ul>
                             </td>
                         </tr>
                         ';
+                        // <a class="dropdown-item soft-delete1" href="#" id="'.$row["id"].'">Soft Delete</a>
+                        // <a class="dropdown-item hard-delete1" href="#" id="'.$row["id"].'"edit_client_id>Hard Delete</a>
                     }
                     else
                     {
