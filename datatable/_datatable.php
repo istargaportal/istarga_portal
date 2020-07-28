@@ -57,18 +57,48 @@
     return false
   }
 
-  $('#data_table').before('<a class="btn btn-success export_btn btn-sm" onclick="export_to_excel()"><i class="fa fa-file-excel"></i> Export To Excel</a>');
+  function export_to_print()
+  {
+    window.print();
+
+    // var divToPrint=document.getElementById('datatable_tbl');
+    // var newWin=window.open('','Print-Window');
+    // newWin.document.open();
+    // newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+    // newWin.document.close();
+    // setTimeout(function(){newWin.close();},10);
+  }
+
+  $('#data_table').before('<a class="btn btn-success export_excel btn-sm" onclick="export_to_excel()"><i class="fa fa-file-excel"></i> Export To Excel</a> <a class="btn btn-danger export_print btn-sm" onclick="export_to_print()"><i class="fa fa-print"></i> Print</a>');
 
 </script>
 <style type="text/css">
+  @media print {
+      /* Hide everything in the body when printing... */
+      body.printing * { display: none; }
+      /* ...except our special div. */
+      body.printing #print-me { display: block; }
+  }
+
+  @media screen {
+      /* Hide the special layer from the screen. */
+      #print-me { display: none; }
+  }
+
   #data_table{
     position: relative;
   }
-  .export_btn{
+  .export_excel{
     position: absolute;
     bottom: 0;
     z-index: 99999999 !important;
     left: 20%;
+  }
+  .export_print{
+    position: absolute;
+    bottom: 0;
+    z-index: 99999999 !important;
+    left: 35%;
   }
   select.form-control:not([size]):not([multiple]){
     color: #000 !important;

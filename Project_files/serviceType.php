@@ -13,19 +13,21 @@ include 'Header.php';
           <div class="card-body">
             <form id="ajax">
               <div class="row justify-content-start">
-                <div class="form-group col-md-4">
-                  <label for="DocumentName" style="margin-left: 4%;" class="bmd-label-floating">Service Type</label>
+                <div class="col-md-4">
+                  <label for="DocumentName" >Service Type</label>
                   <input type="text" class="form-control" name="service_name" placeholder="" required="" />
                 </div>
-                <div class="col-md-4" style="margin-top: 1%;" >
+                <div class="col-md-4" >
+                  <br>
                   <button type="submit" class="btn btn-success btn-sm"> <i class="material-icons icon">note_add</i> Save</button>
                   <a href="" class="btn btn-default btn-sm"><i class="material-icons icon">close</i> Reset</a>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
-                  <div >
-                    <table class="table table-hover">
+                  <br>
+                  <div id="data_table">
+                    <table id="datatable_tbl" class="table table-hover">
                       <thead class="text-primary " style="background-color: rgba(15, 13, 13, 0.856) !important;">
                         <th>
                           SR.NO.
@@ -145,6 +147,13 @@ include 'Header.php';
 <script src="assets/js/material-dashboard.js?v=2.1.0"></script>
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="assets/demo/demo.js"></script>
+<?php
+include '../datatable/_datatable.php';
+?>
+<script type="text/javascript">
+  load_datatable();
+</script>
+
 <script>
   function formReset() {
     document.getElementById("ajax").reset();

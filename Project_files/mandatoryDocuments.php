@@ -13,19 +13,21 @@
                 <div class="card-body">
                   <form id="ajax">
                     <div class="row justify-content-start">
-                      <div class="form-group col-md-4">
-                        <label for="DocumentName" style="margin-left: 4%;" class="bmd-label-floating">Document Name</label>
+                      <div class="col-md-4">
+                        <label for="DocumentName" class="bmd-label-floating">Document Name</label>
                         <input type="text" class="form-control" name="document_name" id="DocumentName" required>
                       </div>
                     <div class="form-group col-md-4">
+                      <br>
                       <button type="submit" class="btn btn-success btn-sm"><i class="material-icons icon">note_add</i> Add</button>
                       <button type="button" onclick="formReset()" class="btn btn-default btn-sm"><i class="material-icons icon">close</i> Reset</button>
                     </div>
                     </div>
                     <div class="row">
+                      <br>
                       <div class="col-md-12">
-                        <div >
-                          <table class="table table-hover" >
+                        <div id="data_table">
+                          <table id="datatable_tbl" class="table table-hover" >
                             <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
                               <th>
                                 Document Name
@@ -121,6 +123,13 @@
   <script>
     popuTable();
   </script>
+  <?php
+  include '../datatable/_datatable.php';
+  ?>
+  <script type="text/javascript">
+    load_datatable();
+  </script>
+
   <script>
     function formReset() {
       document.getElementById("ajax").reset();
