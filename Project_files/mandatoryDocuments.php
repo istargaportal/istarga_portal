@@ -30,6 +30,9 @@
                           <table id="datatable_tbl" class="table table-hover" >
                             <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
                               <th>
+                                SR.NO.
+                              </th>
+                              <th>
                                 Document Name
                               </th>
                               <th>

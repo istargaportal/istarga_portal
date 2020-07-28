@@ -87,9 +87,11 @@ const popuTable = () => {
     let stat = JSON.parse(text);
     for (let i = 0, j = stat.length; i < stat.length; i++, j--) {
       var row = table.insertRow(0);
-      var cell1 = row.insertCell(0);
-      var cell2 = row.insertCell(1);
-      var cell3 = row.insertCell(2);
+      var cell0 = row.insertCell(0);
+      var cell1 = row.insertCell(1);
+      var cell2 = row.insertCell(2);
+      var cell3 = row.insertCell(3);
+      cell0.innerHTML = j;
       cell1.innerHTML = stat[i].document_name;
       cell1.setAttribute("id",stat[i].id);
       var btn1= document.createElement('button');
