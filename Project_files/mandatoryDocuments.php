@@ -123,7 +123,7 @@
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="assets/demo/demo.js"></script>
   <script src="mandatoryDocuments.js"></script>
-  <script> 
+  <script>
     popuTable();
   </script>
   <?php
