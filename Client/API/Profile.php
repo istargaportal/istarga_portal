@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "../config/config.php";
+require_once "../../config/config.php";
 $get_connection=new connectdb;
 $db=$get_connection->connect();
 

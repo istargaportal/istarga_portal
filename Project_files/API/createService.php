@@ -90,12 +90,12 @@ else if($_POST["Action"]=='Display')
 
     $sr++;
     echo "<tr>";
-      echo "<td>".$sr."</td>";
-      echo "<td class='form_left'>".$row['service_name']."</td>";
-      echo "<td>".$row['service_type_name']."</td>";
-      echo "<td>".$row['country_name']."</td>";
-      echo "<td class='form_right'>".$row['price']." <b>".$row['currency']."</b></td>";
-      echo "<td class='form_left'>".$all_documents."</td>";
+      echo "<td class='tablehead1'>".$sr."</td>";
+      echo "<td class='tablehead1 form_left'>".$row['service_name']."</td>";
+      echo "<td class='tablehead1'>".$row['service_type_name']."</td>";
+      echo "<td class='tablehead1'>".$row['country_name']."</td>";
+      echo "<td class='tablehead1 form_right'>".$row['price']." <b>".$row['currency']."</b></td>";
+      echo "<td class='tablehead1 form_left'>".$all_documents."</td>";
       echo '<td>
                 <a href="createService.php?id='.base64_encode($row["id"]).'" title="Edit Service" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>
                 <a onclick="delete_service('.$row["id"].')" title="Delete Service" class="btn btn-xs btn-round btn-danger"><i class="material-icons icon">delete</i></a>

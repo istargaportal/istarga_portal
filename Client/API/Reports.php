@@ -1,5 +1,5 @@
 <?php
-require_once "../config/config.php";
+ require_once "../../config/config.php";
  // $con = mysqli_connect("localhost","root","","bgv");
   
    $get_connection=new connectdb;

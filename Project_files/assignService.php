@@ -36,10 +36,12 @@ if(isset($_GET['id']))
       $i++;
     }
   }
+  $page_template = "warning";
 }
 else
 {
   $page_name = "Assign Service";
+  $page_template = "primary";
 }
 
 include 'Header.php';
@@ -50,7 +52,7 @@ include 'Header.php';
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header card-header-primary">
+          <div class="card-header card-header-<?php echo @$page_template; ?>">
             <h4 class="card-title"><?php echo $page_name; ?></h4>
           </div>
           <div class="card-body">

@@ -36,6 +36,52 @@ include 'Header.php';
     });
   }
   load_users();
+
+  function delete_user(user_id)
+  {
+    var r = confirm('Are you sure to delete this user?')
+    if(r == true)
+    {
+      var action = 'delete';
+      var delete_user_id = user_id;
+      $.ajax({
+        type:'POST',
+        data:{action, delete_user_id},
+        url:'./API/Action-User.php',
+        success:function(html){
+          load_users();
+        }
+      }); 
+    }
+  }
+
+  function activate_deactivate_user(condition, user_id)
+  {
+    if(condition == 1){ var message = "Activate"; }
+    if(condition == 0){ var message = "Deactivate"; }
+    var r = confirm('Are you sure to '+ message + ' this user?')
+    if(r == true)
+    {
+      var action = 'act_dec';
+      var ac_dc_user_id = user_id;
+      $.ajax({
+        type:'POST',
+        data:{action, condition, ac_dc_user_id},
+        url:'./API/Action-User.php',
+        success:function(html){
+          if(html == "1")
+          {
+            alert("User is activated");
+          }
+          else
+          {
+            alert("User is deactivated")
+          }
+          load_users();
+        }
+      }); 
+    }
+  }
 </script>
 <script>
   let darkmode = localStorage.getItem("darkmode");

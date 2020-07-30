@@ -150,11 +150,11 @@ class country
                     {
                         echo '
                         <tr>
-                            <td>'.$i.'</td>
-                            <td>'.$row["Client_Name"].'</td>
-                            <td>'.$row["Client_Code"].'</td>
-                            <td>'.$row["Client_SPOC"].'</td>
-                            <td>'.$row["Live_DateDate"].'</td>
+                            <td class="tablehead1">'.$i.'</td>
+                            <td class="tablehead1">'.$row["Client_Name"].'</td>
+                            <td class="tablehead1">'.$row["Client_Code"].'</td>
+                            <td class="tablehead1">'.$row["Client_SPOC"].'</td>
+                            <td class="tablehead1">'.$row["Live_DateDate"].'</td>
                             <td class="text-primary tablehead1">
                             '.@$block_btn.'
                               <ul class="list_none" style="padding:0;" >

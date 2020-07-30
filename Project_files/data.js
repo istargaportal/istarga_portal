@@ -3,10 +3,10 @@ let passwordInput = document.querySelector("[name='Password']")
 eye.onclick = () => {
   if (passwordInput.type == "text") {
     passwordInput.type = "password"
-    eye.innerHTML = "<i class='fas fa-eye-slash'></i>"
+    eye.innerHTML = "<i class='fas fa-eye'></i>"
   } else { 
     passwordInput.type = "text"
-    eye.innerHTML = "<i class='fas fa-eye'></i>"
+    eye.innerHTML = "<i class='fas fa-eye-slash'></i>"
   }
 }
 

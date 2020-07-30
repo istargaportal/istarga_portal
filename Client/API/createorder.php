@@ -1,7 +1,6 @@
 <?php
 
-
-require_once "../config/config.php";
+require_once "../../config/config.php";
 
 #---------------------<---Code Written and Designed By Priyanshu Raghuvanshi--->-----------------------#
 
@@ -10,7 +9,6 @@ $db=$get_connection->connect();
 
 class createorder
 {
-
     public function __construct($db)
     {
         $this->conn=$db;
@@ -49,8 +47,6 @@ class createorder
                 $contactable="-1";
             }
 
-
-
             $query="INSERT INTO `order` SET      
             `first_Name`='".$data['First_Name']."',
             `middle_Name`='".$data['Middle_Name']."',
@@ -78,46 +74,12 @@ class createorder
             `client_id`='".$data['user_id']."'";
 
             $result=$this->conn->query($query);
-
-            if ($result === TRUE) {
-                $last_id = $this->conn->insert_id;
-                if(isset($_FILES["myfiles"]))
-                {
-                    foreach($_FILES["myfiles"]["tmp_name"] as $key=>$value){
-                        $targetpath="../uploads/" . basename($_FILES["myfiles"]["name"][$key]);
-                        move_uploaded_file($value,$targetpath);
-                    }
-
-                    $arr=$_FILES["myfiles"]["name"];
-                    for($i=0;$i<=count($arr)-1;$i++)
-                    {
-                        $qwe="INSERT INTO `document_list` SET
-                        `document_name`='".$arr[$i]."',
-                        `client_id`='".$data['user_id']."',
-                        `order_id`='".$last_id."'";
-
-                        $this->conn->query($qwe);
-                    }
-
-                }
-
-
                 echo "1";
-
             } else {
-                echo "Error: " . $query . "<br>" . $this->conn->error;
-
-                echo "0";
+              echo "0";
             }
-
-
         }
-
-
-
-
     }
-
 }
 
 $basic_details=new createorder($db);

@@ -8,7 +8,7 @@ $data = json_decode($json_data, true);
 
 
 
-require_once "../config/config.php";
+require_once "../../config/config.php";
 
 #---------------------<---Code Written and Designed By Priyanshu Raghuvanshi--->-----------------------#
 

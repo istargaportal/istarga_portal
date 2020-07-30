@@ -33,12 +33,12 @@ while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     $i++;
     echo '
     <tr>
-        <td>'.$i.'</td>
-        <td class="form_left">'.$row["package_name"].'</td>
-        <td>'.$row["name"].'</td>
-        <th>'.$all_services.'</td>
-        <th class="form_right">'.$price.' '.$currency.'</td>
-        <td>
+        <td class="tablehead1">'.$i.'</td>
+        <td class="tablehead1 form_left">'.$row["package_name"].'</td>
+        <td class="tablehead1">'.$row["name"].'</td>
+        <td class="tablehead1">'.$all_services.'</td>
+        <td class="tablehead1 form_right">'.$price.' '.$currency.'</td>
+        <td class="tablehead1">
             <a href="package.php?id='.base64_encode($row["id"]).'" title="Edit Package" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>
             <a onclick="delete_package('.$row["id"].')" title="Delete Package" class="btn btn-xs btn-round btn-danger"><i class="material-icons icon">delete</i></a>
         </td>

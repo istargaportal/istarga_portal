@@ -122,7 +122,7 @@ include 'Header.php';
               </div>
               <div class="card-body">
                 <div class="table-responsive" style="overflow-y: hidden;">
-                  <div id='table'></div>
+                  <div id='data_table'></div>
                 </div>
               </div>
             </div>

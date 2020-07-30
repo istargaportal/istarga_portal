@@ -1,6 +1,79 @@
 <?php
-$page_name = "Add User";
-$action = "add";
+
+require_once "../config/config.php";
+
+$get_connection=new connectdb;
+$db=$get_connection->connect();
+if(isset($_GET['edit_user_id']))
+{
+  $edit_user_id = base64_decode($_GET['edit_user_id']);
+  $page_name = "Edit User";
+  $action = "edit";
+  $sq="SELECT prefix, first_name, middle_name, last_name, date_of_birth, employee_id,  permanent_address, temporary_address, country_id, state_id, city_id, pincode, timezone_id, email_id, contact_number, alternate_contact, adhar_number, pan_number, passport_number, username, password, password_mail_to, bank_name, account_number, ifsc_code, role_id, status, date_of_join, profile_pic, adhar_file, pan_file, passport_file FROM user_master WHERE user_id = '$edit_user_id'  ";
+  $resul = mysqli_query($db,$sq); 
+  if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+  {
+    $prefix = $row['prefix'];
+    $first_name = $row['first_name'];
+    $middle_name = $row['middle_name'];
+    $last_name = $row['last_name'];
+    $date_of_birth = $row['date_of_birth'];
+    $employee_id = $row['employee_id'];
+    $permanent_address = $row['permanent_address'];
+    $temporary_address = $row['temporary_address'];
+    $country_id = $row['country_id'];
+    $state_id = $row['state_id'];
+    $city_id = $row['city_id'];
+    $pincode = $row['pincode'];
+    $timezone_id = $row['timezone_id'];
+    $email_id = $row['email_id'];
+    $contact_number = $row['contact_number'];
+    $alternate_contact = $row['alternate_contact'];
+    $adhar_number = $row['adhar_number'];
+    $pan_number = $row['pan_number'];
+    $passport_number = $row['passport_number'];
+    $username = $row['username'];
+    $password = $row['password'];
+    $password_mail_to = $row['password_mail_to'];
+    $bank_name = $row['bank_name'];
+    $account_number = $row['account_number'];
+    $ifsc_code = $row['ifsc_code'];
+    $role_id = $row['role_id'];
+    $status = $row['status'];
+    $date_of_join = $row['date_of_join'];
+    $profile_pic = $row['profile_pic'];
+    $adhar_file = $row['adhar_file'];
+    $pan_file = $row['pan_file'];
+    $passport_file = $row['passport_file'];
+
+    $prefix_mr_sel = $prefix_mrs_sel = $prefix_ms_sel = "";
+    if($prefix == "Mr.") { $prefix_mr_sel = "selected"; }
+    if($prefix == "Mrs.") { $prefix_mrs_sel = "selected"; }
+    if($prefix == "Ms.") { $prefix_ms_sel = "selected"; }
+    
+    if($profile_pic != ''){ $profile_pic = "src='assets/uploads/".$profile_pic."'"; }
+    if($adhar_file != ''){ $adhar_file = "src='assets/uploads/".$adhar_file."'"; }
+    if($pan_file != ''){ $pan_file = "src='assets/uploads/".$pan_file."'"; }
+    if($passport_file != ''){ $passport_file = "src='assets/uploads/".$passport_file."'"; }
+
+    $role_id_1 = $role_id_2 = $role_id_3 = "";
+    if($role_id == "1"){ $role_id_1 = "selected"; }
+    if($role_id == "2"){ $role_id_2 = "selected"; }
+    if($role_id == "3"){ $role_id_3 = "selected"; }
+
+    $status_1 = $status_2 = "";
+    if($status == "1"){ $status_1 = "selected"; }
+    if($status == "2"){ $status_2 = "selected"; }
+    
+  }
+  $page_template = "warning";
+}
+else
+{
+  $page_name = "Add User";
+  $action = "add";
+  $page_template = "primary";
+}
 include 'Header.php';
 ?>
 <div class="content">
@@ -8,7 +81,7 @@ include 'Header.php';
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header card-header-primary">
+          <div class="card-header card-header-<?php echo @$page_template; ?>">
             <h4 class="card-title"><?php echo @$page_name; ?></h4>
           </div>
           <div class="card-body">
@@ -20,28 +93,28 @@ include 'Header.php';
                     <label style="font-size: 13px;" class="bmd-label-floating">Title <i class="fa fa-star"></i></label>
                     <select style="margin-top: 2%;" name="prefix" id="Title" class="browser-default custom-select" required>
                       <option selected="selected" hidden value="">Choose..</option>
-                      <option value="Mr.">Mr.</option>
-                      <option value="Mrs.">Mrs.</option>
-                      <option value="Ms.">Ms.</option>
+                      <option <?php echo @$prefix_mr_sel; ?> >Mr.</option>
+                      <option <?php echo @$prefix_mrs_sel; ?> >Mrs.</option>
+                      <option <?php echo @$prefix_ms_sel; ?> >Ms.</option>
                     </select>
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="bmd-label-floating">First Name <i class="fa fa-star"></i></label>
-                    <input name="first_name" type="text" class="form-control no_space" required="" />
+                    <input name="first_name" type="text" value="<?php echo @$first_name; ?>" class="form-control no_space" required="" />
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="bmd-label-floating">Middle Name </label>
-                    <input name="middle_name" type="text" class="form-control no_space" />
+                    <input name="middle_name" type="text" value="<?php echo @$middle_name; ?>" class="form-control no_space" />
                   </div>
                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label class="bmd-label-floating">Last Name <i class="fa fa-star"></i></label>
-                    <input name="last_name" type="text" class="form-control no_space" required="" />
+                    <input name="last_name" type="text" value="<?php echo @$last_name; ?>" class="form-control no_space" required="" />
                   </div>
                 </div>
               </div>
@@ -49,11 +122,11 @@ include 'Header.php';
               <div class="row">
                 <div class="col-md-2">
                   <label>Date of Birth</label>
-                  <input type="date" name="date_of_birth" id="dateofbirth" class="form-control" />
+                  <input type="date" name="date_of_birth" id="dateofbirth" class="form-control" value="<?php echo @$date_of_birth; ?>" />
                 </div>
                 <div class="col-md-2">
-                  <label>Employee ID</label>
-                  <input type="text" name="employee_id" class="form-control" />
+                  <label>Employee ID <i class="fa fa-star"></i></label>
+                  <input type="text" name="employee_id" required="" class="form-control" value="<?php echo @$employee_id; ?>" />
                 </div>
                 <div class="col-md-5">
                   <br>
@@ -65,74 +138,92 @@ include 'Header.php';
                   </div>
                 </div>
                 <div class="col-md-1">
-                  <img style="border:solid" id="myImg4" height="90" width="80" >
+                  <img style="border:solid" id="myImg4" <?php echo @$profile_pic; ?> height="90" width="80" >
                 </div>
                 
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Permanent Address <i class="fa fa-star"></i></label>
-                    <textarea name="permanent_address" rows="3" required="" class="form-control"></textarea>
+                    <input name="permanent_address" rows="3" required="" class="form-control" value="<?php echo @$permanent_address; ?>" />
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Temporary Address</label>
-                    <textarea name="temporary_address" rows="3" class="form-control"></textarea>
+                    <input name="temporary_address" rows="3" class="form-control" value="<?php echo @$temporary_address; ?>" />
                   </div>
                 </div>
                 
               </div>
               <div class="row justify-content-between" style="margin-top: 1%;">
-                <input type="hidden" id="edit_country" value="<?php echo @$country; ?>">
-                <input type="hidden" id="edit_state" value="<?php echo @$State; ?>">
-                <input type="hidden" id="edit_city" value="<?php echo @$city; ?>">
-                <input type="hidden" name="edit_id" value="<?php echo @$id; ?>">
+                <input type="hidden" id="edit_country" value="<?php echo @$country_id; ?>">
+                <input type="hidden" id="edit_state" value="<?php echo @$state_id; ?>">
+                <input type="hidden" id="edit_city" value="<?php echo @$city_id; ?>">
+                <input type="hidden" name="edit_user_id" value="<?php echo @$edit_user_id; ?>">
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <div class="form-group">
                     <label class="bmd-label-floating" style="font-size: 13px;">Country <i class="fa fa-star"></i></label>
                     <select class="browser-default custom-select" type="select" id="locality-dropdown" name="country_id" onchange="getservice(this.value)" style="color:#202940;" required>
                     </select>
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <div class="form-group">
                     <label class="bmd-label-floating"style="font-size: 13px;">State <i class="fa fa-star"></i></label>
                     <select class="browser-default custom-select" type="select" id="select_state" name="state_id" onchange="getservicename(this.value)" style="color:#202940;">
                     </select>
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <div class="form-group">
                     <label class="bmd-label-floating" style="font-size: 13px;">City <i class="fa fa-star"></i></label>
                     <select class="browser-default custom-select" type="select" id="select_city" name="city_id" onchange="getdocumentlist(this.value)" style="color:#202940;">
                     </select>
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <div class="form-group">
                     <label class="bmd-label-floating">Pincode <i class="fa fa-star"></i></label>
-                    <input name="pincode" type="text" class="form-control" />
+                    <input name="pincode" type="text" class="form-control" value="<?php echo @$pincode; ?>" />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>TimeZone <i class="fa fa-star"></i></label>
+                    <select class="browser-default chosen-select custom-select" required="" name="timezone_id" id="timezone_id">
+                      <option value="">Select</option>
+                      <?php
+                        $sq="SELECT id, value, label FROM timezones ";
+                        $resul = mysqli_query($db,$sq); 
+                        while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                        {
+                          $selected = "";
+                          if($timezone_id == $row['id']) { $selected = "selected"; }
+                          echo '<option '.$selected.' value="'.$row['id'].'">'.$row['value'].' '.$row['label'].'</option>';
+                        }
+                      ?>
+                    </select>
                   </div>
                 </div>
               </div>
               <div class="row justify-content-between" style="margin-top: 1%;">
-                <div class="col-md-3">
+                <div class="col-md-5">
                   <div class="form-group">
                     <label class="bmd-label-floating">Email ID <i class="fa fa-star"></i></label>
-                    <input name="email_id" type="email" class="form-control" required="" />
+                    <input name="email_id" type="email" class="form-control" required="" value="<?php echo @$email_id; ?>" />
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <div class="form-group">
                     <label class="bmd-label-floating">Contact Number <i class="fa fa-star"></i></label>
-                    <input name="contact_number" type="number" class="form-control" required="" />
+                    <input name="contact_number" type="number" class="form-control" required="" value="<?php echo @$contact_number; ?>" />
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <div class="form-group">
                     <label class="bmd-label-floating">Alternate Contact Number</label>
-                    <input name="alternate_contact" type="number" class="form-control" />
+                    <input name="alternate_contact" type="number" class="form-control" value="<?php echo @$alternate_contact; ?>" />
                   </div>
                 </div>
               </div>                       
@@ -140,7 +231,7 @@ include 'Header.php';
                 <div class="col-md-3" style="padding-right: 0;">
                   <div class="form-group">
                     <label class="bmd-label-floating">Adhar Number</label>
-                    <input name="adhar_number" type="text" class="form-control" />
+                    <input name="adhar_number" type="text" class="form-control" value="<?php echo @$adhar_number; ?>" />
                   </div>
                 </div>  
                 <div class="col-md-1" style="padding: 0;">
@@ -153,7 +244,7 @@ include 'Header.php';
                 <div class="col-md-3" style="padding-right: 0;">
                   <div class="form-group">
                     <label class="bmd-label-floating">PAN Number</label>
-                    <input name="pan_number" type="text" class="form-control" />
+                    <input name="pan_number" type="text" class="form-control" value="<?php echo @$pan_number; ?>" />
                   </div>
                 </div>  
                 <div class="col-md-1" style="padding: 0;">
@@ -166,7 +257,7 @@ include 'Header.php';
                 <div class="col-md-3" style="padding-right: 0;">
                   <div class="form-group">
                     <label class="bmd-label-floating">Passport</label>
-                    <input name="passport_number" type="text" class="form-control" />
+                    <input name="passport_number" type="text" class="form-control" value="<?php echo @$passport_number; ?>" />
                   </div>
                 </div>  
                 <div class="col-md-1" style="padding: 0;">
@@ -180,17 +271,17 @@ include 'Header.php';
               <div class="row">
                 <div class="col-md-4">
                   <div class="col-md-4">
-                    <img style="border:solid" id="myImg1" height="90" width="80" >
+                    <img style="border:solid" id="myImg1" <?php echo @$adhar_file; ?> height="90" width="80" >
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="col-md-4">
-                    <img style="border:solid" id="myImg2" height="90" width="80" >
+                    <img style="border:solid" id="myImg2" <?php echo @$pan_file; ?> height="90" width="80" >
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="col-md-4">
-                    <img style="border:solid" id="myImg3" height="90" width="80" >
+                    <img style="border:solid" id="myImg3" <?php echo @$passport_file; ?> height="90" width="80" >
                   </div>
                 </div>
               </div>
@@ -205,19 +296,26 @@ include 'Header.php';
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Username <i class="fa fa-star"></i></label>
-                          <input name="username" type="text" class="form-control" required="" />
+                          <input name="username" type="text" class="form-control" required="" value="<?php echo @$username; ?>" />
                         </div>
                       </div>
+
                       <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Password <i class="fa fa-star"></i></label>
-                          <input name="password" type="password" class="form-control" required="" />
+                        <div class="form-group bmd-form-group">
+                          <label for="password" class="bmd-label-floating">Password <i class="fa fa-star"></i></label>
+                          <div class="input-group">
+                            <input name="password" type="password" class="form-control" autocomplete="off" required value="<?php echo @$password; ?>" >
+                            <div class="input-group-addon eye">
+                              <i class="fas fa-eye" aria-hidden="true"></i>
+                            </div>
+                          </div>
                         </div>
                       </div>
+                      
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Password Mail To <i class="fa fa-star"></i></label>
-                          <input id="passwordMailTo" name="password_mail_to" type="email" class="form-control" required />
+                          <input id="passwordMailTo" name="password_mail_to" type="email" class="form-control" required value="<?php echo @$password_mail_to; ?>" />
                         </div>
                       </div>
                     </div>
@@ -236,19 +334,19 @@ include 'Header.php';
                         <div class="col-md-4">
                           <div class="form-group">
                             <label  class="bmd-label-floating">Bank Name</label>
-                            <input name="bank_name" type="text" class="form-control" />
+                            <input name="bank_name" type="text" class="form-control" value="<?php echo @$bank_name; ?>" />
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
                             <label class="bmd-label-floating">Account Number</label>
-                            <input name="account_number" type="text" class="form-control" />
+                            <input name="account_number" type="text" class="form-control" value="<?php echo @$account_number; ?>" />
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
                             <label class="bmd-label-floating">IFSC Code</label>
-                            <input name="ifsc_code" type="text" class="form-control" />
+                            <input name="ifsc_code" type="text" class="form-control" value="<?php echo @$ifsc_code; ?>" />
                           </div>
                         </div>
                       </div>
@@ -271,9 +369,9 @@ include 'Header.php';
                                 <label style="font-size: 13px;" class="bmd-label-floating">Groups <i class="fa fa-star"></i></label>
                                 <select style="margin-top: 2%;" name="role_id" class="browser-default custom-select" required>
                                   <option selected="selected" hidden value="">Choose..</option>
-                                  <option value=1>OF</option>
-                                  <option value=2>QC</option>
-                                  <option value=3>Vendor</option>
+                                  <option <?php echo @$role_id_1; ?> value=1>OF</option>
+                                  <option <?php echo @$role_id_2; ?> value=2>QC</option>
+                                  <option <?php echo @$role_id_3; ?> value=3>Vendor</option>
                                 </select>
                               </div>
                             </div>
@@ -282,21 +380,30 @@ include 'Header.php';
                                 <label style="font-size: 13px;" class="bmd-label-floating">Status <i class="fa fa-star"></i></label>
                                 <select style="margin-top: 2%;" name="status" class="browser-default custom-select">
                                   <option selected="selected" hidden value="">Choose..</option>
-                                  <option value=1>Active</option>
-                                  <option value=0>Inactive</option>
+                                  <option <?php echo @$status_1; ?> value=1>Active</option>
+                                  <option <?php echo @$status_2; ?> value=0>Inactive</option>
                                 </select>
                               </div>
                             </div>
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label>Date of Joining</label>
-                                <input type="date" name="date_of_join" class="form-control" />
+                                <input type="date" name="date_of_join" class="form-control" value="<?php echo @$date_of_join; ?>" />
                               </div>
                             </div>
                           </div>
                           <div class="col-md-12 form_center" > 
                             <br>
-                            <a href="javascript:save_user()" class="btn btn-success btn-sm" ><i class="fa fa-save"></i> Save</a>
+                            <?php 
+                              if(isset($_GET['edit_user_id']))
+                              {
+                                echo '<a href="javascript:save_user()" class="btn btn-warning btn-sm" ><i class="fa fa-save"></i> Update</a>';
+                              }
+                              else
+                              {
+                                echo '<a href="javascript:save_user()" class="btn btn-success btn-sm" ><i class="fa fa-save"></i> Save</a>';
+                              }
+                            ?>
                             <a href="" class="btn btn-primary btn-sm"><i class="fa fa-remove"></i> Reset</a>
                             <a href="Modify-User.php" class="btn btn-default btn-sm"><i class="fa fa-remove"></i> Cancel</a>
                           </div>
@@ -497,6 +604,16 @@ include 'Header.php';
     })
   }
 
+  <?php
+    if(isset($_GET['edit_user_id']))
+    {
+      echo '
+        getservice('.@$country_id.');
+        getservicename('.@$state_id.');
+      ';
+    }
+  ?>
+
   function save_user()
   {
     var error = 0;
@@ -513,8 +630,12 @@ include 'Header.php';
         }
       }
     })
-
-    if(error == 0)
+    var timezone_id = $('#timezone_id').val();
+    if(timezone_id == "")
+    {
+      alert('Please select timezone!');
+    }
+    else if(error == 0)
     {
       var myform = document.getElementById("add_user_form");
       var fd = new FormData(myform );
@@ -529,11 +650,12 @@ include 'Header.php';
           if(html == "inserted")
           {
             alert('User added successfully!');
-            // location.reload();
+            location.reload();
           }
           else if(html == "updated")
           {
             alert('User updated successfully!');
+            window.location.href = "Modify-User.php";
           }
           else if(html == "already")
           {
@@ -545,6 +667,18 @@ include 'Header.php';
           }
         }
       });
+    }
+  }
+
+  let eye = document.querySelector(".eye")
+  let passwordInput = document.querySelector("[name='password']")
+  eye.onclick = () => {
+    if (passwordInput.type == "text") {
+      passwordInput.type = "password"
+      eye.innerHTML = "<i class='fas fa-eye'></i>"
+    } else { 
+      passwordInput.type = "text"
+      eye.innerHTML = "<i class='fas fa-eye-slash'></i>"
     }
   }
 

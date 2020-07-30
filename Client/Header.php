@@ -19,7 +19,7 @@ else
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Dashboard
+    <?php echo @$page_name; ?>
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
   name='viewport' />
@@ -33,186 +33,370 @@ else
   <link href="assets/demo/demo.css" rel="stylesheet" />
   <!--Switching modes-->
   <link rel="stylesheet" href="assets/css/style.css">
-<!-- <style>
-ul {list-style-type: none;}
-body {font-family: Verdana, sans-serif;}
 
-.month {
-  padding: 70px 25px;
-  width: 100%;
-  background: #202940;
-  text-align: center;
-}
+  <style type="text/css">
+    .tablehead1{
+      border:none !important;
+      background: transparent !important; 
+    }
+    b{ font-weight: bold !important; }
+    .form_center{ text-align: center; }
+    .form_left{ text-align: left; }
+    .form_right{ text-align: right; }
+    .custom-select{
+      margin-top: 0 !important;
+    }
+    .btn-small{
+      font-size: 8pt !important;
+      padding: 3px 5px !important;
+    }
+    .btn-xs{
+      font-size: 10pt !important;
+      padding: 6px 8px !important;
+    }
+    .btn-xs .material-icons{
+      font-size: 10pt !important;
+    }
 
-.month ul {
-  margin: 0;
-  padding: 0;
-}
+    .btn-round{
+      border-radius: 100%;
+    }
+    .btn-danger{
+      background:#eb1e2f !important;
+    }
+    .btn-warning i, .btn-danger i{
+      color: #fff !important;
+    }
+    .btn-warning{
+      background:#feaf31 !important;
+    }
 
-.month ul li {
-  color: white;
-  font-size: 20px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-}
+    .dropdown-item{
+      cursor: pointer;
+    }
+    .btn-success{
+      background:#346bd6 !important
+    }
+    .btn-success i, .btn-primary i{
+      color: #fff !important;
+    }
+    .btn-default i{
+      color: #000 !important;
+    }
 
-.month .prev {
-  float: left;
-  padding-top: 10px;
-}
+    .btn-default{
+      color: #000 !important;
+      background:#ccc !important;
+    }
+    .btn-sm{
+      padding: 7px 10px !important
+    }
+    .btn-sm .material-icons{
+      font-size: 11pt;
+    }
+    .container_checkbox {
+      display: block;
+      position: relative;
+      float: left;
+      padding: 3px 10px;
+      padding-left: 35px;
+      cursor: pointer;
+      font-size: 12pt;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      background: #fff;
+      border:solid 1px #aaa;
+      border-radius: 40px;
+      margin-right: 4px;
+    }
 
-.month .next {
-  float: right;
-  padding-top: 10px;
-}
+    .container_checkbox input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
 
-.weekdays {
-  margin: 0;
-  padding: 10px 0;
-  background-color: #ddd;
-}
+    .checkmark {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      height: 25px;
+      width: 25px;
+      background-color: #eee;
+      border-radius: 50%;
+    }
 
-.weekdays li {
-  display: inline-block;
-  width: 12.6%;
-  color: #666;
-  text-align: center;
-}
+    .container_checkbox:hover input ~ .checkmark {
+      background-color: #ccc;
+    }
 
-.days {
-  padding: 10px 0;
-  background: #eee;
-  margin: 0;
-}
+    .container_checkbox input:checked ~ .checkmark {
+      background-color: #2196F3;
+    }
 
-.days li {
-  list-style-type: none;
-  display: inline-block;
-  width: 13.6%;
-  text-align: center;
-  margin-bottom: 5px;
-  font-size:12px;
-  color: #777;
-}
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
 
-.days li .active {
-  padding: 5px;
-  background: #1abc9c;
-  color: white !important
-}
+    .container_checkbox input:checked ~ .checkmark:after {
+      display: block;
+    }
 
-/* Add media queries for smaller screens */
-@media screen and (max-width:720px) {
-  .weekdays li, .days li {width: 13.1%;}
-}
+    .container_checkbox .checkmark:after {
+      top: 9px;
+      left: 9px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: white;
+    }
+    .material_checkbox {
+      display: block;
+      position: relative;
+      padding: 8px 10px;
+      padding-left: 35px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-size: 12pt;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      border: solid 1px #000;
+      float: left;
+      border-radius: 45px;
+    }
+    .material_checkbox input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
 
-@media screen and (max-width: 420px) {
-  .weekdays li, .days li {width: 12.5%;}
-  .days li .active {padding: 2px;}
-}
+    .material_checkbox:hover input ~ .checkmark {
+      background-color: #ccc;
+    }
+    .material_checkbox input:checked ~ .checkmark {
+      background-color: #2196F3;
+    }
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+    .material_checkbox input:checked ~ .checkmark:after {
+      display: block;
+    }
+    .material_checkbox .checkmark:after {
+      left: 8px;
+      top: 2px;
+      width: 10px;
+      height: 15px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
 
-@media screen and (max-width: 290px) {
-  .weekdays li, .days li {width: 12.2%;}
-}
+    .chosen-container{width:100%!important}.chosen-container-multi .chosen-choices,.chosen-container-single .chosen-single{padding:5px 8px!important;background:linear-gradient(#fff 20%,#f6f6f6 50%,#eee 52%,#f4f4f4 100%)!important}.chosen-container-single .chosen-single div{top:4px!important}.chosen-container .chosen-drop{z-index:9999999!important}
+    .chosen-container-single .chosen-single{
+      padding: 4px 5px !important;
+      height: 35px !important;
+    }
+    .list_none ul, .list_none li
+    {
+      list-style: none !important;
+    }
+    .disabled
+    {
+      pointer-events:none !important;
+      cursor: not-allowed !important;
+      opacity: 0.7 !important;
+      filter: blur(0.7px);
+      outline: none !important;
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;            
+    }
+    
+    .dark-edition .table>thead>tr>th, .dark-edition .table>tbody>tr>th, .dark-edition .table>tfoot>tr>th, .dark-edition .table>thead>tr>td, .dark-edition .table>tbody>tr>td, .dark-edition .table>tfoot>tr>td{
+      padding: 4px !important;
+    }
+    .dark-edition .table>thead>tr>td, .dark-edition .table>tbody>tr>td, .dark-edition .table>tfoot>tr>td{
+      /*color: #000;*/
+    }
+    .sidebar[data-background-color="black"] .nav .nav-item .nav-link,  .dark-edition .sidebar[data-background-color="black"] .nav li:not(.active) a, .dark-edition .sidebar[data-background-color="black"] .nav li:not(.active) .dropdown-menu a{
+      margin: 0;
+    }
+    .sidebar .nav{
+      margin-top: 0;
+    }
+    .nav-link .material-icons{
+      color: #9094a3 !important;
+    }
+    .list-unstyled{
+      background: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3));
+    }
+    .chosen-container-multi .chosen-choices li.search-field{
+      width: auto;
+      background:transparent;
+    }
+    .dark-edition .form-control, textarea, input, select
+    {
+      box-shadow: 0 0 4px #ccc;
+    }
+    textarea{
+      color: #000;
+    }
 
-</style> -->
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 99999; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
 
-<style type="text/css">
-  .container_checkbox {
-    display: block;
-    position: relative;
-    float: left;
-    padding: 3px 10px;
-    padding-left: 35px;
-    cursor: pointer;
-    font-size: 22px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background: #fff;
-    border:solid 1px #aaa;
-    border-radius: 40px;
-    margin-right: 4px;
-  }
+    .modal-content {
+      background-color: #fefefe;
+      padding: 10px;
+      border: 1px solid #888;
+      width: 80%;
+    }
 
-  /* Hide the browser's default radio button */
-  .container_checkbox input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-  }
+    .close {
+      color: #000;
+      float: right;
+      font-size: 16pt;
+      font-weight: bold;
+      float: right;
+      padding: 0 4px;
+      transition: 0.4s all ease;
+    }
+    .close .fa{
+      color: #000;
+    }
+    .close:hover,
+    .close:focus {
+      font-size: 20pt;
+    }
+    .no_padding{
+      padding: 0;
+    }
+    .modal .tile-stats,.modal-content{-webkit-animation-name:animatetop!important;-webkit-animation-duration:.2s!important;animation-name:animatetop!important;animation-duration:.2s!important}@-webkit-keyframes animatetop{from{transform:scale(0)}to{transform:scale(1)}}@keyframes animatetop{from{transform:scale(0)}to{transform:scale(1)}}
+    .fa-star{
+      font-size: 8pt !important;
+      color: red;
+    }
+  </style>
+  <style type="text/css">
+    .container_checkbox {
+      display: block;
+      position: relative;
+      float: left;
+      padding: 3px 10px;
+      padding-left: 35px;
+      cursor: pointer;
+      font-size: 15px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      background: #fff;
+      border:solid 1px #aaa;
+      border-radius: 40px;
+      margin-right: 4px;
+    }
 
-  /* Create a custom radio button */
-  .checkmark {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    height: 25px;
-    width: 25px;
-    background-color: #eee;
-    border-radius: 50%;
-  }
+    /* Hide the browser's default radio button */
+    .container_checkbox input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
 
-  /* On mouse-over, add a grey background color */
-  .container_checkbox:hover input ~ .checkmark {
-    background-color: #ccc;
-  }
+    /* Create a custom radio button */
+    .checkmark {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      height: 20px;
+      width: 20px;
+      background-color: #eee;
+      border-radius: 50%;
+    }
 
-  /* When the radio button is checked, add a blue background */
-  .container_checkbox input:checked ~ .checkmark {
-    background-color: #2196F3;
-  }
+    /* On mouse-over, add a grey background color */
+    .container_checkbox:hover input ~ .checkmark {
+      background-color: #ccc;
+    }
 
-  /* Create the indicator (the dot/circle - hidden when not checked) */
-  .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-  }
+    /* When the radio button is checked, add a blue background */
+    .container_checkbox input:checked ~ .checkmark {
+      background-color: #2196F3;
+    }
 
-  /* Show the indicator (dot/circle) when checked */
-  .container_checkbox input:checked ~ .checkmark:after {
-    display: block;
-  }
+    /* Create the indicator (the dot/circle - hidden when not checked) */
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
 
-  /* Style the indicator (dot/circle) */
-  .container_checkbox .checkmark:after {
-    top: 9px;
-    left: 9px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: white;
-  }
-  /*# sourceMappingURL=login.css.map */
+    /* Show the indicator (dot/circle) when checked */
+    .container_checkbox input:checked ~ .checkmark:after {
+      display: block;
+    }
 
-  [type="date"] {
-    background: url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png) 97% 50% no-repeat;
-  }
+    /* Style the indicator (dot/circle) */
+    .container_checkbox .checkmark:after {
+      top: 6px;
+      left: 6px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: white;
+    }
+    /*# sourceMappingURL=login.css.map */
 
-  [type="date"]::-webkit-inner-spin-button {
-    display: none;
-  }
+    [type="date"] {
+      background: url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png) 97% 50% no-repeat;
+    }
 
-  [type="date"]::-webkit-calendar-picker-indicator {
-    opacity: 100;
-  }
+    [type="date"]::-webkit-inner-spin-button {
+      display: none;
+    }
 
-  .table {
-    overflow-x: auto;
-    white-space: nowrap;
-  }
+    [type="date"]::-webkit-calendar-picker-indicator {
+      opacity: 100;
+    }
 
-  .bg-secondary {
-    background-color: white !important;
-    color: black !important;
-  }
-  select{
-    padding: 4px !important;
-    height: 35px !important;
-  }
-</style>  
+    .table {
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .bg-secondary {
+      background-color: white !important;
+      color: black !important;
+    }
+    select{
+      padding: 4px !important;
+      height: 35px !important;
+    }
+  </style>  
 </head>
 
 <body class="dark-edition">

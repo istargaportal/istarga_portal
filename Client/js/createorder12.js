@@ -6,7 +6,6 @@ let dataToShow = {}
 const preview = document.querySelector(".preview-modal")
 const previewCancel = document.querySelectorAll(".preview-btns button[type='button']")[1]
 const previewBtn = document.querySelector("#preview")
-// const previewCancel = document.querySelector("#preview-cancel")
 const tbody = document.querySelector(".preview-modal tbody")
 
 
@@ -42,29 +41,25 @@ const getFormData = () => {
 			checked = 1
 		}
 		data[value.name] = checked
-		console.log(checked)
 		dataToShow[value.getAttribute('data-name')] = checked == 1 ? "Yes" : "No"
 
 	}) : false
 	selectArray ? selectArray.map(value => {
-		console.log(value.name)
 
 		data[value.name] = value.value
 		value.options[value.selectedIndex] ? 	dataToShow[value.getAttribute('data-name')] = value.options[value.selectedIndex].text : false
 	}) : false
-	var selected = [];
-	for (var option of document.getElementById('exampleFormControlSelect5').options) {
-		if (option.selected) {
-			selected.push(option.value);
-		}
-	}
-	data["document_list_view"] = selected
-	dataToShow["Document List View"] = selected
+	// var selected = [];
+	// for (var option of document.getElementById('exampleFormControlSelect5').options) {
+	// 	if (option.selected) {
+	// 		selected.push(option.value);
+	// 	}
+	// }
+	// data["document_list_view"] = selected
+	// dataToShow["Document List View"] = selected
 	// inputCurrency ? data["currency"] = inputCurrency.value : false
 	textarea ? data["comments"] = textarea.value : false
 	textarea ? dataToShow["comments"] = textarea.value : false
-
-	console.log(data)
 }
 
 const previewAppear = (e) => {
@@ -72,40 +67,20 @@ const previewAppear = (e) => {
 	preview.classList.add("active")
 	getFormData()
 	tbody.innerHTML = ''
-	console.log(dataToShow)
 	for (let x in dataToShow) {
-		console.log("dataToShow", x, dataToShow[x])
 		tbody.innerHTML += `
 			<tr>
 				<td style="color: #3C4858 !important">${x}</td>
 				<td style="color: #3C4858 !important">${dataToShow[x]}</td> 
-			</tr>
-		`
+			</tr>`;
 	}
 }
 
-// const submit = (url) => {
-// 	return e => {
-// 		e.preventDefault()
-
-// 		sendRequest(url)
-
-// 		data = {}
-// 	}
-// }
-
-
-
 previewBtn.addEventListener("click", previewAppear)
 previewCancel.addEventListener("click", () => {
-	console.log('cancel')
 	preview.classList.remove("active")
 })
 
-console.log("working 2")
-
-
-// cxvnvmc
 const inpfile = document.getElementById('filexzc');
 let form = document.getElementById('ajax')
 let placeOrder = document.querySelector("#place-order")
@@ -116,11 +91,6 @@ placeOrder.onclick = (e) => {
 }
 form.addEventListener('submit', function (e) {
 	e.preventDefault();
-	// const formdata = new FormData(this);
-
-	// for (const file of inpfile.files) {
-	// 	formdata.append("myfiles[]", file);
-	// }	
 	getFormData()
 	console.log(data)
 	fetch('./API/createorder.php', {
@@ -130,13 +100,9 @@ form.addEventListener('submit', function (e) {
 		.then(function (response) {
 			return response.text();
 		}).then(function (text) {
-			//	console.log(text);
 			if (text == "1") {
 				alert("Successfully Submitted");
 				location.reload()
-				//	window.location.href="Dashboard.php";
-			} else {
-				// console.log("laad chat liye");
 			}
 		})
 		.catch(console.error);
@@ -571,7 +537,7 @@ function getservicename(x) {
 }
 
 let documentname = document.getElementById('documentlist');
-documentname.length = 0;
+// documentname.length = 0;
 
 let defaultdocumentname = document.createElement('option');
 defaultdocumentname.text = 'Choose Document Name';
@@ -611,6 +577,3 @@ function getdocumentlist(d) {
 		}
 	})
 }
-
-
-

@@ -50,14 +50,14 @@ class country
                     $inc++;
                     echo '
                     <tr>
-                        <td>'.$inc.'</td>
-                        <td class="form_left">'.$row['Client_Name'].'</td>
-                        <td>'.$row['name'].'</td>
-                        <td>'.$row['Service_type_name'].'</td>
-                        <td>'.$row['service_name'].'</td>
-                        <td class="form_right">'.$row['price'].' <b>'.$row['currency'].'</b></td>
-                        <td class="form_left">'.@$all_documents.'</td>
-                        <td>'.$row['SLA'].'</td>
+                        <td class="tablehead1">'.$inc.'</td>
+                        <td class="form_left tablehead1">'.$row['Client_Name'].'</td>
+                        <td class="tablehead1">'.$row['name'].'</td>
+                        <td class="tablehead1">'.$row['Service_type_name'].'</td>
+                        <td class="tablehead1">'.$row['service_name'].'</td>
+                        <td class="form_right tablehead1">'.$row['price'].' <b>'.$row['currency'].'</b></td>
+                        <td class="form_left tablehead1">'.@$all_documents.'</td>
+                        <td class="tablehead1">'.$row['SLA'].'</td>
                         <td>
                             <a href="assignService.php?id='.base64_encode($row["id"]).'" title="Edit Assigned Service" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>
                             <a onclick="delete_assigned_service('.$row["id"].')" title="Delete Assigned Service" class="btn btn-xs btn-round btn-danger"><i class="material-icons icon">delete</i></a>
