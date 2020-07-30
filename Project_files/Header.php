@@ -300,22 +300,19 @@ if(!isset($_SESSION['email']))
       padding: 0;
     }
     .modal .tile-stats,.modal-content{-webkit-animation-name:animatetop!important;-webkit-animation-duration:.2s!important;animation-name:animatetop!important;animation-duration:.2s!important}@-webkit-keyframes animatetop{from{transform:scale(0)}to{transform:scale(1)}}@keyframes animatetop{from{transform:scale(0)}to{transform:scale(1)}}
+    .fa-star{
+      font-size: 8pt !important;
+      color: red;
+    }
   </style>
-
 </head>
 <body class="dark-edition">
 	<div id="print_result"></div>
   <div class="wrapper">
     <div class="sidebar" data-color="purple" data-background-color="black" data-image="assets/img/sidebar-2.jpg">
-      <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
-
-        Tip 2: you can also add an image using data-image tag
-      -->
       <div class="logo"> <a class="navbar-brand" href="#">
        <img src="assets/img/logo.png" width="100%" height="100%" style="margin-left: 2%;" alt="">
      </a></div>
-     <!--Side Bar-->
      <div class="sidebar-wrapper">
        <ul class="nav">
         <li class="nav-item">
@@ -337,7 +334,7 @@ if(!isset($_SESSION['email']))
           <a class="nav-link" href="./modifyClient.php"><i class="material-icons icon">launch</i> Modify Client</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="./vieworder.php"><i class="material-icons icon">launch</i> View Order</a>
+          <a class="nav-link" href="./vieworder.php"><i class="material-icons icon">launch</i> Search Order</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="./assignService.php"><i class="material-icons icon">launch</i> Assign Services</a>
@@ -404,10 +401,10 @@ if(!isset($_SESSION['email']))
     			<div class="collapse" id="user">
     				<ul class="list-unstyled nav">
     					<li class="nav-item">
-    						<a class="nav-link" name href="./AddEmployeeOffQc.php">ADD/OF/QC</a>
+    						<a class="nav-link" name href="./Add-User.php">Add User</a>
     					</li>
     					<li class="nav-item">
-    						<a class="nav-link" name href="./viewAllOFQC.php">View All OF QC</a>
+    						<a class="nav-link" name href="./Modify-User.php">Modify User</a>
     					</li>
     				</ul>
     			</div>

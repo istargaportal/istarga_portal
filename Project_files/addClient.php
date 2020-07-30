@@ -5,7 +5,7 @@ if(isset($_GET['id']))
   $page_name = "Edit Clients";
   $id = $_GET['id'];
 
-  require_once "config/config.php";
+  require_once "../config/config.php";
 
   $get_connection=new connectdb;
   $db=$get_connection->connect();
@@ -109,41 +109,21 @@ include 'Header.php';
                             <input type="hidden" name="edit_id" value="<?php echo @$id; ?>">
 
                             <label class="bmd-label-floating" style="font-size: 13px;">Country</label>
-                          <!-- <input
-                              name="Country"
-                              type="text"
-                              class="form-control"
-                              />-->
-                              <select class="browser-default custom-select" type="select" id="locality-dropdown" name="locality-dropdown" onchange="getservice(this.value)" style="color:#202940;" required>
-
-                              </select>
-
+                            <select class="browser-default custom-select" type="select" id="locality-dropdown" name="locality-dropdown" onchange="getservice(this.value)" style="color:#202940;" required>
                             </select>
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
                             <label class="bmd-label-floating"style="font-size: 13px;">State</label>
-                          <!-- <input
-                              name="State"
-                              type="text"
-                              class="form-control"
-                              />-->
                               <select class="browser-default custom-select" type="select" id="select_state" name="select_state" onchange="getservicename(this.value)" style="color:#202940;">
-
                               </select>
                             </div>
                           </div>
                           <div class="col-md-4">
                             <div class="form-group">
                               <label class="bmd-label-floating" style="font-size: 13px;">City</label>
-                          <!-- <input
-                              name="City"
-                              type="text"
-                              class="form-control"
-                              />-->
                               <select class="browser-default custom-select" type="select" id="select_city" name="select_city" onchange="getdocumentlist(this.value)" style="color:#202940;">
-
                               </select>
                             </div>
                           </div>

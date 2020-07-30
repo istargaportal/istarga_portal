@@ -1,7 +1,7 @@
 <?php
 error_reporting(0);
 
-  require_once "../config/config.php";
+require_once "../../config/config.php";
 //$con = mysqli_connect("localhost","pesrsxttfd","Demo@123","pesrsxttfd");
   
    $get_connection=new connectdb;

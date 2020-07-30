@@ -25,7 +25,6 @@ class States
 if(isset($data['service_type_id']))
 {
     $check='SELECT * FROM service_list where service_type_id="'.$data['service_type_id'].'" ';
-   // echo 'SELECT * FROM service_list where service_type_id="'.$data['service_type_id'].'" ';
     $result=$this->conn->query($check);
     if($result->num_rows>0)
     {
@@ -33,7 +32,7 @@ if(isset($data['service_type_id']))
         while($row = $result->fetch_assoc())
         {
             $states[$i]['id']=$row['id'];
-            $states[$i]['service_name']=$row['name'];
+            $states[$i]['service_name']=$row['service_name'];
             $states[$i]['service_type_id']=$row['service_type_id'];
             $states[$i]['country_id']=$row['country_id'];
            

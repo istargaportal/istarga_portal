@@ -1,0 +1,48 @@
+body {
+    background-size: cover;
+    height: 100vh;
+  }
+   .modal-bg {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.9);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s; 
+  } 
+  
+  .bg-active{
+    visibility: visible;
+    opacity: 1;
+    z-index: 10000;
+  }
+  
+  .bg-close{
+    visibility: hidden;
+    opacity: 0;
+  }
+  #modal{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background: #fff !important;
+    border-radius: 5px;
+    width: 60%;
+    height: 6 0%;
+  } 
+  
+ 
+  
+  
+  
+  
+  
+  
+  
+  

@@ -1,0 +1,415 @@
+html {
+    --btn: #9141A6;
+    --contentColor:rgba(255, 255, 255, 0.849);
+    --cardBackgroundColor:rgba(255, 255, 255, 0.897);
+    --sidebarBackground:#1f283e !important;
+    --sidebarOpacity:.77 !important;
+
+    --backgroundA:#1488CC !important;
+    --backgroundB:-webkit-linear-gradient(to right, rgb(79, 85, 196), #1488CC) !important;
+    --backgroundC:linear-gradient(to right, rgb(61, 69, 218), #1488CC) !important;
+
+    --buttonColor: rgba(159, 58, 161, 0.89) !important;
+    --buttonShadow: 8px 8px 15px rgba(0, 0, 0, 0.1) !important;
+
+    --tableColor: black !important;
+
+    --text-primary:rgba(255, 255, 255, 0.342) !important;
+
+    --textColor:black !important;
+
+    --navLinkColor:white !important;
+
+    --formControl:rgba(128, 128, 128, 0.24) !important;
+
+    --borderTable:rgba(128, 128, 128, 0.295) !important;
+
+    --blackColor:black!important;
+
+    --pannel:#D8ECD8 !important;
+
+    --navLinkColor:linear-gradient(to right, #1488CC, rgb(21, 21, 78) ) !important;
+    --navLinkopacity: 0.6 !important; 
+
+    --thColor:white !important;
+
+    --maincolor:white !important;
+
+    --innerCard:white !important;
+    --innerBorder:#D9D9D9 !important;
+    --annexureBodyColor:#DCDDE0 !important;
+
+    --OrderTableColor:#C1C2C4 !important;
+
+
+}
+
+html[data-theme='dark']{
+    --contentColor: #060c24;
+    --cardBackgroundColor:rgba(30, 41, 63, 0.651) !important;
+    --sidebarBackground : black !important ;
+    --sidebarOpacity:.78 !important;
+
+    --backgroundA:rgba(140, 63, 162, 0.904) !important;
+    --backgroundB:-webkit-linear-gradient(to right, to lrft, rgba(140, 63, 162, 0.966), rgba(128, 0, 128, 0.952), ) !important;
+    --backgroundC:linear-gradient(to right, rgb(141, 63, 162), #1488CC) !important;
+
+    --buttonColor: rgba(99, 26, 119, 0.966) !important;
+    --buttonShadow: 20px 20px 0.75 rgb(59, 111, 190) !important;
+
+    --tableColor:rgba(255, 255, 255, 0.589) !important;
+
+    --text-primary:rgba(30, 41, 63, 0.651) !important;
+
+    --textColor:rgba(255, 255, 255, 0.589) !important;
+
+    --navLinkColor:rgba(255, 255, 255, 0.712) !important;
+
+    --formControl:1px solid rgba(128, 128, 128, 0.63) !important;
+
+    --blackColor:white !important;
+    
+    --pannel:#060C24 !important;
+     
+    --navLinkColor:linear-gradient(to right, rgb(141, 63, 162), #1488CC) !important;  
+
+  
+    --thColor:rgba(255, 255, 255, 0.767) !important;
+    
+   --maincolor:#060B20 !important;
+
+   --innerCard:#1A243C !important;
+   --innerBorder:#182239 !important;
+   --annexureBodyColor:#151E36 !important;
+   --OrderTableColor: #1A243A !important;
+
+
+}
+
+
+#messageContainer1, #messageContainer2, #messageContainer3, #messageContainer4, #messageContainer5,#messageContainer6{
+background-color: var(--innerCard) !important;
+border: 2px solid var(--innerBorder)  !important;
+box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.137);
+}
+#anexureBody{
+ background-color: var(--annexureBodyColor) ;
+}
+
+#OrderTabel tr td{
+    background-color: var(--OrderTableColor) !important;
+}
+
+
+#mainColumn{
+    background-color: var(--maincolor);
+}
+
+#ChoosenLabel{
+    margin-top: 1%;
+    padding: 8px 20px;
+    border-radius: 4px;
+    border: 2px solid#007BFF !important;
+}
+
+.docUpload{
+    color: var(--textColor) !important;
+}
+thead th{
+color: var(--thColor) !important;
+text-align: center !important;
+}
+tbody tr td{
+    text-align: center !important;
+}
+
+.content{
+    background-color: var(--contentColor) !important;   
+}
+  
+table thead th{
+    font-size: 14px !important;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+table tbody tr td{
+    font-size: 13px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.card{
+    background-color: var(--cardBackgroundColor) !important;
+}
+
+.sidebar-background:after {
+    background:var(--sidebarBackground) !important;
+    opacity: var(--sidebarOpacity) !important;
+}
+
+
+div.card-header.card-header-primary,
+.navbar.navbar-transparent {
+    background: var(--backgroundA) !important;
+    /* fallback for old browsers */
+    background: var(--backgroundB)  !important;
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: var(--backgroundC)  !important;
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.btn {
+    background-color: var(--buttonColor) !important;
+    box-shadow: var(--buttonShadow) !important ;
+} 
+
+
+ th td{
+    color: var(--tableColor) !important;
+}
+
+.tablehead1{
+    background-color: var(--cardBackgroundColor) !important;
+    color: var(--tableColor) !important;
+    border-top: 1px solid var(--borderTable) !important;
+    border-bottom: 1px solid var(--borderTable) !important;
+}
+
+.text-primary{
+    background-color: var(--text-primary) !important ;
+}
+
+.bmd-label-floating{
+    color: var(--textColor) !important;
+}
+
+
+.dark-edition .text-muted, .dark-edition .bmd-help {
+    color: var(--navLinkColor) !important;
+    
+}
+
+.simple-text {
+    color: var(--navLinkColor) !important;
+    font-weight: 700 !important;
+}
+
+
+.nav-link{
+    color: white !important;
+}
+
+
+.form-control{
+    border-bottom: 2px solid  var(--formControl) !important ;
+
+}
+
+input.form-control{
+    color: var(--blackColor) !important ;
+}
+
+label {
+   color: var(--textColor) !important;
+}
+
+.icon{
+    color: var(--blackColor) !important;
+}
+
+.mainP{
+    background-color: var(--pannel) !important;
+}
+
+.nav-link:hover{
+    background: var(--navLinkColor) !important;
+    opacity: var(--navLinkopacity) !important;
+}
+
+.custom-file-label::after{
+    margin-right:30px;
+   cursor: pointer;
+   
+}
+
+.png{
+    margin-left: 20px;
+}
+
+.logo{
+    background:var(--sidebarBackground) !important;
+    /* opacity: 0.2 !important; */
+    opacity: 0.4 !important;
+    /* opacity: 0.6 !important; */
+    /* opacity: 0.5 !important; */
+
+    height: 70px;
+
+}
+
+
+
+
+
+
+
+
+
+/* .body{  
+     background-color: black !important;
+}
+
+.row{
+    background-color:rgba(30, 41, 63,0.904) !important;
+    
+}
+.tabl{
+    background-color: black !important  ;
+}
+thead.text-primary{
+    background-color:rgba(30, 41, 63, 0.904) !important;
+}
+td.text-primary{
+    background-color:rgba(30, 41, 63, 0.904) !important;
+}
+.sidebar-background:after {
+    background:  rgba(30, 41, 63, 0.925)!important
+}
+th td{
+    color: white !important;
+}
+
+.tablehead1{
+    color: rgba(255, 255, 255, 0.555) !important;
+}
+div.row {
+    color: white;
+}
+.bmd-label-floating{
+    color: rgba(255, 255, 255, 0.651) !important;
+}
+div.card-header.card-header-primary,
+.navbar.navbar-transparent{
+    background: rgb(141, 63, 162) !important;
+}
+
+.btn{
+    background: rgb(141, 63, 162) !important;
+}
+.content{
+    background-color: black;
+}
+ */
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* middle */
+    input[type=checkbox] {
+        visibility: hidden;
+        height: 0;
+        width: 0;        
+      }
+
+      input:checked + label {
+        background: rgba(159, 58, 161, 0.89) !important;
+      }
+       
+      input:checked + label:after {
+        left: calc(100% - 5px) !important;
+        transform: translateX(-100%) !important;
+      }
+
+      #toggleButton {
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100px;
+        position: relative;
+        cursor: pointer;
+        text-indent: -9999px;
+        width: 55px;
+        height: 30px;
+        background: var(--btn);
+      }
+       
+      #toggleButton:after {
+        border-radius: 50%;
+        position: absolute;
+        content: '';
+        background: #fff;
+        width: 20px;
+        height: 20px;
+        top: 5px;
+        left: 4px;
+        transition: ease-in-out 200ms;
+      }
+
+
+      html.transition,
+      html.transition *,
+      html.transition *:before,
+      html.transition *:after {
+      transition: all 750ms !important;
+      transition-delay: 0 !important;
+ }
+
+/* middle */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

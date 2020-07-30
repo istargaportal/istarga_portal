@@ -1,6 +1,6 @@
 <?php
 
-require_once "config/config.php";
+require_once "../config/config.php";
 
 $get_connection=new connectdb;
 $db=$get_connection->connect();
@@ -149,7 +149,7 @@ include 'Header.php';
                       <h4 style="color: white;" class="card-title">Assign Services</h4>
                     </div>
                     <br>
-                    <div id="table"></div>
+                    <div id="data_table"></div>
                   </div>
                 </div>
               </div>

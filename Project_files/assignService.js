@@ -176,7 +176,7 @@ function getAllAssignService(urls)
     url:urls,
     data:{load_condition},
     success:function(html){
-      $('#table').html(html);
+      $('#data_table').html(html);
       load_datatable();
     }
   });

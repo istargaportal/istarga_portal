@@ -1,0 +1,120 @@
+
+  .weekDays {
+    padding-top: 25px;
+    padding-bottom: 5px;
+    display: flex;
+    align-items: center;
+    width: 100% !important;
+  }
+  .weekDays div {
+    color: black;
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+    width:14.7%;
+    display: flex;
+    justify-content: center;
+   
+   
+  }
+  
+  .arrow{
+    margin-top: 5%;  
+  }
+  
+  .Days {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.2rem;
+   
+  }
+  
+  #DateContent{
+    background: linear-gradient( rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7) ), url("../images/new.jpg");
+    background-size: cover;
+  }
+  #DateContent div{
+      padding: 0;
+  }
+  .Days div {
+    color: black;
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.1rem;
+    width:14.2%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    transition: background-color 0.2s;
+  }
+  
+  .Days div:hover{
+    border: 1px solid #777;
+     cursor: pointer;
+  }
+  #card{
+    width: 85%;
+    margin-left: 6%;
+  }
+  
+  #cardBody{
+    padding-bottom: 0;
+    padding-right: 0;
+    padding-top:0;
+    padding-left:0;  
+    background-color: #FBFBFC;
+  }
+ 
+  #StatusDiv{
+    padding: 0;
+    padding-left: 2%;
+    background: linear-gradient( rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.7) ), url("../images/pic10.jpg");
+    background-size: cover;
+    color: rgba(255, 255, 255, 0.616);
+  }
+  
+  .date p{
+  color: rgba(255, 255, 255, 0.788);
+  margin-bottom: 15px;
+  font-size: 15px;
+  }
+  .date h1{
+    color: rgba(255, 255, 255, 0.788);
+    font-size: 28px;
+    margin-top: 15px;
+    margin-bottom: 2px;
+  }
+
+  .today {
+    background-color: rgba(240, 128, 128, 0.541);
+    cursor: pointer;
+    }
+  
+  .prev-date, .next-date{
+    opacity: 0.5;
+  }
+
+  
+  .box{
+    height: 20px; 
+    width: 20px;
+  }
+  
+  .status-div{
+    margin-top: 25%;
+    margin-left: 8%;
+  }
+
+  #Status{
+    margin-left: 8%;
+    margin-top: 30%;
+  }
+   
+
+    
+  
+    
+  
