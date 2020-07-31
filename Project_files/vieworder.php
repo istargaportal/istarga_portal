@@ -7,9 +7,6 @@ include 'Header.php';
   <div class="container-fluid">
     <div class="col-md-12">
       <div class="card card-plain">
-        <div class="card-header card-header-primary">
-          <h4 class="card-title mt-0"> Order Details</h4>
-        </div>
         <div class="card-body">
           <div class="row">
             <div class="col-md-1">

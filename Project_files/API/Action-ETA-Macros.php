@@ -52,7 +52,7 @@ if($_POST['action']=='display')
   $sr++;
   echo '
   <tr>
-    <td>'.$sr.'</td>
+    <td class="tablehead1">'.$sr.'</td>
     <td class="form_left tablehead1">
       <span id="comment_lbl_'.$row["eta_macro_id"].'">'.$row["comment"].'</span>
       <textarea class="custom-select" style="display:none;" id="comment_txt_'.$row["eta_macro_id"].'">'.$row["comment"].'</textarea>

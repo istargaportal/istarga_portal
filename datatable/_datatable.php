@@ -165,7 +165,14 @@
     opacity: 0.5;
     cursor: not-allowed !important;
   }
-  td, table, tbody, tr, #datatable_tbl, .dataTables_wrapper .dataTables_filter input{
+  .card .table tr td, .dark-edition .table>thead>tr>td, .dark-edition .table>tbody>tr>td, .dark-edition .table>tfoot>tr>td, td, table, tbody, tr, #datatable_tbl, .dataTables_wrapper .dataTables_filter input{
     background: transparent !important;
+    border:solid 1px #ddd !important;
+  }
+  tr th, tr, td, th, thead, tbody, table{
+    font-size: 9pt !important;
+  }
+  tr th{
+    border:solid 1px #fff !important;
   }
 </style>

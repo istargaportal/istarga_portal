@@ -4,7 +4,7 @@ require_once "../config/config.php";
 $get_connection=new connectdb;
 $db=$get_connection->connect();
 
-$page_name = "Email Trigger";
+$page_name = "Report Configuration";
 include 'Header.php';
 ?>
 <style type="text/css">
@@ -22,12 +22,26 @@ include 'Header.php';
           </div>
           <div class="card-body">
             <div class="row">
-              <div class="col-md-8">
-                <label>Scenario</label>
+              <div class="col-md-3">
+                <label>Client</label>
+                <select class="chosen-select" id="client_id">
+                  <option value="">Select</option>
+                  <?php
+                    $sq="SELECT id, Client_Name FROM client ORDER BY id DESC ";
+                    $resul = mysqli_query($db,$sq); 
+                    while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                    {
+                      echo '<option value="'.$row['id'].'">'.$row['Client_Name'].'</option>';
+                    }
+                  ?>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label>Process</label>
                 <select class="chosen-select" id="standard_macro_id">
                   <option value="">Select</option>
                   <?php
-                    $sq="SELECT id, scenario FROM standard_macro WHERE id NOT IN(SELECT standard_macro_id FROM email_trigger_settings) ORDER BY id DESC ";
+                    $sq="SELECT id, scenario FROM standard_macro ORDER BY id DESC ";
                     $resul = mysqli_query($db,$sq); 
                     while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
                     {
@@ -36,17 +50,18 @@ include 'Header.php';
                   ?>
                 </select>
               </div>
-              <div class="col-md-8">
-                <label>Email Text</label>
-                <textarea id="email_body" rows="6" class="custom-select"></textarea>
+              <div class="col-md-3">
+                <label>Template</label>
+                <select class="chosen-select" id="standard_macro_id">
+                  <option value="">Select</option>
+                  
+                </select>
               </div>
-              <div class="col-md-4">
-                <br><br>
-                <br><br>
+              <div class="col-md-3">
                 <br>
                 <a href="javascript:save_email_triggers()" class="btn btn-success btn-sm"><i class="fa fa-save"></i> Save</a>
                 <a href="" class="btn btn-primary btn-sm"><i class="fa fa-history"></i> Reset</a>
-                <a href="Email-Triggers.php" class="btn btn-default btn-sm"><i class="fa fa-remove"></i> Cancel</a>
+                <a href="Report-Config" class="btn btn-default btn-sm"><i class="fa fa-remove"></i> Cancel</a>
               </div>
               <div class="table-responsive">
                 <div id="data_table"></div>
@@ -79,9 +94,9 @@ include 'Header.php';
       $.ajax({
         type:'POST',
         data:{action, email_body, standard_macro_id},
-        url:'./API/Action-Email-Triggers.php',
+        url:'./API/Action-Report-Config.php',
         success:function(html){
-          alert("Email Triggers added successfully!");
+          alert("Report Configuration added successfully!");
           $('#email_body').val('');
           load_email_triggers();
         }
@@ -92,17 +107,17 @@ include 'Header.php';
   function delete_eta_macro(email_trigger_id )
   {
     var delete_email_trigger_id  = email_trigger_id ;
-    var r = confirm("Are you sure to delete this Email Trigger?");
+    var r = confirm("Are you sure to delete this Report Configuration?");
     if(r == true)
     {
       var action = 'delete';
       $.ajax({
         type:'POST',
         data:{action, delete_email_trigger_id },
-        url:'./API/Action-Email-Triggers.php',
+        url:'./API/Action-Report-Config.php',
         success:function(html){
           load_email_triggers();
-          alert("Email Triggers deleted successfully!");
+          alert("Report Configuration deleted successfully!");
         }
       });
     }
@@ -132,9 +147,9 @@ include 'Header.php';
       $.ajax({
         type:'POST',
         data:{action, email_body, email_trigger_id},
-        url:'./API/Action-Email-Triggers.php',
+        url:'./API/Action-Report-Config.php',
         success:function(html){
-          alert("Email Triggers updated successfully!");
+          alert("Report Configuration updated successfully!");
           $('#email_body_txt_'+email_trigger_id ).val('');
           load_email_triggers();
         }
@@ -148,7 +163,7 @@ include 'Header.php';
     $.ajax({
       type:'POST',
       data:{action},
-      url:'./API/Action-Email-Triggers.php',
+      url:'./API/Action-Report-Config.php',
       success:function(html){
         $('#data_table').html(html);
         load_datatable();

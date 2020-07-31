@@ -39,8 +39,9 @@ if($_POST['action']=='display')
  echo '<table id="datatable_tbl" class="table table-hover" style="margin-top: 4%;">
  <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
  <th width="10">SR.NO.</th>
- <th>Scenario </th>
- <th>Email Text</th>
+ <th>Client Name </th>
+ <th>Process Name</th>
+ <th>Template</th>
  <th>Edit</th>
  <th>Delete</th>
  </thead>
@@ -56,7 +57,11 @@ if($_POST['action']=='display')
     <td class="tablehead1">'.$sr.'</td>
     <td class="tablehead1">'.$row["scenario"].'</td>
     <td class="form_left tablehead1">
-      <pre class="tablehead1" id="email_body_lbl_'.$row["email_trigger_id"].'">'.$row["email_body"].'</pre>
+      <span class="tablehead1" id="email_body_lbl_'.$row["email_trigger_id"].'">'.$row["email_body"].'</span>
+      <textarea class="custom-select" style="display:none;" rows="6" id="email_body_txt_'.$row["email_trigger_id"].'">'.$row["email_body"].'</textarea>
+    </td>
+    <td class="form_left tablehead1">
+      <span class="tablehead1" id="email_body_lbl_'.$row["email_trigger_id"].'">'.$row["email_body"].'</span>
       <textarea class="custom-select" style="display:none;" rows="6" id="email_body_txt_'.$row["email_trigger_id"].'">'.$row["email_body"].'</textarea>
     </td>
     <td class="tablehead1">
