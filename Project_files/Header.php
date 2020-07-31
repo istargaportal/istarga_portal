@@ -394,6 +394,9 @@ if(!isset($_SESSION['email']))
   <li class="nav-item">
     <a class="nav-link" name href="./reportConfig.php"><i class="material-icons icon">launch</i> Report Configuration Master</a>
   </li>
+  <li class="nav-item">
+    <a class="nav-link" name href="./Email-Triggers.php"><i class="material-icons icon">launch</i> Email Triggers</a>
+  </li>
 </ul>
 </div>
 </li>

@@ -165,4 +165,7 @@
     opacity: 0.5;
     cursor: not-allowed !important;
   }
+  td, table, tbody, tr, #datatable_tbl, .dataTables_wrapper .dataTables_filter input{
+    background: transparent !important;
+  }
 </style>
