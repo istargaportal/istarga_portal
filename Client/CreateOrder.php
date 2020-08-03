@@ -8,7 +8,7 @@ include 'Header.php';
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-            <h4 class="card-title">Application</h4>
+            <h4 class="card-title">Personal Information</h4>
           </div>
           <div class="card-body">
             <form id="ajax" enctype="multipart/form-data">
@@ -73,19 +73,12 @@ include 'Header.php';
                 </div>
                 <div class="col-md-3">
                   <div class="">
-                    <label class="bmd-label-floating"></label>
+                    <label class="bmd-label-floating">Joining Date</label>
                     <input type="date" name="Joining_date" id="dateofbirth" class="form-control" required>
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-4">
-                  <div class="">
-                    <label class="bmd-label-floating" style="margin-top:8%;">Select LOB/Vertical/Division</label>
-                    <select class="browser-default custom-select" type="select" name="lob_type" id="lob_type" style="color:#202940;margin-top:9%;">
-                    </select>
-                  </div>
-                </div>
                 <div class="col-md-8">
                   <label class="bmd-label-floating"> Additional Comments</label>
                   <input name='additional_comments' class="form-control" />
@@ -97,156 +90,125 @@ include 'Header.php';
                 <h4 class="card-title" style="color:white;">Package Details</h4>
               </div>
 
-
-              <div class="row" style="margin-left:1%;margin-top:3%;">
-                <div class="col-md-4">
-                  <div class="">
-                    <label style="font-size: 14px;" class="bmd-label-floating">Country</label>
-                    <select style="margin-top: 2%;" class="browser-default custom-select" type="select"
-                    id="locality-dropdown" name="locality-dropdown" onchange="getpackage(this.value)"
-                    style="color:#202940;" required>
-
-                  </select>
+              <div class="row" style="margin-left:1%;margin-top:2%;">
+                <div class="col-md-3">
+                  <label style="font-size: 14px;" class="bmd-label-floating">Country</label>
+                  <select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="package_country_id" required></select>
+                </div>
+                <div class="col-md-3">
+                  <label style="font-size: 14px;" class="bmd-label-floating">Package</label>
+                  <div id="package_id_div">
+                    <select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="package_id"></select>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <br>
+                  <a class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add</a>
                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="">
-                  <label style="font-size: 14px;" class="bmd-label-floating">Package</label>
-                  <select style="margin-top: 2%;" class="browser-default custom-select" type="select"
-                  id="package-dropdown" name="package-dropdown" style="color:#202940;">
-                  <option>Select Package</option>
-                </select>
+
+              <div class="card-header card-header-primary" style="margin-top:5%; margin-bottom: 2%;">
+                <h4 class="card-title" style="color:white;">Service Details</h4>
+              </div>
+
+
+              <div class="row" style="margin-left:1%;margin-top:2%;">
+                <div class="col-md-3">
+                  <label style="font-size: 14px;" class="bmd-label-floating">Country</label>
+                  <select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="service_country_id" required></select>
+                </div>
+                
+                <div class="col-md-3">
+                  <label style="font-size: 14px;" class="bmd-label-static">Service Type</label>
+                  <select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="service_type_id"></select>
+                </div>
+
+                <div class="col-md-3">
+                  <label style="font-size: 14px;" class="bmd-label-static">Service </label>
+                  <select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="service_id" ></select>
+                </div>
+                <div class="col-md-2">
+                  <br>
+                  <a class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add</a>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="card-header card-header-primary" style="margin-top:3%;">
+              <h4 class="card-title" style="color:white;">Upload Documents</h4>
+            </div>
+
+            <div class="row" style="margin-left:1%;margin-top:2%;">
+              <div class="col-md-6">
+                <h5 class="selection">Upload Document Here</h5>
+                <h4 class=" btn btn-default btn-sm" id="upload_document_list">Select Service First!</h4>
+              </div>
+
+              <div class="col-md-6">
+                <h5 class="selection">File Formats</h5>
+                <div class="row selection" style="margin-left:2%;margin-top:2%;">
+                  <i class="fa fa-file-word-o" style="font-size:40px;color: tomato;"></i>
+                  <i class="fa fa-file-excel-o " style="font-size:40px;margin-left:2%;color: green"></i>
+                  <i class="fa fa-file-powerpoint-o " style="font-size:40px;margin-left:2%;color: brown"></i>
+                  <i class="fa fa-file-pdf-o selection" style="color: orange !important; font-size:40px;"></i>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!--Package Details Closes Here-->
+            <div class="row col-md-12">
+              <br>
+              <div class="col-md-12"><hr></div>
+              <div class="col-md-8 " >
+                <div class="">
+                  <h5 class="pull-left selection">In Case Of Insufficiency Contact? &nbsp; </h5>
+                  <label class="container_checkbox" >
+                    <input style=" cursor: pointer;" class="form-check-input" type="radio" name="Insufficiency-contact" name="In Case Of Insufficiency Contact?"
+                    id="exampleRadios1" value="Client" checked>
+                    Client
+                    <span class="checkmark"></span>
+                  </label>
 
-          <!--Service  Details-->
+                  <label class="container_checkbox" >
+                    <input style=" cursor: pointer;" class="form-check-input" type="radio" name="Insufficiency-contact" name="In Case Of Insufficiency Contact?"
+                    id="exampleRadios2" value="Employee" >
+                    Employee
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
+              </div>
 
-          <div class="card-header card-header-primary" style="margin-top:5%; margin-bottom: 2%;">
-            <h4 class="card-title" style="color:white;">Service Details</h4>
-          </div>
-
-
-          <div class="row" style="margin-left:1%;margin-top:2%;">
-            <div class="col-md-4">
-              <div class="">
-                <label style="font-size: 14px;" class="bmd-label-static">Country</label>
-                <select style="margin-top: 2%;" class="browser-default custom-select" type="select"
-                id="select-country-service" name="select-country-service" onchange="getservice(this.value)"
-                style="color:#202940;">
-
-              </select>
-
+              <div class="col-md-4 form_right">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input class="form-check-input" name="rush-order" type="checkbox" value="">
+                    Rush Order
+                    <span class="form-check-sign">
+                      <span class="check"></span>
+                    </span>
+                  </label>
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div class="col-md-4">
-            <div class="">
-              <label style="font-size: 14px;" class="bmd-label-static">Service Type</label>
-              <select style="margin-top: 2%;" class="browser-default custom-select" type="select"
-              id="select_service_type" name="select_service_type" onchange="getservicename(this.value)"
-              style="color:#202940;">
-
-            </select>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="">
-            <label style="font-size: 14px;" class="bmd-label-static">Service </label>
-            <select style="margin-top: 2%;" class="browser-default custom-select" type="select"
-            id="select_service_name" name="select_service_name" onchange="getdocumentlist(this.value)"
-            style="color:#202940;">
-          </select>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="card-header card-header-primary" style="margin-top:3%;">
-      <h4 class="card-title" style="color:white;">Upload Documents</h4>
-    </div>
-
-    <div class="row" style="margin-left:1%;margin-top:2%;">
-      <div class="col-md-6">
-        <h5 class="selection">Upload Document Here</h5>
-        <h4 class=" btn btn-default btn-sm" id="upload_document_list">Select Service First!</h4>
-      </div>
-
-      <div class="col-md-6">
-        <h5 class="selection">File Formats</h5>
-        <div class="row selection" style="margin-left:2%;margin-top:2%;">
-          <i class="fa fa-file-word-o" style="font-size:40px;color: tomato;"></i>
-          <i class="fa fa-file-excel-o " style="font-size:40px;margin-left:2%;color: green"></i>
-          <i class="fa fa-file-powerpoint-o " style="font-size:40px;margin-left:2%;color: brown"></i>
-          <i class="fa fa-file-pdf-o selection" style="color: orange !important; font-size:40px;"></i>
+            <div class="row form_right" >
+              <div class="col-md-12">
+                <button type="button" id="preview" class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Preview</button>
+                <button id="ok" type="submit" class="btn btn-primary btn-sm" ><i class="fa fa-check"></i> Ok</button>
+                <a href="ClientViewOrder.php" class="btn btn-default btn-sm" ><i class="fa fa-remove"></i> Cancel</a>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-12"><hr></div>
-      <div class="col-md-8 " >
-       <br>
-       <div class="">
-        <h5 class="pull-left selection">In Case Of Insufficiency Contact? &nbsp; </h5>
-        <label class="container_checkbox" >
-          <input style=" cursor: pointer;" class="form-check-input" type="radio" name="Insufficiency-contact" name="In Case Of Insufficiency Contact?"
-          id="exampleRadios1" value="Client" checked>
-          Client
-          <span class="checkmark"></span>
-        </label>
-
-        <label class="container_checkbox" >
-          <input style=" cursor: pointer;" class="form-check-input" type="radio" name="Insufficiency-contact" name="In Case Of Insufficiency Contact?"
-          id="exampleRadios2" value="Employee" >
-          Employee
-          <span class="checkmark"></span>
-        </label>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-     <br>
-     <div class="form-check">
-      <label class="form-check-label">
-        <input class="form-check-input" name="rush-order" type="checkbox" value="">
-        Rush Order
-        <span class="form-check-sign">
-          <span class="check"></span>
-        </span>
-      </label>
-    </div>
+    <script>
+      const x = new Date().getFullYear();
+      let date = document.getElementById('date');
+      date.innerHTML = '&copy; ' + x + date.innerHTML;
+    </script>
   </div>
-</div>
-
-<div class="row justify-content-end" style="margin-right:2% ; margin-top:3%; margin-bottom:2%">
-
-  <button type="button" id="preview" class="btn btn-primary pull-left"
-  style="margin-left:4%;">Preview</button>
-  <div class="clearfix"></div>
-
-  <button id="ok" type="submit" class="btn btn-primary pull-left" style="margin-left:2%;">Ok</button>
-  <div class="clearfix"></div>
-
-  <button type="submit" class="btn btn-primary pull-left" style="margin-left:2%;">Cancel</button>
-  <div class="clearfix"></div>
-
-</div>
-
-</form>
-</div>
-</div>
-</div>
-
-<script>
-  const x = new Date().getFullYear();
-  let date = document.getElementById('date');
-  date.innerHTML = '&copy; ' + x + date.innerHTML;
-</script>
-</div>
 </div>
 <div class="modal preview-modal">
   <table class="table table-hover" style="margin-top: 4%;">
@@ -281,30 +243,33 @@ include 'Header.php';
 
 
   if(darkmode==="enabled"){
-   enabledarkmode();
- }
-
-
- darkmodetoggle.addEventListener("change", ()=>{
-   darkmode=localStorage.getItem("darkmode");
-   if(darkmode !== "enabled"){
-    trans()
     enabledarkmode();
-  }else{
-    trans()
-    disabledarkmode();
   }
-})
 
- let trans = () => {
-  document.documentElement.classList.add('transition');
-  window.setTimeout(() => {
-    document.documentElement.classList.remove('transition');
-  }, 1000)
-}
+
+  darkmodetoggle.addEventListener("change", ()=>{
+    darkmode=localStorage.getItem("darkmode");
+    if(darkmode !== "enabled"){
+      trans()
+      enabledarkmode();
+    }else{
+      trans()
+      disabledarkmode();
+    }
+  })
+
+  let trans = () => {
+    document.documentElement.classList.add('transition');
+    window.setTimeout(() => {
+      document.documentElement.classList.remove('transition');
+    }, 1000)
+  }
 </script>
 
-<script src="assets/js/core/jquery.min.js"></script>
+<script type="text/javascript">
+  $('.chosen-select').chosen();
+</script>
+<!-- <script src="assets/js/core/jquery.min.js"></script> -->
 <script src="assets/js/core/popper.min.js"></script>
 <script src="assets/js/core/bootstrap-material-design.min.js"></script>
 <script src="https://unpkg.com/default-passive-events"></script>
@@ -319,7 +284,7 @@ include 'Header.php';
 <script src="assets/js/material-dashboard.js?v=2.1.0"></script>
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="assets/demo/demo.js"></script>
-<script src="js/createorder12.js"></script>
+<!-- <script src="js/createorder12.js"></script> -->
 
 </body>
 <script>

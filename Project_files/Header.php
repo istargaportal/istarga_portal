@@ -340,14 +340,14 @@ if(!isset($_SESSION['email']))
           <a class="nav-link" href="./vieworder.php"><i class="material-icons icon">launch</i> Search Order</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="./assignService.php"><i class="material-icons icon">launch</i> Assign Services</a>
+          <a class="nav-link" href="./Assign-Service.php"><i class="material-icons icon">launch</i> Assign Services</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="./LOB.php"><i class="material-icons icon">launch</i> LOB</a>
         </li> 
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="./createPackage.php"><i class="material-icons icon">launch</i> Assign Package</a>
-        </li>
+        </li> -->
       </ul>
     </div>
   </li>

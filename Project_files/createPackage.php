@@ -181,7 +181,6 @@
            selectedlist.push(items[i].value)
         }                
      }
-       alert(selectedlist);
    </script>
 
 

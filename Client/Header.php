@@ -33,16 +33,18 @@ else
   <link href="assets/demo/demo.css" rel="stylesheet" />
   <!--Switching modes-->
   <link rel="stylesheet" href="assets/css/style.css">
-
+  <?php
+  include '../search_select/select_contorl.php';
+  ?>
   <style type="text/css">
     .tablehead1{
       border:none !important;
       background: transparent !important; 
     }
     b{ font-weight: bold !important; }
-    .form_center{ text-align: center; }
-    .form_left{ text-align: left; }
-    .form_right{ text-align: right; }
+    .form_center{ text-align: center !important; }
+    .form_left{ text-align: left !important; }
+    .form_right{ text-align: right !important; }
     .custom-select{
       margin-top: 0 !important;
     }
