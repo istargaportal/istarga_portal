@@ -6,12 +6,12 @@ include 'Header.php';
   <div class="container-fluid">
     <div class="row" style="margin-top: 1%;">
       <div class="col-md-12">
-        <div class="card">
-          <div class="card-header card-header-primary">
-            <h4 class="card-title">Personal Information</h4>
-          </div>
-          <div class="card-body">
-            <form id="ajax" enctype="multipart/form-data">
+        <form id="ajax" enctype="multipart/form-data">
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title">Personal Information</h4>
+            </div>
+            <div class="card-body">
               <div class="row">
                 <div class="col-md-4">
                   <div class="">
@@ -84,111 +84,114 @@ include 'Header.php';
                   <input name='additional_comments' class="form-control" />
                 </div>
               </div>
-
-              <!--Package Details-->
-              <div class="card-header card-header-primary" style="margin-top:2%;">
-                <h4 class="card-title" style="color:white;">Package Details</h4>
-              </div>
-
-              <div class="row" style="margin-left:1%;margin-top:2%;">
-                <div class="col-md-3">
-                  <label style="font-size: 14px;" class="bmd-label-floating">Country</label>
-                  <select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="package_country_id" required></select>
+            </div>
+            <div class="card">
+              <div id="package_service_panel">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title" style="color:white;">Package Details</h4>
                 </div>
-                <div class="col-md-3">
-                  <label style="font-size: 14px;" class="bmd-label-floating">Package</label>
-                  <div id="package_id_div">
-                    <select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="package_id"></select>
+                <div class="row" style="margin-left:1%;margin-top:2%;">
+                  <!-- <div class="col-md-3">
+                    <label style="font-size: 14px;" class="bmd-label-floating">Package</label>
+                    <div id="package_id_div">
+                      <select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="package_id"></select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <br>
+                    <a href="javascript:select_package()" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add</a>
+                  </div> -->
+                  <div class="col-md-12">
+                    <div id="selected_packages"></div>
                   </div>
                 </div>
-                <div class="col-md-2">
-                  <br>
-                  <a class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add</a>
+
+                <!-- <div class="card-header card-header-primary" style="margin-top: 2%;">
+                  <h4 class="card-title" style="color:white;">Service Details</h4>
+                </div>
+                <div class="row" style="margin-left:1%;margin-top:2%;">
+                  <div class="col-md-3">
+                    <label style="font-size: 14px;" class="bmd-label-static">Service </label>
+                    <div id="service_id_div">
+                      <select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="service_id"></select>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <br>
+                    <a href="javascript:select_service()" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add</a>
+                  </div>
+                  <div class="col-md-12">
+                    <div id="selected_services"></div>
+                  </div>
+                </div> -->
+              </div>
+              
+              <div class="col-md-12 form_center">
+                <br>
+                <a href="javascript:check_package_service()" id="check_package_service_btn" class="btn btn-primary btn-md pull-right"><i class="fa fa-arrow-right"></i> Continue</a> 
+                <a class="btn btn-default btn-md pull-right">INR. </a>
+              </div>
+              
+              <div id="document_panel" class="disabled">
+                <div class="card-header card-header-primary" style="margin-top:3%;">
+                  <h4 class="card-title" style="color:white;">Upload Documents</h4>
+                </div>
+
+                <div class="row" style="margin-left:1%;margin-top:2%;">
+                  <div class="col-md-9">
+                    <h6 class="selection">Upload Document Here</h6>
+                    <div id="upload_document_list">
+                      <h4 class="btn btn-default btn-sm">Select Service First!</h4>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <h5 class="selection">File Formats</h5>
+                    <div class="row selection" style="margin-left:1%;margin-top:2%;">
+                      <i class="fa fa-file-word-o" style="font-size:40px !important;margin-left:2%;color: tomato;"></i>
+                      <i class="fa fa-file-excel-o " style="font-size:40px !important;margin-left:3%;color: green"></i>
+                      <i class="fa fa-file-powerpoint-o " style="font-size:40px !important;margin-left:3%;color: brown"></i>
+                      <i class="fa fa-file-pdf-o selection" style="color: orange !important; margin-left:3%; font-size:40px !important;"></i>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div class="card-header card-header-primary" style="margin-top:5%; margin-bottom: 2%;">
-                <h4 class="card-title" style="color:white;">Service Details</h4>
-              </div>
+              <div class="row col-md-12">
+                <br>
+                <div class="col-md-12"><hr></div>
+                <div class="col-md-8 " >
+                  <div class="">
+                    <h5 class="pull-left selection">In Case Of Insufficiency Contact? &nbsp; </h5>
+                    <label class="container_checkbox" >
+                      <input style=" cursor: pointer;" class="form-check-input" type="radio" name="Insufficiency-contact" name="In Case Of Insufficiency Contact?"
+                      id="exampleRadios1" value="Client" checked>
+                      Client
+                      <span class="checkmark"></span>
+                    </label>
 
-
-              <div class="row" style="margin-left:1%;margin-top:2%;">
-                <div class="col-md-3">
-                  <label style="font-size: 14px;" class="bmd-label-floating">Country</label>
-                  <select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="service_country_id" required></select>
+                    <label class="container_checkbox" >
+                      <input style=" cursor: pointer;" class="form-check-input" type="radio" name="Insufficiency-contact" name="In Case Of Insufficiency Contact?"
+                      id="exampleRadios2" value="Employee" >
+                      Employee
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
                 </div>
-                
-                <div class="col-md-3">
-                  <label style="font-size: 14px;" class="bmd-label-static">Service Type</label>
-                  <select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="service_type_id"></select>
-                </div>
 
-                <div class="col-md-3">
-                  <label style="font-size: 14px;" class="bmd-label-static">Service </label>
-                  <select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="service_id" ></select>
-                </div>
-                <div class="col-md-2">
-                  <br>
-                  <a class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add</a>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="card-header card-header-primary" style="margin-top:3%;">
-              <h4 class="card-title" style="color:white;">Upload Documents</h4>
-            </div>
-
-            <div class="row" style="margin-left:1%;margin-top:2%;">
-              <div class="col-md-6">
-                <h5 class="selection">Upload Document Here</h5>
-                <h4 class=" btn btn-default btn-sm" id="upload_document_list">Select Service First!</h4>
-              </div>
-
-              <div class="col-md-6">
-                <h5 class="selection">File Formats</h5>
-                <div class="row selection" style="margin-left:2%;margin-top:2%;">
-                  <i class="fa fa-file-word-o" style="font-size:40px;color: tomato;"></i>
-                  <i class="fa fa-file-excel-o " style="font-size:40px;margin-left:2%;color: green"></i>
-                  <i class="fa fa-file-powerpoint-o " style="font-size:40px;margin-left:2%;color: brown"></i>
-                  <i class="fa fa-file-pdf-o selection" style="color: orange !important; font-size:40px;"></i>
-                </div>
-              </div>
-            </div>
-
-            <div class="row col-md-12">
-              <br>
-              <div class="col-md-12"><hr></div>
-              <div class="col-md-8 " >
-                <div class="">
-                  <h5 class="pull-left selection">In Case Of Insufficiency Contact? &nbsp; </h5>
-                  <label class="container_checkbox" >
-                    <input style=" cursor: pointer;" class="form-check-input" type="radio" name="Insufficiency-contact" name="In Case Of Insufficiency Contact?"
-                    id="exampleRadios1" value="Client" checked>
-                    Client
-                    <span class="checkmark"></span>
-                  </label>
-
-                  <label class="container_checkbox" >
-                    <input style=" cursor: pointer;" class="form-check-input" type="radio" name="Insufficiency-contact" name="In Case Of Insufficiency Contact?"
-                    id="exampleRadios2" value="Employee" >
-                    Employee
-                    <span class="checkmark"></span>
-                  </label>
+                <div class="col-md-4 form_right">
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input class="form-check-input" name="rush-order" type="checkbox" value="">
+                      Rush Order
+                      <span class="form-check-sign">
+                        <span class="check"></span>
+                      </span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
-              <div class="col-md-4 form_right">
-                <div class="form-check">
-                  <label class="form-check-label">
-                    <input class="form-check-input" name="rush-order" type="checkbox" value="">
-                    Rush Order
-                    <span class="form-check-sign">
-                      <span class="check"></span>
-                    </span>
-                  </label>
-                </div>
-              </div>
             </div>
 
             <div class="row form_right" >
@@ -196,10 +199,11 @@ include 'Header.php';
                 <button type="button" id="preview" class="btn btn-success btn-sm"><i class="fa fa-eye"></i> Preview</button>
                 <button id="ok" type="submit" class="btn btn-primary btn-sm" ><i class="fa fa-check"></i> Ok</button>
                 <a href="ClientViewOrder.php" class="btn btn-default btn-sm" ><i class="fa fa-remove"></i> Cancel</a>
+                <br><br>
               </div>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
 
@@ -224,7 +228,6 @@ include 'Header.php';
     <div class="clearfix"></div>
   </div>
 </div>
-
 
 <script>
   let darkmode=localStorage.getItem("darkmode");
@@ -268,6 +271,141 @@ include 'Header.php';
 
 <script type="text/javascript">
   $('.chosen-select').chosen();
+</script>
+<script type="text/javascript">
+  var client_id = $('#client_id').val();
+  function load_packages()
+  {
+    var all_package_id = 0;
+    $(".package_id").each(function () {
+      all_package_id = all_package_id+","+$(this).val();
+    })
+    var action = "load_packages";
+    $.ajax({
+      type:'POST',
+      url:'./API/CreateOrder.php',
+      data:{action, client_id, all_package_id},
+      success:function(html) {
+        $('#package_id_div').html(html);
+        $('#package_id').chosen();
+      }
+    });
+  }
+  load_packages();
+  
+  function load_services()
+  {
+    var all_service_id = 0;
+    $(".service_id").each(function () {
+      all_service_id = all_service_id+","+$(this).val();
+    })
+    var action = "load_services";
+    $.ajax({
+      type:'POST',
+      url:'./API/CreateOrder.php',
+      data:{action, client_id, all_service_id},
+      success:function(html) {
+        $('#service_id_div').html(html);
+        $('#service_id').chosen();
+      }
+    });
+  }
+  load_services();
+
+  function select_package()
+  {
+    var action = "select_package";
+    $.ajax({
+      type:'POST',
+      url:'./API/CreateOrder.php',
+      data:{action},
+      success:function(html) {
+        $('#selected_packages').append(html);
+        load_packages();
+      }
+    });
+  }
+  select_package();
+
+  function remove_selected_package(package_id)
+  {
+    var r = confirm('Are you sure to remove this selected package?')
+    if(r == true)
+    {
+      $('#package_id_panel_'+package_id).remove();
+      load_packages();
+    }
+  }
+
+  function select_service()
+  {
+    var service_id = $('#service_id').val();
+    var service_name = $( "#service_id option:selected" ).text();;
+    if(service_id == "")
+    {
+      alert('Please select Service!');
+    }
+    else
+    {
+      var action = "select_service";
+      $.ajax({
+        type:'POST',
+        url:'./API/CreateOrder.php',
+        data:{action, service_id, service_name},
+        success:function(html) {
+          $('#selected_services').append(html);
+          load_services();
+        }
+      });
+    }
+  }
+
+  function remove_selected_service(service_id)
+  {
+    var r = confirm('Are you sure to remove this selected service?')
+    if(r == true)
+    {
+      $('#service_id_panel_'+service_id).remove();
+      load_services();
+    }
+  }
+
+  function check_package_service()
+  {
+    var selected_packages = $('#selected_packages').html().trim();
+    // var selected_services = $('#selected_services').html().trim();
+    if(selected_packages == "")
+    {
+      alert("Please select at least one service or package to generate order!");
+    }
+    else
+    {
+      var r = confirm("Are you sure to lock this services?");
+      if(r == true)
+      {
+        $('#check_package_service_btn').addClass('disabled');   
+        $('#document_panel').removeClass('disabled');   
+        $('#package_service_panel').addClass('disabled');
+
+        var all_service_id_doc = 0;
+        $(".service_id_doc").each(function () {
+          all_service_id_doc = all_service_id_doc+","+$(this).val();
+        })
+
+        var action = "load_document";
+        $.ajax({
+          type:'POST',
+          url:'./API/CreateOrder.php',
+          data:{action, all_service_id_doc},
+          success:function(html) {
+            $('#upload_document_list').html(html);
+          }
+        });
+        
+      }
+    }
+  }
+
 </script>
 <!-- <script src="assets/js/core/jquery.min.js"></script> -->
 <script src="assets/js/core/popper.min.js"></script>

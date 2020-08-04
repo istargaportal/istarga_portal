@@ -13,12 +13,11 @@ if(isset($_GET['id']))
 
   if(isset($id))
   {
-    $checbk='SELECT p.id, p.package_name, c.name, p.country_id FROM package_list p INNER JOIN countries c ON c.id = p.country_id WHERE p.id = '.$id.' ORDER BY p.id ';
+    $checbk='SELECT p.id, p.package_name FROM package_list p WHERE p.id = '.$id.' ORDER BY p.id ';
     $resul = mysqli_query($db,$checbk); 
     if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
       $package_name = $row['package_name'];
-      $country = $row['country_id'];
     }
 
     $all_service_id = array();
@@ -58,35 +57,15 @@ include 'Header.php';
                   <label>Package Name</label>
                   <input name="package_name" required="" value="<?php echo @$package_name; ?>"  type="text" class="form-control" />
                 </div>
-                <div class="col-md-2">
-                  <label for="Service Name">Country</label>
-                  <div>
-                    <select id="locality-dropdown" name="country_id" onchange="select_country()" class="browser-default custom-select chosen-select" required>
-                      <option value="">Select Country</option>
-                      <?php
-                      $check='SELECT * FROM countries ';
-                      $resul = mysqli_query($db,$check); 
-                      while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                      {
-                        $selected = "";
-                        if($row["id"] == @$country)
-                        {
-                          $selected = "selected";
-                        }
-                        echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['name'].'</option>';
-                      }
-                      ?>
-                    </select>
-                  </div>
-                </div>
+                
                 <div class="col-md-6">
                   <label for="Service Type">Services</label>
                   <div id="service_div">
                     <select multiple="" name="service_id[]" class="chosen-select">
                       <?php
-                        if(isset($_GET['id']))
-                        {
-                          $check = "SELECT s.id, s.service_name FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cc ON cc.id = s.currency_id WHERE s.country_id = ".@$country." ORDER BY s.id ";
+                        // if(isset($_GET['id']))
+                        // {
+                          $check = "SELECT s.id, s.service_name FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id ORDER BY s.id ";
                           $resul = mysqli_query($db,$check); 
                           while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
                           {
@@ -98,7 +77,7 @@ include 'Header.php';
                             }
                             echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['service_name'].'</option>';
                           }
-                        }
+                        // }
                       ?>
                     </select>
                   </div>
@@ -130,20 +109,6 @@ include 'Header.php';
   $('.chosen-select').chosen();
 </script>
 <script>
-
-  function select_country()
-  {
-    var country = $('#locality-dropdown').val();
-    $.ajax({
-      type:'POST',
-      url:'./API/load_services.php',
-      data:{country},
-      success:function(html){
-        $('#service_div').html(html);
-        $('.chosen-select').chosen();
-      }
-    });
-  }
 
   function load_package()
   {

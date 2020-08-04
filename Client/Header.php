@@ -3,6 +3,7 @@ session_start();
 if(isset($_SESSION['uname']) && isset($_SESSION['password']))
 {
   $unsa=$_SESSION['uid'];
+  $client_id = $_SESSION['uid'];
 }
 else
 {   
@@ -54,9 +55,9 @@ else
     }
     .btn-xs{
       font-size: 10pt !important;
-      padding: 6px 8px !important;
+      padding: 5px 8px !important;
     }
-    .btn-xs .material-icons{
+    .btn-xs .material-icons, .fa{
       font-size: 10pt !important;
     }
 
@@ -302,8 +303,6 @@ else
       font-size: 8pt !important;
       color: red;
     }
-  </style>
-  <style type="text/css">
     .container_checkbox {
       display: block;
       position: relative;
@@ -398,10 +397,15 @@ else
       padding: 4px !important;
       height: 35px !important;
     }
+    .col12{
+      width: 100%;
+      float: left;
+    }
   </style>  
 </head>
 
 <body class="dark-edition">
+  <input type="hidden" name="client_id" id="client_id" value="<?php echo @$client_id; ?>">
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="black" data-image="assets/img/sidebar-2.jpg">
       <!--

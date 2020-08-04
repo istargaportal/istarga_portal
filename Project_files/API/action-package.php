@@ -22,7 +22,7 @@ if($_POST["action"]=='delete')
 
 if($_POST["action"]=='add')
 {
-  $sql = "INSERT INTO package_list(package_name, country_id) VALUES('$package_name', '$country_id') ";
+  $sql = "INSERT INTO package_list(package_name) VALUES('$package_name') ";
   $result = mysqli_query($db,$sql);
   $package_id = $db->insert_id;
   if(isset($service_id))

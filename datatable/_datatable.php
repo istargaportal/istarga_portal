@@ -3,7 +3,6 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css"/>
  
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
-
 <!-- <script type="text/javascript" src="../datatable/datatables.min.js"></script> -->
 <link rel="stylesheet" type="text/css" href="../datatable/buttons.dataTables.min.css">
 <script type="text/javascript">
@@ -52,20 +51,30 @@
 
   function export_to_excel() 
   {
-    var url = 'data:application/vnd.ms-excel,' + encodeURIComponent($('#datatable_tbl').html())
-    location.href = url
+    $('#datatable_tbl_filter').remove();
+    $('#datatable_tbl_length').remove();
+    $('#datatable_tbl_paginate').remove();
+    $('#datatable_tbl_info').remove();
+    
+
+    // var url = 'data:application/vnd.ms-excel,' + encodeURIComponent($('#data_table').html());
+    window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#data_table').html()));
+    // window.open('data:application/vnd.ms-excel,'+ encodeURIComponent($('#data_table').html()+';filename=exportData.excel;');
+    // location.href = url
+    location.reload();
     return false
   }
 
   function export_to_print()
   {
+    var printContents = document.getElementById("data_table").innerHTML;
+    var originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    $('#datatable_tbl_filter').css('display', 'none');
+    $('#datatable_tbl_length').css('display', 'none');
+    $('#datatable_tbl_paginate').css('display', 'none');
     window.print();
-    // var divToPrint=document.getElementById('datatable_tbl');
-    // var newWin=window.open('','Print-Window');
-    // newWin.document.open();
-    // newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
-    // newWin.document.close();
-    // setTimeout(function(){newWin.close();},10);
+    location.reload();
   }
 
   $('#data_table').before('<a class="btn btn-success export_excel btn-sm" onclick="export_to_excel()"><i class="fa fa-file-excel"></i> Export To Excel</a> <a class="btn btn-danger export_print btn-sm" onclick="export_to_print()"><i class="fa fa-print"></i> Print</a>');
