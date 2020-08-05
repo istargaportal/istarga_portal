@@ -61,7 +61,23 @@ if($_POST['action']=='select_package')
         $package_id = $row['package_id'];
         $package_name = $row['package_name'];
     }
-    echo '<div id="package_id_panel_'.$package_id.'"><br><div class="col-md-12" style="border:solid 2px #aa50ab; border-radius:10px; width:97%;position:relative;"><h4 class="btn btn-primary btn-sm btn-round" style="position:absolute;top:-20px; left:15px;">'.@$package_name.'</h4> <input type="hidden" name="package_id[]" class="package_id" value="'.$package_id.'" /><br>';
+    echo '<div id="package_id_panel_'.$package_id.'"><br><div class="col-md-12" style="border:solid 2px #aa50ab; border-radius:10px; width:97%;position:relative;"><h4 class="btn btn-primary btn-sm btn-round" style="position:absolute;top:-20px; left:15px;">'.@$package_name.'</h4> <input type="hidden" name="package_id[]" class="package_id" value="'.$package_id.'" /><br>
+    <div class="row">
+        <div class="col-md-4">
+            <h4 class="selection" style="margin:6px 0;">Service</h4>
+        </div>
+        <div class="col-md-2">
+            <h4 class="selection" style="margin:6px 0;">Country</h4>
+        </div>
+        <div class="col-md-2">
+            <h4 class="selection" style="margin:6px 0;">Price / Currency</h4>
+        </div>
+        <div class="col-md-4">
+            <h4 class="selection" style="margin:6px 0;">Documents</h4>
+        </div>
+        <hr class="col12" style="margin:8px 0">
+    </div>
+    ';
     $sq="SELECT ps.service_id, s.service_name, s.price, c.name AS country_name, cs.currency AS currency_name FROM package_list_service ps INNER JOIN service_list s ON s.id = ps.service_id INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cs ON cs.id = s.currency_id WHERE ps.package_id = '$package_id' ";
     $resul = mysqli_query($db,$sq); 
     while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
@@ -80,7 +96,7 @@ if($_POST['action']=='select_package')
         }
         echo '
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <input type="hidden" class="service_id_doc" value="'.$row['service_id'].'" />
                     <div class="form-check">
                         <label class="form-check-label"> <h4 class="selection" style="margin-top:-2px;">'.$service_name.'</h4> 
@@ -90,13 +106,12 @@ if($_POST['action']=='select_package')
                             </span>
                         </label>
                     </div>
-                       
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <h4 class="selection" style="margin:6px 0;">'.$country_name.'</h4>
                 </div>
                 <div class="col-md-2">
-                    <h4 class="selection" style="margin:6px 0;">'.$price.'.'.$currency_name.'</h4>
+                    <h4 class="selection form_center" style="margin:6px 0;">'.$price.'.'.$currency_name.'</h4>
                 </div>
                 <div class="col-md-4">
                     '.@$all_documents.'

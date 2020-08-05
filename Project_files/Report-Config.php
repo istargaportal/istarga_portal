@@ -18,7 +18,7 @@ include 'Header.php';
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-            <h4 class="card-title"><?php echo @$page_name; ?></h4>
+            <h4 class="card-title"><i class="fa fa-edit"></i> <?php echo @$page_name; ?></h4>
           </div>
           <div class="card-body">
             <div class="row">
@@ -60,7 +60,7 @@ include 'Header.php';
               <div class="col-md-3">
                 <br>
                 <a href="javascript:save_email_triggers()" class="btn btn-success btn-sm"><i class="fa fa-save"></i> Save</a>
-                <a href="" class="btn btn-primary btn-sm"><i class="fa fa-history"></i> Reset</a>
+                <!-- <a href="" class="btn btn-primary btn-sm"><i class="fa fa-history"></i> Reset</a> -->
                 <a href="Report-Config" class="btn btn-default btn-sm"><i class="fa fa-remove"></i> Cancel</a>
               </div>
               <div class="table-responsive">

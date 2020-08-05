@@ -7,17 +7,18 @@ $db=$get_connection->connect();
 
 if(isset($_GET['id']))
 {
-  $page_name = "Edit Package";
+  $page_name = "Package";
   $id = base64_decode($_GET['id']);
   $action = "edit";
 
   if(isset($id))
   {
-    $checbk='SELECT p.id, p.package_name FROM package_list p WHERE p.id = '.$id.' ORDER BY p.id ';
+    $checbk='SELECT p.id, p.package_name, p.country_id FROM package_list p WHERE p.id = '.$id.' ORDER BY p.id ';
     $resul = mysqli_query($db,$checbk); 
     if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
       $package_name = $row['package_name'];
+      $country_id = $row['country_id'];
     }
 
     $all_service_id = array();
@@ -34,7 +35,7 @@ if(isset($_GET['id']))
 }
 else
 {
-  $page_name = "Add Package";
+  $page_name = "Package";
   $action = "add";
   $page_template = "primary";
 }
@@ -46,7 +47,7 @@ include 'Header.php';
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-<?php echo @$page_template; ?>">
-            <h4 class="card-title"><?php echo $page_name; ?></h4>
+            <h4 class="card-title"><i class="fa fa-edit"></i> <?php echo $action.' '.$page_name; ?></h4>
           </div>
           <div class="card-body">
             <form id="package_form">
@@ -55,29 +56,49 @@ include 'Header.php';
               <div class="row justify-content-between">
                 <div class="col-md-4">
                   <label>Package Name</label>
-                  <input name="package_name" required="" value="<?php echo @$package_name; ?>"  type="text" class="form-control" />
+                  <input name="package_name" id="package_name" required="" value="<?php echo @$package_name; ?>"  type="text" class="form-control" />
                 </div>
-                
+                <div class="col-md-2">
+                  <label class="bmd-label-floating" style="font-size: 13px;">Country </label>
+                  <select class="browser-default chosen-select custom-select" type="select" id="country_id" name="country_id" required>
+                    <option value="">Select</option>
+                    <?php
+                    $check='SELECT * FROM countries ';
+                    $resul = mysqli_query($db,$check); 
+                    while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                    {
+                      $selected = "";
+                      if($row["id"] == @$country_id)
+                      {
+                        $selected = "selected";
+                      }
+                      echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['name'].'</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
                 <div class="col-md-6">
                   <label for="Service Type">Services</label>
                   <div id="service_div">
-                    <select multiple="" name="service_id[]" class="chosen-select">
+                    <select multiple="" name="service_id[]" id="service_id" class="chosen-select">
                       <?php
-                        // if(isset($_GET['id']))
-                        // {
-                          $check = "SELECT s.id, s.service_name FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id ORDER BY s.id ";
-                          $resul = mysqli_query($db,$check); 
-                          while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+
+                      $check = "SELECT s.id, s.service_name FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id ORDER BY s.id ";
+                      $resul = mysqli_query($db,$check); 
+                      while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                      {
+                        if(isset($_GET['id']))
+                        {
+                          $selected = "";
+                          $res_ar = array_search($row['id'],@$all_service_id);
+                          if($res_ar != '')
                           {
-                            $selected = "";
-                            $res_ar = array_search($row['id'],@$all_service_id);
-                            if($res_ar != '')
-                            {
-                              $selected = "selected";
-                            }
-                            echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['service_name'].'</option>';
+                            $selected = "selected";
                           }
-                        // }
+                        }
+                        echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['service_name'].'</option>';
+                      }
+
                       ?>
                     </select>
                   </div>
@@ -112,9 +133,11 @@ include 'Header.php';
 
   function load_package()
   {
+    var action = "display";
     $.ajax({
       type:'POST',
-      url:'./API/viewpackage.php',
+      url:'./API/Action-Package.php',
+      data:{action},
       success:function(html){
         $('#data_table').html(html);
         load_datatable();
@@ -131,7 +154,7 @@ include 'Header.php';
       var action = "delete";
       $.ajax({
         type:'POST',
-        url: "./API/action-package.php",
+        url: "./API/Action-Package.php",
         data:{package_id, action},
         success:function(html){
           if(html == "deleted")
@@ -150,27 +173,31 @@ include 'Header.php';
 
   function save_package()
   {
-    var error = 0;
-    $("input, select").each(function ()
-    {
-      if($(this).prop('required'))
-      {
-        if($(this).val() == '')
-        {
-          alert('Please enter data');
-          $(this).focus();
-          error++;
-          exit();
-        }
-      }
-    })
+    var service_id = $('#service_id').val();
+    var country_id = $('#country_id').val();
+    var package_name = $('#package_name').val();
 
-    if(error == 0)
+    var error = 0;
+
+    if (package_name == "")
+    {
+      alert('Please enter Package!');
+      $('#package_name').focus();
+    }
+    else if (country_id == "")
+    {
+      alert('Please select Country!');
+    }
+    else if (service_id == "")
+    {
+      alert('Please select at least service!');
+    }
+    else if(error == 0)
     {
       var myform = document.getElementById("package_form");
       var fd = new FormData(myform );
       $.ajax({
-        url: "./API/action-package.php",
+        url: "./API/Action-Package.php",
         data: fd,
         cache: false,
         processData: false,
@@ -179,7 +206,7 @@ include 'Header.php';
         success: function (html) {
           if(html == "inserted")
           {
-            alert('Package assigned successfully!');
+            alert('Package added successfully!');
             location.reload();
           }
           else if(html == "updated")

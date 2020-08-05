@@ -108,7 +108,7 @@
     position: absolute;
     bottom: 0;
     z-index: 99999999 !important;
-    left: 35%;
+    left: 36%;
   }
   select.form-control:not([size]):not([multiple]){
     color: #000 !important;

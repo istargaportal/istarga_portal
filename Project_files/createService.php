@@ -8,12 +8,12 @@ $db=$get_connection->connect();
 if(isset($_GET['id']))
 {
   $id = base64_decode($_GET['id']);
-  $page_name = "Edit Service";
+  $page_name = "Service";
   $Action = "edit";
 
   if(isset($id))
   {
-    $checbk='SELECT s.currency_id, s.country_id, s.service_type_id, s.id, s.service_name, st.name AS service_type_name, c.name AS country_name, cc.currency, s.price FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cc ON cc.id = s.currency_id WHERE s.id ="'.$id.'" ORDER BY Id DESC';
+    $checbk='SELECT s.is_webservices, s.currency_id, s.country_id, s.service_type_id, s.id, s.service_name, st.name AS service_type_name, c.name AS country_name, cc.currency, s.price FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cc ON cc.id = s.currency_id WHERE s.id ="'.$id.'" ORDER BY Id DESC';
     $resul = mysqli_query($db,$checbk); 
     if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -23,6 +23,12 @@ if(isset($_GET['id']))
       $currency = $row['currency'];
       $currency_id = $row['currency_id'];
       $price = $row['price'];
+      $is_webservices_checked = "";
+      if($row['is_webservices'] == "1")
+      {
+        $is_webservices_checked = "checked";
+      }
+
     }
 
     $all_document_id = array();
@@ -39,7 +45,7 @@ if(isset($_GET['id']))
 }
 else
 {
-  $page_name = "Add Service";
+  $page_name = "Service";
   $Action = "Add";
   $page_template = "primary";
 }
@@ -53,7 +59,7 @@ include 'Header.php';
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-<?php echo @$page_template; ?>">
-            <h4 class="card-title"><?php echo $page_name; ?></h4>
+            <h4 class="card-title"><i class="fa fa-edit"></i> <?php echo $Action.' '.$page_name; ?></h4>
           </div>
           <div class="row col-md-12">
             <form id="create_service" style="display: block;" class="col-md-12">
@@ -65,13 +71,8 @@ include 'Header.php';
 
               <div class="row justify-content-between">
                 <div class=" col-md-4">
-                  <label>Service Name</label>
-                  <input style="margin-top: 1% !important;" name="service_name" value="<?php echo @$service_name; ?>" type="text" class="form-control" required>
-                </div>
-
-                <div class="col-md-4">
                   <label for="Service Type" >Service Type</label>
-                  <select style="margin-top: 2% !important;" id="select_service_type" name="service_type_id" class="browser-default custom-select chosen-select" required>
+                  <select style="margin-top: 2% !important;" id="service_type_id" name="service_type_id" class="browser-default custom-select chosen-select" required>
                     <option value="">Select Service Type</option>
                     <?php
                     $check='SELECT * FROM service_type ';
@@ -88,10 +89,24 @@ include 'Header.php';
                     ?>
                   </select>
                 </div>
-
                 <div class="col-md-4">
-                  <label for="Service Name">Country</label>
-                  <select style="margin-top: 2% !important;" id="locality-dropdown" name="country" class="browser-default custom-select chosen-select" required>
+                  <label>Service Name</label>
+                  <input style="margin-top: 1% !important;" name="service_name" id="service_name" value="<?php echo @$service_name; ?>" type="text" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                  <br>
+                  <div class="form-check" style="margin-top: 20px">
+                    <label class="form-check-label"> <h4 class="selection" style="margin-top:-2px;">Is WebService</h4> 
+                        <input class="form-check-input" name="is_webservices" value="1" type="checkbox" <?php echo @$is_webservices_checked; ?> >
+                        <span class="form-check-sign">
+                          <span class="check"></span>
+                        </span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-md-4" hidden="">
+                  <label>Country</label>
+                  <select style="margin-top: 2% !important;" id="" name="country" class="browser-default custom-select chosen-select" >
                     <option value="">Select Country</option>
                     <?php
                     $check='SELECT * FROM countries ';
@@ -108,14 +123,14 @@ include 'Header.php';
                     ?>
                   </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3" hidden="">
                   <label>Price</label>
-                  <input style="margin-top: 1% !important;" name="Price" type="number" class="form-control" value="<?php echo @$price; ?>" required>  
-                </div>   
-                <div class="col-md-3">
+                  <input style="margin-top: 1% !important;" name="Price" type="number" class="form-control" value="<?php echo @$price; ?>">  
+                </div>
+                <div class="col-md-3" hidden="">
                   <label for="Service Type">Currency</label>
                   <select style="margin-top: 2% !important;" id="currency" name="currency"
-                  class="browser-default custom-select chosen-select" required="">
+                  class="browser-default custom-select chosen-select" >
                   <option value="">Select Currency</option>
                   <?php
                   $check='SELECT * FROM countries ';
@@ -135,7 +150,7 @@ include 'Header.php';
               <div class="col-md-6">
                 <label for="Service Type">Attach Documents</label>
                 <div id="document_div">
-                  <select multiple="" name="document_id[]" class="chosen-select">
+                  <select multiple="" name="document_id[]" id="document_id" class="chosen-select">
                     <?php
                     $check='SELECT * FROM documentlist';
                     $resul = mysqli_query($db,$check); 
@@ -153,21 +168,24 @@ include 'Header.php';
                   </select>
                 </div>
               </div>
+              <div class="col-md-4">
+                <br>
+                <br>
+                <?php
+                if(isset($_GET['id']))
+                {
+                  echo '<a onclick="save_create_service()" class="btn btn-warning btn-sm"><i class="material-icons icon">create</i> Edit</a>';
+                }
+                else
+                {
+                  echo '<a onclick="save_create_service()" class="btn btn-success btn-sm"><i class="material-icons icon">note_add</i> Add</a>';
+                }
+                ?> 
+                <a href="" class="btn btn-primary btn-sm"><i class="material-icons icon">refresh</i> Reset</a> 
+                <a href="createService.php" class="btn btn-default btn-sm"><i class="material-icons icon">close</i> Cancel</a>
+              </div>
             </div>
-            <div class="row justify-content-end">
-              <?php
-              if(isset($_GET['id']))
-              {
-                echo '<a onclick="save_create_service()" class="btn btn-warning btn-sm"><i class="material-icons icon">create</i> Edit</a>';
-              }
-              else
-              {
-                echo '<a onclick="save_create_service()" class="btn btn-success btn-sm"><i class="material-icons icon">note_add</i> Add</a>';
-              }
-              ?> 
-              <a href="" class="btn btn-primary btn-sm"><i class="material-icons icon">refresh</i> Reset</a> 
-              <a href="createService.php" class="btn btn-default btn-sm"><i class="material-icons icon">close</i> Cancel</a>
-            </div>
+            
           </form>
           <div class="col-md-12 form_center">
             <a href="../docs/Add-Service.xlsx" id="download-format" class="btn btn-sm btn-primary">
@@ -186,27 +204,27 @@ include 'Header.php';
     </div>
   </div>
 </div>
-  <div class="modal" id="service_modal" >
-    <div class="row">
-      <div class="col-md-4">
+<div class="modal" id="service_modal" >
+  <div class="row">
+    <div class="col-md-4">
+      <br>
+    </div>
+    <div class="col-md-4">
+      <div class="modal-content">
+        <h4 style="border-bottom: solid 1px #000;padding: 5px 0;"><i class="fa fa-file-excel"></i> Upload Excel
+          <a class="close" onclick="close_excel_import()"><i class="fa fa-remove"></i></a>
+        </h4>
+        <label>Select File</label>
+        <input type="file" id="upload_file" class="form-control" />
         <br>
-      </div>
-      <div class="col-md-4">
-        <div class="modal-content">
-          <h4 style="border-bottom: solid 1px #000;padding: 5px 0;"><i class="fa fa-file-excel"></i> Upload Excel
-            <a class="close" onclick="close_excel_import()"><i class="fa fa-remove"></i></a>
-          </h4>
-          <label>Select File</label>
-          <input type="file" id="upload_file" class="form-control" />
-          <br>
-          <div class="no_padding col-md-12">
-            <button onclick="import_services()" id="import_btn" class="btn btn-success btn-sm"><i class="fa fa-upload"></i> Upload </button>
-            <a href="javascript:close_excel_import()" class="btn btn-default btn-sm"><i class="fa fa-remove"></i> Close </a>
-          </div>
+        <div class="no_padding col-md-12">
+          <button onclick="import_services()" id="import_btn" class="btn btn-success btn-sm"><i class="fa fa-upload"></i> Upload </button>
+          <a href="javascript:close_excel_import()" class="btn btn-default btn-sm"><i class="fa fa-remove"></i> Close </a>
         </div>
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <script>
@@ -292,7 +310,7 @@ include '../datatable/_datatable.php';
     var upload_file = $('#upload_file').prop('files')[0] || 0;
     var form_data = new FormData();   
     form_data.append('upload_file', upload_file);
-   
+
     if(upload_file == "0")
     {
       alert('Please select File!!!');
@@ -324,21 +342,36 @@ include '../datatable/_datatable.php';
   function save_create_service()
   {
     var error = 0;
-    $("input, select").each(function ()
+    var service_type_id = $('#service_type_id').val();
+    var service_name = $('#service_name').val();
+    var document_id = $('#document_id').val();
+    // $("input, select").each(function ()
+    // {
+    //   if($(this).prop('required'))
+    //   {
+    //     if($(this).val() == '')
+    //     {
+    //       alert('Please enter data');
+    //       $(this).focus();
+    //       error++;
+    //       exit();
+    //     }
+    //   }
+    // })
+    if(service_type_id == "")
     {
-      if($(this).prop('required'))
-      {
-        if($(this).val() == '')
-        {
-          alert('Please enter data');
-          $(this).focus();
-          error++;
-          exit();
-        }
-      }
-    })
-
-    if(error == 0)
+      alert('Please select service type!');
+    }
+    else if(service_name == "")
+    {
+      alert("Please enter service name!");
+      $('#service_name').focus();
+    }
+    else if(document_id == "")
+    {
+      alert("Please select at least one document!");
+    }
+    else if(error == 0)
     {
       var myform = document.getElementById("create_service");
       var fd = new FormData(myform );
@@ -358,7 +391,6 @@ include '../datatable/_datatable.php';
           else if(html == "updated")
           {
             alert('Service updated successfully!');
-            location.reload();
           }
           else
           {

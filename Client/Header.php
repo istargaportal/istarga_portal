@@ -418,37 +418,37 @@ else
       </a></div>
       <div class="sidebar-wrapper">
         <ul class="nav">
-          <li class="nav-item <?php if($page_name == "Dashboard") { echo $active; } ?>">
+          <li class="nav-item <?php if($page_name == "Dashboard") { echo 'active'; } ?>">
             <a class="nav-link" href="Dashboard.php">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
           </li>
-          <li class="nav-item <?php if($page_name == "View Order") { echo $active; } ?>">
+          <li class="nav-item <?php if($page_name == "View Order") { echo 'active'; } ?>">
             <a class="nav-link" href="ClientViewOrder.php">
               <i class="material-icons">content_paste</i>
               <p>View Orders</p>
             </a>
           </li>
-          <li class="nav-item <?php if($page_name == "Create Order") { echo $active; } ?>">
+          <li class="nav-item <?php if($page_name == "Create Order") { echo 'active'; } ?>">
             <a class="nav-link" href="CreateOrder.php">
               <i class="material-icons">content_paste</i>
               <p>Create Order</p>
             </a>
           </li>
-          <li class="nav-item <?php if($page_name == "Bulk Order") { echo $active; } ?>">
+          <li class="nav-item <?php if($page_name == "Bulk Order") { echo 'active'; } ?>">
             <a class="nav-link" href="ClientBulkOrder.php">
               <i class="material-icons">library_books</i>
               <p>Bulk Orders</p>
             </a>
           </li>
-          <li class="nav-item <?php if($page_name == "Reports") { echo $active; } ?>">
+          <li class="nav-item <?php if($page_name == "Reports") { echo 'active'; } ?>">
             <a class="nav-link" href="reports.php">
               <i class="material-icons">bubble_chart</i>
               <p>Reports</p>
             </a>
           </li>
-          <li class="nav-item <?php if($page_name == "My Profile") { echo $active; } ?>">
+          <li class="nav-item <?php if($page_name == "My Profile") { echo 'active'; } ?>">
             <a class="nav-link" href="MyProfile.php">
               <i class="material-icons">person</i>
               <p>My Profile</p>

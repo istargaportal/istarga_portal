@@ -26,7 +26,7 @@ if($_POST["Action"]=='delete'){
 
 if($_POST["Action"]=='Add')
 {
-  $sql = "INSERT INTO service_list(service_name, service_type_id, country_id, price, currency_id) VALUES ('$service_name','$service_type_id','$country', '$Price', '$currency')";
+  $sql = "INSERT INTO service_list(service_name, service_type_id, country_id, price, currency_id, is_webservices) VALUES ('$service_name','$service_type_id','$country', '$Price', '$currency', '".@$is_webservices."')";
   $result = mysqli_query($db,$sql);
   $service_id = $db->insert_id;
   if(isset($document_id))
@@ -43,7 +43,7 @@ if($_POST["Action"]=='Add')
   if($result){echo "inserted";}else{echo "error".mysqli_error();}
 }
 else if($_POST["Action"]=='edit'){
-  $sql = "UPDATE service_list SET service_name = '$service_name', service_type_id = '$service_type_id', country_id = '$country', price = '$Price', currency_id = '$currency' WHERE `id`='$edit_id' ";
+  $sql = "UPDATE service_list SET service_name = '$service_name', service_type_id = '$service_type_id', country_id = '$country', price = '$Price', currency_id = '$currency', is_webservices = '".@$is_webservices."' WHERE `id`='$edit_id' ";
   $result = mysqli_query($db,$sql);
   if(isset($document_id))
   {
@@ -69,14 +69,15 @@ else if($_POST["Action"]=='Display')
             <th width="10">SR.NO.</th>
             <th>Service Name</th>
             <th>Service Type</th>
-            <th>Country</th>
-            <th>Price</th>
+            <th>WebService</th>
             <th>Documents</th>
             <th>Action</th>
           </thead>
         ';
   $sr = 0;
-  $sq="SELECT s.id, s.service_name, st.name AS service_type_name, c.name AS country_name, cc.currency, s.price FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cc ON cc.id = s.currency_id ORDER BY s.id ";
+  $sq="SELECT s.id, s.service_name, st.name AS service_type_name, s.price, s.is_webservices FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id  ORDER BY s.id ";
+  // INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cc ON cc.id = s.currency_id
+  // , c.name AS country_name, cc.currency
   $resul = mysqli_query($db,$sq); 
   while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
   {
@@ -87,14 +88,30 @@ else if($_POST["Action"]=='Display')
     {
       $all_documents.="<a class='btn btn-default btn-small'>".$row_1['document_name']."</a><br>";
     }
+    $is_webservices_label = "NO";
+    $is_webservices_checked = "";
+    if($row['is_webservices'] == "1")
+    {
+      $is_webservices_label = "YES";
+      $is_webservices_checked = "checked";
+    }
 
     $sr++;
     echo "<tr>";
       echo "<td class='tablehead1'>".$sr."</td>";
       echo "<td class='tablehead1 form_left'>".$row['service_name']."</td>";
       echo "<td class='tablehead1'>".$row['service_type_name']."</td>";
-      echo "<td class='tablehead1'>".$row['country_name']."</td>";
-      echo "<td class='tablehead1 form_right'>".$row['price']." <b>".$row['currency']."</b></td>";
+      echo '
+      <td class="tablehead1">
+        <div class="form-check">
+          <label class="form-check-label"> <h4 class="selection" style="margin-top:-16px;"> '.@$is_webservices_label.'</h4> 
+              <input class="form-check-input" name="service_id[]" value="'.$row['id'].'" type="checkbox" '.@$is_webservices_checked.' >
+              <span class="form-check-sign">
+                <span class="check"></span>
+              </span>
+          </label>
+        </div>
+      </td>';
       echo "<td class='tablehead1 form_left'>".$all_documents."</td>";
       echo '<td>
                 <a href="createService.php?id='.base64_encode($row["id"]).'" title="Edit Service" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>

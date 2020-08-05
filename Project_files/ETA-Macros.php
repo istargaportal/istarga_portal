@@ -13,7 +13,7 @@ include 'Header.php';
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-            <h4 class="card-title"><?php echo @$page_name; ?></h4>
+            <h4 class="card-title"><i class="fa fa-edit"></i> Add <?php echo @$page_name; ?></h4>
           </div>
           <div class="card-body">
             <div class="row">

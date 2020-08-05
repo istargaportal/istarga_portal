@@ -8,7 +8,7 @@ include 'Header.php';
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-            <h4 class="card-title">Service Type</h4>
+            <h4 class="card-title"><i class="fa fa-edit"></i> Add Service Type</h4>
           </div>
           <div class="card-body">
             <form id="ajax">

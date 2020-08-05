@@ -8,7 +8,7 @@ include 'Header.php';
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-            <h4 class="card-title">Report Color</h4>
+            <h4 class="card-title"><i class="fa fa-edit"></i> Report Color</h4>
           </div>
           <div class="card-body">
             <form id="report_color_form">

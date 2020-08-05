@@ -2,7 +2,7 @@
 
 if(isset($_GET['id']))
 {
-  $page_name = "Edit Clients";
+  $page_name = "Edit Client";
   $id = $_GET['id'];
 
   require_once "../config/config.php";
@@ -64,7 +64,7 @@ if(isset($_GET['id']))
 }
 else
 {
-  $page_name = "Add Clients";
+  $page_name = "Add Client";
   $page_template = "primary";
 }
 include 'Header.php';
@@ -76,7 +76,7 @@ include 'Header.php';
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-<?php echo @$page_template; ?>"> 
-            <h4 class="card-title"><?php echo $page_name; ?></h4>
+            <h4 class="card-title"><i class="fa fa-edit"></i> <?php echo $page_name; ?></h4>
           </div>
           <div class="card-body">
             <form id="ajax" autocomplete="off">

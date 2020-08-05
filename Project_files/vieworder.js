@@ -66,6 +66,7 @@ const getAllClientData = () => {
     data:{load_condition, client_id, default_client_id},
     success:function(html){
       $('#data_table').html(html);
+      load_datatable();
     }
   });
   // if (id) {

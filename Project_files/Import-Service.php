@@ -39,12 +39,13 @@ for($i=5;$i<=$arrayCount;$i++)
 {
 	$service_name = addslashes($allDataInSheet[$i]["A"]);
 	$service_type_name = addslashes($allDataInSheet[$i]["B"]);
-	$country = addslashes($allDataInSheet[$i]["C"]);
-	$price = addslashes($allDataInSheet[$i]["D"]);
-	$currency = addslashes($allDataInSheet[$i]["E"]);
-	$document_name = addslashes($allDataInSheet[$i]["F"]);
-	
-	if($service_name != "" )
+	$is_webservices = addslashes($allDataInSheet[$i]["C"]);
+	// $country = addslashes($allDataInSheet[$i]["C"]);
+	// $price = addslashes($allDataInSheet[$i]["D"]);
+	// $currency = addslashes($allDataInSheet[$i]["E"]);
+	$document_name = addslashes($allDataInSheet[$i]["D"]);
+	if($is_webservices == "YES"){ $is_webservices = 1; } else { $is_webservices = 0; }
+	if($service_name != "" && $is_webservices != "")
 	{
 		$service_type_id = $country_id = $currency_id = $document_id = 0;
 		$sq="SELECT id FROM service_type WHERE name = '$service_type_name' ";
@@ -52,19 +53,19 @@ for($i=5;$i<=$arrayCount;$i++)
 		if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 		{ $service_type_id = $row['id']; } else { $service_type_id = 0; }
 		
-		$sq="SELECT id FROM countries WHERE name = '$country' ";
-		$resul = mysqli_query($db,$sq); 
-		if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-		{ $country_id = $row['id']; } else { $country_id = 0; }
+		// $sq="SELECT id FROM countries WHERE name = '$country' ";
+		// $resul = mysqli_query($db,$sq); 
+		// if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+		// { $country_id = $row['id']; } else { $country_id = 0; }
 		
-		$sq="SELECT id FROM countries WHERE currency = '$currency' ";
-		$resul = mysqli_query($db,$sq); 
-		if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-		{ $currency_id = $row['id']; } else { $currency_id = 0; }
+		// $sq="SELECT id FROM countries WHERE currency = '$currency' ";
+		// $resul = mysqli_query($db,$sq); 
+		// if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+		// { $currency_id = $row['id']; } else { $currency_id = 0; }
 
-		if($service_type_id != 0 && $country_id != 0 && $price >= 0 )
+		if($service_type_id != 0 )
 		{
-			$sql = "INSERT INTO service_list(service_name, service_type_id, country_id, price, currency_id) VALUES ('$service_name','$service_type_id','$country_id', '$price', '$currency_id')";
+			$sql = "INSERT INTO service_list(service_name, service_type_id, is_webservices) VALUES ('$service_name','$service_type_id', '$is_webservices')";
 			$result = mysqli_query($db,$sql);
 			$service_id = $db->insert_id;
 			

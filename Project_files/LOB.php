@@ -7,7 +7,7 @@ $db=$get_connection->connect();
 
 if(isset($_GET['lob_id']))
 {
-  $page_name = "Edit LOB";
+  $page_name = "LOB";
   $lob_id = base64_decode($_GET['lob_id']);
   $action = "edit";
 
@@ -34,7 +34,7 @@ if(isset($_GET['lob_id']))
 }
 else
 {
-  $page_name = "Add LOB";
+  $page_name = "LOB";
   $action = "add";
   $page_template = "primary";
 }
@@ -46,7 +46,7 @@ include 'Header.php';
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-<?php echo @$page_template; ?>">
-            <h4 class="card-title"><?php echo $page_name; ?></h4>
+            <h4 class="card-title"><i class="fa fa-edit"></i> <?php echo $action.' '.$page_name; ?></h4>
           </div>
           <div class="card-body">
             <form id="lob_form">

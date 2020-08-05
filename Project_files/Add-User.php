@@ -82,7 +82,7 @@ include 'Header.php';
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-<?php echo @$page_template; ?>">
-            <h4 class="card-title"><?php echo @$page_name; ?></h4>
+            <h4 class="card-title"><i class="fa fa-edit"></i> Personal Details</h4>
           </div>
           <div class="card-body">
             <form id="add_user_form" enctype="multipart/form-data">
@@ -290,7 +290,7 @@ include 'Header.php';
                 <div class="col-md-12">
                   <div class="card">
                     <div class="card-header card-header-primary">
-                      <h4 style="color: white !important;" class="card-title">Credentials Settings</h4>
+                      <h4 style="color: white !important;" class="card-title"><i class="fa fa-lock"></i> Credentials Settings</h4>
                     </div>
                     <div class="card-body row">
                       <div class="col-md-4">
@@ -327,7 +327,7 @@ include 'Header.php';
                 <div class="col-md-12">
                   <div class="card">
                     <div class="card-header card-header-primary">
-                      <h4 style="color: white !important;" class="card-title">Bank Details</h4>
+                      <h4 style="color: white !important;" class="card-title"><i class="fa fa-building"></i> Bank Details</h4>
                     </div>
                     <div class="card-body">
                       <div class="row">
@@ -360,7 +360,7 @@ include 'Header.php';
                     <div class="col-md-12">
                       <div class="card">
                         <div class="card-header card-header-primary">
-                          <h4 style="color: white !important;" class="card-title">Position</h4>
+                          <h4 style="color: white !important;" class="card-title"><i class="fa fa-trophy"></i> Position</h4>
                         </div>
                         <div class="card-body">
                           <div class="row">

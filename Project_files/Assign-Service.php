@@ -7,7 +7,7 @@ $db=$get_connection->connect();
 
 if(isset($_GET['edit_id']))
 {
-  $page_name = "Edit Assign Service";
+  $page_name = "Assign Service";
   $id = base64_decode($_GET['edit_id']);
 
   if(isset($id))
@@ -36,13 +36,13 @@ if(isset($_GET['edit_id']))
     // }
   }
   $page_template = "warning";
-  $action = "update";
+  $action = "edit";
 }
 else
 {
   $page_name = "Assign Service";
   $page_template = "primary";
-  $action = "save";
+  $action = "add";
 }
 
 include 'Header.php';
@@ -55,7 +55,7 @@ include 'API/dropdown.css';
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-<?php echo @$page_template; ?>">
-            <h4 class="card-title"><?php echo $page_name; ?></h4>
+            <h4 class="card-title"><i class="fa fa-edit"></i> <?php echo $action.' '.$page_name; ?></h4>
           </div>
           <div class="card-body">
             <form id="assign_service">
@@ -73,7 +73,7 @@ include 'API/dropdown.css';
 
 
               <div class="row justify-content-between">
-                <div class="col-md-4">
+                <div class="col-md-3">
                   <label for="Client Name">Client Name</label>
                   <div id="client_id_div">
                     <select class="browser-default custom-select chosen-select" onchange="load_package_service(0)" name="client_id" id="client_id">
@@ -106,12 +106,69 @@ include 'API/dropdown.css';
                   </div>
                 </div>
                 <div class="col-md-3">
+                  <label for="Service Name">Country</label>
+                  <select style="margin-top: 2% !important;" id="locality-dropdown" name="country" class="browser-default custom-select chosen-select" >
+                    <option value="">Select Country</option>
+                    <?php
+                    $check='SELECT * FROM countries ';
+                    $resul = mysqli_query($db,$check); 
+                    while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                    {
+                      $selected = "";
+                      if($row["id"] == @$country_id)
+                      {
+                        $selected = "selected";
+                      }
+                      echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['name'].'</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+
+                <div class="col-md-3">
+                  <label for="Service Type" >Service Type</label>
+                  <select style="margin-top: 2% !important;" id="select_service_type" name="service_type_id" class="browser-default custom-select chosen-select" required>
+                    <option value="">Select Service Type</option>
+                    <?php
+                    $check='SELECT * FROM service_type ';
+                    $resul = mysqli_query($db,$check); 
+                    while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                    {
+                      $selected = "";
+                      if($row["id"] == @$service_type_id)
+                      {
+                        $selected = "selected";
+                      }
+                      echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['name'].'</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+
+                <div class="col-md-3">
+                  <label>Service Name</label>
+                  <select style="margin-top: 2% !important;" id="select_service_type" name="service_type_id" class="browser-default custom-select chosen-select" required>
+                    <option value="">Select Service</option>
+                  </select>
+                </div>
+
+                <div class="col-md-3">
+                  <label>Price</label>
+                  <input type="number" class="form-control" name="price" />
+                </div>
+
+                <div class="col-md-3">
+                  <label>SLA <small class="pull-right">Days</small></label>
+                  <input type="text" class="form-control" name="sla" />
+                </div>
+                
+                <div hidden="" class="col-md-3">
                   <div class="dropdown1">
                     <label for="">Package Name</label>
                     <!-- <button style="width: 100%;" type="button" id="package_btn" onclick="open_package_box()" class="custom-select btn-sm">Select Package</button> -->
-                    <div id="package_list_id" class="dropdown-content1" >
+                    <div id="package_list_id" class="dropdown-content1 col-md-12 no_padding" >
                       <!-- onchange="load_package_service(0)" -->
-                      <select class="browser-default custom-select chosen-select" name="package_id" id="package_id_sel">
+                      <select class="browser-default custom-select chosen-select" name="package_id" id="package_id_sel" onchange="load_service_list()">
                       <?php
                       if(!isset($_GET['edit_id']))
                       {
@@ -132,11 +189,23 @@ include 'API/dropdown.css';
                         }
                       }
                       ?>
-                    </select>
+                      </select>
                       <!-- <input type="text" placeholder="Search.." class="form-control" id="packageInput" onkeyup="filter_package_function()">
                       <ul id="package_list" style="list-style: none;padding-left: 8px;">
                       </ul> -->
                     </div>
+                    <div id="service_list_div">
+                      <?php
+                      $i = 0;
+                      $check = "SELECT s.service_name FROM package_list_service p INNER JOIN service_list s ON s.id = p.service_id WHERE p.package_id = '".@$package_id."' ";
+                      $resul = mysqli_query($db,$check); 
+                      while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                      {
+                        $i++;
+                        echo '<a class="btn btn-default btn-xs">'.$row['service_name'].'</a>';
+                      }
+                      ?>
+                    </div>   
                   </div>
                 </div>
                 <!-- <div class="col-md-3">
@@ -150,7 +219,7 @@ include 'API/dropdown.css';
                     </div>
                   </div>
                 </div> -->
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6 form_right">
                   <br>
                   <?php
                   if(isset($_GET['edit_id']))
@@ -169,11 +238,6 @@ include 'API/dropdown.css';
 
               <div class="row">
                 <div class="col-md-12">
-                  <br>
-                  <div class="card-header card-header-primary">
-                    <h4 style="color: white;" class="card-title">Service Details</h4>
-                  </div>
-                  <br>
                   <div id="data_table"></div>
                 </div>
               </div>
@@ -372,6 +436,20 @@ include 'API/dropdown.css';
         });
       }
 
+      function load_service_list()
+      {
+        var package_id_sel = $('#package_id_sel').val();
+        var action = "load_service_list";
+        $.ajax({
+          type:'POST',
+          url:'./API/Action-Assign-Service.php',
+          data:{action, package_id_sel},
+          success:function(html) {
+            $('#service_list_div').html(html);
+          }
+        });
+      }
+
       function load_assign_services()
       {
         var action = "display";
@@ -428,7 +506,7 @@ include 'API/dropdown.css';
               else if(html == "updated")
               {
                 alert('Service assigned update successfully!');
-                location.reload();
+                load_assign_services();
               }
               else
               {

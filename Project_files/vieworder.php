@@ -5,7 +5,7 @@ include 'Header.php';
 <input type="hidden" name="Service" id="Service" class="form-control" id="exampleFormControlSelect1" onchange="myFunction(event)" />
 <div class="content">
   <div class="container-fluid">
-    <div class="col-md-12">
+    <div class="">
       <div class="card card-plain">
         <div class="card-body">
           <div class="row">
@@ -189,9 +189,6 @@ include 'Header.php';
   <?php
   include '../datatable/_datatable.php';
   ?>
-  <script type="text/javascript">
-      load_datatable();
-  </script>
 
 </body>
 

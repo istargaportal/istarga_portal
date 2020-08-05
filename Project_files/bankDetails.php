@@ -1,5 +1,5 @@
 <?php
-  $page_name = "Add Bank Details";
+  $page_name = "Bank Details";
   include 'Header.php';
 ?>
       <div class="content">
@@ -8,7 +8,7 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title">Add Bank Details</h4>
+                  <h4 class="card-title"><i class="fa fa-edit"></i> Add Bank Details</h4>
                 </div>
                 <div class="card-body">
                   <form id="ajax">
@@ -70,14 +70,8 @@
                           <i class="material-icons icon">refresh</i> Reset
                         </button>
                       </div>
-                    </div>
-                    <hr />
-                    <div class="row">
                       <div class="col-md-12">
-                        <div class="card">
-                          <div class="card-header card-header-primary">
-                            <h4 style="color: white;" class="card-title">Bank Details</h4>
-                          </div>
+                        <div class="">
                           <table class="table table-hover" style="margin-top: 4%;">
                             <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
                               <th>
