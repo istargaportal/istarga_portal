@@ -161,7 +161,7 @@ include 'Header.php';
 							</div>
 
 							<div class="col-md-12 form_center">
-								<br>
+								<br> 
 								<a href="javascript:check_package_service()" id="check_package_service_btn" class="btn btn-primary btn-md pull-right"><i class="fa fa-arrow-right"></i> Continue</a> 
 							</div>
 
