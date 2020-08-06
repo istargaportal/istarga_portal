@@ -7,44 +7,27 @@ $db=$get_connection->connect();
 
 if(isset($_GET['edit_id']))
 {
-  $page_name = "Assign Service";
+  $page_name = "Assign Package";
   $id = base64_decode($_GET['edit_id']);
 
   if(isset($id))
   {
-    $check='SELECT client_id, country_id, service_type_id, service_id, price, sla FROM assigned_service WHERE id = '.$id.' ';
+    $check='SELECT client_id, country_id, package_id, price FROM assigned_package WHERE id = '.$id.' ';
     $resul = mysqli_query($db,$check);
     if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
       $client_id = $row['client_id'];
       $country_id = $row['country_id'];
-      $service_type_id = $row['service_type_id'];
-      $service_id = $row['service_id'];
+      $package_id = $row['package_id'];
       $price = $row['price'];
-      $sla = $row['sla'];
     }
-    
-    // $service_id_all = $package_id_all = 0;
-    // $check='SELECT service_id, package_id FROM assigned_service_details WHERE assigned_service_id = '.$id.' ';
-    // $resul = mysqli_query($db,$check);
-    // while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-    // {
-    //   if($row['service_id'] != 0)
-    //   {
-    //     $service_id_all = $service_id_all.','.$row['service_id'];
-    //   }
-    //   if($row['package_id'] != 0)
-    //   {
-    //     $package_id_all = $package_id_all.','.$row['package_id'];
-    //   }
-    // }
   }
   $page_template = "warning";
   $action = "edit";
 }
 else
 {
-  $page_name = "Assign Service";
+  $page_name = "Assign Package";
   $page_template = "primary";
   $action = "add";
 }
@@ -67,20 +50,18 @@ include 'API/dropdown.css';
               <input type="hidden" id="edit_client_id" value="<?php echo @$client_id; ?>">
               <input type="hidden" id="edit_country" value="<?php echo @$country; ?>">
               <input type="hidden" id="edit_service_type_id" value="<?php echo @$service_type_id; ?>">
-              <input type="hidden" id="edit_service_id" value="<?php echo @$service_id; ?>">
+              <input type="hidden" id="edit_package_id" value="<?php echo @$package_id; ?>">
               <input type="hidden" id="edit_currency" value="<?php echo @$currency; ?>">
               <input type="hidden" name="edit_id" value="<?php echo @$id; ?>">
               
-              <input type="hidden" id="service_id_all" value="<?php echo @$service_id_all; ?>">
               <input type="hidden" id="package_id_all" value="<?php echo @$package_id_all; ?>">
-              <input type="hidden" id="package_id" value="<?php echo @$package_id; ?>">
-
+              <input type="hidden" id="package_id_all" value="<?php echo @$package_id_all; ?>">
 
               <div class="row justify-content-between">
                 <div class="col-md-3">
                   <label for="Client Name">Client Name</label>
                   <div id="client_id_div">
-                    <select class="browser-default custom-select chosen-select" onchange="load_service_list()" onchange0="load_package_service(0)" name="client_id" id="client_id">
+                    <select class="browser-default custom-select chosen-select" onchange="load_package_list()" onchange0="load_package_service(0)" name="client_id" id="client_id">
                       <?php
                       if(@$client_id != "")
                       {
@@ -107,7 +88,7 @@ include 'API/dropdown.css';
                 </div>
                 <div class="col-md-3">
                   <label for="Service Name">Country</label>
-                  <select style="margin-top: 2% !important;" id="country_id" name="country_id" onchange="load_service_list()" class="browser-default custom-select chosen-select" >
+                  <select style="margin-top: 2% !important;" id="country_id" name="country_id" onchange="load_package_list()" class="browser-default custom-select chosen-select" >
                     <?php
                     if(@$country_id != "")
                     {
@@ -133,44 +114,17 @@ include 'API/dropdown.css';
                 </div>
 
                 <div class="col-md-3">
-                  <label for="Service Type" >Service Type</label>
-                  <select style="margin-top: 2% !important;" id="service_type_id" name="service_type_id" onchange="load_service_list()" class="browser-default custom-select chosen-select" required>
-                    <?php
-                    if(@$service_type_id != "")
-                    {
-                      $edit_query = " WHERE id = '$service_type_id' ";
-                    }
-                    else
-                    {
-                      echo '<option value="">Select</option>';
-                    }
-                    $check='SELECT id, name FROM service_type '.@$edit_query;
-                    $resul = mysqli_query($db,$check); 
-                    while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                    {
-                      $selected = "";
-                      if($row["id"] == @$service_type_id)
-                      {
-                        $selected = "selected";
-                      }
-                      echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['name'].'</option>';
-                    }
-                    ?>
-                  </select>
-                </div>
-
-                <div class="col-md-3">
-                  <label>Service Name</label>
-                  <div id="service_id_div">
-                    <select style="margin-top: 2% !important;" id="service_id" name="service_id" class="browser-default custom-select chosen-select" required>
+                  <label>Package Name</label>
+                  <div id="package_id_div">
+                    <select style="margin-top: 2% !important;" id="package_id" name="package_id" class="browser-default custom-select chosen-select" required>
                       <?php
                       if(isset($_GET['edit_id']))
                       {
-                        $check='SELECT id, service_name FROM service_list WHERE id = '.@$service_id.' ';
+                        $check='SELECT id, package_name FROM package_list WHERE id = '.@$package_id.' ';
                         $resul = mysqli_query($db,$check); 
                         if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
                         {
-                          echo '<option value="'.$row['id'].'">'.$row['service_name'].'</option>';
+                          echo '<option value="'.$row['id'].'">'.$row['package_name'].'</option>';
                         }
                       }
                       else
@@ -187,82 +141,19 @@ include 'API/dropdown.css';
                   <input type="text" class="form-control Number" name="price" value="<?php echo @$price; ?>" />
                 </div>
 
-                <div class="col-md-3">
-                  <h6 style="color: #000">SLA <small style="float: right;">in Days</small></h6>
-                  <input type="text" class="form-control Number" name="sla" value="<?php echo @$sla; ?>" />
-                </div>
-                
-                <div hidden="" class="col-md-3">
-                  <div class="dropdown1">
-                    <label for="">Package Name</label>
-                    <!-- <button style="width: 100%;" type="button" id="package_btn" onclick="open_package_box()" class="custom-select btn-sm">Select Package</button> -->
-                    <div id="package_list_id" class="dropdown-content1 col-md-12 no_padding" >
-                      <!-- onchange="load_package_service(0)" -->
-                      <select class="browser-default custom-select chosen-select" name="package_id" id="package_id_sel" onchange="load_service_list()">
-                      <?php
-                      if(!isset($_GET['edit_id']))
-                      {
-                        echo '<option value="">Select</option>';
-                      }
-                      else
-                      {
-                        $check="SELECT id, package_name FROM package_list WHERE id IN (SELECT package_id FROM package_list_service WHERE service_id IN(SELECT id FROM service_list WHERE currency_id = '$currency_id' AND country_id = '$country_id'))";
-                        $resul = mysqli_query($db,$check); 
-                        while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                        {
-                          $selected = "";
-                          if($row["id"] == @$package_id)
-                          {
-                            $selected = "selected";
-                          }
-                          echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['package_name'].'</option>';
-                        }
-                      }
-                      ?>
-                      </select>
-                      <!-- <input type="text" placeholder="Search.." class="form-control" id="packageInput" onkeyup="filter_package_function()">
-                      <ul id="package_list" style="list-style: none;padding-left: 8px;">
-                      </ul> -->
-                    </div>
-                    <div id="service_list_div">
-                      <?php
-                      $i = 0;
-                      $check = "SELECT s.service_name FROM package_list_service p INNER JOIN service_list s ON s.id = p.service_id WHERE p.package_id = '".@$package_id."' ";
-                      $resul = mysqli_query($db,$check); 
-                      while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                      {
-                        $i++;
-                        echo '<a class="btn btn-default btn-xs">'.$row['service_name'].'</a>';
-                      }
-                      ?>
-                    </div>   
-                  </div>
-                </div>
-                <!-- <div class="col-md-3">
-                  <div class="dropdown">
-                    <label for="">Service Name</label>
-                    <button style="width: 100%;" type="button" id="service_btn" onclick="open_service_box()" class="custom-select btn-sm">Select Services</button>
-                    <div id="service_list_id" class="dropdown-content" style="height: 200px;">
-                      <input type="text" placeholder="Search.." class="form-control" id="serviceInput" onkeyup="filter_service_function()">
-                      <ul id="service_list" style="list-style: none;padding-left: 8px;">
-                      </ul>
-                    </div>
-                  </div>
-                </div> -->
-                <div class="form-group col-md-6 form_right">
-                  <br>
+                <div class="form-group col-md-12 form_right">
                   <?php
                   if(isset($_GET['edit_id']))
                   {
-                    echo '<a href="javascript:save_assign_service(2)" name="update_btn" type="submit" id="assignSubmit" class="btn btn-warning btn-sm"><i class="material-icons icon">edit</i> Update</a>';
+                    echo '<a href="javascript:save_assign_package(2)" name="update_btn" type="submit" id="assignSubmit" class="btn btn-warning btn-sm"><i class="material-icons icon">edit</i> Update</a>';
                   }
                   else
                   {
-                    echo '<a href="javascript:save_assign_service(1)" name="add_btn" type="submit" id="assignSubmit" class="btn btn-success btn-sm"><i class="material-icons icon">note_add</i> Assign</a>';
+                    echo '<a href="javascript:save_assign_package(1)" name="add_btn" type="submit" id="assignSubmit" class="btn btn-success btn-sm"><i class="material-icons icon">note_add</i> Assign</a>';
                   }
                   ?>
                   <a href="" class="btn btn-primary btn-sm"><i class="material-icons icon">refresh</i> Reset</a>
-                  <a href="Assign-Service.php" class="btn btn-default btn-sm"><i class="material-icons icon">close</i> Cancel</a>
+                  <a href="Assign-Package.php" class="btn btn-default btn-sm"><i class="material-icons icon">close</i> Cancel</a>
                 </div>
               </div>
 
@@ -399,7 +290,7 @@ include 'API/dropdown.css';
         }
       }
 
-      function delete_assigned_service(del_assigned_id)
+      function delete_assigned_package(del_assigned_id)
       {
         var r = confirm("Are you sure to delete this Assigned Services?")
         if(r == true)
@@ -407,13 +298,13 @@ include 'API/dropdown.css';
           var action = 'delete';
           $.ajax({
             type:'POST',
-            url:'./API/Action-Assign-Service.php',
+            url:'./API/Action-Assign-Package.php',
             data:{action, del_assigned_id},
             success:function(html) {
               if(html == 'deleted')
               {
-                load_assign_services();
-                alert('Assign Service deleted successfully!');
+                load_assign_package();
+                alert('Assign Package deleted successfully!');
               }
               else
               {
@@ -442,7 +333,7 @@ include 'API/dropdown.css';
           var action = "load_package";
           $.ajax({
             type:'POST',
-            url:'./API/Action-Assign-Service.php',
+            url:'./API/Action-Assign-Package.php',
             data:{action, client_id, package_id},
             success:function(html) {
               $('#package_list_id').html(html);
@@ -452,12 +343,12 @@ include 'API/dropdown.css';
           });
         }
 
-        var service_id_all = $('#service_id_all').val();
+        var package_id_all = $('#package_id_all').val();
         var action = "load_services";
         $.ajax({
           type:'POST',
-          url:'./API/Action-Assign-Service.php',
-          data:{action, client_id, service_id_all, package_id_all_sel},
+          url:'./API/Action-Assign-Package.php',
+          data:{action, client_id, package_id_all, package_id_all_sel},
           success:function(html) {
             $('#service_list').html(html);
             service_select();
@@ -466,11 +357,10 @@ include 'API/dropdown.css';
         });
       }
 
-      function load_service_list()
+      function load_package_list()
       {
         var client_id = $('#client_id').val();
         var country_id = $('#country_id').val();
-        var service_type_id = $('#service_type_id').val();
         if(client_id == "")
         {
           // alert("Please select client!");
@@ -479,31 +369,27 @@ include 'API/dropdown.css';
         {
           // alert("Please select country!");
         }
-        else if(service_type_id == "")
-        {
-          // alert("Please select service type!");
-        }
         else
         {
-          var action = "load_service_list";
+          var action = "load_package_list";
           $.ajax({
             type:'POST',
-            url:'./API/Action-Assign-Service.php',
-            data:{action, client_id, country_id, service_type_id},
+            url:'./API/Action-Assign-Package.php',
+            data:{action, client_id, country_id},
             success:function(html) {
-              $('#service_id_div').html(html);
+              $('#package_id_div').html(html);
               $('.chosen-select').chosen();
             }
           });
         }
       }
 
-      function load_assign_services()
+      function load_assign_package()
       {
         var action = "display";
         $.ajax({
           type:'POST',
-          url:'./API/Action-Assign-Service.php',
+          url:'./API/Action-Assign-Package.php',
           data:{action},
           success:function(html) {
             $('#data_table').html(html);
@@ -512,7 +398,7 @@ include 'API/dropdown.css';
         });
       }
 
-      load_assign_services();
+      load_assign_package();
 
       function open_package_box() {
         document.getElementById("package_list_id").classList.toggle("show");
@@ -522,14 +408,12 @@ include 'API/dropdown.css';
         document.getElementById("service_list_id").classList.toggle("show");
       }
 
-      function save_assign_service()
+      function save_assign_package()
       {
         var client_id = $('#client_id').val();
         var country_id = $('#country_id').val();
-        var service_type_id = $('#service_type_id').val();
-        var service_id = $('#service_id').val();
+        var package_id = $('#package_id').val();
         var price = $('#price').val();
-        var sla = $('#sla').val();
         if(client_id == "")
         {
           alert('Please select client!');
@@ -538,28 +422,20 @@ include 'API/dropdown.css';
         {
           alert('Please select country!');
         }
-        else if(service_type_id == "")
+        else if(package_id == "")
         {
-          alert('Please select service type!');
-        }
-        else if(service_id == "")
-        {
-          alert('Please select service!');
+          alert('Please select package!');
         }
         else if(price == "")
         {
           alert('Please enter price!');
-        }
-        else if(sla == "")
-        {
-          alert('Please enter sla!');
         }
         else
         {
           var myform = document.getElementById("assign_service");
           var fd = new FormData(myform );
           $.ajax({
-            url: "./API/Action-Assign-Service.php",
+            url: "./API/Action-Assign-Package.php",
             data: fd,
             cache: false,
             processData: false,
@@ -569,12 +445,12 @@ include 'API/dropdown.css';
               if(html == "inserted")
               {
                 alert('Service assigned successfully!');
-                window.location.href = "Assign-Service.php";
+                window.location.href = "Assign-Package.php";
               }
               else if(html == "updated")
               {
                 alert('Service assigned update successfully!');
-                load_assign_services();
+                load_assign_package();
               }
               else
               {

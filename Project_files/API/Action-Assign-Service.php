@@ -14,14 +14,14 @@ if($_POST['action'] == "delete")
 {
 	$sq="DELETE FROM assigned_service WHERE id = '$del_assigned_id' ";
 	$resul = mysqli_query($db,$sq); 
-	$sq="DELETE FROM assigned_service_details WHERE assigned_service_id = '$del_assigned_id' ";
-	$resul = mysqli_query($db,$sq); 
+	// $sq="DELETE FROM assigned_service_details WHERE assigned_service_id = '$del_assigned_id' ";
+	// $resul = mysqli_query($db,$sq); 
 	echo 'deleted';	
 }
 
 if($_POST['action']=='add')
 {
-	$sq="INSERT INTO assigned_service (client_id, package_id) VALUES('$client_id', '$package_id') ";
+	$sq="INSERT INTO assigned_service (client_id, country_id, service_type_id, service_id, price, sla) VALUES('$client_id', '$country_id', '$service_type_id', '$service_id', '$price', '$sla') ";
 	$resul = mysqli_query($db,$sq); 
  //    $assigned_service_id = $db->insert_id;
  //    if(isset($package_id))
@@ -46,7 +46,7 @@ if($_POST['action']=='add')
 if($_POST['action']=='edit')
 {
     $assigned_service_id = $edit_id;
-    $sq="UPDATE assigned_service SET package_id = '$package_id' WHERE id = '$assigned_service_id' ";
+    $sq="UPDATE assigned_service SET price = '$price', sla = '$sla' WHERE id = '$assigned_service_id' ";
 	$resul = mysqli_query($db,$sq); 
 	// if(isset($package_id))
  //    {
@@ -168,12 +168,15 @@ if($_POST['action']=='load_services')
 
 if($_POST['action']=='load_service_list')
 {
-	$check = "SELECT s.service_name FROM package_list_service p INNER JOIN service_list s ON s.id = p.service_id WHERE p.package_id = '$package_id_sel' ";
+	echo '<select style="margin-top: 2% !important;" id="service_id" name="service_id" class="browser-default custom-select chosen-select" required>
+        <option value="">Select</option>';
+	$check = "SELECT s.id, s.service_name FROM service_list s WHERE s.service_type_id = '$service_type_id' AND s.id NOT IN(SELECT service_id FROM assigned_service WHERE client_id = '$client_id' AND country_id = '$country_id' )  ";
     $resul = mysqli_query($db,$check); 
     while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
-    	echo '<a class="btn btn-default btn-xs">'.$row['service_name'].'</a>';
+    	echo '<option value="'.$row['id'].'">'.$row['service_name'].'</option>';
     }
+    echo '</select>';
 }
 
 if($_POST['action']=='display')
@@ -191,17 +194,17 @@ if($_POST['action']=='display')
  </thead>
  ';
 	$sr = 0;
-	$sq="SELECT a.package_id, c.Client_Name, p.package_name, a.id, cc.name AS country_name, cs.currency AS currency_name FROM assigned_service a INNER JOIN package_list p ON p.id = a.package_id INNER JOIN client c ON c.id = a.client_id INNER JOIN countries cc ON cc.id = c.country INNER JOIN countries cs ON cs.id = c.Currency ORDER BY a.id  ";
+	$sq="SELECT c.Client_Name, a.id, cc.name AS country_name, st.name AS service_type_name, sl.service_name, a.price, a.sla FROM assigned_service a INNER JOIN client c ON c.id = a.client_id INNER JOIN countries cc ON cc.id = a.country_id INNER JOIN service_type st ON st.id = a.service_type_id INNER JOIN service_list sl ON sl.id = a.service_id ORDER BY a.id  ";
 	$resul = mysqli_query($db,$sq); 
 	while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 	{
-		$service_list = "";
-		$check_1 = "SELECT s.service_name FROM package_list_service p INNER JOIN service_list s ON s.id = p.service_id WHERE p.package_id = '".$row['package_id']."' ";
-	    $resul_1 = mysqli_query($db,$check_1); 
-	    while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
-	    {
-	    	$service_list.= '<a style="color:blue">'.$row_1['service_name'].'</a><br>';
-	    }
+		// $service_list = "";
+		// $check_1 = "SELECT s.service_name FROM package_list_service p INNER JOIN service_list s ON s.id = p.service_id WHERE p.package_id = '".$row['package_id']."' ";
+	 //    $resul_1 = mysqli_query($db,$check_1); 
+	 //    while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+	 //    {
+	 //    	$service_list.= '<a style="color:blue">'.$row_1['service_name'].'</a><br>';
+	 //    }
 		$sr++;
 		// <td class="tablehead1">'.$row["currency_name"].'</td>
 		// <td class="tablehead1"><b>'.$row["package_name"].'</b><br>'.$service_list.'</td>
@@ -210,10 +213,10 @@ if($_POST['action']=='display')
 			<td class="tablehead1">'.$sr.'</td>
 			<td class="tablehead1 form_left">'.$row["Client_Name"].'</td>
 			<td class="tablehead1">'.$row["country_name"].'</td>
-			<td class="tablehead1">Service Type</td>
-			<td class="tablehead1">Service Name</td>
-			<td class="tablehead1">500</td>
-			<td class="tablehead1">SLA</td>
+			<td class="tablehead1">'.$row["service_type_name"].'</td>
+			<td class="tablehead1">'.$row["service_name"].'</td>
+			<td class="tablehead1">'.$row["price"].'</td>
+			<td class="tablehead1">'.$row["sla"].'</td>
 			<td>
 				<a href="Assign-Service.php?edit_id='.base64_encode($row["id"]).'" class="btn btn-warning btn-xs btn-round"><i class="material-icons icon">create</i></a>
 				<a onclick="delete_assigned_service('.$row["id"].')" class="btn btn-danger btn-xs btn-round"><i class="material-icons icon">delete</i></a>

@@ -35,6 +35,11 @@ if(@$page_name_compare == "lob")
   $client_collapse = "";
   $lob_active = "active";
 }
+if(@$page_name_compare == "assign package")
+{
+  $client_collapse = "";
+  $assign_package_active = "active";
+}
 $services_collapse = "collapse";
 if(@$page_name_compare == "service type")
 {
@@ -434,12 +439,12 @@ if(@$page_name_compare == "modify user" || @$page_name_compare == "edit user")
           <li class="nav-item <?php echo @$assign_service_active; ?>">
             <a class="nav-link" href="./Assign-Service.php"><i class="material-icons icon">launch</i> Assign Services</a>
           </li>
+          <li class="nav-item <?php echo @$assign_package_active; ?>">
+            <a class="nav-link" href="./Assign-Package.php"><i class="material-icons icon">launch</i> Assign Package</a>
+          </li>
           <li class="nav-item <?php echo @$lob_active; ?>">
             <a class="nav-link" href="./LOB.php"><i class="material-icons icon">launch</i> LOB</a>
-          </li> 
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="./createPackage.php"><i class="material-icons icon">launch</i> Assign Package</a>
-          </li> -->
+          </li>
         </ul>
       </div>
     </li>
