@@ -87,7 +87,7 @@ include 'API/dropdown.css';
                   </div>
                 </div>
                 <div class="col-md-3">
-                  <label for="Service Name">Country</label>
+                  <label>Country</label>
                   <select style="margin-top: 2% !important;" id="country_id" name="country_id" onchange="load_package_list()" class="browser-default custom-select chosen-select" >
                     <?php
                     if(@$country_id != "")

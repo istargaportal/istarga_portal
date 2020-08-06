@@ -56,7 +56,7 @@
                 data-tilt
                 style="margin-left: 8%;"
               >
-                <a href="Project_files/"> <img
+                <a href="system-admin/"> <img
                   src="images/img-03.jpg"
                   alt="IMG"
                   style="border-radius: 50%;"
@@ -84,7 +84,7 @@
                 data-tilt
                 style="margin-left: 18%;"
               >
-                <a href="Client/index.php"><img src="images/img-02.png" alt="IMG" style="height: 237px;" /></a>
+                <a href="system-client/index.php"><img src="images/img-02.png" alt="IMG" style="height: 237px;" /></a>
                 <div>
                   <h1><strong>CLIENT LOGIN</strong></h1>
                 </div>

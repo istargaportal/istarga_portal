@@ -15,16 +15,8 @@ extract($_POST);
 
 if($_POST['action']=='load_packages')
 {
-    $sq="SELECT Currency, country FROM client WHERE id = '$client_id' ";
-    $resul = mysqli_query($db,$sq); 
-    if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-    {
-        $currency_id = $row['Currency'];
-        $country_id = $row['country'];
-    }
-
     echo '<select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="package_id"><option value="">Select</option>';
-    $check="SELECT p.id, p.package_name FROM package_list p WHERE p.id IN(SELECT package_id FROM assigned_service_details WHERE assigned_service_id IN (SELECT id FROM assigned_service WHERE client_id = '$client_id')) AND p.id NOT IN($all_package_id) ";
+    $check="SELECT p.id, p.package_name FROM package_list p WHERE p.id IN(SELECT package_id FROM assigned_package WHERE country_id = '$country_id_package' AND client_id = '$client_id') AND p.id NOT IN($all_package_id) ";
     $resul = mysqli_query($db,$check); 
     while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -35,15 +27,8 @@ if($_POST['action']=='load_packages')
 
 if($_POST['action']=='load_services')
 {
-    $sq="SELECT Currency, country FROM client WHERE id = '$client_id' ";
-    $resul = mysqli_query($db,$sq); 
-    if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-    {
-        $currency_id = $row['Currency'];
-        $country_id = $row['country'];
-    }
     echo '<select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="service_id"><option value="">Select</option>';
-    $check="SELECT s.id, s.service_name FROM service_list s WHERE s.id IN(SELECT service_id FROM assigned_service_details WHERE assigned_service_id IN (SELECT id FROM assigned_service WHERE client_id = '$client_id')) AND s.id NOT IN($all_service_id) ";
+    $check="SELECT s.id, s.service_name FROM service_list s WHERE s.id IN(SELECT service_id FROM assigned_service WHERE client_id = '$client_id' AND country_id = '$country_id_service') AND s.id NOT IN($all_service_id) ";
     $resul = mysqli_query($db,$check); 
     while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -54,7 +39,7 @@ if($_POST['action']=='load_services')
 
 if($_POST['action']=='select_package')
 {
-    $sq="SELECT a.package_id, p.package_name FROM assigned_service a INNER JOIN package_list p ON p.id = a.package_id WHERE a.client_id = '$client_id' ";
+    $sq="SELECT a.package_id, p.package_name FROM assigned_package a INNER JOIN package_list p ON p.id = a.package_id WHERE a.client_id = '$client_id' AND a.package_id = '$package_id' AND a.country_id = '$country_id_package' ";
     $resul = mysqli_query($db,$sq); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -97,15 +82,8 @@ if($_POST['action']=='select_package')
         echo '
             <div class="row">
                 <div class="col-md-4">
-                    <input type="hidden" class="service_id_doc" value="'.$row['service_id'].'" />
-                    <div class="form-check">
-                        <label class="form-check-label"> <h4 class="selection" style="margin-top:-2px;">'.$service_name.'</h4> 
-                            <input class="form-check-input" name="service_id[]" value="'.$row['service_id'].'" type="checkbox" checked >
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                        </label>
-                    </div>
+                    <input type="hidden" class="service_id_doc service_id" value="'.$row['service_id'].'" />
+                    <h4 class="selection" style="margin-top:-2px;">'.$service_name.'</h4> 
                 </div>
                 <div class="col-md-2">
                     <h4 class="selection" style="margin:6px 0;">'.$country_name.'</h4>
@@ -119,8 +97,8 @@ if($_POST['action']=='select_package')
                 <hr class="col12" style="margin:8px 0">
             </div>';        
     }
-    // <a onclick="remove_selected_package('.$package_id.')" class="btn btn-danger btn-xs btn-round"><i class="fa fa-remove"></i> Remove</a>
     echo '
+    <a onclick="remove_selected_package('.$package_id.')" class="btn btn-danger btn-xs btn-round"><i class="fa fa-remove"></i> Remove</a>
     </div></div>';
 }
 
