@@ -358,7 +358,7 @@ if(@$page_name_compare == "modify user" || @$page_name_compare == "edit user")
     .modal {
       display: none; /* Hidden by default */
       position: fixed; /* Stay in place */
-      z-index: 99999; /* Sit on top */
+      z-index: 9999999999; /* Sit on top */
       left: 0;
       top: 0;
       width: 100%; /* Full width */
@@ -367,7 +367,9 @@ if(@$page_name_compare == "modify user" || @$page_name_compare == "edit user")
       background-color: rgb(0,0,0); /* Fallback color */
       background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
     }
-
+    .modal .row{
+      margin: 0 !important;
+    }
     .modal-content {
       background-color: #fefefe;
       padding: 10px;

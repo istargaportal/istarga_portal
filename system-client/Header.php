@@ -262,7 +262,7 @@ else
     .modal {
       display: none; /* Hidden by default */
       position: fixed; /* Stay in place */
-      z-index: 99999; /* Sit on top */
+      z-index: 9999999999; /* Sit on top */
       left: 0;
       top: 0;
       width: 100%; /* Full width */
@@ -271,12 +271,15 @@ else
       background-color: rgb(0,0,0); /* Fallback color */
       background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
     }
-
+    .modal .row{
+      margin: 0 !important;
+    }
     .modal-content {
       background-color: #fefefe;
-      padding: 10px;
+      padding: 1% 2%;
       border: 1px solid #888;
-      width: 80%;
+      width: 100%;
+      margin: 0;
     }
 
     .close {
@@ -405,6 +408,7 @@ else
 </head>
 
 <body class="dark-edition">
+  <div id="print_result"></div>
   <input type="hidden" name="client_id" id="client_id" value="<?php echo @$client_id; ?>">
   <div class="wrapper ">
     <div class="sidebar" data-color="purple" data-background-color="black" data-image="assets/img/sidebar-2.jpg">

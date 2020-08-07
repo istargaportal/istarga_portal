@@ -4,26 +4,26 @@ require_once "../../config/config.php";
 $get_connection=new connectdb;
 $db=$get_connection->connect();
 
-class States
-{
-    public function __construct($db)
-    {
-        $this->conn=$db;
-    }
+$query="DELETE FROM `order_master` WHERE order_id   ='".$_POST['id']."'";
+$result = mysqli_query($db,$query); 
 
-    public function get_package()
-    {
-        $query="DELETE FROM `order` WHERE id='".$_POST['id']."'";
-        $result=$this->conn->query($query);
-        if ($result === TRUE)
-        {
-            echo 'success';
-        }
-        else
-        {
-            echo 'error';
-        }
-    }
+$query="DELETE FROM `order_master_details` WHERE order_id   ='".$_POST['id']."'";
+$result = mysqli_query($db,$query); 
+
+$check="SELECT document_file FROM order_master_documents WHERE order_id   ='".$_POST['id']."'";
+$resul = mysqli_query($db,$check); 
+while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+{
+    if($row['document_file'] != ""){ unlink('../assets/order_master_documents/'.$row['document_file']); }  
 }
-$basic_details=new States($db);
-$basic_details->get_package();
+$query="DELETE FROM `order_master_documents` WHERE order_id ='".$_POST['id']."'";
+$result = mysqli_query($db,$query); 
+
+if ($result === TRUE)
+{
+    echo 'success';
+}
+else
+{
+    echo 'error';
+}

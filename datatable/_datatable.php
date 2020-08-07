@@ -56,9 +56,9 @@
     $('#datatable_tbl_paginate').remove();
     $('#datatable_tbl_info').remove();
     
-
+    var tbl_data = "<style> td, tr, th, table{ vertical-align:middle;} table {border: 1px solid gray;}th {border: 1px solid gray;padding: 5px;background-color:grey;color: white;}td {border: 1px solid gray;padding: 5px;}</style><table>"+$('#datatable_tbl').html()+"</table>";
     // var url = 'data:application/vnd.ms-excel,' + encodeURIComponent($('#data_table').html());
-    window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#data_table').html()));
+    window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tbl_data));
     // window.open('data:application/vnd.ms-excel,'+ encodeURIComponent($('#data_table').html()+';filename=exportData.excel;');
     // location.href = url
     location.reload();
