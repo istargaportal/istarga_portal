@@ -79,7 +79,7 @@ include 'Header.php';
 								</div>
 								<div class="col-md-2">
 									<div class="">
-										<label class="bmd-label-floating">Internal Reference ID</label>
+										<label class="bmd-label-floating">Internal Reference ID <i class="fa fa-star"></i></label>
 										<input name="internal_reference_id" type="number" class="form-control" required="">
 									</div>
 								</div>
@@ -599,6 +599,8 @@ include 'Header.php';
 					alert('Please enter data');
 					$(this).focus();
 					error++;
+					return;
+					exit();
 				}
 			}
 		})

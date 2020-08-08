@@ -246,6 +246,37 @@ if($_POST['action'] == "save_form")
             }
         }
     }
+
+    $all_services = "";
+
+    $check_2="SELECT od.package_id, od.service_id FROM order_master_details od WHERE od.order_id   ='".$order_id."' ";
+    $resul_2 = mysqli_query($db,$check_2); 
+    while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+    {
+        $package_id = $row_2['package_id'];
+        $service_id = $row_2['service_id'];
+        if($package_id != "0")
+        {
+            $sq="SELECT ps.service_id, s.service_name, s.price, c.name AS country_name, cs.currency AS currency_name FROM package_list_service ps INNER JOIN service_list s ON s.id = ps.service_id INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cs ON cs.id = s.currency_id WHERE ps.package_id = '$package_id' ";
+            $resul = mysqli_query($db,$sq); 
+            while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+            {
+                $service_name = $row['service_name'];
+                $all_services.="<h5 style='margin:4px 0;font-weight:bold;'>".$service_name."</h5>";
+            }
+        }
+        
+        if($service_id != "0")
+        {
+            $sq="SELECT s.id AS service_id, s.service_name, s.price, c.name AS country_name, cs.currency AS currency_name FROM service_list s INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cs ON cs.id = s.currency_id WHERE s.id = '$service_id' ";
+            $resul = mysqli_query($db,$sq); 
+            while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+            {
+                $service_name = $row['service_name'];
+                $all_services.="<h5 style='margin:4px 0;font-weight:bold;'>".$service_name."</h5>";
+            }
+        }
+    }
     
     if(isset($documentlist_id))
     {
@@ -276,6 +307,12 @@ if($_POST['action'] == "save_form")
             $i++;
         }
     }
+
+    include '../../API/SMTP/sendMail.php';
+    include '../../API/SMTP/LOGIN-EMAIL.php';
+    $subject = "LOGIN CREDENTILAS FOR - Employment Background Screening";
+    smtpmailer($email_id, $from, $name, $subject, @$print_var);
+
     echo "inserted";
 }
 

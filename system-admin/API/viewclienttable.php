@@ -45,7 +45,7 @@ class States
                         $default_client_id = base64_decode($default_client_id);
                         $sql_condition = " WHERE o.client_id = '$default_client_id' "; 
                     }
-                    $query="SELECT o.*, c.Client_Name, s.service_name FROM `order` o INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = o.service_id ".@$sql_condition;
+                    $query="SELECT o.*, c.Client_Name FROM `order_master` o INNER JOIN client c ON c.id = o.client_id ".@$sql_condition;
                     $result=$this->conn->query($query);
                     if($result->num_rows>0)
                     {
@@ -53,10 +53,10 @@ class States
                         {
                             if($row['is_rush'] == "1") { $row['is_rush'] = "Yes"; } else { $row['is_rush'] = "No"; }
 
-                            $Order_Status = "";
-                            if($row["Order_Status"] == 0) { $Order_Status = "Pending"; }
-                            if($row["Order_Status"] == 1) { $Order_Status = "Started"; }
-                            if($row["Order_Status"] == 2) { $Order_Status = "Completed"; }
+                            $order_status = "";
+                            if($row["order_status"] == 0) { $order_status = "Pending"; }
+                            if($row["order_status"] == 1) { $order_status = "Started"; }
+                            if($row["order_status"] == 2) { $order_status = "Completed"; }
                             if($row["assign_to"] == 0) { $row["assign_to"] = "-"; }
                             if($row["lock_status"] == 0)
                             {
@@ -72,16 +72,16 @@ class States
                             <td class="tablehead1">'.$row["internal_reference_id"].'</td>
                             <td class="tablehead1">'.$row['is_rush'].'</td>
                             <td class="tablehead1 form_left">'.$row['Client_Name'].'</td>
-                            <td class="tablehead1 form_left">'.$row["first_Name"].' '.$row["last_Name"].' </td>
+                            <td class="tablehead1 form_left">'.$row["first_name"].' '.$row["last_name"].' </td>
                             <td class="tablehead1">'.$row["order_creation_date_time"].'</td>
-                            <td class="tablehead1">'.$row["Order_Completion_Date"].'</td>
-                            <td class="tablehead1">'.$row["service_name"].'</td>
+                            <td class="tablehead1">'.$row["order_completion_date"].'</td>
+                            <td class="tablehead1">'.@$row["service_name"].'</td>
                             <td class="tablehead1">'.$row["assign_to"].'</td>
 
-                            <td class="tablehead1">'.$Order_Status.'</td>
+                            <td class="tablehead1">'.$order_status.'</td>
                             <td class="tablehead1">'.$lock_status.'</td>
                             <td>
-                                <a class="btn btn-default btn-round btn-sm "><i class="material-icons icon">visibility</i> View</a>
+                                <a onclick="view_order_details('.$row['order_id'].')" class="btn btn-default btn-round btn-sm "><i class="material-icons icon">visibility</i> View</a>
                             </td>
                             </tr>
                             ';

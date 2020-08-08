@@ -268,4 +268,20 @@ const assignToDropDown2 = (e) => {
   data = {}
 }
 
-console.log("working all")
+function view_order_details(order_id)
+{
+  $.ajax({
+    type:'POST',
+    url:'../API/View-Client-Order.php',
+    data:{order_id},
+    success:function(html){
+      $('#print_result').html(html);
+    }
+  });
+}
+
+function close_preview_order()
+{
+  // window.history.replaceState({}, document.title, "/" + "BGVHWD-master/system-client/vieworder.php");
+  $('#print_result').html('');
+}

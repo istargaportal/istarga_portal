@@ -40,4 +40,9 @@ function randomPassword() {
     }
     return implode($pass); //turn the array into a string
 }
+
+$login_url = "https://ibgvclientdemo.Istarga.com/";
+$service_email_id = "applicant.service@Istarga.com";
+$service_contact_no = "+1 888 852 1781";
+
 ?>

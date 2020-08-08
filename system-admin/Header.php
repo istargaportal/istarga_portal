@@ -372,9 +372,10 @@ if(@$page_name_compare == "modify user" || @$page_name_compare == "edit user")
     }
     .modal-content {
       background-color: #fefefe;
-      padding: 10px;
+      padding: 1% 2%;
       border: 1px solid #888;
-      width: 80%;
+      width: 100%;
+      margin: 0;
     }
 
     .close {

@@ -72,10 +72,18 @@ include 'Header.php';
 <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="assets/js/material-dashboard.js?v=2.1.0"></script>
 <!-- Latest compiled and minified JavaScript -->
-<script src="ClientViewOrder.js"></script>
 <?php
 include '../datatable/_datatable.php';
 ?>
+<script src="ClientViewOrder.js"></script>
+<?php
+if(isset($_GET['view_id']))
+{
+  echo '
+  <script>
+    view_order_details('.base64_decode($_GET['view_id']).')
+  </script>';
+}
+?>
 </body>
-
 </html>

@@ -5,11 +5,32 @@ require_once "../config/config.php";
 $get_connection=new connectdb;
 $db=$get_connection->connect();
 
-$check="SELECT order_id FROM order_master WHERE order_id   ='".$_POST['order_id']."'";
+$check="SELECT order_id, first_name, middle_name, last_name, alias_first_name, alias_middle_name, alias_last_name, email_id, internal_reference_id, joining_location, joining_date, additional_comments, client_id, is_rush, insufficiency_contact, username, password, order_status, order_creation_date_time FROM order_master WHERE order_id   ='".$_POST['order_id']."'";
 $resul = mysqli_query($db,$check); 
 if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 {
+	$order_id = $row['order_id'];
+	$first_name = $row['first_name'];
+	$middle_name = $row['middle_name'];
+	$last_name = $row['last_name'];
+	$alias_first_name = $row['alias_first_name'];
+	$alias_middle_name = $row['alias_middle_name'];
+	$alias_last_name = $row['alias_last_name'];
+	$email_id = $row['email_id'];
+	$internal_reference_id = $row['internal_reference_id'];
+	$joining_location = $row['joining_location'];
+	$joining_date = $row['joining_date'];
+	$additional_comments = $row['additional_comments'];
+	$client_id = $row['client_id'];
+	$is_rush = $row['is_rush'];
+	$insufficiency_contact = $row['insufficiency_contact'];
+	$username = $row['username'];
+	$password = $row['password'];
+	$order_status = $row['order_status'];
+	$order_creation_date_time = date('d-m-Y H:i', strtotime($row['order_creation_date_time']));
 }
+if($is_rush == "1") { $is_rush_checked = "checked"; }
+$print_form = "'print_form'";
 	echo '
 	<div class="modal" id="preview_order" style="display:block">
 		<div class="row">
@@ -19,7 +40,8 @@ if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 			<div class="col-md-8">
 				<div class="modal-content">
 					<h5 style="border-bottom: solid 1px #000;"><b><i class="fa fa-edit"></i> Preview & Continue</b>
-						<a onclick="close_preview_order()" class="btn btn-danger btn-sm pull-right"><i class="fa fa-remove"></i></a>
+						<a onclick="close_preview_order()" class="btn btn-danger btn-sm pull-right"><i class="fa fa-remove"></i> Close</a>
+						<a onclick="print_form_panel('.$print_form.')" class="btn btn-success btn-sm pull-right"><i class="fa fa-print"></i> Print</a>
 					</h5>';
 	$package_head = '<div class="card-header card-header-primary" style="padding: 4px 8px; margin-top: 10px;"><h4 style="color: #fff;margin: 0;" class="card-title"><i class="fa fa-list"></i> Selected Packages</h4></div>';
 	$service_head = '<div class="card-header card-header-primary" style="padding: 4px 8px; margin-top: 10px;"><h4 style="color: #fff;margin: 0;" class="card-title"><i class="fa fa-arrow-circle-right"></i> Selected Services</h4></div>';
@@ -135,6 +157,30 @@ if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 		}
 	}
 
+    $check_1='SELECT d.document_name, ad.document_file FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '.$_POST['order_id'].'  ';
+    $resul_1 = mysqli_query($db,$check_1);
+    while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+    {
+      
+      	if($row_1['document_file'] == "")
+		{
+			$document_file = "<a class='btn btn-default btn-xs'><i class='fa fa-ban'></i> No file uploaded</a>";
+		}
+		else
+		{
+			$document_file = "<a target='_blank' href='assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> View</a>";
+		}
+		  $document_print.='
+		  <div class="row">
+		    <div class="col-md-4">
+		        <h6 class="selection" style="margin:6px 0;">'.$row_1['document_name'].'</h6>
+		    </div>
+		    <div class="col-md-2">
+		        '.@$document_file.'
+		    </div>
+		  </div>';
+    }
+
 	if($pacakge_count == 0)
 	{
 		$package_print.= '<h6>NO PACKAGE SELECTED</h6>';
@@ -143,13 +189,54 @@ if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 	{
 		$service_print.= '<h6>NO SERVICE SELECTED</h6>';
 	}
+	if($order_status == 0) { $order_status = '<a class="btn pull-right btn-warning btn-xs">Pending</a>'; }
+	if($order_status == 1) { $order_status = '<a class="btn pull-right btn-success btn-xs">Started</a>'; }
+	if($order_status == 2) { $order_status = '<a class="btn pull-right btn-primary btn-xs">Completed</a>'; }
+
+	echo '
+	<div id="print_form">
+	<h5 style="margin:0;">Applicant - '.$first_name.' '.$last_name.' - <a style="color:blue">'.$email_id.'</a> 
+	'.@$order_status.'
+	</h5>
+	<h5>Internal Reference ID - '.$internal_reference_id.' | '.$order_creation_date_time.'</h5>
+		<div class="form-check">
+			<label class="form-check-label">
+				<input class="form-check-input" disabled type="checkbox" '.@$is_rush_checked.' >
+				Rush Order
+				<span class="form-check-sign">
+					<span class="check"></span>
+				</span>
+			</label>
+			<label class="form-check-label pull-right">
+			In Case Of Insufficiency Contact? - <b>'.@$insufficiency_contact.'</b>
+			</label>
+		</div>
+		
+
+	';
 	echo $package_head.$package_print;
 	echo $service_head.$service_print;
+	echo $document_head.$document_print;
 
 	echo '	</div>
+			</div>
 		</div>
 	</div>
 	';
 
 
 ?>
+<script type="text/javascript">
+	function print_form_panel(print_panel)
+	{
+		var printContents = document.getElementById(print_panel).innerHTML;
+		var originalContents = document.body.innerHTML;
+		document.body.innerHTML = printContents;
+		$('#datatable_tbl_filter').css('display', 'none');
+		$('#datatable_tbl_length').css('display', 'none');
+		$('#datatable_tbl_paginate').css('display', 'none');
+		window.print();
+		window.location.href = 'ClientViewOrder.php?view_id=<?php echo base64_encode(@$order_id); ?>';
+	}
+
+</script>

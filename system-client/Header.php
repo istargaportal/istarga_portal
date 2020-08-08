@@ -428,16 +428,16 @@ else
               <p>Dashboard</p>
             </a>
           </li>
+          <li class="nav-item <?php if($page_name == "Create Order") { echo 'active'; } ?>">
+            <a class="nav-link" href="CreateOrder.php">
+              <i class="material-icons">add</i>
+              <p>Create Order</p>
+            </a>
+          </li>
           <li class="nav-item <?php if($page_name == "View Order") { echo 'active'; } ?>">
             <a class="nav-link" href="ClientViewOrder.php">
               <i class="material-icons">content_paste</i>
               <p>View Orders</p>
-            </a>
-          </li>
-          <li class="nav-item <?php if($page_name == "Create Order") { echo 'active'; } ?>">
-            <a class="nav-link" href="CreateOrder.php">
-              <i class="material-icons">content_paste</i>
-              <p>Create Order</p>
             </a>
           </li>
           <li class="nav-item <?php if($page_name == "Bulk Order") { echo 'active'; } ?>">
