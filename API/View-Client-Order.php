@@ -236,7 +236,13 @@ $print_form = "'print_form'";
 		$('#datatable_tbl_length').css('display', 'none');
 		$('#datatable_tbl_paginate').css('display', 'none');
 		window.print();
-		window.location.href = 'ClientViewOrder.php?view_id=<?php echo base64_encode(@$order_id); ?>';
+		location.reload();
+		// window.location.href = 'ClientViewOrder.php?view_id=<?php echo base64_encode(@$order_id); ?>';
 	}
 
+	function close_preview_order()
+	{
+	  // window.history.replaceState({}, document.title, "/" + "BGVHWD-master/system-client/vieworder.php");
+	  $('#print_result').html('');
+	}
 </script>

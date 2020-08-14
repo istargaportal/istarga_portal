@@ -79,8 +79,8 @@ include 'Header.php';
 								</div>
 								<div class="col-md-2">
 									<div class="">
-										<label class="bmd-label-floating">Internal Reference ID <i class="fa fa-star"></i></label>
-										<input name="internal_reference_id" type="number" class="form-control" required="">
+										<label class="bmd-label-floating">Internal Ref. ID <i class="fa fa-star"></i></label>
+										<input name="internal_reference_id" type="text" class="form-control" maxlength="15" required="">
 									</div>
 								</div>
 								<div class="col-md-2">
@@ -125,8 +125,8 @@ include 'Header.php';
 									</div>
 									<div class="col-md-3">
 										<label style="font-size: 14px;" class="bmd-label-floating">Package</label>
-										<div id="package_id_div">
-											<select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="package_id"></select>
+										<div id="assign_package_id_div">
+											<select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="assign_package_id"></select>
 										</div>
 									</div>
 									<div class="col-md-2">
@@ -172,7 +172,7 @@ include 'Header.php';
 									</div>
 									<div class="col-md-3">
 										<label style="font-size: 14px;" class="bmd-label-static">Service</label>
-										<div id="service_id_div">
+										<div id="assign_service_id_div">
 											<select style="margin-top: 2%;" class="browser-default chosen-select custom-select" id="service_id"></select>
 										</div>
 									</div>
@@ -207,10 +207,11 @@ include 'Header.php';
 									<div class="col-md-3">
 										<h5 class="selection">File Formats</h5>
 										<div class="row selection" style="margin-left:1%;margin-top:2%;">
-											<i class="fa fa-file-word-o" style="font-size:40px !important;margin-left:2%;color: tomato;"></i>
+											<i class="fa fa-file-image-o" style="font-size:40px !important;margin-left:2%;color: green;"></i>
+											<i class="fa fa-file-word-o" style="font-size:40px !important;margin-left:2%;color: blue;"></i>
 											<i class="fa fa-file-excel-o " style="font-size:40px !important;margin-left:3%;color: green"></i>
-											<i class="fa fa-file-powerpoint-o " style="font-size:40px !important;margin-left:3%;color: brown"></i>
-											<i class="fa fa-file-pdf-o selection" style="color: orange !important; margin-left:3%; font-size:40px !important;"></i>
+											<i class="fa fa-file-powerpoint-o " style="font-size:40px !important;margin-left:3%;color: orange"></i>
+											<i class="fa fa-file-pdf-o selection" style="color: red !important; margin-left:3%; font-size:40px !important;"></i>
 										</div>
 									</div>
 								</div>
@@ -366,8 +367,8 @@ include 'Header.php';
 			url:'./API/CreateOrder.php',
 			data:{action, client_id, country_id_package, all_package_id},
 			success:function(html) {
-				$('#package_id_div').html(html);
-				$('#package_id').chosen();
+				$('#assign_package_id_div').html(html);
+				$('#assign_package_id').chosen();
 			}
 		});
 	}
@@ -377,6 +378,10 @@ include 'Header.php';
 		var country_id_service = $("#country_id_service").val();
 		var service_type_id = $("#service_type_id").val();
 
+		var all_assign_service_id = 0;
+		$(".assign_service_id").each(function () {
+			all_assign_service_id = all_assign_service_id+","+$(this).val();
+		})
 		var all_service_id = 0;
 		$(".service_id").each(function () {
 			all_service_id = all_service_id+","+$(this).val();
@@ -385,10 +390,10 @@ include 'Header.php';
 		$.ajax({
 			type:'POST',
 			url:'./API/CreateOrder.php',
-			data:{action, client_id, all_service_id, country_id_service, service_type_id},
+			data:{action, client_id, all_service_id, all_assign_service_id, country_id_service, service_type_id},
 			success:function(html) {
-				$('#service_id_div').html(html);
-				$('#service_id').chosen();
+				$('#assign_service_id_div').html(html);
+				$('#assign_service_id').chosen();
 			}
 		});
 	}
@@ -397,7 +402,7 @@ include 'Header.php';
 	{
 		var country_id_package = $('#country_id_package').val();
 		var client_id = $('#client_id').val();
-		var package_id = $('#package_id').val();
+		var package_id = $('#assign_package_id').val();
 		if(country_id_package == "")
 		{
 			alert('Please select country!');
@@ -447,11 +452,11 @@ include 'Header.php';
 	function select_service()
 	{
 		var service_type_id = $('#service_type_id').val();
-		var service_id = $('#service_id').val();
+		var assign_service_id = $('#assign_service_id').val();
 		var error = 0;
 		var all_service_id = 0;
-		$(".service_id").each(function () {
-			if(service_id == $(this).val())
+		$(".assign_service_id").each(function () {
+			if(assign_service_id == $(this).val())
 			{
 				error++;
 			}
@@ -463,12 +468,12 @@ include 'Header.php';
 		}
 		else
 		{
-			var service_name = $( "#service_id option:selected" ).text();;
+			var service_name = $( "#assign_service_id option:selected" ).text();;
 			if(service_type_id == "")
 			{
 				alert('Please select Service Type!');
 			}
-			else if(service_id == "")
+			else if(assign_service_id == "")
 			{
 				alert('Please select Service!');
 			}
@@ -479,7 +484,7 @@ include 'Header.php';
 				$.ajax({
 					type:'POST',
 					url:'./API/CreateOrder.php',
-					data:{action, service_id, service_name, sub_action},
+					data:{action, assign_service_id, service_name, sub_action},
 					success:function(html) {
 						$('#selected_services').append(html);
 						load_services();
@@ -596,11 +601,8 @@ include 'Header.php';
 			{
 				if($(this).val() == '')
 				{
-					alert('Please enter data');
 					$(this).focus();
 					error++;
-					return;
-					exit();
 				}
 			}
 		})
@@ -636,13 +638,16 @@ include 'Header.php';
 				});
 			}
 		}
+		else
+		{
+			alert('Please enter data');
+		}
 	}
 
 </script>
 
 <script src="assets/js/core/popper.min.js"></script>
 <script src="assets/js/core/bootstrap-material-design.min.js"></script>
-<script src="https://unpkg.com/default-passive-events"></script>
 <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>

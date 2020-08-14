@@ -54,7 +54,7 @@ class login
                 $_SESSION['password']=$password;
                 $_SESSION['uid']=$row['id'];
 
-                echo "Admin logged in";
+                echo "admin_login";
 
               }
               else
@@ -65,50 +65,23 @@ class login
           } 
           else if($data['user-type']=='Employee')
           {
-            $check='SELECT * FROM employee_qc WHERE email_id="'.$email.'" and password="'.$password.'"';
-            $check1='SELECT * FROM employee_of WHERE email_id="'.$email.'" and password="'.$password.'"';
-            $check2='SELECT * FROM employee_vendor WHERE email_id="'.$email.'" and password="'.$password.'"';
-
+            $check='SELECT user_id, username, password, role_id FROM user_master WHERE username="'.$email.'" AND password="'.$password.'"';
             $result=$this->conn->query($check);
-            $result1=$this->conn->query($check1);
-            $result2=$this->conn->query($check2);
-
             if($result->num_rows==1)
             {
               $row = $result->fetch_assoc();
               session_start();
-              $_SESSION['email'] = $email;
-              $_SESSION['password']=$password;
-              $_SESSION['uid']=$row['id'];
-
-              echo "Employee Logged QC In";
-
-            }
-            else if($result1->num_rows==1)
-            {
-              $row = $result->fetch_assoc();
-              session_start();
-              $_SESSION['email'] = $email;
-              $_SESSION['password']=$password;
-              $_SESSION['uid']=$row['id'];
-
-              echo "Employee Logged OF In";
-
-            }
-            else if($result2->num_rows==1)
-            {
-              $row = $result->fetch_assoc();
-              session_start();
-              $_SESSION['email'] = $email;
-              $_SESSION['password']=$password;
-              $_SESSION['uid']=$row['id'];
-
-              echo "Employee Logged vendor In";
-
+              $_SESSION['user_id'] = $row['user_id'];
+              $_SESSION['username'] = $email;
+              $_SESSION['password'] = $password;
+              $_SESSION['role_id'] = $row['role_id'];
+              if($row['role_id'] == 1) { echo "qf_login"; }
+              if($row['role_id'] == 2) { echo "qc_login"; }
+              if($row['role_id'] == 3) { echo "vendor_login"; }
             }
             else
             {
-              echo "Wrong Employee Credentials";
+              echo "Wrong User Credentials";
             }
           }
         }

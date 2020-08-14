@@ -59,8 +59,8 @@
                   <span class="checkmark"></span>
                 </label>
                 <div class="form-group">
-                  <label for="email" class="sr-only">Email</label>
-                  <input type="email" name="email" id="email" class="form-control" placeholder="Email address" />
+                  <label for="email" class="sr-only">Username</label>
+                  <input type="text" name="email" id="email" class="form-control" placeholder="Email address" />
                 </div>
                 <div class="form-group mb-4">
                   <label for="password" class="sr-only">Password</label>
@@ -158,14 +158,12 @@
       $(formdata).each(function(index, obj) {
         data[obj.name] = obj.value;
       });
-      console.log(data);
       fetch('./API/login.php', {
         method: 'post',
         body: JSON.stringify(data),
       }).then(function(response) {
         return response.text();
       }).then(function(text) {
-        console.log(text);
         if (text == "Please Select User-type") {
           modalLabel.innerHTML = text
           modalLaunchButton.click()
@@ -175,21 +173,20 @@
         } else if (text == "Please enter Password") {
           modalLabel.innerHTML = text
           modalLaunchButton.click()
-        } else if (text == "Admin logged in") {
-          window.location.href = "home.php";
-        } else if (text == "Employee Logged OF In") {
-          window.location.href = "./employee_of/Dashboard.php";
-        } else if (text == "Employee Logged QC In") {
+        } else if (text == "admin_login") {
+          window.location.href = "Dashboard.php";
+        } else if (text == "qf_login") {
+          window.location.href = "./system-of/Dashboard.php";
+        } else if (text == "qc_login") {
           window.location.href = "./employee_qc/Dashboard.php";
-        } else if (text == "Employee Logged vendor In") {
+        } else if (text == "vendor_login") {
           window.location.href = "./employee_vendor/Dashboard.php";
-        } else if (text == "Wrong admin Credentials" || text == "Wrong Employee Credentials") {
-          // alert(text);
+        } else if (text == "Wrong User Credentials") {
           modalLabel.innerHTML = text
           modalLaunchButton.click()
         }
       }).catch(function(error) {
-        console.error(error);
+        // console.error(error);
       })
     })
     $.ajax;

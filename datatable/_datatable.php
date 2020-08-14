@@ -4,7 +4,7 @@
  
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
 <!-- <script type="text/javascript" src="../datatable/datatables.min.js"></script> -->
-<link rel="stylesheet" type="text/css" href="../datatable/buttons.dataTables.min.css">
+<!-- <link rel="stylesheet" type="text/css" href="../datatable/buttons.dataTables.min.css"> -->
 <script type="text/javascript">
   function load_datatable()
   {

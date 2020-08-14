@@ -105,7 +105,7 @@ else if($_POST["Action"]=='Display')
       <td class="tablehead1">
         <div class="form-check">
           <label class="form-check-label"> <h4 class="selection" style="margin-top:-16px;"> '.@$is_webservices_label.'</h4> 
-              <input class="form-check-input" name="service_id[]" value="'.$row['id'].'" type="checkbox" '.@$is_webservices_checked.' >
+              <input class="form-check-input" name="service_id[]" disabled value="'.$row['id'].'" type="checkbox" '.@$is_webservices_checked.' >
               <span class="form-check-sign">
                 <span class="check"></span>
               </span>

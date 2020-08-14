@@ -82,19 +82,19 @@ include 'Header.php';
             <form id="ajax" autocomplete="off">
               <div class="row">
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Client Name</label>
                     <input name="Client Name" type="text" class="form-control" required value="<?php echo @$Client_Name; ?>" />
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Client Code</label>
                     <input name="Client Code" type="number" class="form-control" required value="<?php echo @$Client_Code; ?>" />
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Client SPOC</label>
                     <input name="Client SPOC" type="text" class="form-control" value="<?php echo @$Client_SPOC; ?>" />
                   </div> 
@@ -102,7 +102,7 @@ include 'Header.php';
               </div>
               <div class="row">
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <input type="hidden" id="edit_country" value="<?php echo @$country; ?>">
                     <input type="hidden" id="edit_state" value="<?php echo @$State; ?>">
                     <input type="hidden" id="edit_city" value="<?php echo @$city; ?>">
@@ -115,14 +115,14 @@ include 'Header.php';
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating"style="font-size: 13px;">State</label>
                     <select class="browser-default custom-select" type="select" id="select_state" name="select_state" onchange="getservicename(this.value)" style="color:#202940;">
                     </select>
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating" style="font-size: 13px;">City</label>
                     <select class="browser-default custom-select" type="select" id="select_city" name="select_city" onchange="getdocumentlist(this.value)" style="color:#202940;">
                     </select>
@@ -130,63 +130,63 @@ include 'Header.php';
                 </div>
 
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Zip Code</label>
                     <input name="Zip Code" type="number" min="0" class="form-control" value="<?php echo $Zip_Code; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Contact Number</label>
                     <input name="Contact Number" type="number" min="0" class="form-control" value="<?php echo @$Contact_Number; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Applicant Response Time</label>
                     <input name="Applicant Response Time" type="number" min="0" class="form-control" value="<?php echo @$App_Response_Time; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Invoice Address Details</label>
                     <input name="Invoice Address Details" type="text" class="form-control" value="<?php echo @$Inv_Address; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Invoice Bank Detail</label>
                     <input name="Invoice Bank Detail" type="text" class="form-control" value="<?php echo @$Inv_Bank; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Invoice Payment Due Days</label>
                     <input name="Invoice Payment Due Days" type="number" min="0" class="form-control" value="<?php echo @$Inv_Due_Days; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Invoice Code</label>
                     <input name="Invoice Code" type="text" class="form-control" value="<?php echo @$Inv_Code; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Is GSTIN</label>
                     <input name="Is GSTIN" type="text" class="form-control" value="<?php echo @$Is_GSTIN; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Email ID</label>
                     <input name="Email ID" type="email" class="form-control" autocomplete="off" value="<?php echo @$email; ?>" <?php echo @$readonly; ?> />
                   </div>
@@ -278,20 +278,20 @@ include 'Header.php';
                       </div>
                       <div class="row" style="margin-top: 2%;">
                         <div class="col-md-4">
-                          <div class="form-group">
+                          <div class="form-group1">
                             <label style="font-size: 13px;" for="Currency" class="bmd-label-floating" style="margin-left: 4%;">Currency</label>
                             <select style="margin-top: 2%;" id="currency" name="currency" class="browser-default custom-select" required>
                             </select>
                           </div>
                         </div>
                         <div class="col-md-4">
-                          <div class="form-group">
+                          <div class="form-group1">
                             <label>Date of Registration</label>
                             <input type="date" name="dateofbirth" id="dateofbirth" class="form-control" value="<?php echo @$DOB; ?>" />
                           </div>
                         </div>
                         <div class="col-md-4">
-                          <div class="form-group">
+                          <div class="form-group1">
                             <label for="Password" class="bmd-label-floating">Password</label>
                             <div class="input-group">
                               <input name="Password" <?php echo @$readonly; ?> type="password" class="form-control" autocomplete="off" value="<?php echo @$password; ?>" />

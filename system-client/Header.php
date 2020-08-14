@@ -404,6 +404,9 @@ else
       width: 100%;
       float: left;
     }
+    .sidebar[data-background-color="black"] .nav .nav-item .nav-link{
+      margin: 0 !important;
+    }
   </style>  
 </head>
 

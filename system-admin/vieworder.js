@@ -279,9 +279,3 @@ function view_order_details(order_id)
     }
   });
 }
-
-function close_preview_order()
-{
-  // window.history.replaceState({}, document.title, "/" + "BGVHWD-master/system-client/vieworder.php");
-  $('#print_result').html('');
-}

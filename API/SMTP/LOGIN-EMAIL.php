@@ -4,7 +4,7 @@ $print_var = "
 <div style='background:#eee; width:90%; padding:2% 5%; float:left'>
 <div style='background:#fff; width:96%; padding:1% 2%; float:left'>
 
-<h3>Employment Background Screening|App-0420-0012</h3>
+<h3>Employment Background Screening</h3>
 <p>
 Dear ".@$first_name.",
 <br><br>
