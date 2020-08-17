@@ -303,6 +303,7 @@ include 'Header.php';
 				<div class="col12">
 					<a id="btn_place_order" class="btn btn-success btn-sm" onclick="submit_order()"><i class="fa fa-save"></i> Place Order</a>
 					<a class="btn btn-default btn-sm" onclick="close_preview_order()"><i class="fa fa-remove"></i> Cancel</a>
+					<br><br>
 				</div>
 			</div>
 		</div>
@@ -422,7 +423,6 @@ include 'Header.php';
 				data:{action, country_id_package, package_id, client_id, sub_action},
 				success:function(html) {
 					$('#selected_packages').append(html);
-					load_packages();
 				}
 			});
 			
@@ -435,6 +435,7 @@ include 'Header.php';
 					$('#preview_selected_packages').append(html);
 				}
 			});
+			load_packages();		
 		}
 	}
 
@@ -487,7 +488,6 @@ include 'Header.php';
 					data:{action, assign_service_id, service_name, sub_action},
 					success:function(html) {
 						$('#selected_services').append(html);
-						load_services();
 					}
 				});
 				
@@ -495,11 +495,12 @@ include 'Header.php';
 				$.ajax({
 					type:'POST',
 					url:'./API/CreateOrder.php',
-					data:{action, service_id, service_name, sub_action},
+					data:{action, assign_service_id, service_name, sub_action},
 					success:function(html) {
 						$('#preview_selected_services').append(html);
 					}
 				});
+				load_services();
 			}
 		}
 	}

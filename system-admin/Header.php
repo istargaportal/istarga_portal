@@ -312,6 +312,19 @@ if(@$page_name_compare == "modify user" || @$page_name_compare == "edit user")
     {
       list-style: none !important;
     }
+    .disabled_btn
+    {
+      pointer-events:none !important;
+      cursor: not-allowed !important;
+      opacity: 0.6 !important;
+      filter: blur(0.7px);
+      outline: none !important;
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;            
+    }
+    
     .disabled
     {
       pointer-events:none !important;

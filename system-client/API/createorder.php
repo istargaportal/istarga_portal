@@ -39,13 +39,16 @@ if($_POST['action']=='load_services')
 
 if($_POST['action']=='select_package')
 {
-    $sq="SELECT a.id, a.package_id, p.package_name FROM assigned_package a INNER JOIN package_list p ON p.id = a.package_id WHERE a.client_id = '$client_id' AND a.id = '$package_id' AND a.country_id = '$country_id_package' ";
+    $sq="SELECT a.id, a.package_id, p.package_name, c.name AS country_name, c.currency AS currency_name, a.price FROM assigned_package a INNER JOIN package_list p ON p.id = a.package_id INNER JOIN countries c ON c.id = p.country_id WHERE a.client_id = '$client_id' AND a.id = '$package_id' AND a.country_id = '$country_id_package' ";
     $resul = mysqli_query($db,$sq); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
         $assign_package_id = $row['id'];
         $package_id = $row['package_id'];
         $package_name = $row['package_name'];
+        $price = $row['price'];
+        $country_name = $row['country_name'];
+        $currency_name = $row['currency_name'];
     }
     if(@$sub_action == "preview_package")
     {
@@ -57,7 +60,7 @@ if($_POST['action']=='select_package')
         $package_panel_id = "package_id_panel_";
         $package_width = "97%";
     }
-    echo '<div id="'.$package_panel_id.$package_id.'"><br><div class="col-md-12" style="border:solid 2px #aa50ab; border-radius:10px; width:'.@$package_width.';position:relative;"><h4 class="btn btn-primary btn-sm btn-round" style="position:absolute;top:-20px; left:15px;">'.@$package_name.'</h4><br>';
+    echo '<div id="'.$package_panel_id.$package_id.'"><br><div class="col-md-12" style="border:solid 2px #aa50ab; border-radius:10px; width:'.@$package_width.';position:relative;"><h4 class="btn btn-primary btn-sm btn-round" style="position:absolute;top:-20px; left:15px;">'.@$package_name.'</h4><h4 class="btn btn-primary btn-sm btn-round" style="position:absolute;top:-20px; right:15px;">'.$price.'.'.$currency_name.'</h4> <br>';
 
     if(@$sub_action != "preview_package")
     {
@@ -70,11 +73,8 @@ if($_POST['action']=='select_package')
         <div class="col-md-4">
             <h6 class="selection" style="margin:6px 0;">Service</h6>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
             <h6 class="selection" style="margin:6px 0;">Country</h6>
-        </div>
-        <div class="col-md-2 no_padding">
-            <h6 class="selection" style="margin:6px 0;">Price / Currency</h6>
         </div>
         <div class="col-md-4">
             <h6 class="selection" style="margin:6px 0;">Documents</h6>
@@ -82,15 +82,12 @@ if($_POST['action']=='select_package')
         <hr class="col12" style="margin:8px 0">
     </div>
     ';
-    $sq="SELECT ps.service_id, s.service_name, s.price, c.name AS country_name, cs.currency AS currency_name FROM package_list_service ps INNER JOIN service_list s ON s.id = ps.service_id INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cs ON cs.id = s.currency_id WHERE ps.package_id = '$package_id' ";
+    $sq="SELECT ps.service_id, s.service_name FROM package_list_service ps INNER JOIN service_list s ON s.id = ps.service_id WHERE ps.package_id = '$package_id' ";
     $resul = mysqli_query($db,$sq); 
     while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
         $service_name = $row['service_name'];
-        $price = $row['price'];
-        $country_name = $row['country_name'];
-        $currency_name = $row['currency_name'];
-
+        
         if(@$sub_action != "preview_package")
         {
             echo '<input type="hidden" class="assign_service_id" value="'.$row['service_id'].'" />';
@@ -108,11 +105,8 @@ if($_POST['action']=='select_package')
                 <div class="col-md-4">
                     <h4 class="selection" style="margin-top:-2px;">'.$service_name.'</h4> 
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <h4 class="selection" style="margin:6px 0;">'.$country_name.'</h4>
-                </div>
-                <div class="col-md-2">
-                    <h4 class="selection form_center" style="margin:6px 0;">'.$price.'.'.$currency_name.'</h4>
                 </div>
                 <div class="col-md-4">
                     '.@$all_documents.'
@@ -147,7 +141,7 @@ if($_POST['action']=='select_service')
     {
         echo '<input type="hidden" name="assign_service_id[]" class="assign_service_id" value="'.$assign_service_id.'" />';
     }
-    $sq="SELECT s.id AS service_id, s.service_name, s.price, c.name AS country_name, cs.currency AS currency_name FROM assigned_service sa INNER JOIN service_list s ON s.id= sa.service_id INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cs ON cs.id = s.currency_id WHERE sa.id = '$assign_service_id' ";
+    $sq="SELECT s.id AS service_id, s.service_name, sa.price, c.name AS country_name, c.currency AS currency_name FROM assigned_service sa INNER JOIN service_list s ON s.id= sa.service_id INNER JOIN countries c ON c.id = sa.country_id WHERE sa.id = '$assign_service_id' ";
     $resul = mysqli_query($db,$sq); 
     while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -169,10 +163,10 @@ if($_POST['action']=='select_service')
         }
         echo '
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <h4 class="selection" style="margin:6px 0;">'.@$service_name.'</h4>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2>
                     <h4 class="selection" style="margin:6px 0;">'.$country_name.'</h4>
                 </div>
                 <div class="col-md-2">
@@ -184,7 +178,7 @@ if($_POST['action']=='select_service')
         if(@$sub_action != "preview_service")
         {
             echo '
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <a onclick="remove_selected_service('.$assign_service_id.')" class="btn btn-danger btn_remove btn-xs btn-round"><i class="fa fa-remove"></i> Remove</a>
                 </div>';
         }

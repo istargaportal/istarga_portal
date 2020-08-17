@@ -207,13 +207,13 @@ const onSave = (id, action, j) => {
         var cell5 = row.insertCell(4);
         var cell6 = row.insertCell(5);
         //cell0.innerHTML = j;
-        cell1.innerHTML = "<div class='form_left tablehead1'>"+stat[i].Scenario+"</div>";
+        cell1.innerHTML = stat[i].Scenario;
         cell1.setAttribute("id", stat[i].id + "fn");
-        cell2.innerHTML = "<div class='form_left tablehead1'>"+stat[i].Comment+"</div>";
+        cell2.innerHTML = stat[i].Comment;
         cell2.setAttribute("id", stat[i].id + "ln");
-        cell3.innerHTML = "<div class='tablehead1'>"+stat[i].service_name+"</div>";
+        cell3.innerHTML = stat[i].service_name;
         //cell3.setAttribute("id", stat[i].id + "em");
-        cell4.innerHTML = "<div class='tablehead1'>"+stat[i].macro_name+"</div>";
+        cell4.innerHTML = stat[i].macro_name;
         //cell4.setAttribute("id", stat[i].id + "gp"+j);
         var btn1 = document.createElement('button');
         btn1.type = "button";

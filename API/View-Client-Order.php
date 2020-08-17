@@ -47,88 +47,86 @@ $print_form = "'print_form'";
 	$service_head = '<div class="card-header card-header-primary" style="padding: 4px 8px; margin-top: 10px;"><h4 style="color: #fff;margin: 0;" class="card-title"><i class="fa fa-arrow-circle-right"></i> Selected Services</h4></div>';
 	$document_head = '<div class="card-header card-header-primary" style="padding: 4px 8px; margin-bottom: 15px; margin-top: 10px;"><h4 style="color: #fff;margin: 0;" class="card-title"><i class="fa fa-files-o"></i> Documents</h4></div>';
 	$package_print = $service_print = $document_print = "";
-	$pacakge_count = $service_count = 0;
-	$check_2="SELECT od.package_id, od.service_id FROM order_master_details od WHERE od.order_id   ='".$_POST['order_id']."' ";
+	$pacakge_count = $service_count = $all_package_id = 0;
+	$check_2="SELECT od.assign_package_id, od.assign_service_id, od.package_id, od.service_id FROM order_service_details od WHERE od.order_id ='".$_POST['order_id']."' ";
 	$resul_2 = mysqli_query($db,$check_2); 
 	while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
 	{
+		$package_id_compare = $row_2['assign_package_id'];
 		$package_id = $row_2['package_id'];
+		$service_id_compare = $row_2['assign_service_id'];
 		$service_id = $row_2['service_id'];
-		if($package_id != "0")
+		if($package_id_compare != "0")
 		{
 			$pacakge_count++;
-			$check="SELECT p.package_name FROM package_list p WHERE p.id = '$package_id' ";
+			$check="SELECT p.package_name, c.name AS country_name, c.currency AS currency_name, a.price FROM assigned_package a INNER JOIN package_list p ON p.id = a.package_id INNER JOIN countries c ON c.id = a.country_id WHERE p.id = '$package_id' AND p.id NOT IN($all_package_id) ";
 			$resul = mysqli_query($db,$check); 
 			if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 			{
 				$package_name = $row['package_name'];
-			}
-			$package_print.= '<div><br><div class="col-md-12" style="border:solid 2px #aa50ab; border-radius:10px; width:100%;position:relative;"><h4 class="btn btn-primary btn-sm btn-round" style="position:absolute;top:-20px; left:15px;">'.@$package_name.'</h4><br>';
-		    $package_print.= '
-		    <div class="row">
-		        <div class="col-md-4">
-		            <h6 class="selection" style="margin:6px 0;">Service</h6>
-		        </div>
-		        <div class="col-md-2">
-		            <h6 class="selection" style="margin:6px 0;">Country</h6>
-		        </div>
-		        <div class="col-md-2 no_padding">
-		            <h6 class="selection" style="margin:6px 0;">Price / Currency</h6>
-		        </div>
-		        <div class="col-md-4">
-		            <h6 class="selection" style="margin:6px 0;">Documents</h6>
-		        </div>
-		        <hr class="col12" style="margin:8px 0">
-		    </div>
-		    ';
-		    $sq="SELECT ps.service_id, s.service_name, s.price, c.name AS country_name, cs.currency AS currency_name FROM package_list_service ps INNER JOIN service_list s ON s.id = ps.service_id INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cs ON cs.id = s.currency_id WHERE ps.package_id = '$package_id' ";
-		    $resul = mysqli_query($db,$sq); 
-		    while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-		    {
-		        $service_name = $row['service_name'];
-		        $price = $row['price'];
+				$price = $row['price'];
 		        $country_name = $row['country_name'];
 		        $currency_name = $row['currency_name'];
-
-		        $all_documents = "";
-		        $check_1='SELECT d.document_name FROM service_list_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.service_id = '.$row['service_id'].'  ';
-		        $resul_1 = mysqli_query($db,$check_1);
-		        while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
-		        {
-		          $all_documents.="<a class='btn btn-default btn-small'>".$row_1['document_name']."</a>";
-		        }
-		        $package_print.= '
-		            <div class="row">
-		                <div class="col-md-4">
-		                    <h4 class="selection" style="margin-top:-2px;">'.$service_name.'</h4> 
-		                </div>
-		                <div class="col-md-2">
-		                    <h4 class="selection" style="margin:6px 0;">'.$country_name.'</h4>
-		                </div>
-		                <div class="col-md-2">
-		                    <h4 class="selection form_center" style="margin:6px 0;">'.$price.'.'.$currency_name.'</h4>
-		                </div>
-		                <div class="col-md-4">
-		                    '.@$all_documents.'
-		                </div>
-		                <hr class="col12" style="margin:8px 0">
-		            </div>';        
-		    }
-	        $package_print.= '</div></div>';
+			
+				$package_print.= '<div><br><div class="col-md-12" style="border:solid 2px #aa50ab; border-radius:10px; width:100%;position:relative;"><h4 class="btn btn-primary btn-sm btn-round" style="position:absolute;top:-20px; left:15px;">'.@$package_name.' </h4><h4 class="btn btn-primary btn-sm btn-round" style="position:absolute;top:-20px; right:15px;">'.$price.'.'.$currency_name.'</h4> <br>';
+			    $package_print.= '
+			    <div class="row">
+			        <div class="col-md-4">
+			            <h6 class="selection" style="margin:6px 0;">Service</h6>
+			        </div>
+			        <div class="col-md-4">
+			            <h6 class="selection" style="margin:6px 0;">Country</h6>
+			        </div>
+			        <div class="col-md-4">
+			            <h6 class="selection" style="margin:6px 0;">Documents</h6>
+			        </div>
+			        <hr class="col12" style="margin:8px 0">
+			    </div>
+			    ';
+			    $sq="SELECT ps.service_id, s.service_name FROM package_list_service ps INNER JOIN service_list s ON s.id = ps.service_id WHERE ps.package_id = '$package_id' ";
+			    $resul = mysqli_query($db,$sq); 
+			    while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+			    {
+			        $service_name = $row['service_name'];
+			        
+			        $all_documents = "";
+			        $check_1='SELECT d.document_name FROM service_list_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.service_id = '.$row['service_id'].'  ';
+			        $resul_1 = mysqli_query($db,$check_1);
+			        while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+			        {
+			          $all_documents.="<a class='btn btn-default btn-small'>".$row_1['document_name']."</a>";
+			        }
+			        $package_print.= '
+			            <div class="row">
+			                <div class="col-md-4">
+			                    <h4 class="selection" style="margin-top:-2px;">'.$service_name.'</h4> 
+			                </div>
+			                <div class="col-md-4">
+			                    <h4 class="selection" style="margin:6px 0;">'.$country_name.'</h4>
+			                </div>
+			                <div class="col-md-4">
+			                    '.@$all_documents.'
+			                </div>
+			                <hr class="col12" style="margin:8px 0">
+			            </div>';        
+			    }
+		        $package_print.= '</div></div>';
+			}
+			$all_package_id.= $package_id.','.$all_package_id;
 	    }
 	    
-	    if($service_id != "0")
+	    if($service_id_compare != "0")
 		{
 			$service_count++;
 			$service_print.= '<div><br><div class="col-md-12" style="border:solid 2px #aa50ab; border-radius:10px; width:100%;posiion:relative;">';
-		    $sq="SELECT s.id AS service_id, s.service_name, s.price, c.name AS country_name, cs.currency AS currency_name FROM service_list s INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cs ON cs.id = s.currency_id WHERE s.id = '$service_id' ";
+		    $sq="SELECT s.id AS service_id, s.service_name, c.name AS country_name, c.currency AS currency_name, a.price FROM service_list s INNER JOIN assigned_service a ON a.service_id = s.id INNER JOIN countries c ON c.id = a.country_id  WHERE a.id = '$service_id' ";
 		    $resul = mysqli_query($db,$sq); 
 		    while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 		    {
 		        $service_name = $row['service_name'];
 		        $price = $row['price'];
-		        $country_name = $row['country_name'];
-		        $currency_name = $row['currency_name'];
+		        $country_name = @$row['country_name'];
+		        $currency_name = @$row['currency_name'];
 
 		        $all_documents = "";
 		        $check_1='SELECT d.document_name FROM service_list_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.service_id = '.$row['service_id'].'  ';

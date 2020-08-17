@@ -91,8 +91,8 @@ const popuTable = () => {
       var cell1 = row.insertCell(1);
       var cell2 = row.insertCell(2);
       var cell3 = row.insertCell(3);
-      cell0.innerHTML = '<div class="tablehead1">'+j+'</div>';
-      cell1.innerHTML = '<div class="tablehead1 form_left">'+stat[i].document_name+'</div>';
+      cell0.innerHTML = j;
+      cell1.innerHTML = stat[i].document_name;
       cell1.setAttribute("id",stat[i].id);
       var btn1= document.createElement('button');
       btn1.type = "button";

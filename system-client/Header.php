@@ -407,6 +407,10 @@ else
     .sidebar[data-background-color="black"] .nav .nav-item .nav-link{
       margin: 0 !important;
     }
+    .main-panel>.content {
+      margin-top: 50px;
+      padding: 20px 15px;
+    }
   </style>  
 </head>
 
@@ -444,7 +448,7 @@ else
             </a>
           </li>
           <li class="nav-item <?php if($page_name == "Bulk Order") { echo 'active'; } ?>">
-            <a class="nav-link" href="ClientBulkOrder.php">
+            <a class="nav-link" href="Bulk-Order.php">
               <i class="material-icons">library_books</i>
               <p>Bulk Orders</p>
             </a>

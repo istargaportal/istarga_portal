@@ -21,6 +21,7 @@ class service
         while ($row = $rer->fetch_assoc()) {
             $states[$i]['servicetype'] = $row['name'];
             $states[$i]['id'] = $row['id'];
+            $states[$i]['default_id'] = $row['default_id'];
             $i++;
         }
         echo json_encode($states);

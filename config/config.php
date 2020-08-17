@@ -24,9 +24,7 @@ class connectdb
     {
           //  echo "Connection Successfull";
     }
-    
-    return $this->conn;
-    
+    return $this->conn;    
   }
 }
 

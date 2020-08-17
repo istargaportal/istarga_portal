@@ -13,22 +13,23 @@ if(isset($_GET['id']))
 
   if(isset($id))
   {
-    $checbk='SELECT s.is_webservices, s.currency_id, s.country_id, s.service_type_id, s.id, s.service_name, st.name AS service_type_name, c.name AS country_name, cc.currency, s.price FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cc ON cc.id = s.currency_id WHERE s.id ="'.$id.'" ORDER BY Id DESC';
+    $checbk='SELECT s.default_id, s.is_webservices, s.currency_id, s.country_id, s.service_type_id, s.id, s.service_name, st.name AS service_type_name, s.price FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id WHERE s.id ="'.$id.'" ORDER BY Id DESC';
     $resul = mysqli_query($db,$checbk); 
     if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
       $service_name = $row['service_name'];
-      $country = $row['country_id'];
       $service_type_id = $row['service_type_id'];
-      $currency = $row['currency'];
-      $currency_id = $row['currency_id'];
       $price = $row['price'];
       $is_webservices_checked = "";
       if($row['is_webservices'] == "1")
       {
         $is_webservices_checked = "checked";
       }
-
+      $disabled_btn = "";
+      if($row['default_id'] == "1")
+      {
+        $disabled_btn = "disabled_btn";
+      }
     }
 
     $all_document_id = array();
@@ -70,7 +71,7 @@ include 'Header.php';
               <input type="hidden" name="edit_id" value="<?php echo @$id; ?>">
 
               <div class="row justify-content-between">
-                <div class=" col-md-4">
+                <div class="<?php echo @$disabled_btn; ?> col-md-4">
                   <label for="Service Type" >Service Type</label>
                   <select style="margin-top: 2% !important;" id="service_type_id" name="service_type_id" class="browser-default custom-select chosen-select" required>
                     <option value="">Select Service Type</option>
@@ -89,7 +90,7 @@ include 'Header.php';
                     ?>
                   </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 <?php echo @$disabled_btn; ?>">
                   <label>Service Name</label>
                   <input style="margin-top: 1% !important;" name="service_name" id="service_name" value="<?php echo @$service_name; ?>" type="text" class="form-control" required>
                 </div>

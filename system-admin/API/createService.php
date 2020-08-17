@@ -75,7 +75,7 @@ else if($_POST["Action"]=='Display')
           </thead>
         ';
   $sr = 0;
-  $sq="SELECT s.id, s.service_name, st.name AS service_type_name, s.price, s.is_webservices FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id  ORDER BY s.id ";
+  $sq="SELECT s.id, s.service_name, st.name AS service_type_name, s.price, s.is_webservices, s.default_id FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id  ORDER BY s.id DESC ";
   // INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cc ON cc.id = s.currency_id
   // , c.name AS country_name, cc.currency
   $resul = mysqli_query($db,$sq); 
@@ -94,6 +94,12 @@ else if($_POST["Action"]=='Display')
     {
       $is_webservices_label = "YES";
       $is_webservices_checked = "checked";
+    }
+
+    $disabled_btn = "";
+    if($row['default_id'] == "1")
+    {
+      $disabled_btn = "disabled_btn";
     }
 
     $sr++;
@@ -115,7 +121,7 @@ else if($_POST["Action"]=='Display')
       echo "<td class='tablehead1 form_left'>".$all_documents."</td>";
       echo '<td>
                 <a href="createService.php?id='.base64_encode($row["id"]).'" title="Edit Service" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>
-                <a onclick="delete_service('.$row["id"].')" title="Delete Service" class="btn btn-xs btn-round btn-danger"><i class="material-icons icon">delete</i></a>
+                <a onclick="delete_service('.$row["id"].')" title="Delete Service" class="btn '.@$disabled_btn.' btn-xs btn-round btn-danger"><i class="material-icons icon">delete</i></a>
             </td>';
     echo "</tr>";
   }

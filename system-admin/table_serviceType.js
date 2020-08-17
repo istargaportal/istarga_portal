@@ -105,19 +105,21 @@ const popuTable = () => {
       var cell1 = row.insertCell(1);
       var cell2 = row.insertCell(2);
       var cell3 = row.insertCell(3);
+      let disabled_btn = ""; 
+      if(stat[i].default_id == 1) { disabled_btn = "disabled_btn"; }
       cell0.innerHTML = j;
       cell1.innerHTML = "<div class='form_left'>"+stat[i].servicetype+"</div>";
       cell1.setAttribute("id",stat[i].id)
       var btn1= document.createElement('button');
       btn1.type = "button";
-      btn1.className = "btn btn-warning btn-sm";
+      btn1.className = "btn btn-warning btn-sm "+disabled_btn;
       btn1.innerHTML = "<i class='material-icons icon'>edit</i> EDIT";
       btn1.onclick = (() => { onEdit(stat[i].id, "edit")});
       cell2.appendChild(btn1);
       cell2.setAttribute("id",stat[i].id+"c");
       var btn = document.createElement('button');
       btn.type = "button";
-      btn.className = "btn btn-danger btn-sm";
+      btn.className = "btn btn-danger btn-sm "+disabled_btn;
       btn.innerHTML = "<i class='material-icons icon'>delete</i> DELETE";
       //btn.addEventListener(onclick,deleteModalLaunchButton1);
       //btn.addEventListener(onclick,deleteModalOkBtn1(stat[i].id, "delete"));
