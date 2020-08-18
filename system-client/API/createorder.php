@@ -166,7 +166,7 @@ if($_POST['action']=='select_service')
                 <div class="col-md-3">
                     <h4 class="selection" style="margin:6px 0;">'.@$service_name.'</h4>
                 </div>
-                <div class="col-md-2>
+                <div class="col-md-2">
                     <h4 class="selection" style="margin:6px 0;">'.$country_name.'</h4>
                 </div>
                 <div class="col-md-2">
@@ -231,9 +231,6 @@ if($_POST['action'] == "save_form")
         {
             if($package_id_1 != "")
             {
-                $sql = "INSERT INTO order_master_details (order_id, package_id) VALUES('$order_id', '$package_id_1') ";
-                $result = mysqli_query($db,$sql);
-
                 $check_2 = "SELECT service_id FROM package_list_service WHERE package_id ='".$package_id_1."' ";
                 $resul_2 = mysqli_query($db,$check_2); 
                 while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
@@ -241,6 +238,14 @@ if($_POST['action'] == "save_form")
                     $service_id_1 = $row_2['service_id'];
                     $sql = "INSERT INTO order_service_details (order_id, service_id, package_id, assign_service_id, assign_package_id) VALUES('$order_id', '$service_id_1', '$package_id_1', '0', '".$assign_package_id[$i]."') ";
                     $result = mysqli_query($db,$sql);
+
+                    $check_3 = "SELECT service_field_id FROM service_field_master WHERE service_id = '".$row_2['service_id']."' ";
+                    $resul_3 = mysqli_query($db,$check_3); 
+                    while ($row_3 = mysqli_fetch_array($resul_3, MYSQLI_ASSOC))
+                    {
+                        $sql_cmd = "INSERT INTO order_master_details (order_id, service_field_id, service_id) VALUES('$order_id', '".$row_3["service_field_id"]."', '".$row_2['service_id']."') ";
+                        mysqli_query($db,$sql_cmd);
+                    }
                 }
             }
             $i++;
@@ -254,8 +259,13 @@ if($_POST['action'] == "save_form")
         {
             if($service_id_1 != "")
             {
-                $sql = "INSERT INTO order_master_details (order_id, service_id) VALUES('$order_id', '$service_id_1') ";
-                $result = mysqli_query($db,$sql);
+                $check_3 = "SELECT service_field_id FROM service_field_master WHERE service_id = '".$service_id_1."' ";
+                $resul_3 = mysqli_query($db,$check_3); 
+                while ($row_3 = mysqli_fetch_array($resul_3, MYSQLI_ASSOC))
+                {
+                    $sql_cmd = "INSERT INTO order_master_details (order_id, service_field_id, service_id) VALUES('$order_id', '".$row_3["service_field_id"]."', '".$service_id_1."') ";
+                    mysqli_query($db,$sql_cmd);
+                }
                 $sql = "INSERT INTO order_service_details (order_id, service_id, package_id, assign_service_id, assign_package_id) VALUES('$order_id', '$service_id_1', '0', '".$assign_service_id[$i]."', '0') ";
                 $result = mysqli_query($db,$sql);
             }

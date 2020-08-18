@@ -86,7 +86,6 @@ if(@$load_condition == "import_bulk_order")
 	$sql = "INSERT INTO bulk_order(client_id, file_name, from_date, from_time, from_date_time, to_date, to_time, to_date_time, service_id) VALUES('$client_id', '$file_name', '$from_date', '$from_time', '$from_date_time', '$to_date', '$to_time', '$to_date_time', '$service_id') ";
 	$query_res1 = $db->query($sql);
 	$bulk_order_id = $db->insert_id;
-
     if ($query_res1 > 0) 
     {
 		for($i=2;$i<=$arrayCount;$i++)
@@ -95,13 +94,30 @@ if(@$load_condition == "import_bulk_order")
 			$first_name = addslashes($allDataInSheet[$i]["B"]);
 			$middle_name = addslashes($allDataInSheet[$i]["C"]);
 			$last_name = addslashes($allDataInSheet[$i]["D"]);
-			$date_of_birth = addslashes($allDataInSheet[$i]["E"]);
-			$address = addslashes($allDataInSheet[$i]["F"]);
-			$father_name = addslashes($allDataInSheet[$i]["G"]);
-			$customer_type = addslashes($allDataInSheet[$i]["H"]);
-			$additional_comments = addslashes($allDataInSheet[$i]["I"]);
-			$country = addslashes($allDataInSheet[$i]["J"]);
 			
+			if($service_id == 2)
+			{
+				$college_name  = addslashes($allDataInSheet[$i]["E"]);
+				$university = addslashes($allDataInSheet[$i]["F"]);
+				$degree = addslashes($allDataInSheet[$i]["G"]);
+				$year_of_passing = addslashes($allDataInSheet[$i]["H"]);
+				$register_number = addslashes($allDataInSheet[$i]["I"]);
+				$researcher_name = addslashes($allDataInSheet[$i]["J"]);
+				$employee_id = addslashes($allDataInSheet[$i]["K"]);
+				$country = addslashes($allDataInSheet[$i]["L"]);
+				$graduated = addslashes($allDataInSheet[$i]["M"]);
+				$customer_type = addslashes($allDataInSheet[$i]["N"]);
+				$additional_comments = addslashes($allDataInSheet[$i]["O"]);
+			}
+			else
+			{
+				$date_of_birth = addslashes($allDataInSheet[$i]["E"]);
+				$address = addslashes($allDataInSheet[$i]["F"]);
+				$father_name = addslashes($allDataInSheet[$i]["G"]);
+				$customer_type = addslashes($allDataInSheet[$i]["H"]);
+				$additional_comments = addslashes($allDataInSheet[$i]["I"]);
+				$country = addslashes($allDataInSheet[$i]["J"]);
+			}
 			if($customer_type == ""){ $customer_type = "Regular"; }
 			if($first_name != "" && $country != "" && $internal_reference_id != "")
 			{
@@ -122,9 +138,18 @@ if(@$load_condition == "import_bulk_order")
 					{
 						$username = randomPassword();
 					    $password = randomPassword().rand(1111,9999);
-					    $insufficiency_contact = "Client";
-						$sql = "INSERT INTO order_master (internal_reference_id, first_name, middle_name, last_name, date_of_birth, address, father_name, customer_type, additional_comments, country_id, bulk_order_id, order_type, client_id, username, password, insufficiency_contact) VALUES('$internal_reference_id', '$first_name', '$middle_name', '$last_name', '$date_of_birth', '$address', '$father_name', '$customer_type', '$additional_comments', '$country', '$bulk_order_id', 'Bulk', '$client_id', '$username', '$password', '$insufficiency_contact')";
-						$query_res2 = $db->query($sql);
+					    $insufficiency_contact = "Employee";
+					    if($service_2d == 2)
+						{
+							$sql = "INSERT INTO order_master (internal_reference_id, first_name, middle_name, last_name, college_name, university, degree, year_of_passing, register_number, researcher_name, employee_id, country, graduated, customer_type, additional_comments) VALUES('$internal_reference_id', '$first_name', '$middle_name', '$last_name', '$college_name', '$university', '$degree', '$year_of_passing', '$register_number', '$researcher_name', '$employee_id', '$country', '$graduated', '$customer_type', '$additional_comments')";
+							$query_res2 = $db->query($sql);
+						}
+						else
+						{
+							$sql = "INSERT INTO order_master (internal_reference_id, first_name, middle_name, last_name, date_of_birth, address, father_name, customer_type, additional_comments, country_id, bulk_order_id, order_type, client_id, username, password, insufficiency_contact) VALUES('$internal_reference_id', '$first_name', '$middle_name', '$last_name', '$date_of_birth', '$address', '$father_name', '$customer_type', '$additional_comments', '$country', '$bulk_order_id', 'Bulk', '$client_id', '$username', '$password', '$insufficiency_contact')";
+							$query_res2 = $db->query($sql);
+						}
+
 						$order_id = $db->insert_id;
 					    if ($query_res2 > 0) 
 					    {
@@ -138,9 +163,15 @@ if(@$load_condition == "import_bulk_order")
 							}
 					    	if($assign_service_id > 0)
 					    	{
-						    	$sql = "INSERT INTO order_master_details (order_id, service_id) VALUES('$order_id', '$service_id') ";
-				                $query_res3 = $db->query($sql);
-								$sql = "INSERT INTO order_service_details (order_id, service_id, package_id, assign_service_id, assign_package_id) VALUES('$order_id', '$service_id', '0', '$assign_service_id', '0') ";
+					    		$check_3 = "SELECT service_field_id  FROM service_field_master WHERE service_id = '".$service_id."' ";
+			                    $resul_3 = mysqli_query($db,$check_3); 
+			                    while ($row_3 = mysqli_fetch_array($resul_3, MYSQLI_ASSOC))
+			                    {
+			                        $sql_cmd = "INSERT INTO order_master_details (order_id, service_field_id, service_id) VALUES('$order_id', '".$row_3["service_field_id"]."', '".$service_id."') ";
+			                        $db->query($sql_cmd);
+			                    }
+						    	
+						    	$sql = "INSERT INTO order_service_details (order_id, service_id, package_id, assign_service_id, assign_package_id) VALUES('$order_id', '$service_id', '0', '$assign_service_id', '0') ";
 								$query_res4 = $db->query($sql);
 
 								$sq="SELECT documentlist_id FROM service_list_documents WHERE service_id = '$service_id' ";

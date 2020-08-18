@@ -15,7 +15,7 @@ class service
 
     public function add_Service()
     {
-        $queryew = 'SELECT * FROM service_type';
+        $queryew = 'SELECT * FROM service_type ORDER BY id DESC';
         $rer = $this->conn->query($queryew);
         $i = 0;
         while ($row = $rer->fetch_assoc()) {

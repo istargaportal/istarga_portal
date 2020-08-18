@@ -75,7 +75,7 @@ else if($_POST["Action"]=='Display')
           </thead>
         ';
   $sr = 0;
-  $sq="SELECT s.id, s.service_name, st.name AS service_type_name, s.price, s.is_webservices, s.default_id FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id  ORDER BY s.id DESC ";
+  $sq="SELECT s.id, s.service_name, st.name AS service_type_name, s.price, s.is_webservices, s.default_id FROM service_list s INNER JOIN service_type st ON st.id = s.service_type_id  ORDER BY s.id  ";
   // INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cc ON cc.id = s.currency_id
   // , c.name AS country_name, cc.currency
   $resul = mysqli_query($db,$sq); 

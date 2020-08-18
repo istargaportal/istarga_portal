@@ -98,6 +98,12 @@ if(@$page_name_compare == "modify user" || @$page_name_compare == "edit user")
   $user_collapse = "";
   $modify_user_active = "active";
 }
+$settings_collapse = "collapse";
+if(@$page_name_compare == "mandatory fields manager")
+{
+  $settings_collapse = "";
+  $mandatory_fields_active = "active";
+}
 
 ?>
 <!DOCTYPE html>
@@ -424,6 +430,10 @@ if(@$page_name_compare == "modify user" || @$page_name_compare == "edit user")
     .sidebar[data-background-color="black"] .nav .nav-item .nav-link{
       margin: 0 !important;
     }
+    .main-panel>.content {
+      margin-top: 50px;
+      padding: 20px 15px;
+    }
   </style>
 </head>
 <body class="dark-edition">
@@ -534,10 +544,10 @@ if(@$page_name_compare == "modify user" || @$page_name_compare == "edit user")
  <a href="#settings" class="nav-link" data-toggle="collapse"><i class="material-icons">settings</i>
   <p>Settings</p>
 </a>
-<div class="collapse" id="settings">
+<div class="<?php echo @$settings_collapse; ?>" id="settings">
   <ul class="list-unstyled nav">
-   <li class="nav-item">
-    <a class="nav-link" name href="./settings1.php"><i class="material-icons icon">launch</i> Mandatory Fields Manager</a>
+   <li class="nav-item <?php echo @$mandatory_fields_active; ?>">
+    <a class="nav-link" href="./Mandatory-Fields-Manager.php"><i class="material-icons icon">launch</i> Mandatory Fields Manager</a>
   </li>
 </ul>
 </div>

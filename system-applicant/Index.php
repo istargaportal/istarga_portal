@@ -71,13 +71,11 @@
                 <form action="#!">
                   <div class="form-group">
                     <label for="email" class="sr-only">Username</label>
-                    <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username"
-                    />
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username" />
                   </div>
                   <div class="form-group mb-4">
                     <label for="password" class="sr-only">Password</label>
-                    <input type="password" name="password" id="password" class="form-control" placeholder="***********"
-                    />
+                    <input type="password" name="password" id="password" class="form-control" placeholder="***********" />
                   </div>
                   <a href="javascript:login_click()" class="btn btn-block login-btn mb-4">Login</a>
                 </form>
@@ -126,6 +124,12 @@
           });
         }
       }
+
+      $('#password').on("keypress", function(e) {
+        if (e.keyCode == 13) {
+          login_click();
+        }
+      });
     </script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>

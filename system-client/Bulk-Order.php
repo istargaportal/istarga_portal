@@ -18,7 +18,7 @@ include 'Header.php';
             <select id="service_id" class="browser-default custom-select chosen-select">
               <option value="">Select Service</option>
               <?php
-                $check='SELECT id, service_name FROM service_list WHERE default_id = 1 ';
+                $check='SELECT id, service_name FROM service_list WHERE default_id = 1 AND id IN (2, 9) ';
                 $resul = mysqli_query($db,$check); 
                 while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
                 {
@@ -131,9 +131,9 @@ include '../datatable/_datatable.php';
     }
     else
     {
-      if(service_id == "1") { window.open('../docs/Criminal-Court-Sample-Template.xlsx'); }
       if(service_id == "2") { window.open('../docs/Education-Sample-Template.xlsx'); }
-      if(service_id == "3") { window.open('../docs/Online-Criminal-Sample-Template.xlsx'); }
+      if(service_id == "9") { window.open('../docs/Criminal-Court-Sample-Template.xlsx'); }
+      // if(service_id == "9") { window.open('../docs/Online-Criminal-Sample-Template.xlsx'); }
     }
   }
 
