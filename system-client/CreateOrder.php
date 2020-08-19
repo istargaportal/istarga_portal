@@ -198,7 +198,6 @@ include 'Header.php';
 
 								<div class="row" style="margin-left:1%;margin-top:2%;">
 									<div class="col-md-9">
-										<h6 class="selection">Upload Document Here</h6>
 										<div id="upload_document_list">
 											<h4 class="btn btn-default btn-sm">Select Service First!</h4>
 										</div>

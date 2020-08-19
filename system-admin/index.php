@@ -173,6 +173,9 @@
         } else if (text == "Please enter Password") {
           modalLabel.innerHTML = text
           modalLaunchButton.click()
+        } else if (text == "Wrong admin Credentials") {
+          modalLabel.innerHTML = text
+          modalLaunchButton.click()
         } else if (text == "admin_login") {
           window.location.href = "Dashboard.php";
         } else if (text == "qf_login") {

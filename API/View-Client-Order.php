@@ -155,29 +155,23 @@ $print_form = "'print_form'";
 		}
 	}
 
-    $check_1='SELECT d.document_name, ad.document_file FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '.$_POST['order_id'].'  ';
+	$document_print.='<div class="row"><div class="col-md-6"><h6>Documents List</h6>';
+    $check_1='SELECT d.document_name FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '.$_POST['order_id'].'  ';
     $resul_1 = mysqli_query($db,$check_1);
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     {
-      
-      	if($row_1['document_file'] == "")
-		{
-			$document_file = "<a class='btn btn-default btn-xs'><i class='fa fa-ban'></i> No file uploaded</a>";
-		}
-		else
-		{
-			$document_file = "<a target='_blank' href='assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> View</a>";
-		}
-		  $document_print.='
-		  <div class="row">
-		    <div class="col-md-4">
-		        <h6 class="selection" style="margin:6px 0;">'.$row_1['document_name'].'</h6>
-		    </div>
-		    <div class="col-md-2">
-		        '.@$document_file.'
-		    </div>
-		  </div>';
+		$document_print.='<h4 class="selection" style="margin:6px 0;">'.$row_1['document_name'].'</h4><hr class="col12" style="margin:4px 0">';
     }
+    $document_print.='</div><div class="col-md-6"><h6>Uploaded Documents</h6>';
+    $check_1='SELECT ad.file_name, ad.document_file FROM order_master_uploded_documents ad WHERE ad.order_id = '.$_POST['order_id'].'  ';
+    $resul_1 = mysqli_query($db,$check_1);
+    while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+    {
+		$document_print.= "<a target='_blank' href='assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> ".$row_1['file_name']."</a>";
+	}
+
+	$document_print.='</div></div>';
+
 
 	if($pacakge_count == 0)
 	{

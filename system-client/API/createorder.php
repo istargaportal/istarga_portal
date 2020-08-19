@@ -190,6 +190,11 @@ if($_POST['action']=='select_service')
 
 if($_POST['action']=='load_document')
 {
+    require_once '../../config/comman_js.php';
+    echo '<div class="row">
+            <div class="col-md-6">
+                <h6 class="selection">Mandatory Documents</h6>
+            ';
     $check_1='SELECT d.document_name, ad.documentlist_id FROM service_list_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.service_id IN ('.$all_service_id_doc.') GROUP BY d.id ';
     $resul_1 = mysqli_query($db,$check_1);
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
@@ -200,20 +205,24 @@ if($_POST['action']=='load_document')
         }
         else
         {
-            echo '
-            <div class="row">
-                <div class="col-md-5">
-                    <h4 class="selection" style="margin:6px 0;">'.$row_1["document_name"].'</h4>
-                </div>
-                <div class="col-md-5">
-                    <input type="hidden" name="documentlist_id[]" value="'.$row_1["documentlist_id"].'" />
-                    <input type="file" name="document_file[]" class="form-control" />
-                </div>
-                <hr class="col12" style="margin:8px 0">
-            </div>
-            ';
+            echo '<h4 class="selection" style="margin:6px 0;">'.$row_1["document_name"].'</h4>
+                  <input type="hidden" name="documentlist_id[]" value="'.$row_1["documentlist_id"].'" /><hr class="col12" style="margin:4px 0">';
         }
     }
+
+    echo '</div>';
+    if(@$sub_action != "preview_document")
+    {
+        echo '
+        <div class="col-md-6">
+            <h6 class="selection">Upload Multiple Documents Here</h6>                                    
+            <input type="file" onchange="file_selected_list()" name="document_file[]" multiple id="document_file" class="form-control" />
+            <div id="selectedFiles"></div>
+        </div>
+        ';
+    }
+    echo '</div>';
+
 }
 
 if($_POST['action'] == "save_form")
@@ -306,28 +315,33 @@ if($_POST['action'] == "save_form")
     
     if(isset($documentlist_id))
     {
-        $i = 0;
         foreach ($documentlist_id as $documentlist_id_1)
         {
             $sql = "INSERT INTO order_master_documents (order_id, documentlist_id) VALUES('$order_id', '$documentlist_id_1') ";
             $result = mysqli_query($db,$sql);
-            $order_master_document_id = $db->insert_id;
-            if(isset($_FILES['document_file']))
-            {
-                $file_name = $_FILES['document_file']['name'][$i];
-                $file_size = $_FILES['document_file']['size'][$i];
-                $file_tmp = $_FILES['document_file']['tmp_name'][$i];
-                $file_type = $_FILES['document_file']['type'][$i];
-                $file_ext = end((explode('.', $file_name)));
-                $file_name = "document_file_".$order_id."_".$order_master_document_id.".".$file_ext;
+        }
+    }
 
-                if(empty($errors)==true)
+    if(isset($_FILES['document_file']))
+    {
+        $i = 0;
+        foreach ($_FILES['document_file'] as $document_file_s)
+        {
+            $file_name = $_FILES['document_file']['name'][$i];
+            $file_name_old = $_FILES['document_file']['name'][$i];
+            $file_size = $_FILES['document_file']['size'][$i];
+            $file_tmp = $_FILES['document_file']['tmp_name'][$i];
+            $file_type = $_FILES['document_file']['type'][$i];
+            $file_ext = end((explode('.', $file_name)));
+            $rand_var = rand(11111,99999);
+            $file_name = "document_file_".$order_id."_".$rand_var."_".date('Y_m_d_H_i_s').".".$file_ext;
+
+            if(empty($errors)==true)
+            {
+                if(move_uploaded_file($file_tmp,"../assets/order_master_documents/".$file_name))
                 {
-                    if(move_uploaded_file($file_tmp,"../assets/order_master_documents/".$file_name))
-                    {
-                        $sql = "UPDATE order_master_documents SET document_file = '$file_name' WHERE order_master_document_id  = '$order_master_document_id ' ";
-                        $result = mysqli_query($db,$sql);
-                    }
+                    $sql = "INSERT INTO order_master_uploded_documents(order_id, file_name, file_size, file_type, file_ext, document_file, uploaded_by, user_id) VALUES('$order_id', '$file_name_old', '$file_size', '$file_type', '$file_ext', '$file_name', 'Client', '$client_id')  ";
+                    $result = mysqli_query($db,$sql);
                 }
             }
             $i++;

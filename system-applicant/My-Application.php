@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once "../config/config.php";
+require_once '../config/comman_js.php';
 
 if(!isset($_SESSION['order_id']))
 {
@@ -14,8 +15,7 @@ $order_id = $_SESSION['order_id'];
 $get_connection = new connectdb;
 $db = $get_connection->connect();
 
-
-$check="SELECT order_id, first_name, middle_name, last_name, alias_first_name, alias_middle_name, alias_last_name, email_id, internal_reference_id, joining_location, joining_date, additional_comments, client_id, is_rush, insufficiency_contact, username, password, order_status, order_creation_date_time, date_of_birth, father_name, mother_maiden_name, stay_duration_from, stay_duration_to, address, country_id, state_id, city_id, zipcode FROM order_master WHERE order_id   ='".$order_id."'";
+$check="SELECT order_id, first_name, middle_name, last_name, alias_first_name, alias_middle_name, alias_last_name, email_id, internal_reference_id, joining_location, joining_date, additional_comments, client_id, is_rush, insufficiency_contact, username, password, order_status, order_creation_date_time FROM order_master WHERE order_id   ='".$order_id."'";
 $resul = mysqli_query($db,$check); 
 if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 {
@@ -37,16 +37,6 @@ if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
   $username = $row['username'];
   $password = $row['password'];
   $order_status = $row['order_status'];
-  $date_of_birth = $row['date_of_birth'];
-  $father_name = $row['father_name'];
-  $mother_maiden_name = $row['mother_maiden_name'];
-  $stay_duration_from = $row['stay_duration_from'];
-  $stay_duration_to = $row['stay_duration_to'];
-  $address = $row['address'];
-  $country_id = $row['country_id'];
-  $state_id = $row['state_id'];
-  $city_id = $row['city_id'];
-  $zipcode = $row['zipcode'];
 }
 
 if($order_status == 0 || $order_status == 3)
@@ -469,8 +459,6 @@ else
     .bordered_table th{
       background: #eee;
     }
-  </style>  
-  <style>
     .upload-btn {
       font-size: 13;
       color: white !important;
@@ -484,6 +472,13 @@ else
     }
     textarea{
       color: #000;
+    }
+    .btn_down_arrow{
+      position: absolute;
+      right: 10px;
+      padding: 5px 10px;
+      font-size: 15pt;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -542,295 +537,316 @@ else
       </ul>
     </div>
   </nav>
-  <form id="my_app_panel">
-    
-    <input type="hidden" name="order_id" value="<?php echo @$order_id; ?>" />
-    <input type="hidden" name="action" value="update_applicant_details" />
   <div class="content">
-    <div class="container-fluid">
-      <br><br><br><br>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header card-header-primary">
-              <h4 style=" color: white;" class="card-title"><i class="fa fa-user"></i> Personal Details</h4>
-            </div>
-            <div class="card-body" style="margin-top: 2%;">
-              <div class="row">
-                <div class="col-md-4">
-                  <div class="">
-                    <label class="bmd-label-floating">First Name</label>
-                    <input type="text" class="form-control" name="first_name" value="<?php echo @$first_name; ?>" >
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="">
-                    <label class="bmd-label-floating">Middle Name</label>
-                    <input name="middle_name" value="<?php echo @$middle_name; ?>" type="text" class="form-control">
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="">
-                    <label class="bmd-label-floating">Last Name</label>
-                    <input name="last_name" value="<?php echo @$last_name; ?>" type="text" class="form-control">
-                  </div>
-                </div>
-              </div>
+    <form id="my_app_panel">
 
-              <div class="row" style="margin-top: 1%;">
-                <div class="col-md-4">
-                  <div class="">
-                    <label class="bmd-label-floating">Alias First Name</label>
-                    <input name="alias_first_name" value="<?php echo @$alias_first_name; ?>" type="text" class="form-control">
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="">
-                    <label class="bmd-label-floating">Alias Middle Name</label>
-                    <input name="alias_middle_name" value="<?php echo @$alias_middle_name; ?>" type="text" class="form-control">
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="">
-                    <label class="bmd-label-floating">Alias Last Name</label>
-                    <input name="alias_last_name" value="<?php echo @$alias_last_name; ?>" type="text" class="form-control">
-                  </div>
-                </div>
-              </div>
+      <input type="hidden" name="order_id" value="<?php echo @$order_id; ?>" />
+      <input type="hidden" name="action" value="update_applicant_details" />
 
-              <div class="row" style="margin-top: 1%;">
-                <div class="col-md-4">
-                  <div class="">
-                    <label style="font-size: 12px;">Date Of Birth</label>
-                    <input type="date" name="date_of_birth" value="<?php echo @$date_of_birth; ?>" class="form-control" >
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="">
-                    <label class="bmd-label-floating">Father Name</label>
-                    <input name="father_name" value="<?php echo @$father_name; ?>" type="text" class="form-control" >
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="">
-                    <label class="bmd-label-floating">Mother's Maiden Name</label>
-                    <input name="mother_maiden_name" value="<?php echo @$mother_maiden_name; ?>" type="text" class="form-control" >
-                  </div>
-                </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-primary">
+                <h4 style=" color: white;" class="card-title"><i class="fa fa-user"></i> Personal Details</h4>
               </div>
-              <div class="row justify-content-end" style="margin-top: 4%; margin-bottom: 2%; margin-right: 2%;">
-                <a id="continue1" href="#hidediv1" class="btn btn-default"><i class="fa fa-arrow-right"></i> Continue</a>
+              <div class="card-body" style="margin-top: 2%;">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="">
+                      <label class="bmd-label-floating">First Name</label>
+                      <input type="text" class="form-control" name="first_name" value="<?php echo @$first_name; ?>" >
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="">
+                      <label class="bmd-label-floating">Middle Name</label>
+                      <input name="middle_name" value="<?php echo @$middle_name; ?>" type="text" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="">
+                      <label class="bmd-label-floating">Last Name</label>
+                      <input name="last_name" value="<?php echo @$last_name; ?>" type="text" class="form-control">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row" style="margin-top: 1%;">
+                  <div class="col-md-4">
+                    <div class="">
+                      <label class="bmd-label-floating">Alias First Name</label>
+                      <input name="alias_first_name" value="<?php echo @$alias_first_name; ?>" type="text" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="">
+                      <label class="bmd-label-floating">Alias Middle Name</label>
+                      <input name="alias_middle_name" value="<?php echo @$alias_middle_name; ?>" type="text" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="">
+                      <label class="bmd-label-floating">Alias Last Name</label>
+                      <input name="alias_last_name" value="<?php echo @$alias_last_name; ?>" type="text" class="form-control">
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="container-fluid" id="hidediv1" style="display: none;">
-      <div class="row">
+      <?php
+      $print_validations_script = '';
+      $check="SELECT os.service_id, s.service_name, os.assign_package_id, os.assign_service_id FROM order_service_details os INNER JOIN service_list s ON s.id = os.service_id WHERE os.order_id   ='".$order_id."'";
+      $resul = mysqli_query($db,$check); 
+      while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+      {
+        $print_validations_script.= '
+        let allAreFilled_'.$row["service_id"].' = true;
+          document.getElementById("toggle_div_'.$row["service_id"].'").querySelectorAll("[required]").forEach(function(i) {
+          if (!allAreFilled_'.$row["service_id"].') return;
+          if (!i.value) allAreFilled_'.$row["service_id"].' = false;
+          if (i.type === "radio") {
+            let radioValueCheck = false;
+            document.getElementById("toggle_div_'.$row["service_id"].'").querySelectorAll(`[name=${i.name}]`).forEach(function(r) {
+              if (r.checked) radioValueCheck = true;
+            })
+            allAreFilled_'.$row["service_id"].' = radioValueCheck;
+          }
+        })
+        if (!allAreFilled_'.$row["service_id"].' && panel_error == 0) {
+          $("#toggle_btn_'.$row["service_id"].'").html(chevron_up);
+          $("#toggle_div_'.$row["service_id"].'").show(300);
+          $("#panel_msg_'.$row["service_id"].'").css("background", "#d7002d");
+          panel_error++;
+        }
+        else
+        {
+          $("#panel_msg_'.$row["service_id"].'").css("background", "#54b058");
+        }
+        ';
+        echo '
+        <div class="container-fluid">
+        <div class="row">
         <div class="col-md-12">
-          <div class="card">
-            <div class="card-header card-header-primary">
-              <h4 style=" color: white;" class="card-title"><i class="fa fa-map-marker"></i> Address Details</h4>
-            </div>
-            <div class="card-body">
-              <div style="display: none;" class="row">
+        <div class="card">
+        <div class="card-header card-header-primary" id="panel_msg_'.$row["service_id"].'">
+        <h4 style=" color: white;" class="card-title"><i class="fa fa-edit"></i> '.$row["service_name"].' <a onclick="toggle_click('.$row["service_id"].')" id="toggle_btn_'.$row["service_id"].'" class="btn_down_arrow"><i class="fa fa-chevron-down"></i></a> </h4>
+        </div>
+        <div id="toggle_div_'.$row["service_id"].'" style="display:none" class="card-body row" style="margin-top: 1%;">
+        ';
+        $country_id = $state_id = 0;
+        $check_1 = "SELECT od.order_details_id, sm.service_field, sm.service_field_text, sm.data_type, sm.is_required, od.service_field_value, od.service_id FROM order_master_details od INNER JOIN service_field_master sm ON sm.service_field_id = od.service_field_id WHERE od.order_id = '".$order_id."' AND od.service_id = '".$row['service_id']."' ";
+        $resul_1 = mysqli_query($db,$check_1); 
+        while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+        {
+          $is_required = ""; $is_required_star = "";
+          if($row_1['is_required'] == 1) { $is_required = "required"; $is_required_star = "<i class='fa fa-star'></i>"; }
+
+          echo '<input type="hidden" name="order_details_id[]" value="'.$row_1["order_details_id"].'" />';
+          if($row_1['data_type'] == "date")
+          {
+            $field_print = '<input type="date" class="form-control" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" value="'.$row_1["service_field_value"].'" '.@$is_required.' />';
+          }
+          if($row_1['data_type'] == "short_text")
+          {
+            $field_print = '<input type="text" class="form-control" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" value="'.$row_1["service_field_value"].'" '.@$is_required.' />';
+          }
+          if($row_1['data_type'] == "number")
+          {
+            $field_print = '<input type="number" class="form-control" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" value="'.$row_1["service_field_value"].'" '.@$is_required.' />';
+          }
+          if($row_1['data_type'] == "long_text")
+          {
+            $field_print = '<textarea type="text" class="custom-select" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" value="'.$row_1["service_field_value"].'" '.@$is_required.' ></textarea>';
+          }
+          if($row_1['data_type'] == "select")
+          {
+            $onchange_evt = "";
+            if($row_1['service_field'] == "country_id") { $onchange_evt = 'onchange="load_state('.$row_1["service_id"].','.$row_1['order_details_id'].')"'; }
+            if($row_1['service_field'] == "state_id") { $onchange_evt = 'onchange="load_city('.$row_1["service_id"].','.$row_1['order_details_id'].')"'; }
+            $field_print = '
+            <div id="'.strtolower($row_1["service_field"]).'_'.$row_1["service_id"].'_div">
+            <select '.$onchange_evt.' class="chosen-select" id="'.$row_1["service_field"].'_'.$row_1['service_id'].'" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" '.@$is_required.' >';
+            if($row_1["service_field"] == "country_id")
+            {
+              $field_print.='<option value="">Select</option>';
+              $check_2 = "SELECT id, name FROM countries ";
+              $resul_2 = mysqli_query($db,$check_2); 
+              while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+              {
+                $selected_option = '';
+                if($row_1['service_field_value'] == $row_2['id'])
+                {
+                  $country_id = $row_2['id'];
+                  $selected_option = 'selected';
+                }
+                $field_print.='<option '.@$selected_option.' value="'.$row_2['id'].'">'.$row_2['name'].'</option>';    
+              }
+            }
+            if($row_1["service_field"] == "state_id" && @$country_id > 0)
+            {
+              $field_print.='<option value="">Select</option>';
+              $check_2 = "SELECT id, name FROM states WHERE country_id = '$country_id' ";
+              $resul_2 = mysqli_query($db,$check_2); 
+              while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+              {
+                $selected_option = '';
+                if($row_1['service_field_value'] == $row_2['id'])
+                {
+                  $state_id = $row_2['id'];
+                  $selected_option = 'selected';
+                }
+                $field_print.='<option '.@$selected_option.' value="'.$row_2['id'].'">'.$row_2['name'].'</option>';    
+              }
+            }
+            if($row_1["service_field"] == "city_id" && @$state_id > 0)
+            {
+              $field_print.='<option value="">Select</option>';
+              $check_2 = "SELECT id, name FROM cities WHERE state_id = '$state_id' ";
+              $resul_2 = mysqli_query($db,$check_2); 
+              while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+              {
+                $selected_option = '';
+                if($row_1['service_field_value'] == $row_2['id'])
+                {
+                  $selected_option = 'selected';
+                }
+                $field_print.='<option '.@$selected_option.' value="'.$row_2['id'].'">'.$row_2['name'].'</option>';    
+              }
+            }
+            $field_print.='</select></div>';
+          }
+          
+          echo '
+          <div class="col-md-4">
+          <input type="hidden" id="lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'"  value="Please input '.$row_1["service_field_text"].'" />
+          <label style="margin:10px 0;">'.$row_1["service_field_text"].' '.@$is_required_star.'</label>
+          '.$field_print.'
+          </div>
+          ';
+        }
+        echo '
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        ';
+      }
+      ?>
+    </form>
+    <form id="upload_document_form">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-primary" >
+                <h4 class="card-title" style="color:white;"><i class="fa fa-cloud"></i> Upload Documents</h4>
+              </div>
+              <div class="row" style="margin-left:1%;margin-top:2%;">
+                <?php
+                echo '
+                <h6 class="selection col-md-12">Upload Multiple Documents Here</h6>                                    
                 <div class="col-md-4">
-                  <div class="">
-                    <label style="font-size: 12px;">Choose if you use any Alias Name</label>
-                    <select style="margin-top: 3%;" class="browser-default custom-select" type="select" id="locality-dropdown" >
-                      <option value="">--Select Name--</option>
-                      <option value="">Ravi Shenkar</option>
-                    </select>
-                  </div>
+                <input type="file" onchange="file_selected_list()" multiple id="document_file" name="document_file[]" class="form-control" />
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-md-2">
-                  <div class="">
-                    <br>
-                    <br>
-                    <label>Stay Duration :</label>
-                  </div>
+                <div class="col-md-4">
+                <a class="btn btn-success btn-sm" onclick="upload_document_file()" id="btn_upload"><i class="fa fa-upload"></i> Upload Files</a>
                 </div>
-                <div class="col-md-3">
-                  <div class="">
-                    <label style="font-size: 12px;">Start Date Of Residency</label>
-                    <input name="stay_duration_from" value="<?php echo @$stay_duration_from; ?>" type="date" class="form-control" >
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="">
-                    <label style="font-size: 12px;">End Date Of Residency</label>
-                    <input name="stay_duration_to" value="<?php echo @$stay_duration_to; ?>" type="date" class="form-control" >
-                  </div>
-                </div>
-              </div>
-
-              <div class="row justify-content-between" style="margin-top: 1%;">
-                <div class="col-md-12">
-                  <div class="">
-                    <label for="Address1" class="bmd-label-floating">Address</label>
-                    <textarea class="custom-select" id="address" name="address" rows="3"><?php echo @$address; ?></textarea>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">
-                  <label style="font-size: 14px;">Country</label>
-                  <br>
-                  <select class="browser-default chosen-select custom-select" style="width: 100%;" id="country_id" onchange="load_state()" name="country_id" >
-                    <option value="">Select</option>
-                    <?php
-                    $check='SELECT id, name FROM countries ';
-                    $resul = mysqli_query($db,$check); 
-                    while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                    {
-                      $selected = "";
-                      if(@$country_id == $row['id'])
-                      {
-                        $selected = "selected";
-                      }
-                      echo '<option '.$selected.' value="'.$row['id'].'">'.$row['name'].'</option>';
-                    }
-                    ?>
-                  </select>
-                </div>
-                <div class="col-md-3">
-                  <div class="">
-                    <label style="font-size: 14px;"
-                    class="bmd-label-floating">State</label>
-                    <div id="state_id_div">
-                      <select class="browser-default chosen-select custom-select" id="state_id" name="state_id">
-                        <?php
-                        $check='SELECT id, name FROM states WHERE id = '.@$state_id.' ';
-                        $resul = mysqli_query($db,$check); 
-                        if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                        {
-                          echo '<option value="'.$row['id'].'">'.$row['name'].'</option>';
-                        }
-                        else
-                        {
-                          echo '<option value="">Select<option>';                      
-                        }
-                        ?>
-                      </select>
+                <div class="col-md-12" id="selectedFiles"></div>
+                <hr class="col12" style="margin:8px 0">
+                ';  
+                ?>
+                <div class="row">
+                  <div class="col-md-9" id="documents_panel"></div>
+                  <div class="col-md-3">
+                    <h5 class="selection">File Formats</h5>
+                    <div class="row selection" style="margin-left:1%;margin-top:2%;">
+                      <i class="fa fa-file-image-o" style="font-size:40px !important;margin-left:2%;color: green;"></i>
+                      <i class="fa fa-file-word-o" style="font-size:40px !important;margin-left:2%;color: blue;"></i>
+                      <i class="fa fa-file-excel-o " style="font-size:40px !important;margin-left:3%;color: green"></i>
+                      <i class="fa fa-file-powerpoint-o " style="font-size:40px !important;margin-left:3%;color: orange"></i>
+                      <i class="fa fa-file-pdf-o selection" style="color: red !important; margin-left:3%; font-size:40px !important;"></i>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-3">
-                  <div class="">
-                    <label style="font-size: 14px;"
-                    class="bmd-label-floating">City</label>
-                    <div id="city_id_div">
-                      <select class="browser-default chosen-select custom-select" id="city_id" name="city_id">
-                        <?php
-                        $check='SELECT id, name FROM cities WHERE id = '.@$city_id.' ';
-                        $resul = mysqli_query($db,$check); 
-                        if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                        {
-                          echo '<option value="'.$row['id'].'">'.$row['name'].'</option>';
-                        }
-                        else
-                        {
-                          echo '<option value="">Select<option>';
-                        }
-                        ?>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-md-3">
-                  <div class="">
-                    <label style="font-size: 14px;"
-                    class="bmd-label-floating">Zipcode</label>
-                    <div id="city_id_div">
-                      <input type="number" class="form-control" id="zipcode" name="zipcode" value="<?php echo @$zipcode; ?>" />
-                    </div>
-                  </div>
-                </div>
-
+                <div class="col-md-12"><br></div>
               </div>
-              <div class="row justify-content-end"
-              style="margin-top: 4%; margin-bottom: 2%; margin-right: 2%;">
-              <a id="continue2" class="btn btn-default"><i class="fa fa-arrow-right"></i> Continue</a>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-    <div class="container-fluid" id="hidediv2" style="display: none;">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card">
-            <div class="card-header card-header-primary">
-              <h4 style=" color: white;" class="card-title"><i class="fa fa-upload"></i> Upload Documents</h4>
-            </div>
-            <div class="card-body" >
-              <div class="row justify-content-between">
-                <div class="col-md-9">
-                  <div id="documents_panel"></div>
-                </div>
-                <div class="col-md-3">
-                  <h5 class="selection">File Formats</h5>
-                  <div class="row selection" style="margin-left:1%;margin-top:2%;">
-                    <i class="fa fa-file-image-o" style="font-size:40px !important;margin-left:2%;color: green;"></i>
-                    <i class="fa fa-file-word-o" style="font-size:40px !important;margin-left:2%;color: blue;"></i>
-                    <i class="fa fa-file-excel-o " style="font-size:40px !important;margin-left:3%;color: green"></i>
-                    <i class="fa fa-file-powerpoint-o " style="font-size:40px !important;margin-left:3%;color: orange"></i>
-                    <i class="fa fa-file-pdf-o selection" style="color: red !important; margin-left:3%; font-size:40px !important;"></i>
-                  </div>
-                </div>
-              </div>
-              <hr>
-              <div class="row justify-content-end" style="margin-bottom: 2%;">
-               <div class="col-md-2">
-                 <a <?php echo @$btn_click; ?> id="btn_ok" class="btn btn-success <?php echo @$btn_disabled; ?>"><i class="fa fa-save"></i> Submit</a>
-               </div>
-             </div>
-           </div>
-         </div>
+    </form>
+    <div class="container-fluid" id="hidediv2" >
+      <div class="row justify-content-end" style="margin-bottom: 2%;">
+       <div class="col-md-2">
+         <a <?php echo @$btn_click; ?> id="btn_ok" class="btn btn-success <?php echo @$btn_disabled; ?>"><i class="fa fa-save"></i> Submit</a>
        </div>
      </div>
    </div>
-   <br><br><br><br><br>
-  </div>
-<form>
-
-<script type="text/javascript">
+ </div>
+ <script type="text/javascript">
   $('.chosen-select').chosen();
 
-  function load_state()
+  function toggle_click(service_id)
   {
-    var country_id = $('#country_id').val();
+    if($('#toggle_div_'+service_id).css('display') == "none")
+    {
+      $('#toggle_btn_'+service_id).html('<i class="fa fa-chevron-up"></i>');
+      $('#toggle_div_'+service_id).show(300);
+    }
+    else
+    {
+      $('#toggle_btn_'+service_id).html('<i class="fa fa-chevron-down"></i>');
+      $('#toggle_div_'+service_id).hide(300);
+    }
+  }
+
+  function load_state(service_id, order_details_id)
+  {
+    var country_id = $('#country_id_'+service_id).val();
     var load_data = 'load_state';
     $.ajax({
       type:'POST',
       url:'./API/Address-Functions.php',
-      data:{country_id, load_data},
+      data:{country_id, load_data, service_id, order_details_id},
       success:function(html){
-        $('#state_id_div').html(html);
-        $('#state_id').chosen();
+        let is_require = "";
+        if($('#state_id_'+service_id).prop('required') == true)
+        {
+          is_require = 'true';
+        }
+        let new_name = $('#state_id_'+service_id).attr("name")
+        $('#state_id_'+service_id+'_div').html(html);
+        $('#state_id_'+service_id).chosen();
+        $('#state_id_'+service_id).prop('required', is_require);
+        $('#state_id_'+service_id).attr('name', new_name);
       }
     });
   }
 
-  function load_city()
+  function load_city(service_id, order_details_id)
   {
-    var state_id = $('#state_id').val();
+    var state_id = $('#state_id_'+service_id).val();
     var load_data = 'load_city';
     $.ajax({
       type:'POST',
       url:'./API/Address-Functions.php',
-      data:{state_id, load_data},
+      data:{state_id, load_data, service_id, order_details_id},
       success:function(html){
-        $('#city_id_div').html(html);
-        $('#city_id').chosen();
+        let is_require = "";
+        if($('#city_id_'+service_id).prop('required') == true)
+        {
+          is_require = 'true';
+        }
+        let new_name = $('#city_id_'+service_id).attr("name")
+        $('#city_id_'+service_id+'_div').html(html);
+        $('#city_id_'+service_id).chosen();
+        $('#city_id_'+service_id).prop('required', is_require);
+        $('#city_id_'+service_id).attr('name', new_name);
       }
     });
   }
@@ -850,40 +866,40 @@ else
 
   load_attached_documents(<?php echo $order_id; ?>);
 
-  function upload_document_file(order_master_document_id)
+  function upload_document_file()
   {
-    var document_file = $('#document_file_'+order_master_document_id).prop('files')[0] || 0;
+    var document_file = $('#document_file').prop('files')[0] || 0;
     if(document_file == "0")
     {
       alert('Please select file!')
-      $('#document_file_'+order_master_document_id).focus();
+      $('#document_file').focus();
     }
     else
     {
-      $('#btn_upload_'+order_master_document_id).addClass('disabled');
-      var form_data = new FormData();                  
-      form_data.append('document_file', document_file);
-      form_data.append('order_master_document_id', order_master_document_id);
-      form_data.append('order_id', <?php echo @$order_id; ?>);
+      $('#btn_upload').addClass('disabled');
 
+      var myform = document.getElementById("upload_document_form");
+      var fd = new FormData(myform );
       $.ajax({
         url: "./API/Upload-Document.php",
-        dataType: 'text',  
+        data: fd,
         cache: false,
-        contentType: false,
         processData: false,
-        data: form_data,
+        contentType: false,
         type: 'POST',
-        success: function(html) {
+        success: function (html) {
           if(html == "inserted")
           {
             load_attached_documents(<?php echo @$order_id; ?>);
             alert('File Uploaded successfully!');
+            $('#document_file').val('');
+            $('#btn_upload').removeClass('disabled');
+            $('#selectedFiles').html('');
           }
           else
           {
             alert('Error occurred');
-            $('#btn_upload_'+order_master_document_id).removeClass('disabled');
+            $('#btn_upload').removeClass('disabled');
           }
         }
       });
@@ -893,7 +909,7 @@ else
   function validate_form_components() {
     $("input, select, textarea").each(function ()
     {
-      if($(this).val().trim() != '')
+      if($(this).val() != '')
       {
         $(this).prop('readonly', true);
         $(this).addClass('disabled');
@@ -904,45 +920,64 @@ else
 
   function save_my_application()
   {
-    let r = confirm("Are you sure to Submit your Application?")
-    if(r == true)
+    var panel_error = 0;
+    var chevron_up = '<i class="fa fa-chevron-up"></i>';
+    <?php echo @$print_validations_script; ?>
+
+    let lbl_focus = ""; let error = 0;
+    $("input, select, textarea").each(function ()
     {
-      $('#btn_ok').addClass('disabled');
-      var myform = document.getElementById("my_app_panel");
-      var fd = new FormData(myform );
-      $.ajax({
-        url: "./API/Applicant-Actions.php",
-        data: fd,
-        cache: false,
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        success: function (html) {
-          if(html == "updated")
+      if($(this).prop('required'))
+      {
+        if($(this).val() == '')
+        {
+          if(error == 0)
           {
-            alert('Application updated successfully!');
-            window.location.href = "My-Application.php";
+            lbl_focus = $(this).attr('name');
           }
-          else
-          {
-            alert('Error occurred');
-            $('#btn_ok').removeClass('disabled');
-          }
+          error++;
+          return;
         }
-      });
+      }
+    })
+
+    if(error > 0)
+    {
+      alert($('#lbl_print_'+lbl_focus).val());
+      $('input[name="'+lbl_focus+'"]').focus();
+    }
+    else
+    {
+      let r = confirm("Are you sure to Submit your Application?")
+      if(r == true)
+      {
+        $('#btn_ok').addClass('disabled');
+        var myform = document.getElementById("my_app_panel");
+        var fd = new FormData(myform );
+        $.ajax({
+          url: "./API/Applicant-Actions.php",
+          data: fd,
+          cache: false,
+          processData: false,
+          contentType: false,
+          type: 'POST',
+          success: function (html) {
+            if(html == "updated")
+            {
+              alert('Application updated successfully!');
+              window.location.href = "My-Application.php";
+            }
+            else
+            {
+              alert('Error occurred');
+              $('#btn_ok').removeClass('disabled');
+            }
+          }
+        });
+      }
     }
   }
 
-  <?php
-    if(@$country_id > 0 && @$state_id <= 0)
-    {
-      echo 'load_state();';
-    }
-    if(@$state_id > 0 && @$city_id <= 0)
-    {
-      echo 'load_city();';
-    }
-  ?>
 </script>
 
 <script>

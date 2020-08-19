@@ -12,57 +12,50 @@ extract($_POST);
 
 if($_POST['action'] == 'load_attached_documents')
 {
-    echo '
-    <table class="bordered_table" style="width:100%">
-        <tr>
-            <th>File</th>
-            <th class="form_center">Download / Upload</th>
-            <th class="form_center">Action</th>
-        </tr>
-    ';
-    $check_1='SELECT d.document_name, ad.document_file, ad.order_master_document_id FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '.$_POST['order_id'].' ';
+    $document_print ='<div class="row"><div class="col-md-4"><h6>Documents List</h6>';
+    $check_1='SELECT d.document_name FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '.$order_id.'  ';
     $resul_1 = mysqli_query($db,$check_1);
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     {
-        if($row_1['document_file'] != "")
-        {
-            $document_file = "<a target='_blank' href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a>";
-            $document_select = ' ';
-        }
-        else
-        {
-            $document_select = "<a id='btn_upload_".$row_1["order_master_document_id"]."' onclick='upload_document_file(".$row_1["order_master_document_id"].")' class='btn btn-success btn-xs'><i class='fa fa-upload'></i> Upload</a>";
-            $document_file = "<input type='file' id='document_file_".$row_1["order_master_document_id"]."' class='form-control' />";
-        }
-        echo '
-        <tr>
-            <td class="form_left">
-                <b class="selection ">'.$row_1['document_name'].'</b>
-            </td>
-            <td>
-                '.@$document_file.'
-            </td>
-            <td>
-                '.$document_select.'
-            </td>
-        </tr>';
+    $document_print.='<h4 class="selection" style="margin:6px 0;">'.$row_1['document_name'].'</h4><hr class="col12" style="margin:4px 0">';
     }
-    echo '</table>';
+    $document_print.='</div><div class="col-md-5"><h6>Uploaded Documents</h6>';
+    $check_1='SELECT ad.file_name, ad.document_file FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
+    $resul_1 = mysqli_query($db,$check_1);
+    while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+    {
+    $document_print.= "<a target='_blank' href='../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> ".$row_1['file_name']."</a>";
+    }
+    echo $document_print.='</div></div>';
 }
 
 if($_POST['action'] == 'update_applicant_details')
 {
-    $address = addslashes($address);
-    $cmd = "UPDATE order_master SET first_name = '$first_name', middle_name = '$middle_name', last_name = '$last_name', alias_first_name = '$alias_first_name', alias_middle_name = '$alias_middle_name', alias_last_name = '$alias_last_name', date_of_birth = '$date_of_birth', father_name = '$father_name', mother_maiden_name = '$mother_maiden_name', stay_duration_from = '$stay_duration_from', stay_duration_to = '$stay_duration_to', address = '$address', country_id = '$country_id', state_id = '$state_id', city_id = '$city_id', zipcode = '$zipcode' WHERE order_id = '$order_id' ";
+    $cmd = "UPDATE order_master SET first_name = '$first_name', middle_name = '$middle_name', last_name = '$last_name', alias_first_name = '$alias_first_name', alias_middle_name = '$alias_middle_name', alias_last_name = '$alias_last_name' WHERE order_id = '$order_id' ";
     $result = mysqli_query($db,$cmd);
     if($result > 0)
     {
-        $check = "UPDATE order_service_details SET insufficiency_status = 0, order_status = 0 WHERE order_id  = '$order_id ' ";
-        $result = mysqli_query($db,$check);
+        $check_1 = "SELECT od.order_details_id, sm.service_field, sm.service_field_text, sm.data_type, sm.is_required, od.service_field_value, od.service_id FROM order_master_details od INNER JOIN service_field_master sm ON sm.service_field_id = od.service_field_id WHERE od.order_id = '".$order_id."' ";
+        $resul_1 = mysqli_query($db,$check_1); 
+        while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+        {
+            $update_var = $row_1['service_field'].'_'.$row_1['order_details_id'];
+            if(isset($$update_var))
+            {
+                $service_field_value = $$update_var;
+                if($service_field_value != "")
+                {
+                    echo $check = "UPDATE order_master_details SET service_field_value = '$service_field_value' WHERE order_details_id = ".$row_1['order_details_id']." ";
+                    $result = mysqli_query($db,$check);
+                }
+            }
+        }
+        // $check = "UPDATE order_service_details SET insufficiency_status = 0, order_status = 0 WHERE order_id  = '$order_id ' ";
+        // $result = mysqli_query($db,$check);
 
-        $check = "UPDATE order_master SET order_status = 0 WHERE order_id  = '$order_id ' ";
-        $result = mysqli_query($db,$check);
-        echo 'updated';
+        // $check = "UPDATE order_master SET order_status = 0 WHERE order_id  = '$order_id ' ";
+        // $result = mysqli_query($db,$check);
+         'updated';
     }
     else
     {
