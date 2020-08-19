@@ -4,10 +4,10 @@ class connectdb
 {
   private $excel_pass = "bvg-orion";
   private $servername='localhost';
-    private $user='pesrsxttfd';
-    private $password='Demo@123';
-//   private $user='root';
-//   private $password='';
+    // private $user='pesrsxttfd';
+    // private $password='Demo@123';
+  private $user='root';
+  private $password='';
   private $dbname='pesrsxttfd';
   private $conn;
   
