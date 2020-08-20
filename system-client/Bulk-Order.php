@@ -47,7 +47,7 @@ include 'Header.php';
               <label style="margin-top: 4px;">Select File</label>
               <input type="file" class="form-control" id="fileupload" />
             </div>
-            <div class="col-md-2">
+            <!-- <div class="col-md-2">
               <br>
               <label style="margin-top: 4px;">From Date</label>
               <input type="date" class="form-control" id="from_date">
@@ -66,11 +66,12 @@ include 'Header.php';
               <br>
               <label style="margin-top: 4px;">Time</label>
               <input type="time" class="form-control" id="to_time">
-            </div>
+            </div> -->
             <div class="col-md-4">
               <br>
-              <button id="submit_btn" onclick="upload_bulk_order()" class="btn btn-success btn-xs"><i class="fa fa-upload"></i> Upload</button>
-              <a href="" class="btn btn-default btn-xs"><i class="fa fa-refresh"></i> Reset</a>
+              <br>
+              <button id="submit_btn" onclick="upload_bulk_order()" class="btn btn-success btn-sm"><i class="fa fa-upload"></i> Upload</button>
+              <a href="" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Reset</a>
             </div>
           </div>
         </div>
@@ -141,10 +142,10 @@ include '../datatable/_datatable.php';
   {
     let service_id = $('#service_id').val();
     let fileupload = $('#fileupload').prop('files')[0] || 0;
-    let from_date = $('#from_date').val();
-    let from_time = $('#from_time').val();
-    let to_date = $('#to_date').val();
-    let to_time = $('#to_time').val();
+    // let from_date = $('#from_date').val();
+    // let from_time = $('#from_time').val();
+    // let to_date = $('#to_date').val();
+    // let to_time = $('#to_time').val();
     
     if(service_id == "")
     {
@@ -156,26 +157,26 @@ include '../datatable/_datatable.php';
       alert('Please select File!!!');
       $('#fileupload').focus();
     }
-    else if(from_date == "")
-    {
-      alert('Please select from date!!!');
-      $('#from_date').focus();
-    }
-    else if(from_time == "")
-    {
-      alert('Please select from time!!!');
-      $('#from_time').focus();
-    }
-    else if(to_date == "")
-    {
-      alert('Please select to date!!!');
-      $('#to_date').focus();
-    }
-    else if(to_time == "")
-    {
-      alert('Please select to time!!!');
-      $('#to_time').focus();
-    }
+    // else if(from_date == "")
+    // {
+    //   alert('Please select from date!!!');
+    //   $('#from_date').focus();
+    // }
+    // else if(from_time == "")
+    // {
+    //   alert('Please select from time!!!');
+    //   $('#from_time').focus();
+    // }
+    // else if(to_date == "")
+    // {
+    //   alert('Please select to date!!!');
+    //   $('#to_date').focus();
+    // }
+    // else if(to_time == "")
+    // {
+    //   alert('Please select to time!!!');
+    //   $('#to_time').focus();
+    // }
     else
     {
       $('#submit_btn').prop('disabled', true);
@@ -183,10 +184,10 @@ include '../datatable/_datatable.php';
       let load_condition = 'import_bulk_order';
       form_data.append('fileupload', fileupload);
       form_data.append('service_id', service_id);
-      form_data.append('from_date', from_date);
-      form_data.append('from_time', from_time);
-      form_data.append('to_date', to_date);
-      form_data.append('to_time', to_time);
+      // form_data.append('from_date', from_date);
+      // form_data.append('from_time', from_time);
+      // form_data.append('to_date', to_date);
+      // form_data.append('to_time', to_time);
       form_data.append('load_condition', load_condition);
 
       $.ajax({

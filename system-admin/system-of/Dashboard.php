@@ -16,7 +16,7 @@ $db=$get_connection->connect();
           <div class="card-header card-header-primary">
             <h4 id='process_title' class="card-title"><i class="fa fa-search"></i> Manual Search</h4>
           </div>
-          <!-- <a href="javascript:start_processing()" class="btn btn-primary btn-sm"><i class="fa fa-play"></i> Start Processing</a>           -->
+          <a href="javascript:start_processing()" class="btn btn-primary btn-sm"><i class="fa fa-play"></i> Start Processing</a>          
           <div id="process_order">
             <div class="card-body">
               <div class="row justify-content-start">
@@ -211,7 +211,7 @@ include '../../datatable/_datatable.php';
   {
     var lod_country_id = $('#lod_country_id').val();
     var service_type_id = $('#service_type_id').val();
-    var assign_service_id = $('#assign_service_id').val();
+    var service_id = $('#assign_service_id').val();
     
     if(lod_country_id == "")
     {
@@ -221,7 +221,7 @@ include '../../datatable/_datatable.php';
     {
       alert("Please select Service Type!");
     }
-    else if(assign_service_id == "")
+    else if(service_id == "")
     {
       alert("Please select Service!");
     }
@@ -231,7 +231,7 @@ include '../../datatable/_datatable.php';
       $.ajax({
         type:'POST',
         url:'./API/Action-Dashboard.php',
-        data:{action, lod_country_id, service_type_id, assign_service_id},
+        data:{action, lod_country_id, service_type_id, service_id},
         success:function(html) {
           $('#process_title').html('<i class="fa fa-edit"></i> View Order');
           $('#process_order').html(html);

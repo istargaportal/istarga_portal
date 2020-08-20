@@ -119,7 +119,7 @@ $print_form = "'print_form'";
 		{
 			$service_count++;
 			$service_print.= '<div><br><div class="col-md-12" style="border:solid 2px #aa50ab; border-radius:10px; width:100%;posiion:relative;">';
-		    $sq="SELECT s.id AS service_id, s.service_name, c.name AS country_name, c.currency AS currency_name, a.price FROM service_list s INNER JOIN assigned_service a ON a.service_id = s.id INNER JOIN countries c ON c.id = a.country_id  WHERE a.id = '$service_id' ";
+		    $sq="SELECT s.id AS service_id, s.service_name, c.name AS country_name, c.currency AS currency_name, a.price FROM service_list s INNER JOIN assigned_service a ON a.service_id = s.id INNER JOIN countries c ON c.id = a.country_id WHERE a.id = '$service_id_compare' ";
 		    $resul = mysqli_query($db,$sq); 
 		    while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 		    {

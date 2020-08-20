@@ -11,6 +11,9 @@ $db=$get_connection->connect();
 extract($_POST);
 if(@$load_condition == "load_bulk_order")
 {
+	// <th>From Date Time</th>
+	// <th>To Date Time</th>
+	
 	echo '
 	<table id="datatable_tbl" class="table table-hover">
 	<thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.822) !important;">
@@ -18,8 +21,6 @@ if(@$load_condition == "load_bulk_order")
 	<th>Service</th>
 	<th>File</th>
 	<th>Added Date Time</th>
-	<th>From Date Time</th>
-	<th>To Date Time</th>
 	<th>NO. of Orders</th>
 	</thead>
 	';
@@ -35,11 +36,11 @@ if(@$load_condition == "load_bulk_order")
 		<td>'.$row["service_name"].'</td>
 		<td>'.$row["file_name"].'</td>
 		<td>'.$row["added_datetime"].'</td>
-		<td>'.$row["from_date_time"].'</td>
-		<td>'.$row["to_date_time"].'</td>
 		<td>'.$row["total_orders"].'</td>
 		</tr>
 		';
+		// <td>'.$row["from_date_time"].'</td>
+		// <td>'.$row["to_date_time"].'</td>
 	}
 	echo '</table>';
 }
@@ -118,6 +119,7 @@ if(@$load_condition == "import_bulk_order")
 				$additional_comments = addslashes($allDataInSheet[$i]["I"]);
 				$country = addslashes($allDataInSheet[$i]["J"]);
 			}
+
 			if($customer_type == ""){ $customer_type = "Regular"; }
 			if($first_name != "" && $country != "" && $internal_reference_id != "")
 			{
@@ -138,56 +140,86 @@ if(@$load_condition == "import_bulk_order")
 					{
 						$username = randomPassword();
 					    $password = randomPassword().rand(1111,9999);
-					    $insufficiency_contact = "Employee";
-					    if($service_2d == 2)
+					    $insufficiency_contact = "Client";
+					   
+					    $assign_service_id = 0;
+				    	$sq="SELECT id FROM assigned_service WHERE client_id = '$client_id' AND country_id = '$country_id' AND service_id = '$service_id' ";
+						$resul = mysqli_query($db,$sq); 
+						if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 						{
-							$sql = "INSERT INTO order_master (internal_reference_id, first_name, middle_name, last_name, college_name, university, degree, year_of_passing, register_number, researcher_name, employee_id, country, graduated, customer_type, additional_comments) VALUES('$internal_reference_id', '$first_name', '$middle_name', '$last_name', '$college_name', '$university', '$degree', '$year_of_passing', '$register_number', '$researcher_name', '$employee_id', '$country', '$graduated', '$customer_type', '$additional_comments')";
-							$query_res2 = $db->query($sql);
+							$assign_service_id = $row['id'];
 						}
 						else
 						{
-							$sql = "INSERT INTO order_master (internal_reference_id, first_name, middle_name, last_name, date_of_birth, address, father_name, customer_type, additional_comments, country_id, bulk_order_id, order_type, client_id, username, password, insufficiency_contact) VALUES('$internal_reference_id', '$first_name', '$middle_name', '$last_name', '$date_of_birth', '$address', '$father_name', '$customer_type', '$additional_comments', '$country', '$bulk_order_id', 'Bulk', '$client_id', '$username', '$password', '$insufficiency_contact')";
-							$query_res2 = $db->query($sql);
+							$alredy_exists.= '-'.$internal_reference_id.' '.$first_name.'\nService is not assigned to the '.$country.'. Contact Admin!';
+							$error_code = 0;
 						}
+						if($assign_service_id > 0)
+						{
+							$sql = "INSERT INTO order_master (internal_reference_id, first_name, middle_name, last_name, customer_type, additional_comments, bulk_order_id, order_type, client_id, username, password, insufficiency_contact) VALUES('$internal_reference_id', '$first_name', '$middle_name', '$last_name', '$customer_type', '$additional_comments', '$bulk_order_id', 'Bulk', '$client_id', '$username', '$password', '$insufficiency_contact')";
+							$query_res2 = $db->query($sql);
+							$order_id = $db->insert_id;
+						    
+						    if ($query_res2 > 0) 
+						    {
+						    	$error_code++;					    	
+						    	if($assign_service_id > 0)
+						    	{
+						    		$check_3 = "SELECT service_field_id  FROM service_field_master WHERE service_id = '".$service_id."' ";
+				                    $resul_3 = mysqli_query($db,$check_3); 
+				                    while ($row_3 = mysqli_fetch_array($resul_3, MYSQLI_ASSOC))
+				                    {
+				                    	$service_field_value = '';
+				                    	if($service_2d == 2)
+										{
+											// university
+											if($row_3['service_field_id'] == "12") { $service_field_value = $university; }		
+											// college_name
+											if($row_3['service_field_id'] == "13") { $service_field_value = $college_name; }		
+											// degree
+											if($row_3['service_field_id'] == "14") { $service_field_value = $degree; }	
+											// year_of_passing	
+											if($row_3['service_field_id'] == "18") { $service_field_value = $year_of_passing; }	
+											// register_number	
+											if($row_3['service_field_id'] == "16") { $service_field_value = $year_of_passing; }		
+											// country
+											if($row_3['service_field_id'] == "24") { $service_field_value = $country_id; }
+											// graduated	
+											if($row_3['service_field_id'] == "19") { $service_field_value = $country_id; }		
+										}
+										else
+										{
+											// date_of_birth
+											if($row_3['service_field_id'] == "96") { $service_field_value = $date_of_birth; }
+											// father_name		
+											if($row_3['service_field_id'] == "97") { $service_field_value = $father_name; }		
+											// address
+											if($row_3['service_field_id'] == "101") { $service_field_value = $address; }		
+										}
+				                    	$service_field_value = addslashes($service_field_value);
 
-						$order_id = $db->insert_id;
-					    if ($query_res2 > 0) 
-					    {
-					    	$error_code++;
-					    	$assign_service_id = 0;
-					    	$sq="SELECT id FROM assigned_service WHERE client_id = '$client_id' AND country_id = '$country_id' AND service_id = '$service_id' ";
-							$resul = mysqli_query($db,$sq); 
-							if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-							{
-								$assign_service_id = $row['id'];
-							}
-					    	if($assign_service_id > 0)
-					    	{
-					    		$check_3 = "SELECT service_field_id  FROM service_field_master WHERE service_id = '".$service_id."' ";
-			                    $resul_3 = mysqli_query($db,$check_3); 
-			                    while ($row_3 = mysqli_fetch_array($resul_3, MYSQLI_ASSOC))
-			                    {
-			                        $sql_cmd = "INSERT INTO order_master_details (order_id, service_field_id, service_id) VALUES('$order_id', '".$row_3["service_field_id"]."', '".$service_id."') ";
-			                        $db->query($sql_cmd);
-			                    }
-						    	
-						    	$sql = "INSERT INTO order_service_details (order_id, service_id, package_id, assign_service_id, assign_package_id) VALUES('$order_id', '$service_id', '0', '$assign_service_id', '0') ";
-								$query_res4 = $db->query($sql);
+				                        $sql_cmd = "INSERT INTO order_master_details (order_id, service_field_id, service_field_value, service_id) VALUES('$order_id', '".$row_3["service_field_id"]."', '$service_field_value', '".$service_id."') ";
+				                        $query_res3 = $db->query($sql_cmd);
+				                    }
+							    	
+							    	$sql = "INSERT INTO order_service_details (order_id, service_id, package_id, assign_service_id, assign_package_id) VALUES('$order_id', '$service_id', '0', '$assign_service_id', '0') ";
+									$query_res4 = $db->query($sql);
 
-								$sq="SELECT documentlist_id FROM service_list_documents WHERE service_id = '$service_id' ";
-								$resul = mysqli_query($db,$sq); 
-								while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-								{
-									$sql = "INSERT INTO order_master_documents (order_id, documentlist_id) VALUES('$order_id', '".$row['documentlist_id']."') ";
-		            				$query_res5 = $db->query($sql);
+									$sq="SELECT documentlist_id FROM service_list_documents WHERE service_id = '$service_id' ";
+									$resul = mysqli_query($db,$sq); 
+									while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+									{
+										$sql = "INSERT INTO order_master_documents (order_id, documentlist_id) VALUES('$order_id', '".$row['documentlist_id']."') ";
+			            				$query_res5 = $db->query($sql);
+									}
 								}
-							}
-					    }
-					    else
-					    {
-					    	$error_code = 0;
-					    }
-						$count=$count+1;
+						    }
+						    else
+						    {
+						    	$error_code = 0;
+						    }
+							$count=$count+1;
+						}
 					}
 				}
 				else
@@ -219,6 +251,7 @@ if(@$load_condition == "import_bulk_order")
 	{
 		echo "<script>alert('Bulk Orders already exists - ".$alredy_exists."'); </script>";
 	}
+	
     if($error_code > 0 && @$query_res2 > 0 && @$query_res3 > 0 && @$query_res4 > 0 && @$query_res6 > 0)
     {
     	mysqli_commit($db);

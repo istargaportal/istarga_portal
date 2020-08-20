@@ -1,5 +1,6 @@
 <?php
 require_once "../../../config/config.php";
+require_once '../../../config/comman_js.php';
 
 $get_connection=new connectdb;
 $db=$get_connection->connect();
@@ -14,18 +15,18 @@ if($_POST['action'] == 'load_service_list')
 {
 	echo '<select style="margin-top: 2% !important;" id="assign_service_id" class="browser-default custom-select chosen-select">
     <option value="">Select</option>';
-    $check = "SELECT sa.id, s.service_name FROM service_list s INNER JOIN assigned_service sa ON sa.service_id = s.id WHERE s.service_type_id = '$service_type_id' AND sa.country_id = '$lod_country_id' ";
+    $check = "SELECT sa.service_id, s.service_name FROM service_list s INNER JOIN assigned_service sa ON sa.service_id = s.id WHERE s.service_type_id = '$service_type_id' AND sa.country_id = '$lod_country_id' ";
     $resul = mysqli_query($db,$check); 
     while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
-    	echo '<option value="'.$row['id'].'">'.$row['service_name'].'</option>';
+    	echo '<option value="'.$row['service_id'].'">'.$row['service_name'].'</option>';
     }
     echo '</select>';
 }
 
 if($_POST['action'] == 'load_start_processing')
 {
-    $check = "SELECT os.order_service_details_id, os.service_id, o.order_id, o.date_of_birth, o.father_name, o.mother_maiden_name, o.stay_duration_from, o.stay_duration_to, o.address, o.country_id, o.state_id, o.city_id, o.zipcode, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, sa.sla, os.order_status FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.id = os.assign_service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.assign_service_id = '$assign_service_id' ";
+    $check = "SELECT os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, sa.sla, os.order_status FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.id = os.assign_service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' ";
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -46,31 +47,7 @@ if($_POST['action'] == 'load_start_processing')
         if($row["order_status"] == 2) { $order_status = "Completed"; }
         if($row["order_status"] == 3) { $order_status = "Insufficiency"; }
         $internal_reference_id = $row['internal_reference_id'];
-        $date_of_birth = $row['date_of_birth'];
-        $father_name = $row['father_name'];
-        $mother_maiden_name = $row['mother_maiden_name'];
-        $stay_duration_from = $row['stay_duration_from'];
-        if($stay_duration_from == "0000-00-00"){ $stay_duration_from = ""; }
-        $stay_duration_to = $row['stay_duration_to'];
-        if($stay_duration_to == "0000-00-00"){ $stay_duration_to = ""; }
-        $address = $row['address'];
-        $country_id = $row['country_id'];
-        $state_id = $row['state_id'];
-        $city_id = $row['city_id'];
-        $zipcode = $row['zipcode'];
     }
-
-    $check = "SELECT name FROM countries WHERE id = '$country_id' ";
-    $resul = mysqli_query($db,$check); 
-    if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC)) { $country_name = $row['name']; }
-
-    $check = "SELECT name FROM states WHERE id = '$state_id' ";
-    $resul = mysqli_query($db,$check); 
-    if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC)) { $state_name = $row['name']; }
-
-    $check = "SELECT name FROM cities WHERE id = '$city_id' ";
-    $resul = mysqli_query($db,$check); 
-    if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC)) { $city_name = $row['name']; }
 
     ?>
     <style>
@@ -112,7 +89,7 @@ if($_POST['action'] == 'load_start_processing')
     <div class="row justify-content-start col-md-12">
         <input type="hidden" name="order_id" id="order_id" value="<?php echo @$order_id; ?>" />
         <input type="hidden" id="service_type_id" value="<?php echo @$service_type_id; ?>" />
-        <input type="hidden" id="assign_service_id" value="<?php echo @$assign_service_id; ?>" />
+        <input type="hidden" id="assign_service_id" value="<?php echo @$service_id; ?>" />
         <input type="hidden" id="order_service_details_id" value="<?php echo @$order_service_details_id ; ?>" />
 
         <input type="hidden" id="service_id" value="<?php echo @$service_id; ?>" />
@@ -167,721 +144,846 @@ if($_POST['action'] == 'load_start_processing')
         </div>
         <div class="col-md-12 ">
             <table style="width:100%;">
-                <tr>
-                    <th style="width:35%" class="form_left">Date of Birth</th>
-                    <td style="width:25%"><input type="date" class="form-control" id="date_of_birth" /></td>
-                    <th class="provided_val" style="width:40%"><?php echo $date_of_birth; ?>
-                        <input type="hidden" id="date_of_birth_provided" value="<?php echo @$date_of_birth ?>" />
-                    </th>
-                </tr>
-                <tr>
-                    <th class="form_left">Father Name</th>
-                    <td><input type="text" class="form-control" id="father_name" /></td>
-                    <th class="provided_val"><?php echo $father_name; ?>
-                        <input type="hidden" id="father_name_provided" value="<?php echo @$father_name ?>" />
-                    </th>
-                </tr>
-                <tr>
-                    <th class="form_left">Mother Maiden Name</th>
-                    <td><input type="text" class="form-control" id="mother_maiden_name" /></td>
-                    <th class="provided_val"><?php echo $mother_maiden_name; ?>
-                        <input type="hidden" id="mother_maiden_name_provided" value="<?php echo @$mother_maiden_name ?>" />
-                    </th>
-                </tr>
-                <tr>
-                    <th class="form_left">Stay Duration From</th>
-                    <td><input type="date" class="form-control" id="stay_duration_from" /></td>
-                    <th class="provided_val"><?php echo $stay_duration_from; ?>
-                        <input type="hidden" id="stay_duration_from_provided" value="<?php echo @$stay_duration_from ?>" />
-                    </th>
-                </tr>
-                <tr>
-                    <th class="form_left">Stay Duration To</th>
-                    <td><input type="date" class="form-control" id="stay_duration_to" /></td>
-                    <th class="provided_val"><?php echo $stay_duration_to; ?>
-                        <input type="hidden" id="stay_duration_to_provided" value="<?php echo @$stay_duration_to ?>" />
-                    </th>
-                </tr>
-                <tr>
-                    <th class="form_left">Address</th>
-                    <td><textarea class="custom-select" rows="4" id="address" ></textarea></td>
-                    <th class="provided_val"><?php echo $address; ?>
-                        <input type="hidden" id="address_provided" value="<?php echo @$address ?>" />
-                    </th>
-                </tr>
-                <tr>
-                    <th class="form_left">Country</th>
-                    <td>
-                        <div id="country_id_div">
-                            <select onchange="load_state()" class="browser-default chosen-select custom-select" id="state_id">
-                                <option value="">Select</option>
-                            </select>
-                        </div>
-                    </td>
-                    <th class="provided_val"><?php echo @$country_name; ?>
-                        <input type="hidden" id="country_id_provided" value="<?php echo @$country_id ?>" />
-                    </th>
-                </tr>
-                <tr>
-                    <th class="form_left">State</th>
-                    <td>
-                        <div id="state_id_div">
-                            <select class="browser-default chosen-select custom-select" id="state_id">
-                                <option value="">Select</option>
-                            </select>
-                        </div>
-                    </td>
-                    <th class="provided_val"><?php echo @$state_name; ?>
-                        <input type="hidden" id="state_id_provided" value="<?php echo @$state_id ?>" />
-                    </th>
-                </tr>
-                <tr>
-                    <th class="form_left">City</th>
-                    <td>
-                        <div id="city_id_div">
-                            <select class="browser-default chosen-select custom-select" id="city_id">
-                                <option value="">Select</option>
-                            </select>
-                        </div>
-                    </td>
-                    <th class="provided_val"><?php echo @$city_name; ?>
-                        <input type="hidden" id="city_id_provided" value="<?php echo @$city_id ?>" />
-                    </th>
-                </tr>
-                <tr>
-                    <th class="form_left">Zipcode</th>
-                    <td><input type="number" class="form-control" id="zipcode" /></td>
-                    <th class="provided_val"><?php echo $zipcode; ?>
-                        <input type="hidden" id="zipcode_provided" value="<?php echo @$zipcode ?>" />
-                    </th>
-                </tr>
-            </table>
-        </div>
-        <div class="col-md-12">
-            <br>
-            <div class="card-header card-header-primary">
-                <h4 id="process_title" class="card-title"><i class="fa fa-pencil"></i> Verifier Details</h4>
-            </div>
-            <br>
-        </div>
-        <div class="col-md-12">
-            <table style="width:100%;">
-                <tr>
-                    <th style="width:35%" class="form_left">Verifier Details</th>
-                    <td style="width:25%"><input type="text" class="form-control" id="verifier_details" /></td>
-                    <td style="width: 40%">&nbsp;</td>
-                </tr>
-                <tr>
-                    <th class="form_left">Verifier Comments</th>
-                    <td><textarea class="custom-select" id="verifier_comments"></textarea></td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <th class="form_left">Currency</th>
-                    <td>
-                        <select class="browser-default chosen-select custom-select" id="currency_id">
-                            <option value="">Select</option>
-                            <?php
-                            $check='SELECT id, currency FROM countries ';
-                            $resul = mysqli_query($db,$check); 
-                            while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                            {
-                                echo '<option value="'.$row['id'].'">'.$row['currency'].'</option>';
-                            }
-                            ?>
-                        </select></td>
-                        <td>&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <th class="form_left">Additional Fees</th>
-                        <td><input type="text" class="form-control" id="additional_fees" /></td>
-                        <td>&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <th class="form_left">Status</th>
-                        <td>
-                            <select onchange="insufficiency_change()" class="browser-default chosen-select custom-select" id="order_status">
-                                <option>Pending</option>
-                                <option>Insufficiency</option>
-                            </select>
-                        </td>
-                        <td>
-                            <div class="insufficiency_panel" style="background: #ccc; padding: 10px;" >
-                                <label class="pull-left">Comments</label>
-                                <textarea class="custom-select" id="insufficiency_comment" placeholder="Enter Comments" style="border:solid !important;"></textarea>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="form_left">Queue</th>
-                        <td><select class="browser-default chosen-select custom-select" id="queue"></select></td>
-                        <td>
-                            <div class="insufficiency_panel">
-                                <a href="javascript:raise_insufficiency()" id="insufficiency_btn" class="btn btn-danger pull-right btn-sm"><i class="fa fa-hand-o-up"></i> Raise Insufficiency </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="form_left">Closed Date</th>
-                        <td><input type="date" class="form-control" id="closed_date" /></td>
-                        <td>&nbsp;</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="col-md-12">
-                <br>
-                <div class="card-header card-header-primary">
-                    <h4 id="process_title" class="card-title"><i class="fa fa-comments"></i> Public Notes & Private Notes</h4>
-                </div>
-                <br>
-            </div>
-            <div class="col-md-6">
-                <b>Public Notes</b><br>
-                <textarea class="custom-select" rows="3" id="public_notes"></textarea>
-                <a href="javascript:select_macros()" class="btn btn_link btn-xs">Select Macros</a>
-                <a onclick="clear_public_notes()" class="btn btn_danger btn-xs">Clear</a>
-                <a href="javascript:add_public_note();" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i> Add</a>
-                <br>
-                <b>Notes History</b>
-                <h5 class="btn btn-primary col-md-12 form_left btn-xs"><i class="fa fa-comments"></i> Comments</h5>
-                <div style="height: 200px; overflow-y: scroll;" id="public_notes_panel">
-                    <br>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <b>Private Notes</b><br>
-                <textarea class="custom-select" rows="3" id="private_notes"></textarea>
-                <a onclick="clear_private_notes()" class="btn btn_danger btn-xs">Clear</a>
-                <a href="javascript:add_private_note();" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i> Add</a>
-                <br>
-                <b>Notes History</b>
-                <h5 class="btn btn-primary col-md-12 form_left btn-xs"><i class="fa fa-comments"></i> Comments</h5>
-                <div style="height: 200px; overflow-y: scroll;" id="private_notes_panel">
-                    <br>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <b>Additional Comments</b>
-                <textarea class="custom-select" rows="3" id="additional_comments"></textarea>
-            </div>
 
-            <div class="col-md-12">
-                <br><br>
-                <div class="card-header card-header-primary">
-                    <h4 id="process_title" class="card-title"><i class="fa fa-files-o"></i> Attached Documents</h4>
-                </div>
-                <br>
-            </div>
-            <div class="col-md-8">
-            <!-- <b>Multiple File Upload (.doc, .docx, .rtf, .pdf, .jpeg, .png, .bmp, .jpg)</b>
-            <form id="attached_document_form" enctype="multipart/form-data" class="row">
-                <div class="col-md-8">
-                    <input type="file" multiple="" class="form-control" id="multiple_files" name="multiple_files[]" />
-                </div>
-                <div class="col-md-2">
-                    <a id="btn_upload" style="margin: 0" onclick="upload_document_file()" class="btn btn-success btn-sm"><i class="fa fa-upload"></i> Upload</a>
-                </div>
-            </form> -->
-            <div id="documents_panel"></div>
-            <br>
-            <b>Vendor</b>
-            <div class="row">
-                <div class="col-md-5">
-                    <select class="custom-select">
-                        <option value="">Select Vendor</option>
-                        <?php
-                        $check='SELECT user_id, first_name, last_name FROM user_master WHERE role_id = 3 ';
-                        $resul = mysqli_query($db,$check); 
-                        while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                <?php
+                $check="SELECT os.service_id, s.service_name, os.assign_package_id, os.assign_service_id FROM order_service_details os INNER JOIN service_list s ON s.id = os.service_id WHERE os.order_id  ='".$order_id."' AND os.service_id = '".$service_id."'";
+                $resul = mysqli_query($db,$check); 
+                while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                {
+                    $print_verify_js = "";
+                    $country_id = $state_id = 0;
+                    $check_1 = "SELECT od.order_details_id, sm.service_field, sm.service_field_text, sm.data_type, sm.is_required, od.service_field_value, od.service_field_value_verified, od.service_id FROM order_master_details od INNER JOIN service_field_master sm ON sm.service_field_id = od.service_field_id WHERE od.order_id = '".$order_id."' AND od.service_id = '".$service_id."' ";
+                    $resul_1 = mysqli_query($db,$check_1); 
+                    while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+                    {
+                      $is_required = ""; $is_required_star = "";
+                      if($row_1['is_required'] == 1) { $is_required = "0required"; $is_required_star = "<i class='fa fa-star'></i>"; }
+
+                      echo '<input type="hidden" name="order_details_id[]" value="'.$row_1["order_details_id"].'" />';
+                      if($row_1['data_type'] == "date")
+                      {
+                        $field_print = '<input type="date" class="form-control" id="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" value="'.$row_1["service_field_value_verified"].'" '.@$is_required.' />';
+                    }
+                    if($row_1['data_type'] == "short_text")
+                    {
+                        $field_print = '<input type="text" class="form-control" id="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" value="'.$row_1["service_field_value_verified"].'" '.@$is_required.' />';
+                    }
+                    if($row_1['data_type'] == "number")
+                    {
+                        $field_print = '<input type="number" class="form-control" id="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" value="'.$row_1["service_field_value_verified"].'" '.@$is_required.' />';
+                    }
+                    if($row_1['data_type'] == "long_text")
+                    {
+                        $field_print = '<textarea type="text" class="custom-select" id="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" value="'.$row_1["service_field_value_verified"].'" '.@$is_required.' ></textarea>';
+                    }
+                    $service_field_value = "";
+                    if($row_1['data_type'] == "select")
+                    {
+                        $onchange_evt = "";
+                        if($row_1['service_field'] == "country_id") { $onchange_evt = 'onchange="load_state('.$row_1["service_id"].','.$row_1['order_details_id'].')"'; }
+                        if($row_1['service_field'] == "state_id") { $onchange_evt = 'onchange="load_city('.$row_1["service_id"].','.$row_1['order_details_id'].')"'; }
+                        $field_print = '
+                        <div id="'.strtolower($row_1["service_field"]).'_'.$row_1["service_id"].'_div">
+                        <select '.$onchange_evt.' class="chosen-select" id="'.$row_1["service_field"].'_'.$row_1['service_id'].'" id="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" '.@$is_required.' >';
+                        if($row_1["service_field"] == "country_id")
                         {
-                            echo '<option value="'.$row['user_id'].'">'.$row['first_name'].' '.$row['last_name'].'</option>';
-                        }
-                        ?>
+                          $field_print.='<option value="">Select</option>';
+                          $check_2 = "SELECT id, name FROM countries ";
+                          $resul_2 = mysqli_query($db,$check_2); 
+                          while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+                          {
+                            $selected_option = '';
+                            if($row_1['service_field_value_verified'] == $row_2['id'])
+                            {
+                              $country_id = $row_2['id'];
+                              $selected_option = 'selected';
+                          }
+                          $field_print.='<option '.@$selected_option.' value="'.$row_2['id'].'">'.$row_2['name'].'</option>';    
+                      }
+                      $check_2 = "SELECT id, name FROM countries WHERE id = '".$row_1['service_field_value']."' ";
+                      $resul_2 = mysqli_query($db,$check_2); 
+                      if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+                      {
+                        $service_field_value = $row_2['name'];
+                    }
+
+                    $print_verify_js.='
+                    if(parseFloat($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val()) > 0)
+                    {
+                        load_country('.$row_1["service_id"].','.$row_1['order_details_id'].', '.$row_1['service_field_value'].');
+                        $("#'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val());
+                    }
+                    ';
+                }
+
+                if($row_1["service_field"] == "state_id" && @$country_id > 0)
+                {
+                  $field_print.='<option value="">Select</option>';
+                  $check_2 = "SELECT id, name FROM states WHERE country_id = '$country_id' ";
+                  $resul_2 = mysqli_query($db,$check_2); 
+                  while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+                  {
+                    $selected_option = '';
+                    if($row_1['service_field_value_verified'] == $row_2['id'])
+                    {
+                      $state_id = $row_2['id'];
+                      $selected_option = 'selected';
+                  }
+                  $field_print.='<option '.@$selected_option.' value="'.$row_2['id'].'">'.$row_2['name'].'</option>';    
+              }
+              $check_2 = "SELECT id, name FROM states WHERE id = '".$row_1['service_field_value']."' ";
+              $resul_2 = mysqli_query($db,$check_2); 
+              if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+              {
+                $service_field_value = $row_2['name'];
+            }
+            $print_verify_js.='
+            if(parseFloat($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val()) > 0)
+            {
+                load_state('.$row_1["service_id"].','.$row_1['order_details_id'].', '.$row_1["service_field_value"].');
+                $("#'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val());
+            }
+            ';
+        }
+
+        if($row_1["service_field"] == "city_id" && @$state_id > 0)
+        {
+          $field_print.='<option value="">Select</option>';
+          $check_2 = "SELECT id, name FROM cities WHERE state_id = '$state_id' ";
+          $resul_2 = mysqli_query($db,$check_2); 
+          while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+          {
+            $selected_option = '';
+            if($row_1['service_field_value_verified'] == $row_2['id'])
+            {
+              $selected_option = 'selected';
+          }
+          $field_print.='<option '.@$selected_option.' value="'.$row_2['id'].'">'.$row_2['name'].'</option>';    
+      }
+      $check_2 = "SELECT id, name FROM cities WHERE id = '".$row_1['service_field_value']."' ";
+      $resul_2 = mysqli_query($db,$check_2); 
+      if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+      {
+        $service_field_value = $row_2['name'];
+    }
+    $print_verify_js.='
+    if(parseFloat($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val()) > 0)
+    {
+        load_city('.$row_1["service_id"].','.$row_1['order_details_id'].', '.$row_1["service_field_value"].');
+        $("#'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val());
+    }
+    ';
+}
+
+$field_print.='</select></div>';
+}
+else
+{
+    $service_field_value = $row_1['service_field_value'];
+    $print_verify_js.='$("#'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val());';
+}
+echo '
+<tr>
+<td style="width:35%" class="form_left">
+<label style="margin:10px 0;">'.$row_1["service_field_text"].' '.@$is_required_star.'</label>
+</td>
+<td style="width:25%" class="form_left">
+'.$field_print.'
+</td>
+<td style="width:40%" class="form_left">
+<h4 class="provided_val">'.$service_field_value.'</h4>
+<input type="hidden" id="lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" value="'.$row_1["service_field_value"].'" />
+</td>
+</tr>
+';
+}
+}
+?>
+</table>
+</div>
+<div class="col-md-12">
+    <br>
+    <div class="card-header card-header-primary">
+        <h4 id="process_title" class="card-title"><i class="fa fa-pencil"></i> Verifier Details</h4>
+    </div>
+    <br>
+</div>
+<div class="col-md-12">
+    <table style="width:100%;">
+        <tr>
+            <th style="width:35%" class="form_left">Verifier Details</th>
+            <td style="width:25%"><input type="text" class="form-control" id="verifier_details" /></td>
+            <td style="width: 40%">&nbsp;</td>
+        </tr>
+        <tr>
+            <th class="form_left">Verifier Comments</th>
+            <td><textarea class="custom-select" id="verifier_comments"></textarea></td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <th class="form_left">Currency</th>
+            <td>
+                <select class="browser-default chosen-select custom-select" id="currency_id">
+                    <option value="">Select</option>
+                    <?php
+                    $check='SELECT id, currency FROM countries ';
+                    $resul = mysqli_query($db,$check); 
+                    while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                    {
+                        echo '<option value="'.$row['id'].'">'.$row['currency'].'</option>';
+                    }
+                    ?>
+                </select></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th class="form_left">Additional Fees</th>
+                <td><input type="text" class="form-control" id="additional_fees" /></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th class="form_left">Status</th>
+                <td>
+                    <select onchange="insufficiency_change()" class="browser-default chosen-select custom-select" id="order_status">
+                        <option>Pending</option>
+                        <option>Insufficiency</option>
                     </select>
-                </div>
-                <div class="col-md-7">
-                    <a style="margin: 0;" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Assign To Vendor</a>
-                </div>
+                </td>
+                <td>
+                    <div class="insufficiency_panel" style="background: #ccc; padding: 10px;" >
+                        <label class="pull-left">Comments</label>
+                        <textarea class="custom-select" id="insufficiency_comment" placeholder="Enter Comments" style="border:solid !important;"></textarea>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th class="form_left">Queue</th>
+                <td><select class="browser-default chosen-select custom-select" id="queue"></select></td>
+                <td>
+                    <div class="insufficiency_panel">
+                        <a href="javascript:raise_insufficiency()" id="insufficiency_btn" class="btn btn-danger pull-right btn-sm"><i class="fa fa-hand-o-up"></i> Raise Insufficiency </a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th class="form_left">Closed Date</th>
+                <td><input type="date" class="form-control" id="closed_date" /></td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-12">
+        <br>
+        <div class="card-header card-header-primary">
+            <h4 id="process_title" class="card-title"><i class="fa fa-comments"></i> Public Notes & Private Notes</h4>
+        </div>
+        <br>
+    </div>
+    <div class="col-md-6">
+        <b>Public Notes</b><br>
+        <textarea class="custom-select" rows="3" id="public_notes"></textarea>
+        <a href="javascript:select_macros()" class="btn btn_link btn-xs">Select Macros</a>
+        <a onclick="clear_public_notes()" class="btn btn_danger btn-xs">Clear</a>
+        <a href="javascript:add_public_note();" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i> Add</a>
+        <br>
+        <b>Notes History</b>
+        <h5 class="btn btn-primary col-md-12 form_left btn-xs"><i class="fa fa-comments"></i> Comments</h5>
+        <div style="height: 200px; overflow-y: scroll;" id="public_notes_panel">
+            <br>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <b>Private Notes</b><br>
+        <textarea class="custom-select" rows="3" id="private_notes"></textarea>
+        <a onclick="clear_private_notes()" class="btn btn_danger btn-xs">Clear</a>
+        <a href="javascript:add_private_note();" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i> Add</a>
+        <br>
+        <b>Notes History</b>
+        <h5 class="btn btn-primary col-md-12 form_left btn-xs"><i class="fa fa-comments"></i> Comments</h5>
+        <div style="height: 200px; overflow-y: scroll;" id="private_notes_panel">
+            <br>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <b>Additional Comments</b>
+        <textarea class="custom-select" rows="3" id="additional_comments"></textarea>
+    </div>
+
+    <div class="col-md-12">
+        <br><br>
+        <div class="card-header card-header-primary">
+            <h4 id="process_title" class="card-title"><i class="fa fa-files-o"></i> Attached Documents</h4>
+        </div>
+        <br>
+    </div>
+    <div class="col-md-8">
+        <div id="documents_panel"></div>
+        <br>
+        <b>Vendor</b>
+        <div class="row">
+            <div class="col-md-5">
+                <select class="custom-select">
+                    <option value="">Select Vendor</option>
+                    <?php
+                    $check='SELECT user_id, first_name, last_name FROM user_master WHERE role_id = 3 ';
+                    $resul = mysqli_query($db,$check); 
+                    while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                    {
+                        echo '<option value="'.$row['user_id'].'">'.$row['first_name'].' '.$row['last_name'].'</option>';
+                    }
+                    ?>
+                </select>
             </div>
+            <div class="col-md-7">
+                <a style="margin: 0;" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Assign To Vendor</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h5 class="selection">File Formats</h5>
+        <div class="row selection" style="margin-left:1%;margin-top:2%;">
+            <i class="fa fa-file-image-o" style="font-size:40px !important;margin-left:2%;color: green;"></i>
+            <i class="fa fa-file-word-o" style="font-size:40px !important;margin-left:2%;color: blue;"></i>
+            <i class="fa fa-file-excel-o " style="font-size:40px !important;margin-left:3%;color: green"></i>
+            <i class="fa fa-file-powerpoint-o " style="font-size:40px !important;margin-left:3%;color: orange"></i>
+            <i class="fa fa-file-pdf-o selection" style="color: red !important; margin-left:3%; font-size:40px !important;"></i>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <br><br>
+        <div class="card-header card-header-primary">
+            <h4 id="process_title" class="card-title"><i class="fa fa-pencil"></i> ETA Notes</h4>
+        </div>
+        <br>
+    </div>
+    <div class="col-md-6">
+        <b>Notes</b><br>
+        <div class="row">
+            <div class="col-md-8">
+                <textarea class="custom-select" rows="3" id="eta_notes"></textarea>
+                <a href="javascript:select_eta()" class="btn btn_link btn-xs">Select ETA</a>
+                <a onclick="clear_eta_notes()" class="btn btn_danger btn-xs">Clear</a>
+            </div>
+            <div class="col-md-4">
+                <input type="date" id="eta_date" class="form-control" />
+                <a href="javascript:add_eta_note();" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i> Add</a>
+            </div>
+        </div>
+        <br>
+    </div>
+    <div class="col-md-6">
+        <h5 class="btn btn-primary col-md-12 form_left btn-xs"><i class="fa fa-comments"></i> ETA Notes History</h5>
+        <div style="height: 150px; overflow-y: scroll;" id="eta_notes_panel">
+            <br>
+        </div>
+    </div>
+    <div class="col-md-12 form_center">
+        <a class="btn btn-success btn-sm"><i class="fa fa-save"></i> Save</a>
+        <a class="btn btn-danger btn-sm"><i class="fa fa-stop"></i> Break</a>
+        <a class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Back</a>
+    </div>
+    <div class="col-md-12"><br></div>
+</div>
+
+<div class="modal" id="standard_macro_modal">
+    <div class="row">
+        <div class="col-md-4">
+            <br>
         </div>
         <div class="col-md-4">
-            <h5 class="selection">File Formats</h5>
-            <div class="row selection" style="margin-left:1%;margin-top:2%;">
-                <i class="fa fa-file-image-o" style="font-size:40px !important;margin-left:2%;color: green;"></i>
-                <i class="fa fa-file-word-o" style="font-size:40px !important;margin-left:2%;color: blue;"></i>
-                <i class="fa fa-file-excel-o " style="font-size:40px !important;margin-left:3%;color: green"></i>
-                <i class="fa fa-file-powerpoint-o " style="font-size:40px !important;margin-left:3%;color: orange"></i>
-                <i class="fa fa-file-pdf-o selection" style="color: red !important; margin-left:3%; font-size:40px !important;"></i>
+            <div class="modal-content">
+                <h5 style="border-bottom: solid 1px #000;"><b><i class="fa fa-check"></i> Select Macros</b>
+                    <a onclick="close_select_macros()" class="btn btn-danger btn-sm pull-right"><i class="fa fa-remove"></i> Close</a>
+                </h5>
+                <?php
+                $check='SELECT id, comment, scenario FROM standard_macro WHERE service_type_id = '.$service_type_id;
+                $resul = mysqli_query($db,$check); 
+                while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                {
+                    echo '
+                    <div style="padding:10px;width:100%;float:left;box-shadow:0 0 10px #aaa;border:dotted 2px #ab60b7; border-radius:10px; ">
+                    <b>'.$row["scenario"].'</b>
+                    <hr style="margin:3px 0;">
+                    <span id="macros_comment_'.$row['id'].'">'.$row['comment'].'</span>
+                    <br>
+                    <a onclick="select_macros_text('.$row['id'].')" class="btn btn-success pull-right btn-xs"><i class="fa fa-check"></i> Select</a>
+                    </div>';
+                }
+                ?>
             </div>
         </div>
-        <div class="col-md-12">
-            <br><br>
-            <div class="card-header card-header-primary">
-                <h4 id="process_title" class="card-title"><i class="fa fa-pencil"></i> ETA Notes</h4>
-            </div>
+    </div>
+</div>
+
+<div class="modal" id="eta_macro_master_modal">
+    <div class="row">
+        <div class="col-md-4">
             <br>
         </div>
-        <div class="col-md-6">
-            <b>Notes</b><br>
-            <div class="row">
-                <div class="col-md-8">
-                    <textarea class="custom-select" rows="3" id="eta_notes"></textarea>
-                    <a href="javascript:select_eta()" class="btn btn_link btn-xs">Select ETA</a>
-                    <a onclick="clear_eta_notes()" class="btn btn_danger btn-xs">Clear</a>
-                </div>
-                <div class="col-md-4">
-                    <input type="date" id="eta_date" class="form-control" />
-                    <a href="javascript:add_eta_note();" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i> Add</a>
-                </div>
-            </div>
-            <br>
-        </div>
-        <div class="col-md-6">
-            <h5 class="btn btn-primary col-md-12 form_left btn-xs"><i class="fa fa-comments"></i> ETA Notes History</h5>
-            <div style="height: 150px; overflow-y: scroll;" id="eta_notes_panel">
-                <br>
-            </div>
-        </div>
-        <div class="col-md-12 form_center">
-            <a class="btn btn-success btn-sm"><i class="fa fa-save"></i> Save</a>
-            <a class="btn btn-danger btn-sm"><i class="fa fa-stop"></i> Break</a>
-            <a class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Back</a>
-        </div>
-        <div class="col-md-12"><br></div>
-    </div>
-
-    <div class="modal" id="standard_macro_modal">
-        <div class="row">
-            <div class="col-md-4">
-                <br>
-            </div>
-            <div class="col-md-4">
-                <div class="modal-content">
-                    <h5 style="border-bottom: solid 1px #000;"><b><i class="fa fa-check"></i> Select Macros</b>
-                        <a onclick="close_select_macros()" class="btn btn-danger btn-sm pull-right"><i class="fa fa-remove"></i> Close</a>
-                    </h5>
-                    <?php
-                    $check='SELECT id, comment, scenario FROM standard_macro WHERE service_type_id = '.$service_type_id;
-                    $resul = mysqli_query($db,$check); 
-                    while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                    {
-                        echo '
-                        <div style="padding:10px;width:100%;float:left;box-shadow:0 0 10px #aaa;border:dotted 2px #ab60b7; border-radius:10px; ">
-                        <b>'.$row["scenario"].'</b>
-                        <hr style="margin:3px 0;">
-                        <span id="macros_comment_'.$row['id'].'">'.$row['comment'].'</span>
-                        <br>
-                        <a onclick="select_macros_text('.$row['id'].')" class="btn btn-success pull-right btn-xs"><i class="fa fa-check"></i> Select</a>
-                        </div>';
-                    }
-                    ?>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="eta_macro_master_modal">
-        <div class="row">
-            <div class="col-md-4">
-                <br>
-            </div>
-            <div class="col-md-4">
-                <div class="modal-content">
-                    <h5 style="border-bottom: solid 1px #000;"><b><i class="fa fa-check"></i> Select ETA</b>
-                        <a onclick="close_select_eta()" class="btn btn-danger btn-sm pull-right"><i class="fa fa-remove"></i> Close</a>
-                    </h5>
-                    <?php
-                    $check='SELECT eta_macro_id, comment FROM eta_macro_master ';
-                    $resul = mysqli_query($db,$check); 
-                    while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                    {
-                        echo '
-                        <div style="padding:10px;width:100%;float:left;box-shadow:0 0 10px #aaa;border:dotted 2px #ab60b7; border-radius:10px; ">
-                        <span id="macros_comment_'.$row['eta_macro_id'].'">'.$row['comment'].'</span>
-                        <br>
-                        <a onclick="select_eta_text('.$row['eta_macro_id'].')" class="btn btn-success pull-right btn-xs"><i class="fa fa-check"></i> Select</a>
-                        </div>';
-                    }
-                    ?>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-
-        function raise_insufficiency()
-        {
-            let order_service_details_id = $('#order_service_details_id').val();
-            let order_id = $('#order_id').val();
-            let order_status = $('#order_status').val();
-            let insufficiency_comment = $('#insufficiency_comment').val().trim();
-            if(order_status == "Insufficiency")
-            {
-                if(insufficiency_comment == "")
+        <div class="col-md-4">
+            <div class="modal-content">
+                <h5 style="border-bottom: solid 1px #000;"><b><i class="fa fa-check"></i> Select ETA</b>
+                    <a onclick="close_select_eta()" class="btn btn-danger btn-sm pull-right"><i class="fa fa-remove"></i> Close</a>
+                </h5>
+                <?php
+                $check='SELECT eta_macro_id, comment FROM eta_macro_master ';
+                $resul = mysqli_query($db,$check); 
+                while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
                 {
-                    alert('Please enter the insufficiency comment!');
-                    $('#insufficiency_comment').focus();
+                    echo '
+                    <div style="padding:10px;width:100%;float:left;box-shadow:0 0 10px #aaa;border:dotted 2px #ab60b7; border-radius:10px; ">
+                    <span id="macros_comment_'.$row['eta_macro_id'].'">'.$row['comment'].'</span>
+                    <br>
+                    <a onclick="select_eta_text('.$row['eta_macro_id'].')" class="btn btn-success pull-right btn-xs"><i class="fa fa-check"></i> Select</a>
+                    </div>';
                 }
-                else
-                {
-                    $('#insufficiency_btn').addClass('disabled');
-                    var action = 'raise_insufficiency';
-                    $.ajax({
-                        type:'POST',
-                        url:'./API/Action-Dashboard.php',
-                        data:{insufficiency_comment, order_service_details_id, order_id, action},
-                        success:function(html){
-                            if(html == "success")
-                            {
-                                alert('Insufficiency raised!');
-                            }
-                        }
-                    });
-                }
-            }
-            else
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    function raise_insufficiency()
+    {
+        let order_service_details_id = $('#order_service_details_id').val();
+        let order_id = $('#order_id').val();
+        let order_status = $('#order_status').val();
+        let insufficiency_comment = $('#insufficiency_comment').val().trim();
+        if(order_status == "Insufficiency")
+        {
+            if(insufficiency_comment == "")
             {
-                alert("Please select status!");
-            }
-        }
-
-        function load_country(country_id_provided)
-        {
-            var load_data = 'load_country';
-            $.ajax({
-                type:'POST',
-                url:'./API/Address-Functions.php',
-                data:{country_id_provided, load_data},
-                success:function(html){
-                    $('#country_id_div').html(html);
-                    $('#country_id').chosen();
-                }
-            });
-        }
-
-        load_country();
-        
-        function load_state(state_id_provided)
-        {
-            var country_id = $('#country_id').val();
-            var load_data = 'load_state';
-            $.ajax({
-                type:'POST',
-                url:'./API/Address-Functions.php',
-                data:{country_id, state_id_provided, load_data},
-                success:function(html){
-                    $('#state_id_div').html(html);
-                    $('#state_id').chosen();
-                    if(parseFloat($('#city_id_provided').val()) > 0)
-                    {
-                        $('#city_id').val($('#city_id_provided').val());
-                        load_city($('#city_id_provided').val());
-                    }
-                }
-            });
-        }
-
-        function load_city(city_id_provided)
-        {
-            var state_id = $('#state_id').val();
-            if(parseFloat(state_id) > 0)
-            {
-                var load_data = 'load_city';
-                $.ajax({
-                    type:'POST',
-                    url:'./API/Address-Functions.php',
-                    data:{state_id, city_id_provided, load_data},
-                    success:function(html){
-                        $('#city_id_div').html(html);
-                        $('#city_id').chosen();
-                    }
-                });
-            }
-        }
-
-        var order_id = $('#order_id').val();
-        var order_service_details_id = $('#order_service_details_id').val();
-        
-        $('.chosen-select').chosen();
-        function insufficiency_change()
-        {
-            var order_status = $('#order_status').val();
-            if(order_status == "Insufficiency")
-            {
-                $('.insufficiency_panel').css('display', 'block');
+                alert('Please enter the insufficiency comment!');
                 $('#insufficiency_comment').focus();
             }
             else
             {
-                $('#insufficiency_comment').val('');
-                $('.insufficiency_panel').css('display', 'none');
-            }
-        }
-        load_attached_documents(<?php echo @$order_id; ?>);
-
-        function upload_document_file(order_master_document_id)
-        {
-            var document_file = $('#document_file_'+order_master_document_id).prop('files')[0] || 0;
-            if(document_file == "0")
-            {
-                alert('Please select file!')
-                $('#document_file_'+order_master_document_id).focus();
-            }
-            else
-            {
-                $('#btn_upload_'+order_master_document_id).addClass('disabled');
-                var form_data = new FormData();                  
-                form_data.append('document_file', document_file);
-                form_data.append('order_master_document_id', order_master_document_id);
-                form_data.append('order_id', order_id);
-
+                $('#insufficiency_btn').addClass('disabled');
+                var action = 'raise_insufficiency';
                 $.ajax({
-                  url: "./API/Upload-Document.php",
-                  dataType: 'text',  
-                  cache: false,
-                  contentType: false,
-                  processData: false,
-                  data: form_data,
-                  type: 'POST',
-                  success: function(html) {
-                    if(html == "inserted")
-                    {
-                        load_attached_documents(<?php echo @$order_id; ?>);
-                        alert('File Uploaded successfully!');
+                    type:'POST',
+                    url:'./API/Action-Dashboard.php',
+                    data:{insufficiency_comment, order_service_details_id, order_id, action},
+                    success:function(html){
+                        if(html == "success")
+                        {
+                            alert('Insufficiency raised!');
+                        }
                     }
-                    else
-                    {
-                        alert('Error occurred');
-                        $('#btn_upload_'+order_master_document_id).removeClass('disabled');
-                    }
+                });
+            }
+        }
+        else
+        {
+            alert("Please select status!");
+        }
+    }
+
+    function load_country(service_id, order_details_id, country_id)
+    {
+        var load_data = 'load_country';
+        $.ajax({
+            type:'POST',
+            url:'./API/Address-Functions.php',
+            data:{load_data, service_id, order_details_id, country_id},
+            success:function(html){
+                let is_require = "";
+                if($('#country_id_'+service_id).prop('required') == true)
+                {
+                    is_require = 'true';
                 }
-            });
-            }
-        }
-
-        function check_all_documents()
-        {
-            if($('#select_all_documents').prop('checked') == true)
-            {
-                $(".order_master_document_id").each(function () {
-                    $(this).prop('checked', true);
-                })
-            }
-            else
-            {
-                $('.order_master_document_id').prop('checked', false);    
-            }
-        }
-
-        function clear_public_notes()
-        {
-            $('#public_notes').val('');
-            $('#public_notes').focus();
-        }
-
-        function clear_private_notes()
-        {
-            $('#private_notes').val('');
-            $('#private_notes').focus();
-        }
-
-        function clear_eta_notes()
-        {
-            $('#eta_notes').val('');
-            $('#eta_date').val('');
-            $('#eta_notes').focus();    
-        }
-
-        function select_macros()
-        {
-            $('#standard_macro_modal').css('display', 'block');
-        }
-
-        function select_macros_text(macro_id)
-        {
-            close_select_macros();
-            $('#public_notes').val($('#macros_comment_'+macro_id).html());
-            $('#public_notes').focus();
-        }
-
-        function close_select_macros()
-        {
-            $('#standard_macro_modal').css('display', 'none');
-        }
-
-        function select_eta()
-        {
-            $('#eta_macro_master_modal').css('display', 'block');
-        }
-
-        function select_eta_text(macro_id)
-        {
-            close_select_eta();
-            $('#eta_notes').val($('#macros_comment_'+macro_id).html());
-            $('#eta_notes').focus();
-        }
-
-        function close_select_eta()
-        {
-            $('#eta_macro_master_modal').css('display', 'none');
-        }
-
-        function add_public_note()
-        {
-            var public_notes = $('#public_notes').val().trim();
-            if(public_notes == "")
-            {
-                alert('Please enter Public Notes!');
-                $('#public_notes').focus();
-            }
-            else
-            {
-                var action = 'add_public_notes';
-                $.ajax({
-                  type:'POST',
-                  url:'./API/Action-Dashboard.php',
-                  data:{order_id, order_service_details_id, public_notes, action},
-                  success:function(html){
-                    if(html == 'success')
-                    {
-                        load_notes_con('public');
-                        clear_public_notes();
-                        alert('Public Note added!');
-                    }
-                    else
-                    {
-                        alert('Error occurred!')
-                    }
+                let new_name = $('#country_id_'+service_id).attr("name")
+                $('#country_id_'+service_id+'_div').html(html);
+                $('#country_id_'+service_id).chosen();
+                $('#country_id_'+service_id).prop('required', is_require);
+                $('#country_id_'+service_id).attr('name', new_name);
+                if($('#country_id_'+service_id).val() != "0")
+                {
+                    load_state(service_id, order_details_id, 0)
                 }
-            });
-            }
-        }
-
-        function add_private_note()
-        {
-            var private_notes = $('#private_notes').val().trim();
-            if(private_notes == "")
-            {
-                alert('Please enter Private Notes!');
-                $('#private_notes').focus();
-            }
-            else
-            {
-                var action = 'add_private_notes';
-                $.ajax({
-                  type:'POST',
-                  url:'./API/Action-Dashboard.php',
-                  data:{order_id, order_service_details_id, private_notes, action},
-                  success:function(html){
-                    if(html == 'success')
-                    {
-                        load_notes_con('private');
-                        clear_private_notes();
-                        alert('Private Note added!');
-                    }
-                    else
-                    {
-                        alert('Error occurred!')
-                    }
-                }
-            });
-            }
-        }
-
-        function add_eta_note()
-        {
-            var eta_notes = $('#eta_notes').val().trim();
-            var eta_date = $('#eta_date').val();
-            if(eta_notes == "")
-            {
-                alert('Please enter ETA Notes!');
-                $('#eta_notes').focus();
-            }
-            else if(eta_date == "")
-            {
-                alert('Please enter ETA date!');
-                $('#eta_date').focus();
-            }
-            else
-            {
-                var action = 'add_eta_notes';
-                $.ajax({
-                  type:'POST',
-                  url:'./API/Action-Dashboard.php',
-                  data:{order_id, order_service_details_id, eta_notes, eta_date, action},
-                  success:function(html){
-                    if(html == 'success')
-                    {
-                        load_notes_con('eta');
-                        clear_eta_notes();
-                        alert('ETA Note added!');
-                    }
-                    else
-                    {
-                        alert('Error occurred!')
-                    }
-                }
-            });
-            }
-        }
-
-        function load_notes_con(condition)
-        {
-            var condition = condition;
-            var order_service_details_id = $('#order_service_details_id').val();
-            var action = 'load_notes_con';
-            $.ajax({
-              type:'POST',
-              url:'./API/Action-Dashboard.php',
-              data:{order_service_details_id, action, condition},
-              success:function(html){
-                $('#'+condition+'_notes_panel').html(html);
             }
         });
-        }
-        load_notes_con('public');
-        load_notes_con('private');
-        load_notes_con('eta');
+    }
 
-        function provided_to_verifed()
+    function load_state(service_id, order_details_id, state_id)
+    {
+        var country_id = $('#country_id_'+service_id).val();
+        var load_data = 'load_state';
+        $.ajax({
+            type:'POST',
+            url:'./API/Address-Functions.php',
+            data:{country_id, load_data, service_id, order_details_id, state_id},
+            success:function(html){
+                let is_require = "";
+                if($('#state_id_'+service_id).prop('required') == true)
+                {
+                    is_require = 'true';
+                }
+                let new_name = $('#state_id_'+service_id).attr("name")
+                $('#state_id_'+service_id+'_div').html(html);
+                $('#state_id_'+service_id).chosen();
+                $('#state_id_'+service_id).prop('required', is_require);
+                $('#state_id_'+service_id).attr('name', new_name);
+
+                if($('#state_id_'+service_id).val() != "0")
+                {
+                    load_city(service_id, order_details_id, 0)
+                }
+            }
+        });
+    }
+
+    function load_city(service_id, order_details_id, city_id)
+    {
+        var state_id = $('#state_id_'+service_id).val();
+        var load_data = 'load_city';
+        $.ajax({
+            type:'POST',
+            url:'./API/Address-Functions.php',
+            data:{state_id, load_data, service_id, order_details_id, city_id},
+            success:function(html){
+                let is_require = "";
+                if($('#city_id_'+service_id).prop('required') == true)
+                {
+                    is_require = 'true';
+                }
+                let new_name = $('#city_id_'+service_id).attr("name")
+                $('#city_id_'+service_id+'_div').html(html);
+                $('#city_id_'+service_id).chosen();
+                $('#city_id_'+service_id).prop('required', is_require);
+                $('#city_id_'+service_id).attr('name', new_name);
+            }
+        });
+    }
+
+    var order_id = $('#order_id').val();
+    var order_service_details_id = $('#order_service_details_id').val();
+
+    $('.chosen-select').chosen();
+    function insufficiency_change()
+    {
+        var order_status = $('#order_status').val();
+        if(order_status == "Insufficiency")
         {
-            let r = confirm('Are you sure to take provided details to verified?')
-            if(r == true)
+            $('.insufficiency_panel').css('display', 'block');
+            $('#insufficiency_comment').focus();
+        }
+        else
+        {
+            $('#insufficiency_comment').val('');
+            $('.insufficiency_panel').css('display', 'none');
+        }
+    }
+    load_attached_documents(<?php echo @$order_id; ?>);
+
+    function upload_document_file()
+    {
+        var document_file = $('#document_file').prop('files')[0] || 0;
+        if(document_file == "0")
+        {
+          alert('Please select file!')
+          $('#document_file').focus();
+      }
+      else
+      {
+          $('#btn_upload').addClass('disabled');
+
+          var myform = document.getElementById("upload_document_form");
+          var fd = new FormData(myform );
+          $.ajax({
+            url: "./API/Upload-Document.php",
+            data: fd,
+            cache: false,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function (html) {
+              if(html == "inserted")
+              {
+                load_attached_documents(<?php echo @$order_id; ?>);
+                alert('File Uploaded successfully!');
+                $('#document_file').val('');
+                $('#btn_upload').removeClass('disabled');
+                $('#selectedFiles').html('');
+            }
+            else
             {
-                $('#date_of_birth').val($('#date_of_birth_provided').val());
-                $('#father_name').val($('#father_name_provided').val().trim());
-                $('#mother_maiden_name').val($('#mother_maiden_name_provided').val().trim());
-                $('#stay_duration_from').val($('#stay_duration_from_provided').val());
-                $('#stay_duration_to').val($('#stay_duration_to_provided').val());
-                $('#address').val($('#address_provided').val().trim());
-                $('#zipcode').val($('#zipcode_provided').val().trim());
-
-                if(parseFloat($('#country_id_provided').val()) > 0)
-                {
-                    $('#country_id').val($('#country_id_provided').val());
-                    load_country($('#country_id_provided').val());
-                }
-
-                if(parseFloat($('#state_id_provided').val()) > 0)
-                {
-                    $('#state_id').val($('#state_id_provided').val());
-                    load_state($('#state_id_provided').val());
-                }
-
-                
+                alert('Error occurred');
+                $('#btn_upload').removeClass('disabled');
             }
         }
-    </script>
-    <?php
+    });
+      }
+  }
+
+
+  function check_all_documents()
+  {
+    if($('#select_all_documents').prop('checked') == true)
+    {
+        $(".order_master_document_id").each(function () {
+            $(this).prop('checked', true);
+        })
+    }
+    else
+    {
+        $('.order_master_document_id').prop('checked', false);    
+    }
 }
+
+function clear_public_notes()
+{
+    $('#public_notes').val('');
+    $('#public_notes').focus();
+}
+
+function clear_private_notes()
+{
+    $('#private_notes').val('');
+    $('#private_notes').focus();
+}
+
+function clear_eta_notes()
+{
+    $('#eta_notes').val('');
+    $('#eta_date').val('');
+    $('#eta_notes').focus();    
+}
+
+function select_macros()
+{
+    $('#standard_macro_modal').css('display', 'block');
+}
+
+function select_macros_text(macro_id)
+{
+    close_select_macros();
+    $('#public_notes').val($('#macros_comment_'+macro_id).html());
+    $('#public_notes').focus();
+}
+
+function close_select_macros()
+{
+    $('#standard_macro_modal').css('display', 'none');
+}
+
+function select_eta()
+{
+    $('#eta_macro_master_modal').css('display', 'block');
+}
+
+function select_eta_text(macro_id)
+{
+    close_select_eta();
+    $('#eta_notes').val($('#macros_comment_'+macro_id).html());
+    $('#eta_notes').focus();
+}
+
+function close_select_eta()
+{
+    $('#eta_macro_master_modal').css('display', 'none');
+}
+
+function add_public_note()
+{
+    var public_notes = $('#public_notes').val().trim();
+    if(public_notes == "")
+    {
+        alert('Please enter Public Notes!');
+        $('#public_notes').focus();
+    }
+    else
+    {
+        var action = 'add_public_notes';
+        $.ajax({
+          type:'POST',
+          url:'./API/Action-Dashboard.php',
+          data:{order_id, order_service_details_id, public_notes, action},
+          success:function(html){
+            if(html == 'success')
+            {
+                load_notes_con('public');
+                clear_public_notes();
+                alert('Public Note added!');
+            }
+            else
+            {
+                alert('Error occurred!')
+            }
+        }
+    });
+    }
+}
+
+function add_private_note()
+{
+    var private_notes = $('#private_notes').val().trim();
+    if(private_notes == "")
+    {
+        alert('Please enter Private Notes!');
+        $('#private_notes').focus();
+    }
+    else
+    {
+        var action = 'add_private_notes';
+        $.ajax({
+          type:'POST',
+          url:'./API/Action-Dashboard.php',
+          data:{order_id, order_service_details_id, private_notes, action},
+          success:function(html){
+            if(html == 'success')
+            {
+                load_notes_con('private');
+                clear_private_notes();
+                alert('Private Note added!');
+            }
+            else
+            {
+                alert('Error occurred!')
+            }
+        }
+    });
+    }
+}
+
+function add_eta_note()
+{
+    var eta_notes = $('#eta_notes').val().trim();
+    var eta_date = $('#eta_date').val();
+    if(eta_notes == "")
+    {
+        alert('Please enter ETA Notes!');
+        $('#eta_notes').focus();
+    }
+    else if(eta_date == "")
+    {
+        alert('Please enter ETA date!');
+        $('#eta_date').focus();
+    }
+    else
+    {
+        var action = 'add_eta_notes';
+        $.ajax({
+          type:'POST',
+          url:'./API/Action-Dashboard.php',
+          data:{order_id, order_service_details_id, eta_notes, eta_date, action},
+          success:function(html){
+            if(html == 'success')
+            {
+                load_notes_con('eta');
+                clear_eta_notes();
+                alert('ETA Note added!');
+            }
+            else
+            {
+                alert('Error occurred!')
+            }
+        }
+    });
+    }
+}
+
+function load_notes_con(condition)
+{
+    var condition = condition;
+    var order_service_details_id = $('#order_service_details_id').val();
+    var action = 'load_notes_con';
+    $.ajax({
+      type:'POST',
+      url:'./API/Action-Dashboard.php',
+      data:{order_service_details_id, action, condition},
+      success:function(html){
+        $('#'+condition+'_notes_panel').html(html);
+    }
+});
+}
+load_notes_con('public');
+load_notes_con('private');
+load_notes_con('eta');
+
+function provided_to_verifed()
+{
+    let r = confirm('Are you sure to take provided details to verified?')
+    if(r == true)
+    {
+        <?php
+        echo @$print_verify_js;
+        ?>              
+    }
+}
+</script>
+<?php
+}
+
+// if($_POST['action'] == 'load_attached_documents')
+// {
+//     echo '
+//     <table class="bordered_table" style="width:100%">
+//     <tr>
+//     <th>File</th>
+//     <th class="form_center">Download / Upload</th>
+//     <th class="form_center">
+//     View to Vendor<br>
+//     <label onclick="check_all_documents()" style="padding-left:35px !important;" class="material_checkbox btn-sm">Select All
+//     <input type="checkbox" id="select_all_documents" type="checkbox" >
+//     <span class="checkmark" style="top:1px;left:4px;"></span>
+//     </label>
+//     </th>
+//     </tr>
+//     ';
+//     $check_1='SELECT d.document_name, ad.document_file, ad.order_master_document_id FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '.$_POST['order_id'].' AND ad.documentlist_id IN(SELECT documentlist_id FROM service_list_documents WHERE service_id = '.$service_id.')  ';
+//     $resul_1 = mysqli_query($db,$check_1);
+//     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+//     {
+//         if($row_1['document_file'] != "")
+//         {
+//             $document_file = "<a target='_blank' href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a>";
+//             $document_select = '<label style="padding-left:35px !important;" class="material_checkbox btn-sm">Select
+//             <input type="checkbox" class="order_master_document_id" name="order_master_document_id[] " value="'.$row_1["order_master_document_id"].'"  type="checkbox" >
+//             <span class="checkmark" style="top:1px;left:4px;"></span>
+//             </label>';
+//         }
+//         else
+//         {
+//             $document_select = "<a id='btn_upload_".$row_1["order_master_document_id"]."' onclick='upload_document_file(".$row_1["order_master_document_id"].")' class='btn btn-success btn-xs'><i class='fa fa-upload'></i> Upload</a>";
+//             $document_file = "<input type='file' id='document_file_".$row_1["order_master_document_id"]."' class='form-control' />";
+//         }
+//         echo '
+//         <tr>
+//         <td>
+//         <h6 class="selection form_left">'.$row_1['document_name'].'</h6>
+//         </td>
+//         <td>
+//         '.@$document_file.'
+//         </td>
+//         <td>
+//         '.$document_select.'
+//         </td>
+//         </tr>';
+//     }
+//     echo '</table>';
+// }
 
 if($_POST['action'] == 'load_attached_documents')
 {
     echo '
+    <h6 class="selection col-md-12">Upload Multiple Documents Here</h6>
+    <form id="upload_document_form">
+    <input type="hidden" name="order_id" value="'.$order_id.'" />
+    <div class="row">                                  
+    <div class="col-md-4">
+    <input type="file" onchange="file_selected_list()" multiple id="document_file" name="document_file[]" class="form-control" />
+    </div>
+    <div class="col-md-4">
+    <a class="btn btn-success btn-sm" onclick="upload_document_file()" id="btn_upload"><i class="fa fa-upload"></i> Upload Files</a>
+    </div>
+    </div>
+    </div>
+    <div class="col-md-12" id="selectedFiles"></div>
     <table class="bordered_table" style="width:100%">
     <tr>
     <th>File</th>
-    <th class="form_center">Download / Upload</th>
     <th class="form_center">
     View to Vendor<br>
     <label onclick="check_all_documents()" style="padding-left:35px !important;" class="material_checkbox btn-sm">Select All
@@ -891,35 +993,22 @@ if($_POST['action'] == 'load_attached_documents')
     </th>
     </tr>
     ';
-    $check_1='SELECT d.document_name, ad.document_file, ad.order_master_document_id FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '.$_POST['order_id'].' AND ad.documentlist_id IN(SELECT documentlist_id FROM service_list_documents WHERE service_id = '.$service_id.')  ';
+    $document_print = '';
+    $check_1='SELECT d.document_name FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '.$order_id.'  ';
     $resul_1 = mysqli_query($db,$check_1);
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     {
-        if($row_1['document_file'] != "")
-        {
-            $document_file = "<a target='_blank' href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a>";
-            $document_select = '<label style="padding-left:35px !important;" class="material_checkbox btn-sm">Select
-            <input type="checkbox" class="order_master_document_id" name="order_master_document_id[] " value="'.$row_1["order_master_document_id"].'"  type="checkbox" >
-            <span class="checkmark" style="top:1px;left:4px;"></span>
-            </label>';
-        }
-        else
-        {
-            $document_select = "<a id='btn_upload_".$row_1["order_master_document_id"]."' onclick='upload_document_file(".$row_1["order_master_document_id"].")' class='btn btn-success btn-xs'><i class='fa fa-upload'></i> Upload</a>";
-            $document_file = "<input type='file' id='document_file_".$row_1["order_master_document_id"]."' class='form-control' />";
-        }
-        echo '
-        <tr>
-        <td>
-        <h6 class="selection form_left">'.$row_1['document_name'].'</h6>
-        </td>
-        <td>
-        '.@$document_file.'
-        </td>
-        <td>
-        '.$document_select.'
-        </td>
-        </tr>';
+        $document_print.='<h4 class="selection" style="margin:6px 0;">'.$row_1['document_name'].'</h4><hr class="col12" style="margin:4px 0">';
+    }
+    $check_1='SELECT ad.file_name, ad.document_file, ad.order_master_uploaded_document_id FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
+    $resul_1 = mysqli_query($db,$check_1);
+    while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+    {
+        echo "<tr><td><a target='_blank' href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary pull-left btn-xs'><i class='fa fa-download'></i> ".$row_1['file_name']."</a></td>";
+        echo '<td><label style="padding-left:35px !important;" class="material_checkbox btn-sm">Select
+        <input type="checkbox" class="order_master_document_id" name="order_master_uploaded_document_id[]" value="'.$row_1["order_master_uploaded_document_id"].'" type="checkbox" >
+        <span class="checkmark" style="top:1px;left:4px;"></span>
+        </label></td><tr>';
     }
     echo '</table>';
 }
