@@ -14,7 +14,9 @@ include 'Header.php';
             </div>
             <div class="col-md-3">
               <input type="hidden" id="default_client_id" value="<?php echo @$_GET['id']; ?>">
-              <select class="browser-default custom-select" onchange="getAllClientData()" id="client_id"></select>
+              <div id="client_id_div">
+                <select class="browser-default chosen-select custom-select" onchange="getAllClientData()" id="client_id"></select>
+              </div>
             </div>
           </div>
           <div class="table-responsive">
@@ -97,7 +99,6 @@ include 'Header.php';
   <!-- <script src="assets/js/core/jquery.min.js"></script> -->
   <script src="assets/js/core/popper.min.js"></script>
   <script src="assets/js/core/bootstrap-material-design.min.js"></script>
-  <script src="https://unpkg.com/default-passive-events"></script>
   <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -113,7 +114,6 @@ include 'Header.php';
 
   
   <script>
-  
     let darkmode = localStorage.getItem("darkmode");
     const darkmodetoggle = document.querySelector('input[name=theme]');
 

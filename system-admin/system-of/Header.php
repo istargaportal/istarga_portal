@@ -234,6 +234,19 @@ $page_name_compare = strtolower(@$page_name);
       user-select: none !important;            
     }
     
+    .disabled_btn
+    {
+      opacity: 0.6;
+      pointer-events:none !important;
+      cursor: not-allowed !important;
+      filter: blur(0.4px);
+      outline: none !important;
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;            
+    }
+    
     .dark-edition .table>thead>tr>th, .dark-edition .table>tbody>tr>th, .dark-edition .table>tfoot>tr>th, .dark-edition .table>thead>tr>td, .dark-edition .table>tbody>tr>td, .dark-edition .table>tfoot>tr>td{
       padding: 4px !important;
     }
@@ -339,6 +352,17 @@ $page_name_compare = strtolower(@$page_name);
   </style>
 </head>
 <body class="dark-edition">
+  <div id='modal_loading' class='modal' style=" background-color: rgba(255,255,255,.9); border:none !important; z-index: 999999999!important;">
+    <div class='modal-content row' style="width: 100% !important;margin-top:-40px;background: transparent !important; box-shadow: none !important; border:none !important; ">
+      <div class="col-md-12 form_center" >
+        <br><br>
+        <br><br>
+        <br><br>
+        <img style="width: 200px;" src="../assets/images/loading.gif" />
+      </div>
+    </div>
+  </div>
+  
 	<div id="print_result"></div>
   <div class="wrapper">
     <div class="sidebar" data-color="purple" data-background-color="black" data-image="../assets/img/sidebar-2.jpg">

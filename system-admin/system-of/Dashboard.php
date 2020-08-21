@@ -13,10 +13,13 @@ $db=$get_connection->connect();
     <div class="row">
       <div class="col-md-12">
         <div class="card">
+          <input type="hidden" id="order_service_details_id_array" />
+          <input type="hidden" id="actual_array_count" value="0" />
+          <input type="hidden" id="total_array" value="0" />
           <div class="card-header card-header-primary">
             <h4 id='process_title' class="card-title"><i class="fa fa-search"></i> Manual Search</h4>
           </div>
-          <a href="javascript:start_processing()" class="btn btn-primary btn-sm"><i class="fa fa-play"></i> Start Processing</a>          
+          <!-- <a href="javascript:start_processing()" class="btn btn-primary btn-sm"><i class="fa fa-play"></i> Start Processing</a>           -->
           <div id="process_order">
             <div class="card-body">
               <div class="row justify-content-start">
@@ -233,13 +236,73 @@ include '../../datatable/_datatable.php';
         url:'./API/Action-Dashboard.php',
         data:{action, lod_country_id, service_type_id, service_id},
         success:function(html) {
+          $('#print_result').html(html);
           $('#process_title').html('<i class="fa fa-edit"></i> View Order');
-          $('#process_order').html(html);
+          next_array_num('stop');
          }
       });
     }
   }
 
+  function next_array_num(condition)
+  {
+    let actual_array_count = parseFloat($('#actual_array_count').val());
+    let order_service_details_id_array = $('#order_service_details_id_array').val();
+    let total_array = $('#total_array').val();
+    let action = "next_prev_array_num";
+    $.ajax({
+      type:'POST',
+      url:'./API/Action-Dashboard.php',
+      data:{action, order_service_details_id_array, actual_array_count},
+      success:function(html) {
+        $('#print_result').html(html);
+       }
+    });
+    if(total_array - 1 != actual_array_count && condition != 'stop')
+    {
+      actual_array_count++;
+    }
+    $('#actual_array_count').val(actual_array_count);
+  }
+
+  // function prev_array_num()
+  // {
+  //   let actual_array_count = parseFloat($('#actual_array_count').val());
+  //   let order_service_details_id_array = $('#order_service_details_id_array').val();
+  //   actual_array_count--;
+  //   let action = "next_prev_array_num";
+  //   $.ajax({
+  //     type:'POST',
+  //     url:'./API/Action-Dashboard.php',
+  //     data:{action, order_service_details_id_array, actual_array_count},
+  //     success:function(html) {
+  //       $('#print_result').html(html);
+  //      }
+  //   });
+  //   $('#actual_array_count').val(actual_array_count);
+  // }
+
+  function load_service_order(order_service_details_id)
+  {
+    $('#modal_loading').css('display', 'block');
+    var lod_country_id = $('#lod_country_id').val();
+    var service_type_id = $('#service_type_id').val();
+    var service_id = $('#assign_service_id').val();
+    let actual_array_count = parseFloat($('#actual_array_count').val());
+    let order_service_details_id_array = $('#order_service_details_id_array').val();
+    let total_array = $('#total_array').val();
+    var action = "load_service_order";
+    $.ajax({
+      type:'POST',
+      url:'./API/Action-Dashboard.php',
+      data:{action, lod_country_id, service_type_id, service_id, order_service_details_id, actual_array_count, order_service_details_id_array, total_array},
+      success:function(html) {
+        $('#process_order').html(html);
+        $('#modal_loading').css('display', 'none');
+       }
+    });   
+  }
+  
 </script>
 <?php
 include 'Footer.php';

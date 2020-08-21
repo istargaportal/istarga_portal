@@ -371,7 +371,7 @@ include 'Header.php';
                                   <option selected="selected" hidden value="">Choose..</option>
                                   <option <?php echo @$role_id_1; ?> value=1>OF</option>
                                   <option <?php echo @$role_id_2; ?> value=2>QC</option>
-                                  <option <?php echo @$role_id_3; ?> value=3>Vendor</option>
+                                  <option <?php echo @$role_id_3; ?> value=3>Verifier</option>
                                 </select>
                               </div>
                             </div>

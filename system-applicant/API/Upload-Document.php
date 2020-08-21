@@ -30,7 +30,7 @@ if(isset($_FILES['document_file']))
         {
             if(move_uploaded_file($file_tmp,"../../system-client/assets/order_master_documents/".$file_name))
             {
-                $sql = "INSERT INTO order_master_uploded_documents(order_id, file_name, file_size, file_type, file_ext, document_file, uploaded_by, user_id) VALUES('$order_id', '$file_name_old', '$file_size', '$file_type', '$file_ext', '$file_name', 'Order', '$order_id')  ";
+                $sql = "INSERT INTO order_master_uploded_documents(order_id, file_name, file_size, file_type, file_ext, document_file, uploaded_by, user_id) VALUES('$order_id', '$file_name_old', '$file_size', '$file_type', '$file_ext', '$file_name', 'Applicant', '$order_id')  ";
                 $result = mysqli_query($db,$sql);
             }
         }

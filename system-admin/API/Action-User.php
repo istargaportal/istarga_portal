@@ -187,13 +187,16 @@ if($_POST['action']=='display')
     $active_deactive_btn = "<a onclick='activate_deactivate_user(1,".$row['user_id'].")'  class='btn dropdown-item btn-default btn-sm'><i class='fa fa-toggle-on'></i> &nbsp; Activate</a>"; 
   }
   $sr++;
+  if($row["role_id"] == 1){ $row["role_id"] = "OF"; }
+  if($row["role_id"] == 2){ $row["role_id"] = "QC"; }
+  if($row["role_id"] == 3){ $row["role_id"] = "Verifier"; }
   echo '
   <tr>
   <td class="tablehead1">'.$sr.'</td>
   <td class="tablehead1">'.$row["first_name"].' '.$row["last_name"].'</td>
   <td class="tablehead1">'.$row["employee_id"].'</td>
-  <td class="tablehead1">'.$row["email_id"].'</td>
   <td class="tablehead1">'.$row["role_id"].'</td>
+  <td class="tablehead1">'.$row["email_id"].'</td>
   <td class="tablehead1">'.$row["contact_number"].'</td>
   <td class="tablehead1">
   <ul class="list_none" style="padding:0;" >

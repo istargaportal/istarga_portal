@@ -106,12 +106,14 @@ function load_all_clients()
 {
   var default_client_id = $('#default_client_id').val() || 0;
   var load_condition = "all_client_list";
+  var client_select = 2;
   $.ajax({
     type:'POST',
     url:'./API/viewclienttable.php',
-    data:{load_condition, default_client_id},
+    data:{load_condition, default_client_id, client_select},
     success:function(html){
-      $('#client_id').html(html);
+      $('#client_id_div').html(html);
+      $('.chosen-select').chosen();
     }
   });
 }

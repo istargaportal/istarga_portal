@@ -26,7 +26,50 @@ if($_POST['action'] == 'load_service_list')
 
 if($_POST['action'] == 'load_start_processing')
 {
-    $check = "SELECT os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, sa.sla, os.order_status FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.id = os.assign_service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' ";
+    $button_array = ""; $total_array = 0;
+    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.order_status = 0 ";
+    $resul = mysqli_query($db,$check); 
+    while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+    {
+        if($button_array == "")
+        {
+            $button_array = $row['order_service_details_id'];
+        }
+        else
+        {
+            $button_array = $button_array.','.$row['order_service_details_id'];
+        }
+        $total_array++;
+    }
+    echo $button_array;
+
+    echo '<script>
+    $("#order_service_details_id_array").val("'.$button_array.'");
+    $("#total_array").val("'.$total_array.'");
+    </script>';
+}
+
+if($_POST['action'] == 'next_prev_array_num')
+{
+    if (is_numeric($order_service_details_id_array))
+    {
+        $order_service_details_id = array($order_service_details_id_array);
+    }
+    else
+    {
+        $order_service_details_id = explode(',', $order_service_details_id_array);
+    }
+    $order_id = $order_service_details_id[$actual_array_count];
+    echo '
+    <script>
+        load_service_order('.$order_id.');
+    </script>
+    ';
+}
+
+if($_POST['action'] == 'load_service_order')
+{
+    $check = "SELECT os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, sa.sla, os.order_status FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.id = os.assign_service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -86,13 +129,14 @@ if($_POST['action'] == 'load_start_processing')
             text-align: left !important;
         }
     </style>
+    <br>
     <div class="row justify-content-start col-md-12">
         <input type="hidden" name="order_id" id="order_id" value="<?php echo @$order_id; ?>" />
         <input type="hidden" id="service_type_id" value="<?php echo @$service_type_id; ?>" />
         <input type="hidden" id="assign_service_id" value="<?php echo @$service_id; ?>" />
         <input type="hidden" id="order_service_details_id" value="<?php echo @$order_service_details_id ; ?>" />
-
         <input type="hidden" id="service_id" value="<?php echo @$service_id; ?>" />
+        
         <div class="col-md-2">
             <h6>Applicant Name</h6>
             <h6>Service Type</h6>
@@ -419,11 +463,11 @@ echo '
     <div class="col-md-8">
         <div id="documents_panel"></div>
         <br>
-        <b>Vendor</b>
+        <b>Verifier</b>
         <div class="row">
             <div class="col-md-5">
-                <select class="custom-select">
-                    <option value="">Select Vendor</option>
+                <select class="custom-select chosen-select" id="verifier_id">
+                    <option value="">Select Verifier</option>
                     <?php
                     $check='SELECT user_id, first_name, last_name FROM user_master WHERE role_id = 3 ';
                     $resul = mysqli_query($db,$check); 
@@ -435,7 +479,7 @@ echo '
                 </select>
             </div>
             <div class="col-md-7">
-                <a style="margin: 0;" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Assign To Vendor</a>
+                <a style="margin: 0;" href="javascript:assign_to_verifier()" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Assign To Verifier</a>
             </div>
         </div>
     </div>
@@ -478,9 +522,45 @@ echo '
         </div>
     </div>
     <div class="col-md-12 form_center">
+        <?php
+            if(is_numeric($order_service_details_id_array))
+            {
+                $order_service_details_id_array = array($order_service_details_id_array);
+            }
+            else
+            {
+                $order_service_details_id_array = explode(',', $order_service_details_id_array);
+            }
+            $actual_key_val = array_search($order_service_details_id, $order_service_details_id_array);
+            $disabled_back = ""; $disabled_next = ""; $onclick_prev = ""; $onclick_next = "";
+            if($actual_key_val == "0") { $disabled_back = "disabled_btn"; }
+            else
+            {
+                $actual_key = $actual_key_val - 1;
+                $temp_order_service_details_id_array = $order_service_details_id_array[$actual_key];
+                $onclick_prev = "prev_array_num()";
+                $onclick_prev = "load_service_order(".$temp_order_service_details_id_array.")";
+            }
+            
+            end($order_service_details_id_array);
+            $temp_array_key = key($order_service_details_id_array);
+
+            if($actual_key_val == $temp_array_key) { $disabled_next = "disabled_btn"; }
+            else
+            {
+                $actual_key = $actual_key_val + 1;
+                $temp_order_service_details_id_array = $order_service_details_id_array[$actual_key];
+                $onclick_next = "next_array_num()";
+                $onclick_next = "load_service_order(".$temp_order_service_details_id_array.")";
+            }
+        ?>
+        <script type="text/javascript">
+            $('#actual_array_count').val('<?php echo $actual_key_val; ?>');
+        </script>
+        <a onclick="<?php echo @$onclick_prev; ?>" class="btn pull-left <?php echo @$disabled_back; ?> btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Back</a>
         <a class="btn btn-success btn-sm"><i class="fa fa-save"></i> Save</a>
-        <a class="btn btn-danger btn-sm"><i class="fa fa-stop"></i> Break</a>
-        <a class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Back</a>
+        <a onclick="break_process()" class="btn btn-danger btn-sm"><i class="fa fa-stop"></i> Break</a>
+        <a onclick="<?php echo @$onclick_next; ?>" class="btn pull-right <?php echo @$disabled_next; ?> btn-primary btn-sm"><i class="fa fa-arrow-right"></i> Next</a>
     </div>
     <div class="col-md-12"><br></div>
 </div>
@@ -543,6 +623,52 @@ echo '
     </div>
 </div>
 <script>
+
+    function break_process()
+    {
+        let r = confirm('Are you sure to stop Order Processing!');
+        if(r == true)
+        {
+            location.reload();
+        }
+    }
+
+    function assign_to_verifier()
+    {
+        let verifier_id = $('#verifier_id').val();
+        if(verifier_id == "")
+        {
+            alert("Please select verifier");
+        }
+        else
+        {
+            let order_service_details_id = $('#order_service_details_id').val();
+            let order_id = $('#order_id').val();
+            let order_master_uploaded_document_id = 0;
+            $(".order_master_uploaded_document_id").each(function () {
+                if($(this).prop("checked") == true)
+                {
+                    order_master_uploaded_document_id = order_master_uploaded_document_id+","+$(this).val();
+                }
+            })
+            if(order_master_uploaded_document_id == "0")
+            {
+                alert("Please select at least one document!");
+            }
+            else
+            {
+                var action = 'assign_to_verifier';
+                $.ajax({
+                    type:'POST',
+                    url:'./API/Action-Dashboard.php',
+                    data:{order_master_uploaded_document_id, verifier_id, order_id, order_service_details_id, action},
+                    success:function(html){
+                        $('#print_result').html(html);
+                    }
+                });
+            }
+        }
+    }
 
     function raise_insufficiency()
     {
@@ -688,6 +814,7 @@ echo '
       else
       {
           $('#btn_upload').addClass('disabled');
+          $('#modal_loading').css('display', 'block');
 
           var myform = document.getElementById("upload_document_form");
           var fd = new FormData(myform );
@@ -706,6 +833,7 @@ echo '
                 $('#document_file').val('');
                 $('#btn_upload').removeClass('disabled');
                 $('#selectedFiles').html('');
+                $('#modal_loading').css('display', 'none');
             }
             else
             {
@@ -715,255 +843,220 @@ echo '
         }
     });
       }
-  }
-
-
-  function check_all_documents()
-  {
-    if($('#select_all_documents').prop('checked') == true)
-    {
-        $(".order_master_document_id").each(function () {
-            $(this).prop('checked', true);
-        })
     }
-    else
+
+
+    function check_all_documents()
     {
-        $('.order_master_document_id').prop('checked', false);    
+        if($('#select_all_documents').prop('checked') == true)
+        {
+            $(".order_master_document_id").each(function () {
+                $(this).prop('checked', true);
+            })
+        }
+        else
+        {
+            $('.order_master_document_id').prop('checked', false);    
+        }
     }
-}
 
-function clear_public_notes()
-{
-    $('#public_notes').val('');
-    $('#public_notes').focus();
-}
-
-function clear_private_notes()
-{
-    $('#private_notes').val('');
-    $('#private_notes').focus();
-}
-
-function clear_eta_notes()
-{
-    $('#eta_notes').val('');
-    $('#eta_date').val('');
-    $('#eta_notes').focus();    
-}
-
-function select_macros()
-{
-    $('#standard_macro_modal').css('display', 'block');
-}
-
-function select_macros_text(macro_id)
-{
-    close_select_macros();
-    $('#public_notes').val($('#macros_comment_'+macro_id).html());
-    $('#public_notes').focus();
-}
-
-function close_select_macros()
-{
-    $('#standard_macro_modal').css('display', 'none');
-}
-
-function select_eta()
-{
-    $('#eta_macro_master_modal').css('display', 'block');
-}
-
-function select_eta_text(macro_id)
-{
-    close_select_eta();
-    $('#eta_notes').val($('#macros_comment_'+macro_id).html());
-    $('#eta_notes').focus();
-}
-
-function close_select_eta()
-{
-    $('#eta_macro_master_modal').css('display', 'none');
-}
-
-function add_public_note()
-{
-    var public_notes = $('#public_notes').val().trim();
-    if(public_notes == "")
+    function clear_public_notes()
     {
-        alert('Please enter Public Notes!');
+        $('#public_notes').val('');
         $('#public_notes').focus();
     }
-    else
-    {
-        var action = 'add_public_notes';
-        $.ajax({
-          type:'POST',
-          url:'./API/Action-Dashboard.php',
-          data:{order_id, order_service_details_id, public_notes, action},
-          success:function(html){
-            if(html == 'success')
-            {
-                load_notes_con('public');
-                clear_public_notes();
-                alert('Public Note added!');
-            }
-            else
-            {
-                alert('Error occurred!')
-            }
-        }
-    });
-    }
-}
 
-function add_private_note()
-{
-    var private_notes = $('#private_notes').val().trim();
-    if(private_notes == "")
+    function clear_private_notes()
     {
-        alert('Please enter Private Notes!');
+        $('#private_notes').val('');
         $('#private_notes').focus();
     }
-    else
-    {
-        var action = 'add_private_notes';
-        $.ajax({
-          type:'POST',
-          url:'./API/Action-Dashboard.php',
-          data:{order_id, order_service_details_id, private_notes, action},
-          success:function(html){
-            if(html == 'success')
-            {
-                load_notes_con('private');
-                clear_private_notes();
-                alert('Private Note added!');
-            }
-            else
-            {
-                alert('Error occurred!')
-            }
-        }
-    });
-    }
-}
 
-function add_eta_note()
-{
-    var eta_notes = $('#eta_notes').val().trim();
-    var eta_date = $('#eta_date').val();
-    if(eta_notes == "")
+    function clear_eta_notes()
     {
-        alert('Please enter ETA Notes!');
+        $('#eta_notes').val('');
+        $('#eta_date').val('');
+        $('#eta_notes').focus();    
+    }
+
+    function select_macros()
+    {
+        $('#standard_macro_modal').css('display', 'block');
+    }
+
+    function select_macros_text(macro_id)
+    {
+        close_select_macros();
+        $('#public_notes').val($('#macros_comment_'+macro_id).html());
+        $('#public_notes').focus();
+    }
+
+    function close_select_macros()
+    {
+        $('#standard_macro_modal').css('display', 'none');
+    }
+
+    function select_eta()
+    {
+        $('#eta_macro_master_modal').css('display', 'block');
+    }
+
+    function select_eta_text(macro_id)
+    {
+        close_select_eta();
+        $('#eta_notes').val($('#macros_comment_'+macro_id).html());
         $('#eta_notes').focus();
     }
-    else if(eta_date == "")
+
+    function close_select_eta()
     {
-        alert('Please enter ETA date!');
-        $('#eta_date').focus();
+        $('#eta_macro_master_modal').css('display', 'none');
     }
-    else
+
+    function add_public_note()
     {
-        var action = 'add_eta_notes';
+        var public_notes = $('#public_notes').val().trim();
+        if(public_notes == "")
+        {
+            alert('Please enter Public Notes!');
+            $('#public_notes').focus();
+        }
+        else
+        {
+            var action = 'add_public_notes';
+            $.ajax({
+              type:'POST',
+              url:'./API/Action-Dashboard.php',
+              data:{order_id, order_service_details_id, public_notes, action},
+              success:function(html){
+                if(html == 'success')
+                {
+                    load_notes_con('public');
+                    clear_public_notes();
+                    alert('Public Note added!');
+                }
+                else
+                {
+                    alert('Error occurred!')
+                }
+            }
+        });
+        }
+    }
+
+    function add_private_note()
+    {
+        var private_notes = $('#private_notes').val().trim();
+        if(private_notes == "")
+        {
+            alert('Please enter Private Notes!');
+            $('#private_notes').focus();
+        }
+        else
+        {
+            var action = 'add_private_notes';
+            $.ajax({
+              type:'POST',
+              url:'./API/Action-Dashboard.php',
+              data:{order_id, order_service_details_id, private_notes, action},
+              success:function(html){
+                if(html == 'success')
+                {
+                    load_notes_con('private');
+                    clear_private_notes();
+                    alert('Private Note added!');
+                }
+                else
+                {
+                    alert('Error occurred!')
+                }
+            }
+        });
+        }
+    }
+
+    function add_eta_note()
+    {
+        var eta_notes = $('#eta_notes').val().trim();
+        var eta_date = $('#eta_date').val();
+        if(eta_notes == "")
+        {
+            alert('Please enter ETA Notes!');
+            $('#eta_notes').focus();
+        }
+        else if(eta_date == "")
+        {
+            alert('Please enter ETA date!');
+            $('#eta_date').focus();
+        }
+        else
+        {
+            var action = 'add_eta_notes';
+            $.ajax({
+              type:'POST',
+              url:'./API/Action-Dashboard.php',
+              data:{order_id, order_service_details_id, eta_notes, eta_date, action},
+              success:function(html){
+                if(html == 'success')
+                {
+                    load_notes_con('eta');
+                    clear_eta_notes();
+                    alert('ETA Note added!');
+                }
+                else
+                {
+                    alert('Error occurred!')
+                }
+            }
+        });
+        }
+    }
+
+    function load_notes_con(condition)
+    {
+        var condition = condition;
+        var order_service_details_id = $('#order_service_details_id').val();
+        var action = 'load_notes_con';
         $.ajax({
           type:'POST',
           url:'./API/Action-Dashboard.php',
-          data:{order_id, order_service_details_id, eta_notes, eta_date, action},
+          data:{order_service_details_id, action, condition},
           success:function(html){
-            if(html == 'success')
-            {
-                load_notes_con('eta');
-                clear_eta_notes();
-                alert('ETA Note added!');
-            }
-            else
-            {
-                alert('Error occurred!')
-            }
+            $('#'+condition+'_notes_panel').html(html);
         }
     });
     }
-}
 
-function load_notes_con(condition)
-{
-    var condition = condition;
-    var order_service_details_id = $('#order_service_details_id').val();
-    var action = 'load_notes_con';
-    $.ajax({
-      type:'POST',
-      url:'./API/Action-Dashboard.php',
-      data:{order_service_details_id, action, condition},
-      success:function(html){
-        $('#'+condition+'_notes_panel').html(html);
-    }
-});
-}
-load_notes_con('public');
-load_notes_con('private');
-load_notes_con('eta');
-
-function provided_to_verifed()
-{
-    let r = confirm('Are you sure to take provided details to verified?')
-    if(r == true)
+    function download_all_files()
     {
-        <?php
-        echo @$print_verify_js;
-        ?>              
+        var action = 'download_all_files';
+        $.ajax({
+          type:'POST',
+          url:'../../system-client/assets/order_master_documents/Download-Files-Zip.php',
+          data:{action, order_id},
+          success:function(html){
+            $('#print_result').html(html);
+          }
+        });
     }
-}
+
+    load_notes_con('public');
+    load_notes_con('private');
+    load_notes_con('eta');
+
+    function provided_to_verifed()
+    {
+        let r = confirm('Are you sure to take provided details to verified?')
+        if(r == true)
+        {
+            <?php
+            echo @$print_verify_js;
+            ?>              
+        }
+    }
 </script>
 <?php
 }
-
-// if($_POST['action'] == 'load_attached_documents')
-// {
-//     echo '
-//     <table class="bordered_table" style="width:100%">
-//     <tr>
-//     <th>File</th>
-//     <th class="form_center">Download / Upload</th>
-//     <th class="form_center">
-//     View to Vendor<br>
-//     <label onclick="check_all_documents()" style="padding-left:35px !important;" class="material_checkbox btn-sm">Select All
-//     <input type="checkbox" id="select_all_documents" type="checkbox" >
-//     <span class="checkmark" style="top:1px;left:4px;"></span>
-//     </label>
-//     </th>
-//     </tr>
-//     ';
-//     $check_1='SELECT d.document_name, ad.document_file, ad.order_master_document_id FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '.$_POST['order_id'].' AND ad.documentlist_id IN(SELECT documentlist_id FROM service_list_documents WHERE service_id = '.$service_id.')  ';
-//     $resul_1 = mysqli_query($db,$check_1);
-//     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
-//     {
-//         if($row_1['document_file'] != "")
-//         {
-//             $document_file = "<a target='_blank' href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a>";
-//             $document_select = '<label style="padding-left:35px !important;" class="material_checkbox btn-sm">Select
-//             <input type="checkbox" class="order_master_document_id" name="order_master_document_id[] " value="'.$row_1["order_master_document_id"].'"  type="checkbox" >
-//             <span class="checkmark" style="top:1px;left:4px;"></span>
-//             </label>';
-//         }
-//         else
-//         {
-//             $document_select = "<a id='btn_upload_".$row_1["order_master_document_id"]."' onclick='upload_document_file(".$row_1["order_master_document_id"].")' class='btn btn-success btn-xs'><i class='fa fa-upload'></i> Upload</a>";
-//             $document_file = "<input type='file' id='document_file_".$row_1["order_master_document_id"]."' class='form-control' />";
-//         }
-//         echo '
-//         <tr>
-//         <td>
-//         <h6 class="selection form_left">'.$row_1['document_name'].'</h6>
-//         </td>
-//         <td>
-//         '.@$document_file.'
-//         </td>
-//         <td>
-//         '.$document_select.'
-//         </td>
-//         </tr>';
-//     }
-//     echo '</table>';
-// }
 
 if($_POST['action'] == 'load_attached_documents')
 {
@@ -983,9 +1076,10 @@ if($_POST['action'] == 'load_attached_documents')
     <div class="col-md-12" id="selectedFiles"></div>
     <table class="bordered_table" style="width:100%">
     <tr>
-    <th>File</th>
+    <th>File Name</th>
+    <th>&nbsp;</th>
     <th class="form_center">
-    View to Vendor<br>
+    View to Verifier<br>
     <label onclick="check_all_documents()" style="padding-left:35px !important;" class="material_checkbox btn-sm">Select All
     <input type="checkbox" id="select_all_documents" type="checkbox" >
     <span class="checkmark" style="top:1px;left:4px;"></span>
@@ -1000,17 +1094,34 @@ if($_POST['action'] == 'load_attached_documents')
     {
         $document_print.='<h4 class="selection" style="margin:6px 0;">'.$row_1['document_name'].'</h4><hr class="col12" style="margin:4px 0">';
     }
-    $check_1='SELECT ad.file_name, ad.document_file, ad.order_master_uploaded_document_id FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
+    $check_1='SELECT ad.file_name, ad.document_file, ad.order_master_uploaded_document_id, ad.verifier_user_id FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
     $resul_1 = mysqli_query($db,$check_1);
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     {
-        echo "<tr><td><a target='_blank' href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary pull-left btn-xs'><i class='fa fa-download'></i> ".$row_1['file_name']."</a></td>";
-        echo '<td><label style="padding-left:35px !important;" class="material_checkbox btn-sm">Select
-        <input type="checkbox" class="order_master_document_id" name="order_master_uploaded_document_id[]" value="'.$row_1["order_master_uploaded_document_id"].'" type="checkbox" >
-        <span class="checkmark" style="top:1px;left:4px;"></span>
-        </label></td><tr>';
+        echo "<tr><td class='form_left'>".$row_1['file_name']."</td>";
+        echo "<td><a target='_blank' download href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-default btn-xs'><i class='fa fa-download'></i> Download</a></td>";
+
+        if($row_1['verifier_user_id'] == 0)
+        {
+            echo '<td><label style="padding-left:35px !important;" class="material_checkbox btn-sm">Select
+                <input type="checkbox" class="order_master_uploaded_document_id" value="'.$row_1["order_master_uploaded_document_id"].'" type="checkbox" >
+                <span class="checkmark" style="top:1px;left:4px;"></span>
+                </label></td>';
+        }
+        else
+        {
+            $check_2 = 'SELECT first_name, last_name FROM user_master WHERE user_id = '.$row_1["verifier_user_id"].'  ';
+            $resul_2 = mysqli_query($db,$check_2);
+            if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+            {
+                echo '<td>'.$row_2['first_name'].' '.$row_2['last_name'].'</td>';
+            }
+        }
+        echo '<tr>';
     }
-    echo '</table>';
+    echo '</table>
+    <a onclick="download_all_files()" class="pull-right btn btn-default btn-sm"><i class="fa fa-file-archive-o"></i> Download Files Zip</a>
+    ';   
 }
 
 if($_POST['action'] == 'add_public_notes')
@@ -1131,6 +1242,29 @@ if($_POST['action'] == 'raise_insufficiency')
     smtpmailer($email_id, $from, $name, $subject, @$print_var);
     smtpmailer($email, $from, $name, $subject, @$print_var);
     echo 'success';
+}
+
+if($_POST['action'] == 'assign_to_verifier')
+{
+    session_start();
+    $assigned_by = $_SESSION['user_id'];
+    $note_type = 'private';
+    $check = "INSERT INTO order_verifier_details (order_id, order_service_details_id, verifier_id, assigned_by) VALUES('$order_id', '$order_service_details_id', '$verifier_id', '$assigned_by') ";
+    $result = mysqli_query($db,$check);
+
+    $order_master_uploaded_document_id = explode(',', $order_master_uploaded_document_id);
+    foreach ($order_master_uploaded_document_id as $order_master_uploaded_document_id_s)
+    {
+        $check = "UPDATE order_master_uploded_documents SET verifier_user_id = '$verifier_id' WHERE order_master_uploaded_document_id = '$order_master_uploaded_document_id_s ' ";
+        $result = mysqli_query($db,$check);
+    }
+
+    echo "
+    <script>
+        alert('Order assigned to verifier!');
+        load_attached_documents(".@$order_id.");
+    </script>
+    ";
 }
 
 ?>

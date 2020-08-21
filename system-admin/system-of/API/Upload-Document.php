@@ -8,7 +8,9 @@ $db=$get_connection->connect();
 if (mysqli_connect_errno($db)) {
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
-
+session_start();
+$user_id = $_SESSION['user_id'];
+              
 extract($_POST);
 if(isset($_FILES['document_file']))
 {
@@ -28,7 +30,7 @@ if(isset($_FILES['document_file']))
         {
             if(move_uploaded_file($file_tmp,"../../../system-client/assets/order_master_documents/".$file_name))
             {
-                $sql = "INSERT INTO order_master_uploded_documents(order_id, file_name, file_size, file_type, file_ext, document_file, uploaded_by, user_id) VALUES('$order_id', '$file_name_old', '$file_size', '$file_type', '$file_ext', '$file_name', 'Order', '$order_id')  ";
+                $sql = "INSERT INTO order_master_uploded_documents(order_id, file_name, file_size, file_type, file_ext, document_file, uploaded_by, user_id) VALUES('$order_id', '$file_name_old', '$file_size', '$file_type', '$file_ext', '$file_name', 'OF', '$user_id')  ";
                 $result = mysqli_query($db,$sql);
             }
         }

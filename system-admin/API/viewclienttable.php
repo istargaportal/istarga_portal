@@ -40,12 +40,12 @@ class States
                     {
                         $sql_condition = " WHERE o.client_id = '$client_id' "; 
                     }
-                    if(@$default_client_id != 0)
+                    if(@$default_client_id != "0")
                     {
                         $default_client_id = base64_decode($default_client_id);
                         $sql_condition = " WHERE o.client_id = '$default_client_id' "; 
                     }
-                    $query="SELECT o.*, c.Client_Name FROM `order_master` o INNER JOIN client c ON c.id = o.client_id ".@$sql_condition;
+                    $query="SELECT o.*, c.Client_Name, s.service_name, os.order_status FROM `order_master` o INNER JOIN client c ON c.id = o.client_id INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.service_id = os.service_id  ".@$sql_condition;
                     $result=$this->conn->query($query);
                     if($result->num_rows>0)
                     {
@@ -57,7 +57,21 @@ class States
                             if($row["order_status"] == 0) { $order_status = "Pending"; }
                             if($row["order_status"] == 1) { $order_status = "Started"; }
                             if($row["order_status"] == 2) { $order_status = "Completed"; }
+                            $user_name = "";
                             if($row["assign_to"] == 0) { $row["assign_to"] = "-"; }
+                            else
+                            {
+                                $query_1="SELECT first_name, last_name FROM user_master WHERE user_id = '".$row['assign_to']."' ";
+                                $result_1=$this->conn->query($query_1);
+                                if($result_1->num_rows>0)
+                                {
+                                    if($row_1 = $result_1->fetch_assoc())
+                                    {
+                                        $user_name = $row_1['first_name'].' '.$row_1['last_name'];
+                                    }
+                                }
+                            }
+
                             if($row["lock_status"] == 0)
                             {
                                 $lock_status = "<a title='Unlocked' class='btn btn-default btn-sm'><i class='fa fa-unlock' style='color:#54b058 !important;'></i></a>";
@@ -69,14 +83,14 @@ class States
 
                             echo '
                             <tr>
-                            <td class="tablehead1">'.$row["internal_reference_id"].'</td>
+                            <td class="tablehead1">'.$row["case_reference_no"].'</td>
                             <td class="tablehead1">'.$row['is_rush'].'</td>
                             <td class="tablehead1 form_left">'.$row['Client_Name'].'</td>
                             <td class="tablehead1 form_left">'.$row["first_name"].' '.$row["last_name"].' </td>
                             <td class="tablehead1">'.$row["order_creation_date_time"].'</td>
                             <td class="tablehead1">'.$row["order_completion_date"].'</td>
-                            <td class="tablehead1">'.@$row["service_name"].'</td>
-                            <td class="tablehead1">'.$row["assign_to"].'</td>
+                            <td class="tablehead1">'.$row["service_name"].'</td>
+                            <td class="tablehead1">'.$user_name.'</td>
 
                             <td class="tablehead1">'.$order_status.'</td>
                             <td class="tablehead1">'.$lock_status.'</td>
@@ -92,9 +106,9 @@ class States
         
         if($load_condition == "all_client_list")
         {
-            if(@$client_select == "1")
+            if(@$client_select == "1" || @$client_select == "2")
             {
-                echo '<select style="margin-top:5%" class="browser-default chosen-select custom-select" name="client_id" id="client_id" required>';
+                echo '<select style="margin-top:5%" class="browser-default chosen-select custom-select" name="client_id" id="client_id" onchange="getAllClientData()" required>';
             }
             if(@$default_client_id != "0" && @$client_select != "1")
             {
@@ -120,7 +134,7 @@ class States
             {
                 echo '<option>No Clients Available</option>';
             }
-            if(@$client_select == "1")
+            if(@$client_select == "1" || @$client_select == "2")
             {
                 echo '</select>';
             }

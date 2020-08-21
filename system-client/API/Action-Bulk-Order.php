@@ -84,6 +84,29 @@ if(@$load_condition == "import_bulk_order")
 	$from_date_time = $from_date.' '.$from_time;
 	$to_date_time = $to_date.' '.$to_time;
 
+	$check_2 = "SELECT Inv_Code FROM Client WHERE id = '".$client_id."' ";
+    $resul_2 = mysqli_query($db,$check_2); 
+    if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+    {
+        $Inv_Code = $row_2['Inv_Code'];
+    }
+    $check_2 = "SELECT count(order_id) AS order_id_auto FROM order_master WHERE client_id = '".$client_id."' ";
+    $resul_2 = mysqli_query($db,$check_2); 
+    if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+    {
+        $order_id_auto = $row_2['order_id_auto'];
+    }
+    
+    if($order_id_auto <= 9)
+    {
+        $order_id_auto = '00'.$order_id_auto;
+    }
+    else if($order_id_auto <= 99)
+    {
+        $order_id_auto = '0'.$order_id_auto;
+    }
+    $case_reference_no = $Inv_Code.date('dmY').$order_id_auto;
+
 	$sql = "INSERT INTO bulk_order(client_id, file_name, from_date, from_time, from_date_time, to_date, to_time, to_date_time, service_id) VALUES('$client_id', '$file_name', '$from_date', '$from_time', '$from_date_time', '$to_date', '$to_time', '$to_date_time', '$service_id') ";
 	$query_res1 = $db->query($sql);
 	$bulk_order_id = $db->insert_id;
@@ -156,7 +179,7 @@ if(@$load_condition == "import_bulk_order")
 						}
 						if($assign_service_id > 0)
 						{
-							$sql = "INSERT INTO order_master (internal_reference_id, first_name, middle_name, last_name, customer_type, additional_comments, bulk_order_id, order_type, client_id, username, password, insufficiency_contact) VALUES('$internal_reference_id', '$first_name', '$middle_name', '$last_name', '$customer_type', '$additional_comments', '$bulk_order_id', 'Bulk', '$client_id', '$username', '$password', '$insufficiency_contact')";
+							$sql = "INSERT INTO order_master (case_reference_no, internal_reference_id, first_name, middle_name, last_name, customer_type, additional_comments, bulk_order_id, order_type, client_id, username, password, insufficiency_contact) VALUES('$case_reference_no','$internal_reference_id', '$first_name', '$middle_name', '$last_name', '$customer_type', '$additional_comments', '$bulk_order_id', 'Bulk', '$client_id', '$username', '$password', '$insufficiency_contact')";
 							$query_res2 = $db->query($sql);
 							$order_id = $db->insert_id;
 						    
