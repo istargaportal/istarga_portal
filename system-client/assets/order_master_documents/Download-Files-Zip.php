@@ -47,6 +47,10 @@ if($_POST['action'] == 'download_all_files')
    
     $files = array();
     $check_1='SELECT ad.file_name, ad.document_file, ad.order_master_uploaded_document_id FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
+    if(isset($_POST['verifier_user_id']))
+    {
+      $check_1.= " AND verifier_user_id = ".$verifier_user_id;
+    }
     $resul_1 = mysqli_query($db,$check_1);
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     {

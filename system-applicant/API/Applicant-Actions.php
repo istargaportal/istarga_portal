@@ -45,7 +45,8 @@ if($_POST['action'] == 'update_applicant_details')
                 $service_field_value = $$update_var;
                 if($service_field_value != "")
                 {
-                    echo $check = "UPDATE order_master_details SET service_field_value = '$service_field_value' WHERE order_details_id = ".$row_1['order_details_id']." ";
+                    $service_field_value = addslashes($service_field_value);
+                    $check = "UPDATE order_master_details SET service_field_value = '$service_field_value' WHERE order_details_id = ".$row_1['order_details_id']." ";
                     $result = mysqli_query($db,$check);
                 }
             }
@@ -55,7 +56,7 @@ if($_POST['action'] == 'update_applicant_details')
 
         // $check = "UPDATE order_master SET order_status = 0 WHERE order_id  = '$order_id ' ";
         // $result = mysqli_query($db,$check);
-         'updated';
+        echo 'updated';
     }
     else
     {

@@ -1,6 +1,5 @@
 <?php
 require_once "../../../config/config.php";
-require_once '../../../config/comman_js.php';
 
 $get_connection=new connectdb;
 $db=$get_connection->connect();
@@ -69,10 +68,12 @@ if($_POST['action'] == 'next_prev_array_num')
 
 if($_POST['action'] == 'load_service_order')
 {
-    $check = "SELECT os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, sa.sla, os.order_status FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.id = os.assign_service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
+    require_once '../../../config/comman_js.php';
+    $check = "SELECT os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, sa.sla, os.order_status, s.service_type_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.id = os.assign_service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
+        $service_type_id = $row['service_type_id'];
         $order_service_details_id = $row['order_service_details_id'];
         $order_id = $row['order_id'];
         $service_id = $row['service_id'];
@@ -724,7 +725,7 @@ echo '
                 $('#country_id_'+service_id).chosen();
                 $('#country_id_'+service_id).prop('required', is_require);
                 $('#country_id_'+service_id).attr('name', new_name);
-                if($('#country_id_'+service_id).val() != "0")
+                if($('#country_id_'+service_id).val() != "0" && $('#state_id_'+service_id).val() == "0")
                 {
                     load_state(service_id, order_details_id, 0)
                 }
@@ -752,7 +753,7 @@ echo '
                 $('#state_id_'+service_id).prop('required', is_require);
                 $('#state_id_'+service_id).attr('name', new_name);
 
-                if($('#state_id_'+service_id).val() != "0")
+                if($('#state_id_'+service_id).val() != "0" && $('#city_id_'+service_id).val() == "0")
                 {
                     load_city(service_id, order_details_id, 0)
                 }
@@ -1248,9 +1249,17 @@ if($_POST['action'] == 'assign_to_verifier')
 {
     session_start();
     $assigned_by = $_SESSION['user_id'];
-    $note_type = 'private';
-    $check = "INSERT INTO order_verifier_details (order_id, order_service_details_id, verifier_id, assigned_by) VALUES('$order_id', '$order_service_details_id', '$verifier_id', '$assigned_by') ";
-    $result = mysqli_query($db,$check);
+    
+    $check = "SELECT verifier_id FROM order_verifier_details WHERE order_service_details_id = '$order_service_details_id' AND verifier_id = '$verifier_id' ";
+    $resul = mysqli_query($db,$check);
+    if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+    {
+    }
+    else
+    {
+        $check = "INSERT INTO order_verifier_details (order_id, order_service_details_id, verifier_id, assigned_by) VALUES('$order_id', '$order_service_details_id', '$verifier_id', '$assigned_by') ";
+        $result = mysqli_query($db,$check);
+    }
 
     $order_master_uploaded_document_id = explode(',', $order_master_uploaded_document_id);
     foreach ($order_master_uploaded_document_id as $order_master_uploaded_document_id_s)

@@ -54,7 +54,7 @@ $db=$get_connection->connect();
                      <th>Is Rush Order</th>
                      <th>Applicant Name</th>
                      <th>Order Creation Date</th>
-                     <th>Expected Course Date</th>
+                     <th>Expected Closure Date</th>
                      <th>Service</th>
                      <th>Status</th>
                      <th>Category</th>

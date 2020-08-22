@@ -330,25 +330,25 @@ $page_name_compare = strtolower(@$page_name);
     .card-title{
       text-transform: uppercase !important;
     }
-    .sidebar[data-background-color="black"] .nav .nav-item .nav-link{
-      margin: 0 !important;
-    }
-    .sidebar
-    {
-      background: linear-gradient(rgba(31,40,62,0.8),rgba(31,40,62,0.8)),url('../assets/img/sidebar-2.jpg')!important;
-      background-size: contain!important;
-    }
-    .btn_danger{
+  .sidebar[data-background-color="black"] .nav .nav-item .nav-link{
+    margin: 0 !important;
+  }
+  .sidebar
+  {
+    background: linear-gradient(rgba(31,40,62,0.8),rgba(31,40,62,0.8)),url('../assets/img/sidebar-2.jpg')!important;
+    background-size: contain!important;
+  }
+  .btn_danger{
       color: #000 !important;
       background: #fff !important;
       border:solid 1px #eb1e2f !important;
-    }
-    .btn_link{
+  }
+  .btn_link{
       color: #3354d6 !important;
       background: #fff !important;
       border:solid 1px #ccc !important;
       font-weight: bold !important;
-    }
+  }
   </style>
 </head>
 <body class="dark-edition">
@@ -363,7 +363,7 @@ $page_name_compare = strtolower(@$page_name);
     </div>
   </div>
   
-  <div id="print_result"></div>
+	<div id="print_result"></div>
   <div class="wrapper">
     <div class="sidebar" data-color="purple" data-background-color="black" data-image="../assets/img/sidebar-2.jpg">
       <div class="logo"> <a class="navbar-brand" href="#">
@@ -371,22 +371,10 @@ $page_name_compare = strtolower(@$page_name);
      </a></div>
      <div class="sidebar-wrapper">
        <ul class="nav">
-        <li class="nav-item <?php if($page_name_compare == "search order") { echo 'active'; } ?>">
+        <li class="nav-item <?php if($page_name_compare == "dashboard") { echo 'active'; } ?>">
           <a class="nav-link" href="Dashboard.php">
-            <i class="fa fa-search"></i>
-            <p>Search Order</p>
-          </a>
-        </li>
-        <li class="nav-item <?php if($page_name_compare == "mark attendance") { echo 'active'; } ?>">
-          <a class="nav-link" href="#">
-            <i class="fa fa-calendar"></i>
-            <p>Mark Attendance</p>
-          </a>
-        </li>
-        <li class="nav-item <?php if($page_name_compare == "my profile") { echo 'active'; } ?>">
-          <a class="nav-link" href="#">
-            <i class="fa fa-user"></i>
-            <p>My Profile</p>
+            <i class="fa fa-home"></i>
+            <p>Dashboard</p>
           </a>
         </li>
       </ul>
@@ -431,21 +419,22 @@ $page_name_compare = strtolower(@$page_name);
                 </div>
               </form> -->
               <ul class="navbar-nav">
-               <li class="nav-item dropdown">
-                <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 <i style="color: white;" class="material-icons">person</i>
-                 <p class="d-lg-none d-md-block">
-                  Account
-                </p>
-                <div class="ripple-container"></div>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-               <a class="dropdown-item" href="#">Profile</a>
-               <div class="dropdown-divider"></div>
-               <a class="dropdown-item" href="../API/db_logout.php">Log out</a>
-             </div>
-           </li>
-         </ul>
+               
+         <li class="nav-item dropdown">
+          <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           <i style="color: white;" class="material-icons">person</i>
+           <p class="d-lg-none d-md-block">
+            Account
+          </p>
+          <div class="ripple-container"></div>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+         <a class="dropdown-item" href="#">Profile</a>
+         <div class="dropdown-divider"></div>
+         <a class="dropdown-item" href="../API/db_logout.php">Log out</a>
        </div>
-     </div>
-   </nav>
+     </li>
+   </ul>
+ </div>
+</div>
+</nav>

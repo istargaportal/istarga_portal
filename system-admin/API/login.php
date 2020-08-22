@@ -77,7 +77,7 @@ class login
               $_SESSION['role_id'] = $row['role_id'];
               if($row['role_id'] == 1) { echo "qf_login"; }
               if($row['role_id'] == 2) { echo "qc_login"; }
-              if($row['role_id'] == 3) { echo "vendor_login"; }
+              if($row['role_id'] == 3) { echo "verifier_login"; }
             }
             else
             {

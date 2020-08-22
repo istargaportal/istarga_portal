@@ -182,8 +182,8 @@
           window.location.href = "./system-of/Dashboard.php";
         } else if (text == "qc_login") {
           window.location.href = "./employee_qc/Dashboard.php";
-        } else if (text == "vendor_login") {
-          window.location.href = "./employee_vendor/Dashboard.php";
+        } else if (text == "verifier_login") {
+          window.location.href = "./system_verifier/Dashboard.php";
         } else if (text == "Wrong User Credentials") {
           modalLabel.innerHTML = text
           modalLaunchButton.click()
