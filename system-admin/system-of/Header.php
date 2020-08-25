@@ -349,6 +349,79 @@ $page_name_compare = strtolower(@$page_name);
       border:solid 1px #ccc !important;
       font-weight: bold !important;
     }
+    .count_panel
+    {
+      margin: 2%;
+      width: 100%;
+      float: left;
+      box-shadow: 0 0 10px #aaa;
+    }
+    .count_heading, .count_value{
+      padding: 10px;
+      float: left;
+      text-align: center;
+    }
+    .count_heading{
+      font-size: 12pt;
+      width: 100%;
+      color: #000;
+      text-transform: uppercase;
+      padding-bottom: 0;
+    }
+    .count_value {
+      width: 100%;
+    }
+    .count_value .count{
+      padding: 4px;
+      font-size: 20pt;
+      font-weight: bold;
+    }
+    .present_count{
+      color: green;
+    }
+    .absent_count{
+      color: red;
+    }
+    .sick_leave{
+      color: orange;
+    }
+    .casual_leave{
+      color: blue;
+    }
+    .color_div{
+      width: 100%;
+      float: left;
+      margin: 4px 0;
+      box-shadow: 0 0 4px #aaa;
+    }
+    .color_panel{
+      width: 30%;
+      float: left;
+      padding: 5px;
+      height: 32px;
+    }
+    .color_text{
+      width: 70%;
+      float: left;
+      padding: 4px;
+      text-align: center;
+      color: #000;
+      font-weight: bold;
+    }
+    .main-panel>.content {
+      margin-top: 50px;
+      padding: 20px 15px;
+    }
+    .half_attendance{ background: yellow !important; }
+    .today_color{ background: pink; }
+    .present_color{ background: green; }
+    .absent_color{ background: red; }
+    .sick_leave_color{ background: orange; }
+    .casual_leave_color{ background: blue; }
+    .not_present_color{ background: gray; }
+    .color_text .fa{
+      font-size: 16pt !important;
+    }  
   </style>
 </head>
 <body class="dark-edition">
@@ -378,15 +451,15 @@ $page_name_compare = strtolower(@$page_name);
           </a>
         </li>
         <li class="nav-item <?php if($page_name_compare == "mark attendance") { echo 'active'; } ?>">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="Mark-Attendance.php">
             <i class="fa fa-calendar"></i>
             <p>Mark Attendance</p>
           </a>
         </li>
-        <li class="nav-item <?php if($page_name_compare == "my profile") { echo 'active'; } ?>">
-          <a class="nav-link" href="#">
+        <li class="nav-item <?php if($page_name_compare == "profile") { echo 'active'; } ?>">
+          <a class="nav-link" href="Profile.php">
             <i class="fa fa-user"></i>
-            <p>My Profile</p>
+            <p>Profile</p>
           </a>
         </li>
       </ul>
