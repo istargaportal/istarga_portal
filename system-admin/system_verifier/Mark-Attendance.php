@@ -306,7 +306,6 @@ if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
       });
     }
   }
-
 </script>
 
 <?php
