@@ -64,7 +64,6 @@ class Calendar {
       return $content;
     }
     
-
     private function _showDay($cellNumber) {
       global $user_id;
       global $print_present_count;
@@ -107,7 +106,7 @@ class Calendar {
         <script type="text/javascript">
           $( "#day_'.$this->currentMonth.'_'.$cellContent.'" ).contextmenu(function() {
             $("#mark_attendance").css("display", "block");
-            mark_attendance("'.$print_date_val.'");
+            mark_attendance("'.$print_date_val.'", '.$user_id.');
             return false;
           });
         </script>';
@@ -117,7 +116,7 @@ class Calendar {
         $print_context_menu = '
         <script type="text/javascript">
           $( "#day_'.$this->currentMonth.'_'.$cellContent.'" ).contextmenu(function() {
-            mark_attendance("'.$print_date_val.'");
+            mark_attendance("'.$print_date_val.'", '.$user_id.');
             // alert("Please contact to Admin!");
             return false;
           });
@@ -132,26 +131,40 @@ class Calendar {
       {
         $print_context_menu = "";
       }
-      $check = "SELECT attendance_status FROM attendance_master WHERE attendancce_date = '$print_date_val' AND user_id ='$user_id'  ";
+      
+      $approval_status = "";
+      $check = "SELECT attendance_status, approval_status FROM attendance_master WHERE attendancce_date = '$print_date_val' AND user_id ='$user_id'  ";
       $resul = mysqli_query($db,$check); 
       if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
       {
-        if($row['attendance_status'] == "1")
+        if($row['approval_status'] == "0")
+        {
+          $approval_status = "<span class='btn btn-warning btn_float_status btn-xs'>Pending</span>";
+        }
+        if($row['approval_status'] == "1")
+        {
+          $approval_status = "<span class='btn btn-primary btn_float_status btn-xs'>Approved</span>";
+        }
+        if($row['approval_status'] == "-1")
+        {
+          $approval_status = "<span class='btn btn-danger btn_float_status btn-xs'>Rejected</span>";
+        }
+        if($row['attendance_status'] == "1" && $row['approval_status'] == "1")
         {
           $attendance_block = '<div class="notifier present_color"></div>';
           $print_present_count++;
         }
-        if($row['attendance_status'] == "2")
+        if($row['attendance_status'] == "2" && $row['approval_status'] == "1")
         {
           $attendance_block = '<div class="notifier absent_color"></div>';
           $print_absent_count++;
         }
-        if($row['attendance_status'] == "3")
+        if($row['attendance_status'] == "3" && $row['approval_status'] == "1")
         {
           $attendance_block = '<div class="notifier sick_leave_color"></div>';
           $print_sick_leave++;
         }
-        if($row['attendance_status'] == "4")
+        if($row['attendance_status'] == "4" && $row['approval_status'] == "1")
         {
           $attendance_block = '<div class="notifier casual_leave_color"></div>';
           $print_casual_leave++;
@@ -173,18 +186,19 @@ class Calendar {
 
       $link_date = $cellContent.'-'.date('m-Y', strtotime($this->currentYear . '-' . $this->currentMonth . '-1'));
 
-      return '<a id="day_'.$this->currentMonth.'_'.$cellContent.'" > <div class=" ' . $class_day . '"><div class="calendar_count">' . $cellContent . $count . '</div>'. @$attendance_block .'</div> </a>
+      return '<a id="day_'.$this->currentMonth.'_'.$cellContent.'" > <div class=" ' . $class_day . '"><div class="calendar_count">' . $cellContent . $count . '</div>'. @$attendance_block .' '.$approval_status.'</div> </a>
       '.$print_context_menu.'
       ' . "\r\n";
     }
 
     private function _createNavi() {
+      global $user_id;
 
       $nextMonth = $this->currentMonth == 12 ? 1 : intval($this->currentMonth)+1;
       $nextYear = $this->currentMonth == 12 ? intval($this->currentYear)+1 : $this->currentYear;
       $preMonth = $this->currentMonth == 1 ? 12 : intval($this->currentMonth)-1;
       $preYear = $this->currentMonth == 1 ? intval($this->currentYear)-1 : $this->currentYear;
-      return '<div class="calendar_header">' . "\r\n" . '<a class="calendar_prev" href="javascript:load_calendar_panel(' . sprintf('%02d', $preMonth) . ', ' . $preYear.')"><i class="fa fa-chevron-circle-left custom_icon"></i></a>' . "\r\n" . '<span class="calendar_title">' . date('M, Y', strtotime($this->currentYear . '-' . $this->currentMonth . '-1')) . '</span>' . "\r\n" . '<a class="calendar_next" href="javascript:load_calendar_panel(' . sprintf("%02d", $nextMonth) . ', ' . $nextYear . ')"><i class="fa fa-chevron-circle-right custom_icon"></i></a>' . "\r\n"  . '</div>';
+      return '<div class="calendar_header">' . "\r\n" . '<a class="calendar_prev" href="javascript:load_calendar_panel(' . sprintf('%02d', $preMonth) . ', ' . $preYear.', '.$user_id.')"><i class="fa fa-chevron-circle-left custom_icon"></i></a>' . "\r\n" . '<span class="calendar_title">' . date('M, Y', strtotime($this->currentYear . '-' . $this->currentMonth . '-1')) . '</span>' . "\r\n" . '<a class="calendar_next" href="javascript:load_calendar_panel(' . sprintf("%02d", $nextMonth) . ', ' . $nextYear . ', '.$user_id.')"><i class="fa fa-chevron-circle-right custom_icon"></i></a>' . "\r\n"  . '</div>';
     }
     /**
     ** Create calendar week labels

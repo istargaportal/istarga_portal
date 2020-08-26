@@ -72,13 +72,27 @@ if($_POST['action'] == "mark_attendance")
         </div>
       </div>
     ';
-    $check = "SELECT attendance_status, from_time, to_time FROM attendance_master WHERE attendancce_date = '$selected_date' AND user_id ='$user_id'  ";
+    $approval_status = "";
+    $check = "SELECT attendance_status, from_time, to_time, approval_status FROM attendance_master WHERE attendancce_date = '$selected_date' AND user_id ='$user_id'  ";
     $resul = mysqli_query($db,$check);
     if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
         $from_time = $row['from_time'];
         $to_time = $row['to_time'];
         $attendance_condition = 1;
+        if($row['approval_status'] == "0")
+        {
+          $approval_status = "<a class='btn btn-warning btn-xs'>Pending</a>";
+        }
+        if($row['approval_status'] == "1")
+        {
+          $approval_status = "<a class='btn btn-primary btn-xs'>Approved</a>";
+        }
+        if($row['approval_status'] == "-1")
+        {
+          $approval_status = "<a class='btn btn-danger btn-xs'>Rejected</a>";
+        }
+
         if($row['attendance_status'] == "1")
         {
           $print_attendance = '<div class="color_div">
@@ -103,7 +117,7 @@ if($_POST['action'] == "mark_attendance")
               <h5 style="color:#000; font-weight:bold;" class="form_center">IN - '.$from_time.' & OUT - Pending</h5>
               ';
 
-          if(strtotime($selected_date) == strtotime(date('Y-m-d')) && $row['attendance_condition'] == 0)
+          if(strtotime($selected_date) == strtotime(date('Y-m-d')) && $row['attendance_status'] == 0)
           {
             $print_attendance.= $print_from_to_time = '
             <div id="mark_attendance_panel" class="row card col-md-12" style="box-shadow: 0 0 10px #ccc;padding: 4px; margin: 10px 0 !important;">
@@ -208,7 +222,7 @@ if($_POST['action'] == "mark_attendance")
         <br>
         <input type="hidden" id="selected_date_input" value="<?php echo $selected_date; ?>" />
         <?php
-            echo @$print_attendance.$note;
+            echo @$print_attendance.$approval_status.$note;
         ?>
       </div>
     </div>

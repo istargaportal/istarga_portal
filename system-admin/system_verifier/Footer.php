@@ -1,4 +1,7 @@
-  <script>
+<?php
+  include '../Change-Password-Functions.php';
+?>
+<script>
     let darkmode = localStorage.getItem("darkmode");
     const darkmodetoggle = document.querySelector('input[name=theme]');
 

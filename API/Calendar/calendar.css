@@ -180,3 +180,10 @@ body, html{
 .notifier{
   width:10px; height:10px; border-radius:100%; position:absolute; right:8px; top:8px;
 }
+.btn_float_status{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 4px 6px !important;
+  font-size: 9pt !important;
+}
