@@ -26,7 +26,7 @@ if($_POST['action'] == 'load_service_list')
 if($_POST['action'] == 'load_start_processing')
 {
     $button_array = ""; $total_array = 0;
-    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.order_status IN ('Pending', 'Sent To OF') ";
+    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.order_status IN ('Sent To QC') ";
     $resul = mysqli_query($db,$check); 
     while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -81,7 +81,7 @@ if($_POST['action'] == 'next_prev_array_num')
 if($_POST['action'] == 'load_service_order')
 {
     require_once '../../../config/comman_js.php';
-    $check = "SELECT os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, sa.sla, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_of FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id LEFT JOIN assigned_service sa ON sa.id = os.assign_service_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
+    $check = "SELECT os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, sa.sla, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_qc FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id LEFT JOIN assigned_service sa ON sa.id = os.assign_service_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -103,7 +103,7 @@ if($_POST['action'] == 'load_service_order')
         $verifier_comments = $row['verifier_comments'];
         $currency_id = $row['currency_id'];
         $additional_fees = $row['additional_fees'];
-        $additional_comments_of = $row['additional_comments_of'];
+        $additional_comments_qc = $row['additional_comments_qc'];
 
     }
 
@@ -470,7 +470,7 @@ echo '
     </div>
     <div class="col-md-12">
         <b>Additional Comments</b>
-        <textarea class="custom-select" rows="3" id="additional_comments_of" name="additional_comments_of"></textarea>
+        <textarea class="custom-select" rows="3" id="additional_comments_qc" name="additional_comments_qc"></textarea>
     </div>
 
     <div class="col-md-12">
@@ -482,26 +482,6 @@ echo '
     </div>
     <div class="col-md-8">
         <div id="documents_panel"></div>
-        <br>
-        <b>Verifier</b>
-        <div class="row">
-            <div class="col-md-5">
-                <select class="custom-select chosen-select" id="verifier_id">
-                    <option value="">Select Verifier</option>
-                    <?php
-                    $check='SELECT user_id, first_name, last_name FROM user_master WHERE role_id = 3 ';
-                    $resul = mysqli_query($db,$check); 
-                    while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                    {
-                        echo '<option value="'.$row['user_id'].'">'.$row['first_name'].' '.$row['last_name'].'</option>';
-                    }
-                    ?>
-                </select>
-            </div>
-            <div class="col-md-7">
-                <a style="margin: 0;" href="javascript:assign_to_verifier()" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Assign To Verifier</a>
-            </div>
-        </div>
     </div>
     <div class="col-md-4">
         <h5 class="selection">File Formats</h5>
@@ -587,7 +567,7 @@ echo '
             $('#actual_array_count').val('<?php echo $actual_key_val; ?>');
         </script>
         <a onclick="<?php echo @$onclick_prev; ?>" class="btn pull-left <?php echo @$disabled_back; ?> btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Back</a>
-        <a id="send_to_qc" onclick="send_to_qc()" class="btn btn-success btn-sm"><i class="fa fa-save"></i> Save</a>
+        <a id="send_to_qc" onclick="send_to_qc()" class="btn btn-warning btn-sm"><i class="fa fa-print"></i> Generate Skeleton</a>
         <a onclick="break_process()" class="btn btn-danger btn-sm"><i class="fa fa-stop"></i> Break</a>
         <a onclick="<?php echo @$onclick_next; ?>" class="btn pull-right <?php echo @$disabled_next; ?> btn-primary btn-sm"><i class="fa fa-arrow-right"></i> Next</a>
     </div>
@@ -1097,7 +1077,7 @@ function send_to_qc()
         var myform = document.getElementById("verifier_details_form");
         var fd = new FormData(myform);
         $.ajax({
-            url: "./API/OF-Actions.php",
+            url: "./API/QC-Actions.php",
             data: fd,
             cache: false,
             processData: false,
@@ -1142,13 +1122,6 @@ if($_POST['action'] == 'load_attached_documents')
     <tr>
     <th>File Name</th>
     <th>&nbsp;</th>
-    <th class="form_center">
-    View to Verifier<br>
-    <label onclick="check_all_documents()" style="padding-left:35px !important;" class="material_checkbox btn-sm">Select All
-    <input type="checkbox" id="select_all_documents" type="checkbox" >
-    <span class="checkmark" style="top:1px;left:4px;"></span>
-    </label>
-    </th>
     </tr>
     ';
     $document_print = '';
@@ -1164,23 +1137,6 @@ if($_POST['action'] == 'load_attached_documents')
     {
         echo "<tr><td class='form_left'>".$row_1['file_name']."</td>";
         echo "<td><a target='_blank' download href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-default btn-xs'><i class='fa fa-download'></i> Download</a></td>";
-
-        if($row_1['verifier_user_id'] == 0)
-        {
-            echo '<td><label style="padding-left:35px !important;" class="material_checkbox btn-sm">Select
-            <input type="checkbox" class="order_master_uploaded_document_id" value="'.$row_1["order_master_uploaded_document_id"].'" type="checkbox" >
-            <span class="checkmark" style="top:1px;left:4px;"></span>
-            </label></td>';
-        }
-        else
-        {
-            $check_2 = 'SELECT first_name, last_name FROM user_master WHERE user_id = '.$row_1["verifier_user_id"].'  ';
-            $resul_2 = mysqli_query($db,$check_2);
-            if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
-            {
-                echo '<td>'.$row_2['first_name'].' '.$row_2['last_name'].'</td>';
-            }
-        }
         echo '<tr>';
     }
     echo '</table>
@@ -1274,10 +1230,10 @@ if($_POST['action'] == 'raise_insufficiency')
     $check = "INSERT INTO order_insufficiency_details (order_service_details_id, order_id, insufficiency_comment, user_id) VALUES('$order_service_details_id', '$order_id', '$insufficiency_comment', '$user_id') ";
     $result = mysqli_query($db,$check);
 
-    $check = "UPDATE order_service_details SET of_insufficiency_status = 'Insufficiency', order_status = 'Insufficiency' WHERE order_service_details_id  = '$order_service_details_id ' ";
+    $check = "UPDATE order_service_details SET qc_insufficiency_status = 'Insufficiency', order_status = 'Insufficiency' WHERE order_service_details_id  = '$order_service_details_id ' ";
     $result = mysqli_query($db,$check);
 
-    $check = "UPDATE order_master SET order_status = 'Insufficiency' WHERE order_id  = '$order_id ' ";
+    $check = "UPDATE order_master SET order_status = 'Insufficiency' WHERE order_id  = '$order_id '";
     $result = mysqli_query($db,$check);
 
     $check = "SELECT first_name, username, password, email_id, insufficiency_contact, client_id FROM order_master WHERE order_id = '$order_id' ";

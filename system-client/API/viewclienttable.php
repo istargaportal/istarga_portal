@@ -42,10 +42,7 @@ class States
                 while($row = $result->fetch_assoc())
                 {
                     $i++;
-                    $order_status = "";
-                    if($row["order_status"] == 0) { $order_status = "Pending"; }
-                    if($row["order_status"] == 1) { $order_status = "Started"; }
-                    if($row["order_status"] == 2) { $order_status = "Completed"; }
+                    $order_status = $row['order_status'];
                     echo '
                     <tr>
                         <td class="tablehead1">

@@ -39,7 +39,7 @@ if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
   $order_status = $row['order_status'];
 }
 
-if($order_status == 0 || $order_status == 3)
+if($order_status == "Pending" || $order_status == 'Insufficiency')
 {
   $btn_disabled = "";
   $btn_click = 'onclick="save_my_application()"';
@@ -660,7 +660,7 @@ else
           }
           if($row_1['data_type'] == "long_text")
           {
-            $field_print = '<textarea type="text" class="custom-select" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" value="'.$row_1["service_field_value"].'" '.@$is_required.' ></textarea>';
+            $field_print = '<textarea type="text" class="custom-select" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" '.@$is_required.' >'.$row_1["service_field_value"].'</textarea>';
           }
           if($row_1['data_type'] == "select")
           {

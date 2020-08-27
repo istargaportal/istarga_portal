@@ -1,7 +1,7 @@
 <?php
     require_once('PHPMailer_v5.1/class.phpmailer.php'); //library added in download source.
     
-    $from = 'care@honestwebs.com';
+    $from = 'verify@istarga.com';
     $name = 'BGV ORION';
     function smtpmailer($to, $from, $from_name = 'BGV ORION', $subject, $body, $is_gmail = true)
     {
@@ -15,20 +15,23 @@
             // $mail->SMTPSecure = 'ssl';
             // $mail->Host = 'smtp-relay.sendinblue.com';
             // $mail->Port = 587;
-            // $mail->Username = 'care@honestwebs.com';
-            // $mail->Password = '4VCryWtU37x6SnpN';   
-
+            // $mail->Username = 'verify@istarga.com';
+            // $mail->Password = '4VCryWtU37x6SnpN';
 
             $mail->SMTPSecure = 'ssl';
             $mail->Host = 'smtp.gmail.com';
             $mail->Port = 465;  
+
             $mail->Username = 'maheshmthorat@gmail.com';  
             $mail->Password = 'ccjxizotbjxfidfa';
+
+            // $mail->Username = 'verify@istarga.com';  
+            // $mail->Password = 'System@123##';
 
         }
                 
         $mail->IsHTML(true);
-        $mail->From = "care@honestwebs.com";
+        $mail->From = "verify@istarga.com";
         $mail->FromName = $name;
         $mail->Sender = $from;
         $mail->AddReplyTo($from, $from_name);

@@ -17,7 +17,7 @@ if($_POST['action'] == 'load_attached_documents')
     $resul_1 = mysqli_query($db,$check_1);
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     {
-    $document_print.='<h4 class="selection" style="margin:6px 0;">'.$row_1['document_name'].'</h4><hr class="col12" style="margin:4px 0">';
+    $document_print.='<h4 class="selection" style="margin:6px 0;"><i class="fa fa-file"></i> '.$row_1['document_name'].'</h4><hr class="col12" style="margin:4px 0">';
     }
     $document_print.='</div><div class="col-md-5"><h6>Uploaded Documents</h6>';
     $check_1='SELECT ad.file_name, ad.document_file FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
@@ -46,16 +46,29 @@ if($_POST['action'] == 'update_applicant_details')
                 if($service_field_value != "")
                 {
                     $service_field_value = addslashes($service_field_value);
+                    if($row_1['data_type'] == "date")
+                    {
+                        $service_field_value = str_replace('/', '-', $service_field_value);
+                    }
                     $check = "UPDATE order_master_details SET service_field_value = '$service_field_value' WHERE order_details_id = ".$row_1['order_details_id']." ";
                     $result = mysqli_query($db,$check);
                 }
             }
         }
-        // $check = "UPDATE order_service_details SET insufficiency_status = 0, order_status = 0 WHERE order_id  = '$order_id ' ";
-        // $result = mysqli_query($db,$check);
 
-        // $check = "UPDATE order_master SET order_status = 0 WHERE order_id  = '$order_id ' ";
-        // $result = mysqli_query($db,$check);
+        $check_1 = "SELECT order_status, order_service_details_id FROM order_service_details WHERE order_id = '".$order_id."' ";
+        $resul_1 = mysqli_query($db,$check_1); 
+        while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+        {
+            if($row_1['order_status'] == 'Insufficiency')
+            {
+                $check = "UPDATE order_service_details SET insufficiency_status = 0, order_status = 'Sent To OF' WHERE order_id  = '$order_id' AND order_service_details_id = '".$row_1['order_service_details_id']."' ";
+                $result = mysqli_query($db,$check);
+            }
+        }
+
+        $check = "UPDATE order_master SET order_status = 'Pending' WHERE order_id  = '$order_id' ";
+        $result = mysqli_query($db,$check);
         echo 'updated';
     }
     else

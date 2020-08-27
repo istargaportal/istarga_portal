@@ -23,6 +23,10 @@ if($_POST['action'] == 'update_applicant_details')
             if($service_field_value != "")
             {
                 $service_field_value = addslashes($service_field_value);
+                if($row_1['data_type'] == "date")
+                {
+                    $service_field_value = str_replace('/', '-', $service_field_value);
+                }
                 $check = "UPDATE order_master_details SET service_field_value_verified = '$service_field_value' WHERE order_details_id = ".$row_1['order_details_id']." ";
                 $result = mysqli_query($db,$check);
             }
@@ -35,7 +39,7 @@ if($_POST['action'] == 'update_applicant_details')
     $result = mysqli_query($db,$check);
     
     $additional_comments_verifier = addslashes($additional_comments_verifier);
-    $check = "UPDATE order_service_details SET additional_comments_verifier = '$additional_comments_verifier' WHERE order_service_details_id = '$order_service_details_id' ";
+    $check = "UPDATE order_service_details SET additional_comments_verifier = '$additional_comments_verifier', order_status = 'Sent To OF' WHERE order_service_details_id = '$order_service_details_id' ";
     $result = mysqli_query($db,$check);
 
     echo 'updated';

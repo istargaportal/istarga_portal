@@ -53,10 +53,7 @@ class States
                         {
                             if($row['is_rush'] == "1") { $row['is_rush'] = "Yes"; } else { $row['is_rush'] = "No"; }
 
-                            $order_status = "";
-                            if($row["order_status"] == 0) { $order_status = "Pending"; }
-                            if($row["order_status"] == 1) { $order_status = "Started"; }
-                            if($row["order_status"] == 2) { $order_status = "Completed"; }
+                            $order_status = $row['order_status'];
                             $user_name = "";
                             if($row["assign_to"] == 0) { $row["assign_to"] = "-"; }
                             else

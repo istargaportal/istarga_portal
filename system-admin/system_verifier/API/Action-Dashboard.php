@@ -17,7 +17,7 @@ if($_POST['action'] == 'load_service_order')
 {
     require_once '../../../config/comman_js.php';
 
-    $check = "SELECT os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, sa.sla, os.order_status, s.service_type_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.id = os.assign_service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.order_service_details_id = '$order_service_details_id' ";
+    $check = "SELECT os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, sa.sla, os.order_status, s.service_type_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id LEFT JOIN assigned_service sa ON sa.id = os.assign_service_id WHERE os.order_service_details_id = '$order_service_details_id' ";
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -172,7 +172,7 @@ if($_POST['action'] == 'load_service_order')
                         }
                         if($row_1['data_type'] == "long_text")
                         {
-                            $field_print = '<textarea type="text" class="custom-select" id="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" value="'.$row_1["service_field_value_verified"].'" '.@$is_required.' ></textarea>';
+                            $field_print = '<textarea type="text" class="custom-select" id="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" '.@$is_required.' >'.$row_1["service_field_value_verified"].'</textarea>';
                         }
                         $service_field_value = "";
                         if($row_1['data_type'] == "select")
@@ -393,6 +393,15 @@ echo '
         <i class="fa fa-file-powerpoint-o " style="font-size:40px !important;margin-left:3%;color: orange"></i>
         <i class="fa fa-file-pdf-o selection" style="color: red !important; margin-left:3%; font-size:40px !important;"></i>
     </div>
+    <?php
+        echo '<br>';
+        $check_1="SELECT d.document_name FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '$order_id' AND ad.documentlist_id IN (SELECT documentlist_id FROM service_list_documents WHERE service_id = '$service_id') ";
+        $resul_1 = mysqli_query($db,$check_1);
+        while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+        {
+            echo '<h4 class="selection" style="margin:6px 0;"><i class="fa fa-file"></i> '.$row_1['document_name'].'</h4><hr class="col12" style="margin:4px 0">';
+        }
+    ?>
 </div>
     <!-- <div class="col-md-12">
         <br><br>
@@ -506,7 +515,7 @@ echo '
                 $('#country_id_'+service_id).chosen();
                 $('#country_id_'+service_id).prop('required', is_require);
                 $('#country_id_'+service_id).attr('name', new_name);
-                if($('#country_id_'+service_id).val() != "0" && $('#state_id_'+service_id).val() == "0")
+                if($('#country_id_'+service_id).val() != "0" && parseFloat($('#state_id_'+service_id).val() || 0) == "0")
                 {
                     load_state(service_id, order_details_id, 0)
                 }
@@ -534,7 +543,7 @@ echo '
                 $('#state_id_'+service_id).prop('required', is_require);
                 $('#state_id_'+service_id).attr('name', new_name);
 
-                if($('#state_id_'+service_id).val() != "0" && $('#city_id_'+service_id).val() == "0")
+                if($('#state_id_'+service_id).val() != "0" && parseFloat($('#city_id_'+service_id).val() || 0) == "0")
                 {
                     load_city(service_id, order_details_id, 0)
                 }

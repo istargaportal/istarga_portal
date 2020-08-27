@@ -181,7 +181,7 @@
         } else if (text == "qf_login") {
           window.location.href = "./system-of/Dashboard.php";
         } else if (text == "qc_login") {
-          window.location.href = "./employee_qc/Dashboard.php";
+          window.location.href = "./system-qc/Dashboard.php";
         } else if (text == "verifier_login") {
           window.location.href = "./system_verifier/Dashboard.php";
         } else if (text == "Wrong User Credentials") {
