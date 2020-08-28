@@ -1157,30 +1157,39 @@ function confirm_to_qc()
     let r = confirm('Are you sure to Complete this verification?')
     if(r == true)
     {
+        let default_report_color_id = $('#default_report_color_id').val();
         $('#confirm_to_qc').addClass('disabled_btn');        
         var myform = document.getElementById("verifier_details_form");
         var fd = new FormData(myform);
-        $.ajax({
-            url: "./API/QC-Actions.php",
-            data: fd,
-            cache: false,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            success: function (html) {
-              if(html == "updated")
-              {
-                alert('Order successfully submitted!');
-                window.open('../../API/Print-Background-Verification-Report.php?order_id='+<?php echo base64_encode($order_id); ?>)
-                $('#confirm_to_qc').addClass('disabled_btn');
-              }
-              else
-              {
-                alert('Error occurred!');
-                $('#confirm_to_qc').removeClass('disabled_btn');
-              }
-            }
-        });
+        if(default_report_color_id == "")
+        {
+            alert('Please select Log!');
+            $('#default_report_color_id').focus();
+        }
+        else
+        {
+            $.ajax({
+                url: "./API/QC-Actions.php",
+                data: fd,
+                cache: false,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function (html) {
+                  if(html == "updated")
+                  {
+                    alert('Order successfully submitted!');
+                    window.open('../../API/Print-Background-Verification-Report.php?order_id='+<?php echo base64_encode($order_id); ?>)
+                    $('#confirm_to_qc').addClass('disabled_btn');
+                  }
+                  else
+                  {
+                    alert('Error occurred!');
+                    $('#confirm_to_qc').removeClass('disabled_btn');
+                  }
+                }
+            });
+        }
     }
 }
 </script>

@@ -8,7 +8,8 @@ if (mysqli_connect_errno($db)) {
 }
 
 $order_id = base64_decode($_GET['order_id']);
-$check="SELECT c.Client_Name, o.order_id, o.first_name, o.middle_name, o.last_name, o.alias_first_name, o.alias_middle_name, o.alias_last_name, o.email_id, o.internal_reference_id, o.joining_location, o.joining_date, o.additional_comments, o.client_id, o.is_rush, o.insufficiency_contact, o.username, o.password, o.order_status, o.order_creation_date_time, o.case_reference_no, o.order_completion_date, o.complete_info_received_date FROM order_master o INNER JOIN client c ON c.id = o.client_id WHERE o.order_id   ='".$order_id."'";
+$default_report_color_id = base64_decode($_GET['default_report_color_id']);
+$check="SELECT c.Client_Name, o.order_id, o.first_name, o.middle_name, o.last_name, o.alias_first_name, o.alias_middle_name, o.alias_last_name, o.email_id, o.internal_reference_id, o.joining_location, o.joining_date, o.additional_comments, o.client_id, o.is_rush, o.insufficiency_contact, o.username, o.password, o.order_status, o.order_creation_date_time, o.case_reference_no, o.order_completion_date, o.complete_info_received_date, c.default_report_color FROM order_master o INNER JOIN client c ON c.id = o.client_id WHERE o.order_id   ='".$order_id."'";
 $resul = mysqli_query($db,$check); 
 if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 {
@@ -35,7 +36,26 @@ if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
   $order_creation_date_time = date('d-m-Y', strtotime($row['order_creation_date_time']));
   $order_completion_date = date('d-m-Y', strtotime($row['order_completion_date']));
   $complete_info_received_date = date('d-m-Y', strtotime($row['complete_info_received_date']));
+  $default_report_color = $row['default_report_color'];
 }
+
+if($default_report_color == 0)
+{
+	$check="SELECT color_code FROM default_report_color WHERE default_report_color_id = '$default_report_color_id' ";
+}
+else
+{
+	$check="SELECT color_code FROM client_default_report_color WHERE default_report_color_id = '$default_report_color_id' AND client_id = '$client_id' ";
+}
+$resul = mysqli_query($db,$check); 
+if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+{
+	$color_code = $row['color_code'];
+}
+if($color_code == "Red"){ $color_code = "#eb1e2f"; }
+if($color_code == "Green"){ $color_code = "#25ce60"; }
+if($color_code == "Amber"){ $color_code = "#ffbf00"; }
+
 $applicant_name = $first_name.' '.$middle_name.' '.$last_name;
 
 $all_services_list = '';
@@ -70,14 +90,14 @@ $header = '
 
 $footer = '
 	<br>
-	<div class="col-md-12 center" style="border-top:solid 1px #ccc;font-size:9pt;padding:4px 0;">
-		<i>The Information is Confidential and may be used only by Authorized personnel<br><b>ISTARGA SOLUTIONS LLP<b></i><br>
-		<a href="https://www.istarga.com" target="_blank">www.istarga.com/</a> | 
-		<a href="mailto:'.@$service_email_id.'" target="_blank">'.@$service_email_id.'</a> | 
-		<a href="tel:'.@$service_contact_no.'" target="_blank">'.@$service_contact_no.'</a>
+	<br>
+	<div class="col-md-12 center" style="border-top:solid 1px #ccc;font-size:10pt;padding:4px 0;">
+		<a href="https://www.istarga.com" target="_blank">www.istarga.com/</a> 
 	</div>
 </div>';
-
+// <i>The Information is Confidential and may be used only by Authorized personnel<br><b>ISTARGA SOLUTIONS LLP<b></i><br>
+// <a href="mailto:'.@$service_email_id.'" target="_blank">'.@$service_email_id.'</a> | 
+// <a href="tel:'.@$service_contact_no.'" target="_blank">'.@$service_contact_no.'</a>
 $html = '
 <style>
 p{
@@ -90,10 +110,10 @@ p{
 }
 #page-border{
  padding: 1em;
- border-top:solid 12px #ccc;
- border-bottom:solid 12px #ccc;
- border-left:solid 1px #ccc;
- border-right:solid 1px #ccc;
+ border-top:solid 8px #000;
+ border-bottom:solid 8px #000;
+ border-left:solid 1px #000;
+ border-right:solid 1px #000;
  background-color: #FFFFFF ;
 }
 .underline{
@@ -151,18 +171,18 @@ h6{
 }
 .border_verify_status
 {
-	border:solid 2px #ccc;
+	border:solid 2px '.$color_code.';
 	text-align:center;
 	font-weight:bold;
 }
 .border_background_color
 {
-	background-color:#ccc;;
+	background-color:'.$color_code.';;
 }
 .table_services table, .table_services, .table_services tr, .table_services th{
 	color:#777;
-	border-top:solid #bebdc3;
-	border-bottom:solid #bebdc3;
+	border-top:solid #000;
+	border-bottom:solid #000;
 	border-collapse:collapse;
 	padding:10px;
 }
