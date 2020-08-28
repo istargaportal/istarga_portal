@@ -26,7 +26,7 @@ if($_POST['action'] == 'load_service_list')
 if($_POST['action'] == 'load_start_processing')
 {
     $button_array = ""; $total_array = 0;
-    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.order_status IN ('Pending', 'Sent To OF') ";
+    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.order_status IN ('Pending', 'Sent To OF', 'Re-Assign To OF') ";
     $resul = mysqli_query($db,$check); 
     while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -469,6 +469,10 @@ echo '
         </div>
     </div>
     <div class="col-md-12">
+        <h5 class="btn btn-primary col-md-12 form_left btn-xs"><i class="fa fa-comments" aria-hidden="true"></i> Re-assigned Logs</h5>
+        <div style="height: 200px; overflow-y: scroll;" id="print_reassigned_order"></div>
+    </div>
+    <div class="col-md-12">
         <b>Additional Comments</b>
         <textarea class="custom-select" rows="3" id="additional_comments_of" name="additional_comments_of"></textarea>
     </div>
@@ -666,6 +670,22 @@ echo '
             location.reload();
         }
     }
+
+    function load_reassigned_order()
+    {
+        var order_id = $('#order_id').val();
+        var order_service_details_id = $('#order_service_details_id').val();
+        var action = 'load_reassigned_order';
+        $.ajax({
+            type:'POST',
+            url:'./API/Action-Dashboard.php',
+            data:{action, order_id, order_service_details_id},
+            success:function(html){
+                $('#print_reassigned_order').html(html);
+            }
+        });
+    }
+    load_reassigned_order();
 
     function assign_to_verifier()
     {
@@ -1337,6 +1357,23 @@ if($_POST['action'] == 'assign_to_verifier')
     load_attached_documents(".@$order_id.");
     </script>
     ";
+}
+
+if($_POST['action'] == 'load_reassigned_order')
+{
+    $check = "SELECT r.additional_comments_for_of, r.added_datetime, u.first_name, u.last_name FROM order_reassigned_log r INNER JOIN user_master u ON u.user_id = r.of_user_id WHERE r.order_service_details_id = '$order_service_details_id' ORDER BY r.order_reassigned_log_id DESC ";
+    $resul = mysqli_query($db,$check);
+    while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+    {
+        $added_datetime = date('d M Y H:i', strtotime($row['added_datetime']));
+        echo '
+        <div style="box-shadow:0 0 10px #aaa; border:solid 1px #ccc; border-radius:4px; width:100%;float:left; padding:8px;" >
+            <div><b><i class="fa fa-calendar"></i> '.$added_datetime.'</b> - '.$row["additional_comments_for_of"].'</div>
+            <hr style="margin:3px 0;">
+            <b>'.$row["first_name"].' '.$row["last_name"].'</b>
+        </div>
+        ';
+    }
 }
 
 ?>

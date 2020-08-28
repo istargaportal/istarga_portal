@@ -378,4 +378,7 @@
     .color_text .fa{
       font-size: 16pt !important;
     }
+    .btn-sm, .btn-md, .btn-lg{
+      margin: 0 !important;
+    }
   </style>

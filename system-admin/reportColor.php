@@ -18,7 +18,8 @@ include 'Header.php';
                   <div id="client_id_div"></div>
                 </div>
                 <div class="form-group col-md-5">
-                  <a href="javascript:load_report_color()" style="margin-top:6%" class="btn btn-primary btn-sm"><i class="material-icons icon">search</i> Load</a>
+                  <br>
+                  <a href="javascript:load_report_color()" class="btn btn-primary btn-sm"><i class="material-icons icon">search</i> Load</a>
                 </div>
                 <div class="form-group col-md-3">
                   <label style="margin-top:4%;float: right;" id="default_report_color_panel" class="material_checkbox disabled">

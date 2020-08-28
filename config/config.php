@@ -43,7 +43,7 @@ function randomPassword() {
 }
 
 $login_url = "https://ibgvclientdemo.Istarga.com/";
-$service_email_id = "applicant.service@Istarga.com";
-$service_contact_no = "+1 888 852 1781";
+$service_email_id = "customercare@istarga.com";
+$service_contact_no = "+918527476969";
 
 ?>

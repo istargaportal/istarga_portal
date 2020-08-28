@@ -415,21 +415,6 @@ echo '
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <th class="form_left">Status</th>
-                <td>
-                    <select onchange="insufficiency_change()" class="browser-default chosen-select custom-select" id="order_status" name="order_status">
-                        <option>Pending</option>
-                        <option>Insufficiency</option>
-                    </select>
-                </td>
-                <td>
-                    <div class="insufficiency_panel" style="background: #ccc; padding: 10px;" >
-                        <label class="pull-left">Comments</label>
-                        <textarea class="custom-select" id="insufficiency_comment" name="insufficiency_comment" placeholder="Enter Comments" style="border:solid !important;"></textarea>
-                    </div>
-                </td>
-            </tr>
-            <tr>
                 <th class="form_left">Closed Date</th>
                 <td><input type="date" class="form-control" id="of_closure_date" name="of_closure_date" value="<?php echo $of_closure_date; ?>" /></td>
                 <td>&nbsp;</td>
@@ -468,10 +453,10 @@ echo '
             <br>
         </div>
     </div>
-    <div class="col-md-12">
+    <!-- <div class="col-md-12">
         <b>Additional Comments</b>
         <textarea class="custom-select" rows="3" id="additional_comments_qc" name="additional_comments_qc"></textarea>
-    </div>
+    </div> -->
 
     <div class="col-md-12">
         <br><br>
@@ -502,7 +487,7 @@ echo '
             }
         ?>
     </div>
-    <div class="col-md-12">
+    <!-- <div class="col-md-12">
         <br><br>
         <div class="card-header card-header-primary">
             <h4 id="process_title" class="card-title"><i class="fa fa-pencil"></i> ETA Notes</h4>
@@ -529,7 +514,35 @@ echo '
         <div style="height: 150px; overflow-y: scroll;" id="eta_notes_panel">
             <br>
         </div>
+    </div> -->
+
+    <div class="col-md-5">
+        <b>Additional Comments For OF</b>
+        <textarea class="custom-select" rows="3" id="additional_comments_for_of" ></textarea>
+        <div class="row" style="margin: 10px 0;">
+            <div class="col-md-6 no_padding">
+                <select class="form-control btn-sm" id="of_user_id" >
+                    <option value="">Select OF Agent</option>
+                    <?php
+                    $check='SELECT user_id, first_name, last_name FROM user_master WHERE role_id = 1 ';
+                    $resul = mysqli_query($db,$check); 
+                    while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                    {
+                        echo '<option value="'.$row['user_id'].'">'.$row['first_name'].' '.$row['last_name'].'</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <a id="reassigned_order_btn" href="javascript:save_reassigned_order()" class="btn btn-success pull-left btn-sm"><i class="fa fa-list"></i> Re-Assign Order</a>
+            </div>
+        </div>
     </div>
+    <div class="col-md-7">
+        <h5 class="btn btn-primary col-md-12 form_left btn-xs"><i class="fa fa-comments" aria-hidden="true"></i> Re-assigned Logs</h5>
+        <div style="height: 200px; overflow-y: scroll;" id="print_reassigned_order"></div>
+    </div>
+
     <div class="col-md-12 form_center">
         <?php
         if(is_numeric($order_service_details_id_array))
@@ -566,8 +579,27 @@ echo '
         <script type="text/javascript">
             $('#actual_array_count').val('<?php echo $actual_key_val; ?>');
         </script>
+        <div class="row">
+            <div class="col-md-1 no_padding">
+                <label>Error Log</label>
+            </div>
+            <div class="col-md-4">
+                <select id="default_report_color_id" class="form-control">
+                    <option value="">Select Log</option>
+                    <?php
+                        $check='SELECT default_report_color_id, order_status FROM default_report_color ';
+                        $resul = mysqli_query($db,$check); 
+                        while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                        {
+                            echo '<option value="'.$row['default_report_color_id'].'">'.$row['order_status'].'</option>';
+                        }
+                    ?>
+                </select>
+            </div>
+        </div>
+        <br>
         <a onclick="<?php echo @$onclick_prev; ?>" class="btn pull-left <?php echo @$disabled_back; ?> btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Back</a>
-        <a id="send_to_qc" onclick="send_to_qc()" class="btn btn-warning btn-sm"><i class="fa fa-print"></i> Generate Skeleton</a>
+        <a id="confirm_to_qc" onclick="confirm_to_qc()" class="btn btn-warning btn-sm"><i class="fa fa-print"></i> Generate Skeleton</a>
         <a onclick="break_process()" class="btn btn-danger btn-sm"><i class="fa fa-stop"></i> Break</a>
         <a onclick="<?php echo @$onclick_next; ?>" class="btn pull-right <?php echo @$disabled_next; ?> btn-primary btn-sm"><i class="fa fa-arrow-right"></i> Next</a>
     </div>
@@ -633,11 +665,63 @@ echo '
 </div>
 <script>
     <?php
-    if($order_status == 'Sent To QC')
+    if($order_status == 'Verified' || $order_status == 'Re-Assign To OF')
     {
-        echo "$('#send_to_qc').addClass('disabled_btn');";
+        echo "$('#confirm_to_qc').addClass('disabled_btn');";
+        echo "$('#reassigned_order_btn').addClass('disabled_btn');";
     }
     ?>
+    
+    function save_reassigned_order()
+    {
+        let additional_comments_for_of = $('#additional_comments_for_of').val().trim();
+        let of_user_id = $('#of_user_id').val();
+        var order_id = $('#order_id').val();
+        var order_service_details_id = $('#order_service_details_id').val();
+        
+        if(additional_comments_for_of == "")
+        {
+            alert('Please enter Comment!');
+            $('#additional_comments_for_of').focus();
+        }
+        else if(of_user_id == "")
+        {
+            alert('Please select User!');
+            $('#of_user_id').focus();
+        }
+        else
+        {
+            $('#additional_comments_for_of').val('');
+            $('#of_user_id')[0].selectedIndex = 0;
+            $('#reassigned_order_btn').addClass('disabled_btn');
+            var action = 'save_reassigned_order';
+            $.ajax({
+                type:'POST',
+                url:'./API/Action-Dashboard.php',
+                data:{additional_comments_for_of, of_user_id, order_id, order_service_details_id, action},
+                success:function(html){
+                    $('#print_result').html(html);
+                }
+            });
+        }
+    }
+
+    function load_reassigned_order()
+    {
+        var order_id = $('#order_id').val();
+        var order_service_details_id = $('#order_service_details_id').val();
+        var action = 'load_reassigned_order';
+        $.ajax({
+            type:'POST',
+            url:'./API/Action-Dashboard.php',
+            data:{action, order_id, order_service_details_id},
+            success:function(html){
+                $('#print_reassigned_order').html(html);
+            }
+        });
+    }
+    load_reassigned_order();
+
     function break_process()
     {
         let r = confirm('Are you sure to stop Order Processing!');
@@ -1068,12 +1152,12 @@ function provided_to_verifed()
     }
 }
 
-function send_to_qc()
+function confirm_to_qc()
 {
-    let r = confirm('Are you sure to Send To QC?')
+    let r = confirm('Are you sure to Complete this verification?')
     if(r == true)
     {
-        $('#send_to_qc').addClass('disabled_btn');        
+        $('#confirm_to_qc').addClass('disabled_btn');        
         var myform = document.getElementById("verifier_details_form");
         var fd = new FormData(myform);
         $.ajax({
@@ -1087,12 +1171,13 @@ function send_to_qc()
               if(html == "updated")
               {
                 alert('Order successfully submitted!');
-                $('#send_to_qc').addClass('disabled_btn');
+                window.open('../../API/Print-Background-Verification-Report.php?order_id='+<?php echo base64_encode($order_id); ?>)
+                $('#confirm_to_qc').addClass('disabled_btn');
               }
               else
               {
                 alert('Error occurred!');
-                $('#send_to_qc').removeClass('disabled_btn');
+                $('#confirm_to_qc').removeClass('disabled_btn');
               }
             }
         });
@@ -1221,78 +1306,44 @@ if($_POST['action'] == 'load_notes_con')
     }
 }
 
-if($_POST['action'] == 'raise_insufficiency')
+if($_POST['action'] == 'save_reassigned_order')
 {
     session_start();
     $user_id = $_SESSION['user_id'];
     
-    $insufficiency_comment = addslashes($insufficiency_comment);
-    $check = "INSERT INTO order_insufficiency_details (order_service_details_id, order_id, insufficiency_comment, user_id) VALUES('$order_service_details_id', '$order_id', '$insufficiency_comment', '$user_id') ";
+    $additional_comments_for_of = addslashes($additional_comments_for_of);
+    $check = "INSERT INTO order_reassigned_log (order_id, order_service_details_id, additional_comments_for_of, of_user_id, oc_user_id) VALUES('$order_id', '$order_service_details_id', '$additional_comments_for_of', '$of_user_id', '$user_id') ";
     $result = mysqli_query($db,$check);
 
-    $check = "UPDATE order_service_details SET qc_insufficiency_status = 'Insufficiency', order_status = 'Insufficiency' WHERE order_service_details_id  = '$order_service_details_id ' ";
+    $check = "UPDATE order_service_details SET order_status = 'Re-Assign To OF' WHERE order_service_details_id = '$order_service_details_id' ";
+    $result = mysqli_query($db,$check);
+    
+    $check = "UPDATE order_master SET order_status = 'Pending' WHERE order_id = '$order_id' ";
     $result = mysqli_query($db,$check);
 
-    $check = "UPDATE order_master SET order_status = 'Insufficiency' WHERE order_id  = '$order_id '";
-    $result = mysqli_query($db,$check);
-
-    $check = "SELECT first_name, username, password, email_id, insufficiency_contact, client_id FROM order_master WHERE order_id = '$order_id' ";
-    $resul = mysqli_query($db,$check);
-    if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-    {
-        $first_name = $row['first_name'];
-        $username = $row['username'];
-        $password = $row['password'];
-        $email_id = $row['email_id'];
-        $insufficiency_contact = $row['insufficiency_contact'];
-        $client_id = $row['client_id'];
-    }
-    if($insufficiency_contact == "Client")
-    {
-        $check = "SELECT email FROM client WHERE client_id = '$client_id' ";
-        $resul = mysqli_query($db,$check);
-        if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-        {
-            $email = $row['email'];
-        }
-    }
-    include '../../../API/SMTP/sendMail.php';
-    include '../../../API/SMTP/RAISE-INSUFFICIENCY.php';
-    $subject = "PRE-EMPLOYMENT BACKGROUND SCREENING - INSUFFICIENCY";
-    smtpmailer($email_id, $from, $name, $subject, @$print_var);
-    smtpmailer($email, $from, $name, $subject, @$print_var);
-    echo 'success';
+    echo '
+    <script>
+        alert("Order Re-Assign to OF");
+        load_reassigned_order(); 
+    </script>
+    ';
 }
 
-if($_POST['action'] == 'assign_to_verifier')
+if($_POST['action'] == 'load_reassigned_order')
 {
-    session_start();
-    $assigned_by = $_SESSION['user_id'];
-    
-    $check = "SELECT verifier_id FROM order_verifier_details WHERE order_service_details_id = '$order_service_details_id' AND verifier_id = '$verifier_id' ";
+    $check = "SELECT r.additional_comments_for_of, r.added_datetime, u.first_name, u.last_name FROM order_reassigned_log r INNER JOIN user_master u ON u.user_id = r.of_user_id WHERE r.order_service_details_id = '$order_service_details_id' ORDER BY r.order_reassigned_log_id DESC ";
     $resul = mysqli_query($db,$check);
-    if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+    while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
+        $added_datetime = date('d M Y H:i', strtotime($row['added_datetime']));
+        echo '
+        <div style="box-shadow:0 0 10px #aaa; border:solid 1px #ccc; border-radius:4px; width:100%;float:left; padding:8px;" >
+            <div><b><i class="fa fa-calendar"></i> '.$added_datetime.'</b> - '.$row["additional_comments_for_of"].'</div>
+            <hr style="margin:3px 0;">
+            <b>'.$row["first_name"].' '.$row["last_name"].'</b>
+        </div>
+        ';
     }
-    else
-    {
-        $check = "INSERT INTO order_verifier_details (order_id, order_service_details_id, verifier_id, assigned_by) VALUES('$order_id', '$order_service_details_id', '$verifier_id', '$assigned_by') ";
-        $result = mysqli_query($db,$check);
-    }
-
-    $order_master_uploaded_document_id = explode(',', $order_master_uploaded_document_id);
-    foreach ($order_master_uploaded_document_id as $order_master_uploaded_document_id_s)
-    {
-        $check = "UPDATE order_master_uploded_documents SET verifier_user_id = '$verifier_id' WHERE order_master_uploaded_document_id = '$order_master_uploaded_document_id_s ' ";
-        $result = mysqli_query($db,$check);
-    }
-
-    echo "
-    <script>
-    alert('Order assigned to verifier!');
-    load_attached_documents(".@$order_id.");
-    </script>
-    ";
 }
 
 ?>
