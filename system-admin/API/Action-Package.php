@@ -67,7 +67,7 @@ if($_POST["action"]=='display')
               <th>Package</th>
               <th>Country</th>
               <th>Services</th>
-              <th>Action</th>
+              <th class="noExport">Action</th>
             </thead>
           ';
   $i = 0;
@@ -92,7 +92,7 @@ if($_POST["action"]=='display')
           <td class="tablehead1 form_left">'.$row["package_name"].'</td>
           <td class="tablehead1">'.$row['country_name'].'</td>
           <td class="tablehead1">'.$all_services.'</td>
-          <td class="tablehead1">
+          <td class="tablehead1 noExport">
               <a href="package.php?id='.base64_encode($row["id"]).'" title="Edit Package" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>
               <a onclick="delete_package('.$row["id"].')" title="Delete Package" class="btn btn-xs btn-round btn-danger"><i class="material-icons icon">delete</i></a>
           </td>

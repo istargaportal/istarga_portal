@@ -190,7 +190,7 @@ if($_POST['action']=='display')
 	 <th>Service Name</th>
 	 <th>Price</th>
 	 <th>SLA</th>
-	 <th style="width:100px;">Action</th>
+	 <th class="noExport" style="width:100px;">Action</th>
  </thead>
  ';
 	$sr = 0;
@@ -217,7 +217,7 @@ if($_POST['action']=='display')
 			<td class="tablehead1">'.$row["service_name"].'</td>
 			<td class="tablehead1">'.$row["price"].'</td>
 			<td class="tablehead1">'.$row["sla"].'</td>
-			<td>
+			<td class="noExport">
 				<a href="Assign-Service.php?edit_id='.base64_encode($row["id"]).'" class="btn btn-warning btn-xs btn-round"><i class="material-icons icon">create</i></a>
 				<a onclick="delete_assigned_service('.$row["id"].')" class="btn btn-danger btn-xs btn-round"><i class="material-icons icon">delete</i></a>
 			</td>

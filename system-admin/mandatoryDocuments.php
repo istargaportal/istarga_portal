@@ -35,10 +35,10 @@
                               <th>
                                 Document Name
                               </th>
-                              <th>
+                              <th class="noExport">
                                 Edit
                               </th>
-                              <th>
+                              <th class="noExport">
                                 Delete
                               </th>
                             </thead>

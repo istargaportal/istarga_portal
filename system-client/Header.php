@@ -415,6 +415,16 @@ else
 </head>
 
 <body class="dark-edition">
+  <div id='modal_loading' class='modal' style=" background-color: rgba(255,255,255,.9); border:none !important; z-index: 999999999!important;">
+    <div class='modal-content row' style="width: 100% !important;margin-top:-40px;background: transparent !important; box-shadow: none !important; border:none !important; ">
+      <div class="col-md-12 form_center" >
+        <br><br>
+        <br><br>
+        <br><br>
+        <img style="width: 200px;" src="../system-admin/assets/images/loading.gif" />
+      </div>
+    </div>
+  </div>
   <div id="print_result"></div>
   <input type="hidden" name="client_id" id="client_id" value="<?php echo @$client_id; ?>">
   <div class="wrapper ">

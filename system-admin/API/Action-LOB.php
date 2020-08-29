@@ -70,7 +70,7 @@ else if($_POST["action"]=='display')
             <th width="10">SR.NO.</th>
             <th>LOB</th>
             <th>Clients</th>
-            <th>Action</th>
+            <th class="noExport">Action</th>
           </thead>
         ';
   $sr = 0;
@@ -91,9 +91,9 @@ else if($_POST["action"]=='display')
       echo "<td>".$sr."</td>";
       echo "<td class='form_left'>".$row['lob_name']."</td>";
       echo "<td class='form_left'>".$all_documents."</td>";
-      echo '<td>
+      echo '<td class="noExport">
                 <a href="LOB.php?lob_id='.base64_encode($row["lob_id"]).'" title="Edit LOB" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>
-                <a onclick="delete_lob('.$row["lob_id"].')" title="Delete LOB" class="btn btn-xs btn-round btn-danger"><i class="material-icons icon">delete</i></a>
+                <a onclick="delete_lob('.$row["lob_id"].')" title="Delete LOB" class="btn btn-xs btn-round btn-danger btn_delete"><i class="material-icons icon">delete</i></a>
             </td>';
     echo "</tr>";
   }

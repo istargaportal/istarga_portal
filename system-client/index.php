@@ -2,16 +2,12 @@
  session_start();
 
 
-
  if(isset($_SESSION['uname']) && isset($_SESSION['password']))
  {
-   header("location:Dashboard.php");
- 
-   
+   header("location:Dashboard.php");  
  }
  else
- {
-    
+ {  
   //header("location:index.php");
   //echo "Hello";
  }
@@ -50,8 +46,8 @@
 
     <link rel="shortcut icon" href="../favicon.ico"> 
     <link rel="stylesheet" type="text/css" href="assets/css/IndexDemo.css" />
-    <link rel="stylesheet" type="text/css" href="assets/css/indexStyle.css" />
-   <script type="text/javascript" src="assets/js/IndexSlideEffects.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="assets/css/indexStyle.css" /> -->
+   <!-- <script type="text/javascript" src="assets/js/IndexSlideEffects.js"></script> -->
    <style>
       
  #LogoAnimation{
@@ -75,6 +71,24 @@
   }
   
 } 
+#page{
+  background: linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),url(images/login/01.jpg);  
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0 !important;
+}
+.card {
+    height: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 400px;
+    background-color: rgba(185, 185, 185, 0.212) !important;
+}
+a{
+  color: #fff;
+  font-weight: bold;
+}
 
    </style>
 
@@ -83,14 +97,14 @@
   <body id="page">
     <div class="container">
     
-      <ul class="cb-slideshow">
+      <!-- <ul class="cb-slideshow">
         <li><span>Image 01</span></li>
         <li><span>Image 02</span></li>
         <li><span>Image 03</span></li>
         <li><span>Image 04</span></li>
         <li><span>Image 05</span></li>
         <li><span>Image 06</span></li>
-    </ul>
+    </ul> -->
 
 
 
@@ -201,13 +215,7 @@
                 />
               </div>
               <a href="forgotPassword.php">Forgot your password?</a>
-              <div class="row align-items-center remember">
-                <!-- <input
-                  type="checkbox"
-                  name="remember"
-                  id="remember"
-                  class="custom-control-input"
-                />Remember Me -->
+              <!-- <div class="row align-items-center remember">
                 <div class="form-check" style=" margin-top: 2% !important;"  >
                   <label class="form-check-label"  style="margin-bottom:14px !important;">Remember
                     <input class="form-check-input" type="checkbox" value="" checked style="cursor: pointer;">
@@ -216,13 +224,14 @@
                     </span>
                   </label>
                 </div>
-              </div>
+              </div> -->
               <div class="form-group">
                 <input
                   type="submit"
                   value="Login"
                   class="btn float-right login_btn"
                 />
+                <br><br>
               </div>
             </form>
           </div>
@@ -266,24 +275,6 @@
       });
     </script> -->
 
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-      crossorigin="anonymous"
-    ></script>
-    
-    
-    
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-      crossorigin="anonymous"
-    ></script>
     <script src="js/my-login.js"></script>
     <script src="js/index.js"></script>
   <script>

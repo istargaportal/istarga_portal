@@ -10,7 +10,7 @@ Dear ".@$first_name.",
 <br><br>
 We have been authorized by Applicant to perform Pre-Employment Background Verifications as required by the organization.                                                                             
 <br>
-We request that you log in to the portal <b style='color:blue'>(".@$login_url.")</b> with the login credentials mentioned below and complete all requested information.                                           
+We request that you log in to the portal <b style='color:blue'>(".@$applicant_login_url.")</b> with the login credentials mentioned below and complete all requested information.                                           
 <br>
 
 Kindly sign the release document included in the email and submit it along with other necessary documents as required for verification. You can choose to either upload the signed release in our portal (while entering the details) or if you have technical challenges with uploading the documentation, you can reach us on <a target='_blank' href='tel:".@$service_contact_no."'><b style='color:blue'>".@$service_contact_no."</b></a> or write us at :- <a target='_blank' href='mailto:".@$service_contact_no."'><b style='color:blue'>".@$service_email_id."</b></a> for assistance.

@@ -155,7 +155,7 @@ class country
                             <td class="tablehead1">'.$row["Client_Code"].'</td>
                             <td class="tablehead1">'.$row["Client_SPOC"].'</td>
                             <td class="tablehead1">'.$row["Live_DateDate"].'</td>
-                            <td class="text-primary tablehead1">
+                            <td class="text-primary noExport tablehead1">
                             '.@$block_btn.'
                               <ul class="list_none" style="padding:0;" >
                                 <li class="nav-item dropdown">

@@ -34,7 +34,7 @@ class States
                     <th>Assign To</th>
                     <th>Status</th>
                     <th>Unlock</th>
-                    <th>Actions</th>
+                    <th class="noExport">Actions</th>
                     </thead>';
                     if($client_id != 0)
                     {
@@ -91,7 +91,7 @@ class States
 
                             <td class="tablehead1">'.$order_status.'</td>
                             <td class="tablehead1">'.$lock_status.'</td>
-                            <td>
+                            <td class="noExport">
                                 <a onclick="view_order_details('.$row['order_id'].')" class="btn btn-default btn-round btn-sm "><i class="material-icons icon">visibility</i> View</a>
                             </td>
                             </tr>

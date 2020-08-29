@@ -91,8 +91,8 @@ const popuTable = () => {
       var cell1 = row.insertCell(1);
       var cell2 = row.insertCell(2);
       var cell3 = row.insertCell(3);
-      cell0.innerHTML = j;
-      cell1.innerHTML = stat[i].document_name;
+      cell0.innerHTML = '<div class="tablehead1">'+j+'</div>';
+      cell1.innerHTML = '<div class="tablehead1 form_left">'+stat[i].document_name+'</div>';
       cell1.setAttribute("id",stat[i].id);
       var btn1= document.createElement('button');
       btn1.type = "button";
@@ -100,7 +100,8 @@ const popuTable = () => {
       btn1.innerHTML = "<i class='material-icons icon'>edit</i> EDIT";
       btn1.onclick = (() => { onEdit(stat[i].id, "edit")});
       cell2.appendChild(btn1);
-      cell2.setAttribute("id",stat[i].id+"c");
+      cell2.setAttribute("class","noExport");
+      cell3.setAttribute("class","noExport");
       var btn = document.createElement('button');
       btn.type = "button";
       btn.className = "btn btn-danger btn-xs";

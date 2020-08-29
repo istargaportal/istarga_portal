@@ -1,7 +1,42 @@
 <?php
 $page_name = "Dashboard";
 include 'Header.php';
+require_once "../config/config.php";
+
+$get_connection=new connectdb;
+$db=$get_connection->connect();
+
+$check_1="SELECT COUNT(order_id) AS total_cases FROM order_master WHERE client_id = '$client_id' ";
+$resul_1 = mysqli_query($db,$check_1);
+if ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+{
+  $total_cases = $row_1['total_cases'];
+}
+$check_1="SELECT COUNT(order_id) AS total_pending FROM order_master WHERE client_id = '$client_id' AND order_status NOT IN('Pending', 'Verified') ";
+$resul_1 = mysqli_query($db,$check_1);
+if ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+{
+  $total_process = $row_1['total_pending'];
+}
+$check_1="SELECT COUNT(order_id) AS total_verified FROM order_master WHERE client_id = '$client_id' AND order_status = 'Verified' ";
+$resul_1 = mysqli_query($db,$check_1);
+if ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+{
+  $total_verified = $row_1['total_verified'];
+}
+
 ?>
+<style type="text/css">
+  .card-footer{
+    font-size: 20pt;
+    color: #fff;
+    padding: 10px !important;
+    font-weight: bold;
+  }
+  .card-title{
+    border-bottom: solid 1px #fff;
+  }
+</style>
 <div class="content">
   <div class="container-fluid">
     <div class="row">
@@ -10,139 +45,53 @@ include 'Header.php';
           <div class="card-body">
             <div class="row">
               <div class="col-xl-3 col-lg-12">
-                <div class="card card-chart" style="background-color:#54b058 !important;" id="total-cases">     
+                <div class="card card-chart" style="background-color:#54b058 !important;" id="total-cases">
                   <div class="card-body">
                     <h4 class="card-title"style="color:#fff;">Total Cases</h4>
-                    <p class="card-category"style="color:#fff;">Loading</p>
                   </div>
                   <div class="card-footer">
-                    <div class="stats"style="color:#fff;">
-                      <i class="material-icons"style="color:#fff;">access_time</i> Loading
-                    </div>
+                    <i class="fa fa-sort-amount-desc"></i>
+                    <?php echo $total_cases; ?>
                   </div>
                 </div>
               </div>
               <div class="col-xl-3 col-lg-12">
-                <div class="card card-chart" style="background-color: #eb1e2f !important;" id="total-resolved" >               
+                <div class="card card-chart" style="background-color: #eb1e2f !important;" id="total-resolved" >
                   <div class="card-body" >
                     <h4 class="card-title"style="color:#fff;">Total Resolved</h4>
-                    <p class="card-category"style="color:#fff;">Loading</p>
                   </div>
                   <div class="card-footer">
-                    <div class="stats"style="color:#fff;">
-                      <i class="material-icons"style="color:#fff;">access_time</i> Loading
-                    </div>
+                    <i class="fa fa-sort-amount-desc"></i>
+                    <?php echo $total_verified; ?>
                   </div>
                 </div>
               </div>
               <div class="col-xl-3 col-lg-12">
-                <div class="card card-chart" style="background-color: #fe9601 !important;" id="total-in-progress">              
+                <div class="card card-chart" style="background-color: #fe9601 !important;" id="total-in-progress">
                   <div class="card-body" >
                     <h4 class="card-title"style="color:#fff;">Total In Progress</h4>
-                    <p class="card-category"style="color:#fff;">Loading</p>
                   </div>
                   <div class="card-footer">
-                    <div class="stats"style="color:#fff;">
-                      <i class="material-icons"style="color:#fff;">access_time</i> campaign sent 2 days ago
-                    </div>
+                    <i class="fa fa-sort-amount-desc"></i>
+                    <?php echo $total_process; ?>
                   </div>
                 </div>
                 <input id="client_id" name="client_id" type="hidden" value="<?php echo $unsa;?>">
               </div>
-              <!--Calender Content-->
-              <!--<div class="col-xl-3">
-              <div class="card card-chart">
-                
-                <div class="card-body">
 
-                <div class="month">      
-  <ul>
-    <li class="prev">&#10094;</li>
-    <li class="next">&#10095;</li>
-    <li>
-      August<br>
-      <span style="font-size:18px">2017</span>
-    </li>
-  </ul>
-</div>
-
-<ul class="weekdays">
-  <li>Mo</li>
-  <li>Tu</li>
-  <li>We</li>
-  <li>Th</li>
-  <li>Fr</li>
-  <li>Sa</li>
-  <li>Su</li>
-</ul>
-
-<ul class="days">  
-  <li>1</li>
-  <li>2</li>
-  <li>3</li>
-  <li>4</li>
-  <li>5</li>
-  <li>6</li>
-  <li>7</li>
-  <li>8</li>
-  <li>9</li>
-  <li><span class="active">10</span></li>
-  <li>11</li>
-  <li>12</li>
-  <li>13</li>
-  <li>14</li>
-  <li>15</li>
-  <li>16</li>
-  <li>17</li>
-  <li>18</li>
-  <li>19</li>
-  <li>20</li>
-  <li>21</li>
-  <li>22</li>
-  <li>23</li>
-  <li>24</li>
-  <li>25</li>
-  <li>26</li>
-  <li>27</li>
-  <li>28</li>
-  <li>29</li>
-  <li>30</li>
-  <li>31</li>
-</ul>
-                  
-                </div>
-               
-              </div>
             </div>
           </div>
-          </div>
-
-            
-  
+        </div>
+      </div>
     </div>
-  </div>-->
+  </div>
 
 
-
-
-
-
-
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!--Table closes Here-->
-
-
-
-<script>
-  const x = new Date().getFullYear();
-  let date = document.getElementById('date');
-  date.innerHTML = '&copy; ' + x + date.innerHTML;
-</script>
+  <script>
+    const x = new Date().getFullYear();
+    let date = document.getElementById('date');
+    date.innerHTML = '&copy; ' + x + date.innerHTML;
+  </script>
 </div>
 </div>
         <!--<div class="fixed-plugin">
@@ -253,10 +202,10 @@ include 'Header.php';
     }
   </script>
   <!--   Core JS Files   -->
-  <script src="assets/js/core/jquery.min.js"></script>
+  <!-- <script src="assets/js/core/jquery.min.js"></script> -->
   <script src="assets/js/core/popper.min.js"></script>
   <script src="assets/js/core/bootstrap-material-design.min.js"></script>
-  <script src="https://unpkg.com/default-passive-events"></script>
+  <!-- <script src="https://unpkg.com/default-passive-events"></script> -->
   <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -270,8 +219,8 @@ include 'Header.php';
   <script src="assets/js/material-dashboard.js?v=2.1.0"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="assets/demo/demo.js"></script>
-  <script src="moment.js"></script>
-  <script src="Dashboard.js "></script>
+  <!-- <script src="moment.js"></script> -->
+  <!-- <script src="Dashboard.js "></script> -->
   <script>
     $(document).ready(function() {
       $().ready(function() {

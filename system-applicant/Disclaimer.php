@@ -257,24 +257,34 @@ if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     <script type="text/javascript">
       function accept_terms()
       {
-        // var r = confirm('Are you sure to confirm the terms?')
-        // if(r == true)
-        // {
-        $.ajax({
-          type:'POST',
-          url:'./API/Disclaimer.php',
-          success:function(html){
-            if(html == 'success')
-            {
-              window.location.href = 'My-Application.php'
-            }
-            else
-            {
+        var date = $('#date').val();
+        if(date == "")
+        {
+          alert("Please select date!");
+          $('#date').focus();
+        }
+        else
+          {
+          // var r = confirm('Are you sure to confirm the terms?')
+          // if(r == true)
+          // {
+          $.ajax({
+            type:'POST',
+            url:'./API/Disclaimer.php',
+            data:{date},
+            success:function(html){
+              if(html == 'success')
+              {
+                window.location.href = 'My-Application.php'
+              }
+              else
+              {
                 alert('Error occurred!')
+              }
             }
-          }
-        });
-        // }
+          });
+          // }
+        }
       }
 
       function dont_accept()

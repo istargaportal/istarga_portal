@@ -35,10 +35,10 @@ include 'Header.php';
                         <th>
                           Service Type
                         </th>
-                        <th>
+                        <th class="noExport">
                           Edit
                         </th>
-                        <th>
+                        <th class="noExport">
                           Delete
                         </th>
                       </thead>

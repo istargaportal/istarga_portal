@@ -148,6 +148,16 @@ if(@$page_name_compare == "attendance master")
 </head>
 <body class="dark-edition">
 	<div id="print_result"></div>
+  <div id='modal_loading' class='modal' style=" background-color: rgba(255,255,255,.9); border:none !important; z-index: 999999999!important;">
+    <div class='modal-content row' style="width: 100% !important;margin-top:-40px;background: transparent !important; box-shadow: none !important; border:none !important; ">
+      <div class="col-md-12 form_center" >
+        <br><br>
+        <br><br>
+        <br><br>
+        <img style="width: 200px;" src="assets/images/loading.gif" />
+      </div>
+    </div>
+  </div>
   <div class="wrapper">
     <div class="sidebar" data-color="purple" data-background-color="black" data-image="assets/img/sidebar-2.jpg">
       <div class="logo"> <a class="navbar-brand" href="#">
@@ -307,15 +317,8 @@ if(@$page_name_compare == "attendance master")
                 </div>
               </form> -->
               <ul class="navbar-nav">
-               <li class="nav-item">
-                <a class="nav-link" href="./Dashboard.php">
-                 <i style="color: white;" class="material-icons">dashboard</i>
-                 <p class="d-lg-none d-md-block">
-                  Stats
-                </p>
-              </a>
-            </li>
-            <li class="nav-item dropdown">
+               
+            <!-- <li class="nav-item dropdown">
               <a class="nav-link" href="javscript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                <i style="color: white;" class="material-icons">notifications</i>
                <span class="notification">5</span>
@@ -330,7 +333,7 @@ if(@$page_name_compare == "attendance master")
              <a class="dropdown-item" href="javascript:void(0)">Another Notification</a>
              <a class="dropdown-item" href="javascript:void(0)">Another One</a>
            </div>
-         </li>
+         </li> -->
          <li class="nav-item dropdown">
           <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
            <i style="color: white;" class="material-icons">person</i>

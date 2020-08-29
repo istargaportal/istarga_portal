@@ -89,6 +89,43 @@ include 'Header.php';
   </div>
 </div>
 
+
+<script>
+  let darkmode = localStorage.getItem("darkmode");
+  const darkmodetoggle = document.querySelector('input[name=theme]');
+
+  const enabledarkmode = () => {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    localStorage.setItem("darkmode", "enabled");
+  }
+
+  const disabledarkmode = () => {
+    document.documentElement.setAttribute('data-theme', 'light')
+    localStorage.setItem("darkmode", null);
+  }
+
+  if (darkmode === "enabled") {
+    enabledarkmode();
+  }
+
+  darkmodetoggle.addEventListener("change", () => {
+    darkmode = localStorage.getItem("darkmode");
+    if (darkmode !== "enabled") {
+      trans()
+      enabledarkmode();
+    } else {
+      trans()
+      disabledarkmode();
+    }
+  })
+
+  let trans = () => {
+    document.documentElement.classList.add('transition');
+    window.setTimeout(() => {
+      document.documentElement.classList.remove('transition');
+    }, 1000)
+  }
+</script>
 <?php
 include '../datatable/_datatable.php';
 ?>
@@ -179,6 +216,7 @@ include '../datatable/_datatable.php';
     // }
     else
     {
+      $('#modal_loading').css('display', 'block');
       $('#submit_btn').prop('disabled', true);
       let form_data = new FormData();
       let load_condition = 'import_bulk_order';
@@ -201,47 +239,13 @@ include '../datatable/_datatable.php';
         success: function(html){
           $('#modal_loading').css('display', 'none');
           $('#print_result').html(html);
+          $('#fileupload').val('');
           load_bulk_order();
           $('#submit_btn').prop('disabled', false);
         }
       });
     }
   }
-
-  let darkmode=localStorage.getItem("darkmode");
-  const darkmodetoggle=document.querySelector('input[id=theme]');
-
-  const enabledarkmode=()=>{
-    document.documentElement.setAttribute('data-theme', 'dark')
-    localStorage.setItem("darkmode","enabled");
-  }
-
-  const disabledarkmode=()=>{
-    document.documentElement.setAttribute('data-theme', 'light')
-    localStorage.setItem("darkmode",null);
-  }
-
-  if(darkmode==="enabled"){
-   enabledarkmode();
- }
-
- darkmodetoggle.addEventListener("change", ()=>{
-   darkmode=localStorage.getItem("darkmode");
-   if(darkmode !== "enabled"){
-    trans()
-    enabledarkmode();
-  }else{
-    trans()
-    disabledarkmode();
-  }
-})
-
- let trans = () => {
-  document.documentElement.classList.add('transition');
-  window.setTimeout(() => {
-    document.documentElement.classList.remove('transition');
-  }, 1000)
-}
 </script>
 <!-- <script src="assets/js/core/jquery.min.js"></script> -->
 <script src="assets/js/core/popper.min.js"></script>

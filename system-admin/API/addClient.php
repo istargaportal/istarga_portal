@@ -87,6 +87,12 @@ class login
           if($data['edit_id'] == "")
           {
             echo "inserted";
+
+            include '../../API/SMTP/sendMail.php';
+            include '../../API/SMTP/CLIENT-LOGIN-EMAIL.php';
+            $subject = "LOGIN CREDENTILAS FOR - Employment Background Screening";
+            smtpmailer($email_id, $from, $name, $subject, @$print_var);
+
           }
         }
         else

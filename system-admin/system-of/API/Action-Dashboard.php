@@ -26,7 +26,7 @@ if($_POST['action'] == 'load_service_list')
 if($_POST['action'] == 'load_start_processing')
 {
     $button_array = ""; $total_array = 0;
-    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.order_status IN ('Pending', 'Sent To OF', 'Re-Assign To OF') ";
+    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.order_status IN ('Pending', 'Sent To OF', 'Re-Assign To OF', 'In Progress') ";
     $resul = mysqli_query($db,$check); 
     while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {

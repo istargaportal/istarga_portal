@@ -43,7 +43,7 @@ if($_POST['action'] == 'update_applicant_details')
             }
         }
         
-        $check = "UPDATE order_master SET order_status = 'Pending', complete_info_received_date = '".date("Y-m-d H:i:s")."' WHERE order_id  = '$order_id' ";
+        $check = "UPDATE order_master SET order_status = 'In Progress', complete_info_received_date = '".date("Y-m-d H:i:s")."' WHERE order_id  = '$order_id' ";
         $result = mysqli_query($db,$check);
         echo 'updated';
     }

@@ -170,7 +170,7 @@ if($_POST['action']=='display')
  <th>User Group</th>
  <th>Email</th>
  <th>Contact Number</th>
- <th>Action</th>
+ <th class="noExport">Action</th>
  </thead>
  ';
  $sr = 0;
@@ -198,7 +198,7 @@ if($_POST['action']=='display')
   <td class="tablehead1">'.$row["role_id"].'</td>
   <td class="tablehead1">'.$row["email_id"].'</td>
   <td class="tablehead1">'.$row["contact_number"].'</td>
-  <td class="tablehead1">
+  <td class="tablehead1 noExport">
   <ul class="list_none" style="padding:0;" >
   <li class="nav-item dropdown">
   <a class="btn btn-sm btn-default" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i  class="material-icons icon">tune</i> <p class="d-lg-none d-md-block"> Account</p><div class="ripple-container"></div></a>

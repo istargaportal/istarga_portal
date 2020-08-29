@@ -71,7 +71,7 @@ else if($_POST["Action"]=='Display')
             <th>Service Type</th>
             <th>WebService</th>
             <th>Documents</th>
-            <th>Action</th>
+            <th class="noExport">Action</th>
           </thead>
         ';
   $sr = 0;
@@ -109,8 +109,9 @@ else if($_POST["Action"]=='Display')
       echo "<td class='tablehead1'>".$row['service_type_name']."</td>";
       echo '
       <td class="tablehead1">
-        <div class="form-check">
-          <label class="form-check-label"> <h4 class="selection" style="margin-top:-16px;"> '.@$is_webservices_label.'</h4> 
+        '.@$is_webservices_label.'
+        <div class="form-check" hidden>
+          <label class="form-check-label"> 
               <input class="form-check-input" name="service_id[]" disabled value="'.$row['id'].'" type="checkbox" '.@$is_webservices_checked.' >
               <span class="form-check-sign">
                 <span class="check"></span>
@@ -119,7 +120,7 @@ else if($_POST["Action"]=='Display')
         </div>
       </td>';
       echo "<td class='tablehead1 form_left'>".$all_documents."</td>";
-      echo '<td>
+      echo '<td class="noExport">
                 <a href="createService.php?id='.base64_encode($row["id"]).'" title="Edit Service" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>
                 <a onclick="delete_service('.$row["id"].')" title="Delete Service" class="btn '.@$disabled_btn.' btn-xs btn-round btn-danger"><i class="material-icons icon">delete</i></a>
             </td>';

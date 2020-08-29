@@ -1327,7 +1327,7 @@ if($_POST['action'] == 'save_reassigned_order')
     $check = "UPDATE order_service_details SET order_status = 'Re-Assign To OF' WHERE order_service_details_id = '$order_service_details_id' ";
     $result = mysqli_query($db,$check);
     
-    $check = "UPDATE order_master SET order_status = 'Pending' WHERE order_id = '$order_id' ";
+    $check = "UPDATE order_master SET order_status = 'In Progress' WHERE order_id = '$order_id' ";
     $result = mysqli_query($db,$check);
 
     echo '

@@ -117,6 +117,9 @@ const popuTable = () => {
       btn1.onclick = (() => { onEdit(stat[i].id, "edit")});
       cell2.appendChild(btn1);
       cell2.setAttribute("id",stat[i].id+"c");
+      cell2.setAttribute("class","noExport");
+      cell3.setAttribute("class","noExport");
+
       var btn = document.createElement('button');
       btn.type = "button";
       btn.className = "btn btn-danger btn-sm "+disabled_btn;

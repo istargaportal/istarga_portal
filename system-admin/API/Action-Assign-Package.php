@@ -54,7 +54,7 @@ if($_POST['action']=='display')
 	 <th>Country</th>
 	 <th>Package Name</th>
 	 <th>Price</th>
-	 <th style="width:100px;">Action</th>
+	 <th class="noExport" style="width:100px;">Action</th>
  </thead>
  ';
 	$sr = 0;
@@ -70,7 +70,7 @@ if($_POST['action']=='display')
 			<td class="tablehead1">'.$row["country_name"].'</td>
 			<td class="tablehead1">'.$row["package_name"].'</td>
 			<td class="tablehead1">'.$row["price"].'</td>
-			<td>
+			<td class="noExport">
 				<a href="Assign-Package.php?edit_id='.base64_encode($row["id"]).'" class="btn btn-warning btn-xs btn-round"><i class="material-icons icon">create</i></a>
 				<a onclick="delete_assigned_package('.$row["id"].')" class="btn btn-danger btn-xs btn-round"><i class="material-icons icon">delete</i></a>
 			</td>

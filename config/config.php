@@ -42,8 +42,10 @@ function randomPassword() {
     return implode($pass); //turn the array into a string
 }
 
-$login_url = "https://ibgvclientdemo.Istarga.com/";
 $service_email_id = "customercare@istarga.com";
 $service_contact_no = "+918527476969";
+
+$client_login_url = "https://ibgvclientdemo.Istarga.com/";
+$applicant_login_url = "https://ibgvclientdemo.Istarga.com/";
 
 ?>

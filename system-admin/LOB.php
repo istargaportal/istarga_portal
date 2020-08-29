@@ -107,6 +107,7 @@ include 'Header.php';
 </div>
 
 <script>
+  
   let darkmode = localStorage.getItem("darkmode");
   const darkmodetoggle = document.querySelector('input[name=theme]');
 
@@ -146,7 +147,6 @@ include 'Header.php';
   $('.chosen-select').chosen();
 </script>
 <script type="text/javascript">
-
   function delete_lob(lob_id)
   {
     var r = confirm("Are you sure to delete this LOB?")
@@ -230,13 +230,19 @@ include 'Header.php';
       success:function(html){
         $('#data_table').html(html);
         load_datatable();
+        <?php
+          if(isset($_GET['lob_id']))
+          {
+            echo '$(".btn_delete").addClass("disabled_btn");';
+          }
+        ?>
       }
     });
   }
 </script>
 <script src="assets/js/core/popper.min.js"></script>
 <script src="assets/js/core/bootstrap-material-design.min.js"></script>
-<script src="https://unpkg.com/default-passive-events"></script>
+<!-- <script src="https://unpkg.com/default-passive-events"></script> -->
 <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -247,9 +253,8 @@ include 'Header.php';
 <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="assets/js/material-dashboard.js?v=2.1.0"></script>
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
-
 <?php
-include '../datatable/_datatable.php';
+  include '../datatable/_datatable.php';
 ?>
 <script type="text/javascript">
   load_lob();

@@ -72,29 +72,16 @@ while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 		$all_services_list = $all_services_list.', '.$row['service_name'];
 	}
 }
-$header = '
-<div style="height:1004px;" id="page-border">
-	<div class="col-md-5">
-		<img src="logo.png" style="width:70%;" />
-		<h6>ACTIONABLE INSIGHTS YOU TRUST</h6>
-	</div>
-	<div class="col-md-6">
-		<h2 style="font-size:16pt;">Background Verification Report</h2>
-		<h6 style="color:#777;">CONFIDENTIAL INFORMATION!</h6>
-	</div>
-	<div class="col-md-1">
-		<img src="check.png" style="width:100%;" />
-	</div>
-	<div style="border-bottom:solid 1px #ccc;width:98%; margin:1%;"></div>
-	';
-
-$footer = '
-	<br>
-	<br>
-	<div class="col-md-12 center" style="border-top:solid 1px #ccc;font-size:10pt;padding:4px 0;">
-		<a href="https://www.istarga.com" target="_blank">www.istarga.com/</a> 
-	</div>
-</div>';
+$header = '<div class="page-border">';
+$footer = '</div>';
+$end_report ='<div class="col-md-12 center">
+				<br>
+				<br>
+				<b>END OF REPORT</b>
+				<br>
+			</div>';
+// <h3 style="color:#666; margin:10px 0; border-bottom:solid 1px #aa50ab">Verification Summary </h3>
+// <p>For '.@$applicant_name.' (Applicant ID: '.@$order_id.' ), the requested <b>'.@$all_services_list.'</b> services were performed successfully and all the information provided by the Applicant is true and accurate.</p>
 // <i>The Information is Confidential and may be used only by Authorized personnel<br><b>ISTARGA SOLUTIONS LLP<b></i><br>
 // <a href="mailto:'.@$service_email_id.'" target="_blank">'.@$service_email_id.'</a> | 
 // <a href="tel:'.@$service_contact_no.'" target="_blank">'.@$service_contact_no.'</a>
@@ -102,19 +89,19 @@ $html = '
 <style>
 p{
 	font-size:12pt;
-	color:#777;
+	color:#000;
 }
 
 @page {
-	margin: 40px 50px;
+	margin: 50px;
 }
-#page-border{
- padding: 1em;
- border-top:solid 8px #000;
- border-bottom:solid 8px #000;
- border-left:solid 1px #000;
- border-right:solid 1px #000;
- background-color: #FFFFFF ;
+.page-border{
+	height:1080px;
+	padding: 1em;
+	padding-top: 85px;
+	padding-bottom: 185px !important;
+	margin-bottom: 185px !important;
+	background-color: #fff;
 }
 .underline{
 	text-decoration:underline;
@@ -151,7 +138,7 @@ body, *{
 	border-left:dotted 2px #000;
 }
 .border_right{
-	border-right:dotted 2px #000;
+	border-right:solid 1px #ccc;
 }
 .border_top{
 	border-top:dotted 2px #000;
@@ -164,14 +151,13 @@ h1, h2, h3, h4, h5, h6{
 	padding:0;
 }
 h6{
-	color:#777;
+	color:#000;
 	font-weight:normal;
 	margin-bottom:4px;
 	font-size:10pt;
 }
 .border_verify_status
 {
-	border:solid 2px '.$color_code.';
 	text-align:center;
 	font-weight:bold;
 }
@@ -180,11 +166,19 @@ h6{
 	background-color:'.$color_code.';;
 }
 .table_services table, .table_services, .table_services tr, .table_services th{
-	color:#777;
-	border-top:solid #000;
-	border-bottom:solid #000;
+	color:#000;
+	border-top:solid #666;
+	border-bottom:solid #666;
 	border-collapse:collapse;
 	padding:10px;
+}
+.table_services th
+{
+	border-bottom:solid 1px #666;
+}
+.table_services td
+{
+	border-bottom:solid 1px #666;
 }
 .table_services th{ font-size:11pt;	}
 .table_services td{ font-size:14pt; font-weight:bold; padding:15px; }
@@ -198,20 +192,30 @@ h6{
   text-align: left;
   padding: 4px 6px;
   font-size:11pt;
-	color: #555;
+	color: #222;
+}
+
+.input_data_table th{
+	padding:8px 6px;
 }
 
 .input_data_table th, .input_data_table tr, .input_data_table td, .input_data_table
 {
-	border:solid 1px #ccc;
+	border-top:solid 1px #ccc;
+	border-bottom:solid 1px #ccc;
 	border-collapse:collapse;
 }
-.input_data_table tr:nth-child(odd){background-color: #b1d9f0}
+// .input_data_table tr:nth-child(odd){background-color: #b1d9f0}
 
 .input_data_table th {
-  background-color: #b1d9f0;
+  // background-color: #b1d9f0;
   color: #000;
   font-weight:bold;
+}
+.border_report_status{
+	padding:20px 0;
+	border-top:solid 1px #aaa;
+	border-bottom:solid 1px #aaa;
 }
 </style>
 
@@ -230,18 +234,16 @@ h6{
 		<h6>Order Completion Date : '.$order_completion_date.'</h6>
 	</div>
 	<div class="col-md-12"><br></div>
-	<div class="col-md-12 border_verify_status">
+	<div class="col-md-12 border_verify_status border_report_status">
 		<div class="col-md-4">REPORT STATUS</div>
 		<div class="col-md-8 border_background_color">'.strtoupper($order_status).'</div>
 	</div>
-	<h3 style="color:#666; margin:10px 0; border-bottom:solid 1px #aa50ab">Verification Summary </h3>
-	<p>For '.@$applicant_name.' (Applicant ID: '.@$order_id.' ), the requested <b>'.@$all_services_list.'</b> services were performed successfully and all the information provided by the Applicant is true and accurate.</p>
 	
 	<h3 style="color:#666; margin:10px 0;" class="center">Investigation Summary </h3>
 
 	<table class="table_services">
 		<tr>
-			<th>SERVICE NAME</th>
+			<th class="left">SERVICE NAME</th>
 			<th> ---- Verification Status ----</th>
 		</tr>
 	';
@@ -249,11 +251,11 @@ h6{
 	$resul = mysqli_query($db,$check); 
 	while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 	{
+		// <h6>'.$row['service_type_name'].'</h6>		
 		$html.='
 		<tr>
 			<td>
 				'.$row['service_name'].'
-				<h6>'.$row['service_type_name'].'</h6>
 			</td>
 			<td class="center">'.$row['order_status'].'</td>
 		</tr>
@@ -261,51 +263,55 @@ h6{
 	}
 	$html.='
 	</table>
-	<p style="font-size:8pt;">The information in this report may have been procured from third-party sources who maintain this information. Istarga endeavours to ensure accurate results; however, we do not provide a guarantee of the accuracy and/ or completeness of the information provided by our partners and/or sources. By engaging with <b>ISTARGA SOLUTIONS LLP</b>, you release <b>ISTARGA SOLUTIONS LLP</b> and its Affiliates including officers, agents, and employees from all liability for any negligence associated with providing the enclosed information. The information provided in this report is strictly intended only for the confidential use of the designated client named above. Without prior consent of Istarga, reproducing, photocopying and transmitting any part of the report is strictly prohibited and will be considered unlawful.<br><b>Confidential Information</b>
+	<p style="font-size:8pt;">The information in this report may have been procured from third-party sources who maintain this information. Istarga endeavours to ensure accurate results; however, we do not provide a guarantee of the accuracy and/ or completeness of the information provided by our partners and/or sources. By engaging with <b>ISTARGA SOLUTIONS LLP</b>, you release <b>ISTARGA SOLUTIONS LLP</b> and its Affiliates including officers, agents, and employees from all liability for any negligence associated with providing the enclosed information. The information provided in this report is strictly intended only for the confidential use of the designated client named above. Without prior consent of Istarga, reproducing, photocopying and transmitting any part of the report is strictly prohibited and will be considered unlawful.
 	</p>
 </div>
 '.$footer;
-
 $check="SELECT s.service_name, os.order_status, st.name AS service_type_name, os.service_id, os.order_service_details_id FROM order_service_details os INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.order_id   ='".$order_id."'";
 $resul = mysqli_query($db,$check); 
 while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 {
 	$order_service_details_id = $row['order_service_details_id'];
 	$html.=$header;
+	// <h1>'.$row["service_name"].'</h1>
+	// <h2 style="font-weight:normal;color:#000;">'.$applicant_name.'</h2>
+	// <h6>Case Ref Number : '.$case_reference_no.'</h6>
+	// <h6>Client : '.$Client_Name.'</h6>
 	$html.='
-	<h1>'.$row["service_name"].'</h1>
-	<h2 style="font-weight:normal;color:#777;">'.$applicant_name.'</h2>
-	<h6>Case Ref Number : '.$case_reference_no.'</h6>
-	<h6>Client : '.$Client_Name.'</h6>
 	<div class="col-md-12"><br></div>
-	<div class="col-md-12 border_verify_status">
-		<div class="col-md-4">REPORT STATUS</div>
+	<div class="col-md-12 border_verify_status border_report_status">
+		<div class="col-md-4">'.$row["service_name"].'</div>
 		<div class="col-md-8 border_background_color">'.strtoupper($row['order_status']).'</div>
 	</div>
-
-	<h3 style="color:#666; margin:15px 0; border-bottom:solid 1px #aa50ab">'.$row["service_name"].' Verification Report </h3>
 	<table class="input_data_table">
 		<tr>
-			<th style="width:36%">'.$row["service_name"].' Detail</th>
-			<th style="width:32%">Provided Information</th>
+			<th class="border_right" style="width:36%">'.$row["service_name"].' Details</th>
+			<th class="border_right" style="width:32%">Provided Information</th>
 			<th style="width:32%">Verified Information</th>
 		</tr>
 	';
+	$count_fields = 0;
 	$check_1 = "SELECT od.order_details_id, sm.service_field, sm.service_field_text, sm.data_type, sm.is_required, od.service_field_value, od.service_field_value_verified, od.service_id FROM order_master_details od INNER JOIN service_field_master sm ON sm.service_field_id = od.service_field_id WHERE od.order_id = '".$order_id."' AND od.service_id = '".$row['service_id']."' ";
     $resul_1 = mysqli_query($db,$check_1); 
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     {
+    	if($count_fields == 20)
+    	{
+    		$html.='</table>'.$footer.$header.'<table class="input_data_table">';
+    		$count_fields = 0;
+    	}
     	$html.='
     	<tr>
-    		<td>'.$row_1["service_field_text"].'</td>
-    		<td>'.$row_1["service_field_value"].'</td>
-    		<td>'.$row_1["service_field_value_verified"].'</td>
+    		<td class="border_right">'.$row_1["service_field_text"].'</td>
+    		<td class="border_right" style="text-align:center" >'.$row_1["service_field_value"].'</td>
+    		<td style="text-align:center" >'.$row_1["service_field_value_verified"].'</td>
     	</tr>
     	';
+    	$count_fields++;
     }
 	$html.='
 	</table>
-	<h4 style="background:#b1d9f0; margin:10px 0; padding:3px;" class="center">VERIFICATION APPROACH DETAILS</h4>
+	<h4 style="background:#97c0c2; margin:10px 0; padding:3px;border-top:solid 1px #000;border-bottom:solid 1px #000;" class="center">VERIFICATION DETAILS</h4>
 	';
  	$check_2 = "SELECT n.note_type, n.note_description, n.note_date, n.added_date_time, u.first_name, u.last_name FROM order_notes_master n INNER JOIN user_master u ON u.user_id = n.user_id WHERE n.order_service_details_id = '$order_service_details_id' AND n.note_type = 'public' ORDER BY n.order_notes_id DESC ";
     $resul_2 = mysqli_query($db,$check_2);
@@ -322,36 +328,78 @@ while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 	$html.=$footer;
 }
 
+$total_files = 0;
+$check_1='SELECT COUNT(ad.document_file) AS total_files FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
+$resul_1 = mysqli_query($db,$check_1);
+if ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+{
+	$total_files = $row_1['total_files'];
+}
+
 $i = 1;
 $check_1='SELECT ad.document_file FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
 $resul_1 = mysqli_query($db,$check_1);
 while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
 {
-	$html.=$header;
-	$html.='<h2>Annexure '.$i.'</h2><br>
-	<div class="col-md-1"><br></div>
-	<div class="col-md-10">
-		<img src="../system-client/assets/order_master_documents/'.$row_1["document_file"].'" style="width:100%;" />
-	</div>
-	<div class="col-md-12"><br></div>
-	';
-	$html.=$footer;
-    $i++;
+	// $html.=$header;
+	// $html.='<h2>Annexure '.$i.'</h2><br>
+	// <div class="col-md-1"><br></div>
+	// <div class="col-md-10">
+	// 	<img src="../system-client/assets/order_master_documents/'.$row_1["document_file"].'" style="width:100%;display:none;"  />
+	// </div>
+	// <div class="col-md-12"><br></div>
+	// ';
+	if($i == 1)
+	{
+		$html.=$header;
+		$html.='<h2>Annexure '.$i.'</h2><br>
+		<div class="col-md-1"><br></div>
+		<div class="col-md-10">
+			<img src="Adhar.PNG" style="width:100%;" />
+		</div>
+		<div class="col-md-12"><br></div>
+		';
+		$html.=$footer;
+	}
+	if($i == 2)
+	{
+		$html.=$header;
+		$html.='<h2>Annexure '.$i.'</h2><br>
+		<div class="col-md-1"><br></div>
+		<div class="col-md-10">
+			<img src="pan.jpg" style="width:100%;" />
+		</div>
+		<div class="col-md-12"><br></div>
+		';
+		if(2 == $i)
+		{
+			$html.=$end_report;	
+		}
+		$html.=$footer;
+	}
+	
+	// if($total_files == $i)
+	// {
+	// 	$html.=$end_report;	
+	// }
+    // $html.=$footer;
+	$i++;
+}
+
+if($total_files == 0)
+{
+	$html.=$end_report;	
 }
 
 include("mpdf60/mpdf.php");
+
 // $mpdf=new mPDF('c', 'A4-L'); 
 $mpdf=new mPDF('c'); 
-
-// $mpdf->SetWatermarkImage('../../images/logo.png');
-// $mpdf->showWatermarkImage = true;
+$mpdf->SetWatermarkImage('watermark.png');
+$mpdf->showWatermarkImage = true;
+$mpdf->watermarkImageAlpha = 1;
 
 $mpdf->mirrorMargins = true;
-
-// $mpdf->SetHTMLHeader("h5>Mahesh</h5>");
-// $mpdf->SetHTMLHeader("h5>Mahesh</h5>", 'E');
-// $mpdf->SetHTMLFooter("h5>Mahesh</h5>");
-// $mpdf->SetHTMLFooter("h5>Mahesh</h5>", 'E');
 
 // $mpdf->SetDisplayMode('fullpage','two');
 $mpdf->WriteHTML($html);

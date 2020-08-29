@@ -484,6 +484,16 @@ else
 </head>
 
 <body class="dark-edition">
+  <div id='modal_loading' class='modal' style=" background-color: rgba(255,255,255,.9); border:none !important; z-index: 999999999!important;">
+    <div class='modal-content row' style="width: 100% !important;margin-top:-40px;background: transparent !important; box-shadow: none !important; border:none !important; ">
+      <div class="col-md-12 form_center" >
+        <br><br>
+        <br><br>
+        <br><br>
+        <img style="width: 200px;" src="assets/images/loading.gif" />
+      </div>
+    </div>
+  </div>
   <div class="wrapper">
     <div class="sidebar" data-color="purple" data-background-color="black" data-image="assets/img/sidebar-2.jpg">
       <div class="logo"> <a class="navbar-brand" href="#">
@@ -555,19 +565,19 @@ else
                   <div class="col-md-4">
                     <div class="">
                       <label class="bmd-label-floating">First Name <i class="fa fa-star"></i></label>
-                      <input type="text" class="form-control" name="first_name" required="" value="<?php echo @$first_name; ?>" >
+                      <input type="text" class="form-control" name="first_name" id="first_name" required="" value="<?php echo @$first_name; ?>" >
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="">
                       <label class="bmd-label-floating">Middle Name <i class="fa fa-star"></i></label>
-                      <input name="middle_name" value="<?php echo @$middle_name; ?>" required type="text" class="form-control">
+                      <input name="middle_name" id="middle_name" value="<?php echo @$middle_name; ?>" required type="text" class="form-control">
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="">
                       <label class="bmd-label-floating">Last Name <i class="fa fa-star"></i></label>
-                      <input name="last_name" value="<?php echo @$last_name; ?>" required type="text" class="form-control">
+                      <input name="last_name" id="last_name" value="<?php echo @$last_name; ?>" required type="text" class="form-control">
                     </div>
                   </div>
                 </div>
@@ -576,19 +586,19 @@ else
                   <div class="col-md-4">
                     <div class="">
                       <label class="bmd-label-floating">Alias First Name <i class="fa fa-star"></i></label>
-                      <input name="alias_first_name" value="<?php echo @$alias_first_name; ?>" required type="text" class="form-control">
+                      <input name="alias_first_name" id="alias_first_name" value="<?php echo @$alias_first_name; ?>" required type="text" class="form-control">
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="">
                       <label class="bmd-label-floating">Alias Middle Name <i class="fa fa-star"></i></label>
-                      <input name="alias_middle_name" value="<?php echo @$alias_middle_name; ?>" type="text" required class="form-control">
+                      <input name="alias_middle_name" id="alias_middle_name" value="<?php echo @$alias_middle_name; ?>" type="text" required class="form-control">
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="">
                       <label class="bmd-label-floating">Alias Last Name <i class="fa fa-star"></i></label>
-                      <input name="alias_last_name" value="<?php echo @$alias_last_name; ?>" type="text" class="form-control" required>
+                      <input name="alias_last_name" id="alias_last_name" value="<?php echo @$alias_last_name; ?>" type="text" class="form-control" required>
                     </div>
                   </div>
                 </div>
@@ -760,9 +770,9 @@ else
                 <hr class="col12" style="margin:8px 0">
                 ';  
                 ?>
-                <div class="row">
-                  <div class="col-md-9" id="documents_panel"></div>
-                  <div class="col-md-3">
+                <div class="row col-md-12">
+                  <div class="col-md-8" id="documents_panel"></div>
+                  <div class="col-md-4">
                     <h5 class="selection">File Formats</h5>
                     <div class="row selection" style="margin-left:1%;margin-top:2%;">
                       <i class="fa fa-file-image-o" style="font-size:40px !important;margin-left:2%;color: green;"></i>
@@ -876,6 +886,7 @@ else
     }
     else
     {
+      $('#modal_loading').css('display', 'block');
       $('#btn_upload').addClass('disabled');
 
       var myform = document.getElementById("upload_document_form");
@@ -895,6 +906,7 @@ else
             $('#document_file').val('');
             $('#btn_upload').removeClass('disabled');
             $('#selectedFiles').html('');
+            $('#modal_loading').css('display', 'none');
           }
           else
           {
@@ -920,6 +932,21 @@ else
 
   function save_my_application()
   {
+    var first_name = $('#first_name').val();
+    var alias_first_name = $('#alias_first_name').val();
+    if(first_name == "") { alert('Please enter first name'); $('#first_name').focus(); return; exit(); }
+    if(alias_first_name == "") { alert('Please enter Alias first name'); $('#alias_first_name').focus(); return; exit(); }
+
+    var middle_name = $('#middle_name').val();
+    var alias_middle_name = $('#alias_middle_name').val();
+    if(middle_name == "") { alert('Please enter middle name'); $('#middle_name').focus(); return; exit(); }
+    if(alias_middle_name == "") { alert('Please enter Alias middle name'); $('#alias_middle_name').focus(); return; exit(); }
+
+    var last_name = $('#last_name').val();
+    var alias_last_name = $('#alias_last_name').val();
+    if(last_name == "") { alert('Please enter last name'); $('#last_name').focus(); return; exit(); }
+    if(alias_last_name == "") { alert('Please enter Alias last name'); $('#alias_last_name').focus(); return; exit(); }
+
     var panel_error = 0;
     var chevron_up = '<i class="fa fa-chevron-up"></i>';
     <?php echo @$print_validations_script; ?>

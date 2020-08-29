@@ -271,7 +271,7 @@ include 'Header.php';
   $('.chosen-select').chosen();
 </script>
 
-<script src="assets/js/core/jquery.min.js"></script>
+<!-- <script src="assets/js/core/jquery.min.js"></script> -->
 <script src="assets/js/core/popper.min.js"></script>
 <script src="assets/js/core/bootstrap-material-design.min.js"></script>
 <!-- <script src="https://unpkg.com/default-passive-events"></script> -->
@@ -299,6 +299,7 @@ include '../datatable/_datatable.php';
   function close_excel_import()
   {
     $('#service_modal').css('display', 'none');
+    $('#upload_file').val('');
   }
 
   function import_service_modal()

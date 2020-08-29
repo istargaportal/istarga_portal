@@ -12,14 +12,14 @@ extract($_POST);
 
 if($_POST['action'] == 'load_attached_documents')
 {
-    $document_print ='<div class="row"><div class="col-md-4"><h6>Documents List</h6>';
+    $document_print ='<div class="row"><div class="col-md-6"><h6>Documents List</h6>';
     $check_1='SELECT d.document_name FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '.$order_id.'  ';
     $resul_1 = mysqli_query($db,$check_1);
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     {
     $document_print.='<h4 class="selection" style="margin:6px 0;"><i class="fa fa-file"></i> '.$row_1['document_name'].'</h4><hr class="col12" style="margin:4px 0">';
     }
-    $document_print.='</div><div class="col-md-5"><h6>Uploaded Documents</h6>';
+    $document_print.='</div><div class="col-md-6"><h6>Uploaded Documents</h6>';
     $check_1='SELECT ad.file_name, ad.document_file FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
     $resul_1 = mysqli_query($db,$check_1);
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
@@ -67,7 +67,7 @@ if($_POST['action'] == 'update_applicant_details')
             }
         }
 
-        $check = "UPDATE order_master SET order_status = 'Pending' WHERE order_id  = '$order_id' ";
+        $check = "UPDATE order_master SET order_status = 'In Progress' WHERE order_id  = '$order_id' ";
         $result = mysqli_query($db,$check);
         echo 'updated';
     }

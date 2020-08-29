@@ -136,7 +136,8 @@ if(@$load_condition == "import_bulk_order")
 			else
 			{
 				$date_of_birth = addslashes($allDataInSheet[$i]["E"]);
-				$address = addslashes($allDataInSheet[$i]["F"]);
+			    $date_of_birth = str_replace('/', '-', $date_of_birth);
+                $address = addslashes($allDataInSheet[$i]["F"]);
 				$father_name = addslashes($allDataInSheet[$i]["G"]);
 				$customer_type = addslashes($allDataInSheet[$i]["H"]);
 				$additional_comments = addslashes($allDataInSheet[$i]["I"]);
@@ -177,12 +178,12 @@ if(@$load_condition == "import_bulk_order")
 							$alredy_exists.= '-'.$internal_reference_id.' '.$first_name.'\nService is not assigned to the '.$country.'. Contact Admin!';
 							$error_code = 0;
 						}
+
 						if($assign_service_id > 0)
 						{
 							$sql = "INSERT INTO order_master (case_reference_no, internal_reference_id, first_name, middle_name, last_name, customer_type, additional_comments, bulk_order_id, order_type, client_id, username, password, insufficiency_contact) VALUES('$case_reference_no','$internal_reference_id', '$first_name', '$middle_name', '$last_name', '$customer_type', '$additional_comments', '$bulk_order_id', 'Bulk', '$client_id', '$username', '$password', '$insufficiency_contact')";
 							$query_res2 = $db->query($sql);
 							$order_id = $db->insert_id;
-						    
 						    if ($query_res2 > 0) 
 						    {
 						    	$error_code++;					    	
@@ -208,7 +209,7 @@ if(@$load_condition == "import_bulk_order")
 											// country
 											if($row_3['service_field_id'] == "24") { $service_field_value = $country_id; }
 											// graduated	
-											if($row_3['service_field_id'] == "19") { $service_field_value = $country_id; }		
+											if($row_3['service_field_id'] == "19") { $service_field_value = $graduated; }		
 										}
 										else
 										{
@@ -217,7 +218,9 @@ if(@$load_condition == "import_bulk_order")
 											// father_name		
 											if($row_3['service_field_id'] == "97") { $service_field_value = $father_name; }		
 											// address
-											if($row_3['service_field_id'] == "101") { $service_field_value = $address; }		
+											if($row_3['service_field_id'] == "101") { $service_field_value = $address; }	
+											// country
+											if($row_3['service_field_id'] == "102") { $service_field_value = $country_id; }
 										}
 				                    	$service_field_value = addslashes($service_field_value);
 

@@ -55,7 +55,7 @@
     $('#datatable_tbl_length').remove();
     $('#datatable_tbl_paginate').remove();
     $('#datatable_tbl_info').remove();
-    
+    $('.noExport').remove();
     var tbl_data = "<style> td, tr, th, table{ vertical-align:middle;} table {border: 1px solid gray;}th {border: 1px solid gray;padding: 5px;background-color:grey;color: white;}td {border: 1px solid gray;padding: 5px;}</style><table>"+$('#datatable_tbl').html()+"</table>";
     // var url = 'data:application/vnd.ms-excel,' + encodeURIComponent($('#data_table').html());
     window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tbl_data));
@@ -70,6 +70,7 @@
     var printContents = document.getElementById("data_table").innerHTML;
     var originalContents = document.body.innerHTML;
     document.body.innerHTML = printContents;
+    $('.noExport').remove();
     $('#datatable_tbl_filter').css('display', 'none');
     $('#datatable_tbl_length').css('display', 'none');
     $('#datatable_tbl_paginate').css('display', 'none');

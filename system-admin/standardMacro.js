@@ -207,13 +207,13 @@ const onSave = (id, action, j) => {
         var cell5 = row.insertCell(4);
         var cell6 = row.insertCell(5);
         //cell0.innerHTML = j;
-        cell1.innerHTML = stat[i].Scenario;
+        cell1.innerHTML = '<div class="tablehead1 form_left">'+stat[i].Scenario+'</div>';
         cell1.setAttribute("id", stat[i].id + "fn");
-        cell2.innerHTML = stat[i].Comment;
+        cell2.innerHTML = '<div class="tablehead1 form_left">'+stat[i].Comment+'</div>';
         cell2.setAttribute("id", stat[i].id + "ln");
-        cell3.innerHTML = stat[i].service_name;
+        cell3.innerHTML = '<div class="tablehead1">'+stat[i].service_name+'</div>';
         //cell3.setAttribute("id", stat[i].id + "em");
-        cell4.innerHTML = stat[i].macro_name;
+        cell4.innerHTML = '<div class="tablehead1">'+stat[i].macro_name+'</div>';
         //cell4.setAttribute("id", stat[i].id + "gp"+j);
         var btn1 = document.createElement('button');
         btn1.type = "button";
@@ -222,6 +222,9 @@ const onSave = (id, action, j) => {
         btn1.onclick = (() => { onEdit(stat[i].id, "edit",j) });
         cell5.appendChild(btn1);
         cell5.setAttribute("id", stat[i].id + "c");
+        cell5.setAttribute("class","noExport");
+        cell6.setAttribute("class","noExport");
+
         var btn = document.createElement('button');
         btn.type = "button";
         btn.className = "btn btn-danger btn-xs";
