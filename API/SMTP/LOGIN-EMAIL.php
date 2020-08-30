@@ -28,8 +28,8 @@ If you have any questions please feel free to reach out to us and we will be gla
 Have a great day!
 <br><br>
 Regards<br>
-ABV companyApplicant<br>
-Services Team | <a target='_blank' href='tel:".@$service_contact_no."'><b style='color:blue'>".@$service_email_id."</b></a> | <a target='_blank' href='mailto:".@$service_contact_no."'><b style='color:blue'>".@$service_contact_no."</b></a>
+".$company_name."<br>
+Services Team | <a target='_blank' href='https://".@$web_url."'><b style='color:blue'>".@$web_url."</b></a> <a target='_blank' href='tel:".@$service_contact_no."'><b style='color:blue'>".@$service_contact_no."</b></a> | <a target='_blank' href='mailto:".@$service_email_id."'><b style='color:blue'>".@$service_email_id."</b></a>
 </p>
 </div>
 </div>

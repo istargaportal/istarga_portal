@@ -490,7 +490,7 @@ else
         <br><br>
         <br><br>
         <br><br>
-        <img style="width: 200px;" src="assets/images/loading.gif" />
+        <img style="width: 200px;" src="../system-admin/assets/images/loading.gif" />
       </div>
     </div>
   </div>
@@ -761,7 +761,7 @@ else
                 echo '
                 <h6 class="selection col-md-12">Upload Multiple Documents Here</h6>                                    
                 <div class="col-md-4">
-                <input type="file" onchange="file_selected_list()" multiple id="document_file" name="document_file[]" class="form-control" />
+                <input type="file" onchange="file_selected_list()" multiple id="document_file" name="document_file[]" accept="image/*" class="form-control" />
                 </div>
                 <div class="col-md-4">
                 <a class="btn btn-success btn-sm" onclick="upload_document_file()" id="btn_upload"><i class="fa fa-upload"></i> Upload Files</a>
@@ -773,14 +773,9 @@ else
                 <div class="row col-md-12">
                   <div class="col-md-8" id="documents_panel"></div>
                   <div class="col-md-4">
-                    <h5 class="selection">File Formats</h5>
-                    <div class="row selection" style="margin-left:1%;margin-top:2%;">
-                      <i class="fa fa-file-image-o" style="font-size:40px !important;margin-left:2%;color: green;"></i>
-                      <i class="fa fa-file-word-o" style="font-size:40px !important;margin-left:2%;color: blue;"></i>
-                      <i class="fa fa-file-excel-o " style="font-size:40px !important;margin-left:3%;color: green"></i>
-                      <i class="fa fa-file-powerpoint-o " style="font-size:40px !important;margin-left:3%;color: orange"></i>
-                      <i class="fa fa-file-pdf-o selection" style="color: red !important; margin-left:3%; font-size:40px !important;"></i>
-                    </div>
+                    <?php
+                      include '../API/File-Formats.php';
+                    ?>
                   </div>
                 </div>
                 <div class="col-md-12"><br></div>

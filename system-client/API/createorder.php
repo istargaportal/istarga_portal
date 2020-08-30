@@ -216,7 +216,7 @@ if($_POST['action']=='load_document')
         echo '
         <div class="col-md-6">
             <h6 class="selection">Upload Multiple Documents Here</h6>                                    
-            <input type="file" onchange="file_selected_list()" name="document_file[]" multiple id="document_file" class="form-control" />
+            <input type="file" onchange="file_selected_list()" name="document_file[]" multiple id="document_file" accept="image/*" class="form-control" />
             <div id="selectedFiles"></div>
         </div>
         ';

@@ -14,7 +14,7 @@ if($_POST['action'] == 'load_service_list')
 {
 	echo '<select style="margin-top: 2% !important;" id="assign_service_id" class="browser-default custom-select chosen-select">
     <option value="">Select</option>';
-    $check = "SELECT sa.service_id, s.service_name FROM service_list s INNER JOIN assigned_service sa ON sa.service_id = s.id WHERE s.service_type_id = '$service_type_id' AND sa.country_id = '$lod_country_id' ";
+    $check = "SELECT sa.service_id, s.service_name FROM service_list s INNER JOIN assigned_service sa ON sa.service_id = s.id WHERE s.service_type_id = '$service_type_id' AND sa.country_id = '$lod_country_id' GROUP BY sa.service_id ";
     $resul = mysqli_query($db,$check); 
     while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -508,14 +508,9 @@ echo '
         </div>
     </div>
     <div class="col-md-4">
-        <h5 class="selection">File Formats</h5>
-        <div class="row selection" style="margin-left:1%;margin-top:2%;">
-            <i class="fa fa-file-image-o" style="font-size:40px !important;margin-left:2%;color: green;"></i>
-            <i class="fa fa-file-word-o" style="font-size:40px !important;margin-left:2%;color: blue;"></i>
-            <i class="fa fa-file-excel-o " style="font-size:40px !important;margin-left:3%;color: green"></i>
-            <i class="fa fa-file-powerpoint-o " style="font-size:40px !important;margin-left:3%;color: orange"></i>
-            <i class="fa fa-file-pdf-o selection" style="color: red !important; margin-left:3%; font-size:40px !important;"></i>
-        </div>
+        <?php
+          include '../../../API/File-Formats.php';
+        ?>
         <?php
             echo '<br>';
             $check_1="SELECT d.document_name FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '$order_id' AND ad.documentlist_id IN (SELECT documentlist_id FROM service_list_documents WHERE service_id = '$service_id') ";
@@ -1150,7 +1145,7 @@ if($_POST['action'] == 'load_attached_documents')
     <input type="hidden" name="order_id" value="'.$order_id.'" />
     <div class="row">                                  
     <div class="col-md-4">
-    <input type="file" onchange="file_selected_list()" multiple id="document_file" name="document_file[]" class="form-control" />
+    <input type="file" onchange="file_selected_list()" multiple id="document_file" name="document_file[]" accept="image/*" class="form-control" />
     </div>
     <div class="col-md-4">
     <a class="btn btn-success btn-sm" onclick="upload_document_file()" id="btn_upload"><i class="fa fa-upload"></i> Upload Files</a>

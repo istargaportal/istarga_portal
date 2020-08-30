@@ -2,10 +2,13 @@
     require_once('PHPMailer_v5.1/class.phpmailer.php'); //library added in download source.
     
     $from = 'verify@istarga.com';
-    $name = 'BGV ORION';
-    function smtpmailer($to, $from, $from_name = 'BGV ORION', $subject, $body, $is_gmail = true)
+    $name = $company_name;
+    function smtpmailer($to, $from, $from_name = '', $subject, $body, $is_gmail = true)
     {
-        $name = 'BGV ORION';
+        global $company_name;
+
+        $name = $company_name;
+        $from_name = $company_name;
         global $error;
         $mail = new PHPMailer();
         $mail->IsSMTP();

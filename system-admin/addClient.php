@@ -83,13 +83,13 @@ include 'Header.php';
               <div class="row">
                 <div class="col-md-4">
                   <div class="form-group1">
-                    <label class="bmd-label-floating">Client Name</label>
+                    <label class="bmd-label-floating">Client Name <i class="fa fa-star"></i></label>
                     <input name="Client Name" type="text" class="form-control" required value="<?php echo @$Client_Name; ?>" />
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group1">
-                    <label class="bmd-label-floating">Client Code</label>
+                    <label class="bmd-label-floating">Client Code <i class="fa fa-star"></i></label>
                     <input name="Client Code" type="number" class="form-control" required value="<?php echo @$Client_Code; ?>" />
                   </div>
                 </div>
@@ -109,7 +109,7 @@ include 'Header.php';
                     <input type="hidden" id="edit_currency" value="<?php echo @$Currency; ?>">
                     <input type="hidden" name="edit_id" value="<?php echo @$id; ?>">
 
-                    <label class="bmd-label-floating" style="font-size: 13px;">Country</label>
+                    <label class="bmd-label-floating" style="font-size: 13px;">Country <i class="fa fa-star"></i></label>
                     <select class="browser-default custom-select" type="select" id="locality-dropdown" name="locality-dropdown" onchange="getservice(this.value)" style="color:#202940;" required>
                     </select>
                   </div>
@@ -138,8 +138,8 @@ include 'Header.php';
 
                 <div class="col-md-4">
                   <div class="form-group1">
-                    <label class="bmd-label-floating">Contact Number</label>
-                    <input name="Contact Number" type="number" min="0" class="form-control" value="<?php echo @$Contact_Number; ?>" />
+                    <label class="bmd-label-floating">Contact Number <i class="fa fa-star"></i></label>
+                    <input name="Contact Number" type="number" min="0" required="" class="form-control" value="<?php echo @$Contact_Number; ?>" />
                   </div>
                 </div>
 
@@ -173,8 +173,8 @@ include 'Header.php';
 
                 <div class="col-md-4">
                   <div class="form-group1">
-                    <label class="bmd-label-floating">Invoice Code</label>
-                    <input name="Invoice Code" type="text" class="form-control" value="<?php echo @$Inv_Code; ?>" />
+                    <label class="bmd-label-floating">Invoice Code <i class="fa fa-star"></i></label>
+                    <input name="Invoice Code" type="text" required="" class="form-control" value="<?php echo @$Inv_Code; ?>" />
                   </div>
                 </div>
 
@@ -187,8 +187,8 @@ include 'Header.php';
 
                 <div class="col-md-4">
                   <div class="form-group1">
-                    <label class="bmd-label-floating">Email ID</label>
-                    <input name="Email ID" type="email" class="form-control" autocomplete="off" value="<?php echo @$email; ?>" <?php echo @$readonly; ?> />
+                    <label class="bmd-label-floating">Email ID <i class="fa fa-star"></i></label>
+                    <input name="Email ID" type="email" class="form-control" required="" autocomplete="off" value="<?php echo @$email; ?>" <?php echo @$readonly; ?> />
                   </div>
                 </div>
                 <!--checkBoxes-->
@@ -279,7 +279,7 @@ include 'Header.php';
                       <div class="row" style="margin-top: 2%;">
                         <div class="col-md-4">
                           <div class="form-group1">
-                            <label style="font-size: 13px;" for="Currency" class="bmd-label-floating" style="margin-left: 4%;">Currency</label>
+                            <label style="font-size: 13px;" for="Currency" class="bmd-label-floating" style="margin-left: 4%;">Currency <i class="fa fa-star"></i></label>
                             <select style="margin-top: 2%;" id="currency" name="currency" class="browser-default custom-select" required>
                             </select>
                           </div>
@@ -292,9 +292,9 @@ include 'Header.php';
                         </div>
                         <div class="col-md-4">
                           <div class="form-group1">
-                            <label for="Password" class="bmd-label-floating">Password</label>
+                            <label for="Password" class="bmd-label-floating">Password <i class="fa fa-star"></i></label>
                             <div class="input-group">
-                              <input name="Password" <?php echo @$readonly; ?> type="password" class="form-control" autocomplete="off" value="<?php echo @$password; ?>" />
+                              <input name="Password" <?php echo @$readonly; ?> type="password" class="form-control" autocomplete="off" required value="<?php echo @$password; ?>" />
                               <div class="input-group-addon eye">
                                 <i class="fas fa-eye-slash"></i>
                               </div>

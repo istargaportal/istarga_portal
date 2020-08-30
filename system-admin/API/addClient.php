@@ -13,6 +13,13 @@ class login
   }
   public function update_details()
   {
+    global $service_email_id;
+    global $service_contact_no;
+    global $company_name;
+    global $web_url;
+    global $client_login_url;
+    global $applicant_login_url;
+
     $json_data = file_get_contents("php://input");
     if( !empty($json_data) )
     {
@@ -87,17 +94,15 @@ class login
           if($data['edit_id'] == "")
           {
             echo "inserted";
-
             include '../../API/SMTP/sendMail.php';
             include '../../API/SMTP/CLIENT-LOGIN-EMAIL.php';
             $subject = "LOGIN CREDENTILAS FOR - Employment Background Screening";
-            smtpmailer($email_id, $from, $name, $subject, @$print_var);
-
+            smtpmailer($Email, $from, $name, $subject, @$print_var);
           }
         }
         else
         {
-          echo "  error";
+          echo "error";
         }
       }
     }

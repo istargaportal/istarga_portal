@@ -76,7 +76,7 @@ var edit_currency = $('#edit_currency').val() || 0;
 if(edit_currency == 0)
 {
   currencytype.text = 'Select Currency';
-  currencytype.value = "0";
+  currencytype.value = "";
   currency.add(currencytype);
   currency.selectedIndex = 0;
 }
@@ -228,14 +228,17 @@ const sendRequest = (url) => {
   })
   .then(response => response.text())
   .then(data => {
+    $('#modal_loading').css('display', 'block');
     if (url === "./API/addClient.php" && data.trim() == 'inserted' || data.trim() == 'updated')
     {
       if(data.trim() == 'inserted')
       {
+        $('#modal_loading').css('display', 'none');
         $('#exampleModalLabel').html('Client added successfully');
       }
       if(data.trim() == 'updated')
       {
+        $('#modal_loading').css('display', 'none');
         $('#exampleModalLabel').html('Client updated successfully');
       }
         //modal show up
@@ -248,7 +251,11 @@ const sendRequest = (url) => {
         modalLaunchButton.click()
         window.onclick = () => window.location.href = "modifyClient.php"  
       }
-      console.log('Success:', data);
+      if(data.trim() == 'error')
+      {
+        alert('Error occurred');
+        $('#modal_loading').css('display', 'none');
+      }
     })
   .catch((error) => {
     console.error('Error:', error);
@@ -296,11 +303,7 @@ const submit = (url) => {
 const addClientForm = document.querySelector("#ajax")
 // addClientSubmit && addClientSubmit.addEventListener('click', submit('API/addClient.php'))
 addClientForm && addClientForm.addEventListener('submit', submit('./API/addClient.php'))
-console.log('working 2');
 
-
-
-console.log('working 3');
 
 const getElement = (elementSelector) => {
   return document.querySelector(`[name='${elementSelector}']`)
@@ -428,8 +431,8 @@ const setDDData = (ddData) => {
 }
 setDDData(0)
 
-const addBankDetails = document.querySelector('#ajax')
-addBankDetails && addBankDetails.addEventListener('submit', submit("API/addBankDetails.php"))
+// const addBankDetails = document.querySelector('#ajax')
+// addBankDetails && addBankDetails.addEventListener('submit', submit("API/addBankDetails.php"))
 
 // const submitBankDetails = (e) => {
 //   e.preventDefault()

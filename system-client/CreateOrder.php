@@ -204,14 +204,9 @@ include 'Header.php';
 									</div>
 
 									<div class="col-md-3">
-										<h5 class="selection">File Formats</h5>
-										<div class="row selection" style="margin-left:1%;margin-top:2%;">
-											<i class="fa fa-file-image-o" style="font-size:40px !important;margin-left:2%;color: green;"></i>
-											<i class="fa fa-file-word-o" style="font-size:40px !important;margin-left:2%;color: blue;"></i>
-											<i class="fa fa-file-excel-o " style="font-size:40px !important;margin-left:3%;color: green"></i>
-											<i class="fa fa-file-powerpoint-o " style="font-size:40px !important;margin-left:3%;color: orange"></i>
-											<i class="fa fa-file-pdf-o selection" style="color: red !important; margin-left:3%; font-size:40px !important;"></i>
-										</div>
+										<?php
+					                      include '../API/File-Formats.php';
+					                    ?>
 									</div>
 								</div>
 							</div>
@@ -611,7 +606,8 @@ include 'Header.php';
 			var r = confirm("Are you sure to Place this order?")
 			if(r == true)
 			{
-				$('#btn_ok').addClass('disabled');
+				$('#modal_loading').css('display', 'block');
+    			$('#btn_ok').addClass('disabled');
 				$('#btn_place_order').addClass('disabled');
 				var myform = document.getElementById("create_order_form");
 				var fd = new FormData(myform );
@@ -627,6 +623,7 @@ include 'Header.php';
 						{
 							alert('Order placed successfully!');
 							window.location.href = "ClientViewOrder.php";
+							$('#modal_loading').css('display', 'none');
 						}
 						else
 						{

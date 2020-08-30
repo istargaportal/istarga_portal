@@ -45,7 +45,9 @@ function randomPassword() {
 $service_email_id = "customercare@istarga.com";
 $service_contact_no = "+918527476969";
 
-$client_login_url = "https://ibgvclientdemo.Istarga.com/";
-$applicant_login_url = "https://ibgvclientdemo.Istarga.com/";
+$company_name = 'ISTARGA';
+$web_url = "www.istarga.com/";
+$client_login_url = "https://ibgvclientdemo.istarga.com/";
+$applicant_login_url = "https://ibgvclientdemo.istarga.com/";
 
 ?>
