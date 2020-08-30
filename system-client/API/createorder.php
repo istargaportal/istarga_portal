@@ -242,7 +242,7 @@ if($_POST['action'] == "save_form")
     {
         $order_id_auto = $row_2['order_id_auto'];
     }
-    
+    $order_id_auto++;
     if($order_id_auto <= 9)
     {
         $order_id_auto = '00'.$order_id_auto;

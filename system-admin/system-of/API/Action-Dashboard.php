@@ -277,63 +277,69 @@ if($_POST['action'] == 'load_service_order')
                         ';
                     }
 
-                    if($row_1["service_field"] == "state_id" && @$country_id > 0)
+                    if($row_1["service_field"] == "state_id")
                     {
-                      $field_print.='<option value="">Select</option>';
-                      $check_2 = "SELECT id, name FROM states WHERE country_id = '$country_id' ";
-                      $resul_2 = mysqli_query($db,$check_2); 
-                      while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
-                      {
-                        $selected_option = '';
-                        if($row_1['service_field_value_verified'] == $row_2['id'])
+                        if(@$country_id > 0)
                         {
-                          $state_id = $row_2['id'];
-                          $selected_option = 'selected';
+                              $field_print.='<option value="">Select</option>';
+                              $check_2 = "SELECT id, name FROM states WHERE country_id = '$country_id' ";
+                              $resul_2 = mysqli_query($db,$check_2); 
+                              while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+                              {
+                                $selected_option = '';
+                                if($row_1['service_field_value_verified'] == $row_2['id'])
+                                {
+                                  $state_id = $row_2['id'];
+                                  $selected_option = 'selected';
+                              }
+                              $field_print.='<option '.@$selected_option.' value="'.$row_2['id'].'">'.$row_2['name'].'</option>';    
+                          }
                       }
-                      $field_print.='<option '.@$selected_option.' value="'.$row_2['id'].'">'.$row_2['name'].'</option>';    
-                  }
                   $check_2 = "SELECT id, name FROM states WHERE id = '".$row_1['service_field_value']."' ";
                   $resul_2 = mysqli_query($db,$check_2); 
                   if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
                   {
                     $service_field_value = $row_2['name'];
+                    $print_verify_js.='
+                    if(parseFloat($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val()) > 0)
+                    {
+                        load_state('.$row_1["service_id"].','.$row_1['order_details_id'].', '.$row_1["service_field_value"].');
+                        $("#'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val());
+                    }
+                    ';
                 }
-                $print_verify_js.='
-                if(parseFloat($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val()) > 0)
-                {
-                    load_state('.$row_1["service_id"].','.$row_1['order_details_id'].', '.$row_1["service_field_value"].');
-                    $("#'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val());
-                }
-                ';
             }
 
-            if($row_1["service_field"] == "city_id" && @$state_id > 0)
+            if($row_1["service_field"] == "city_id")
             {
-              $field_print.='<option value="">Select</option>';
-              $check_2 = "SELECT id, name FROM cities WHERE state_id = '$state_id' ";
-              $resul_2 = mysqli_query($db,$check_2); 
-              while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
-              {
-                $selected_option = '';
-                if($row_1['service_field_value_verified'] == $row_2['id'])
+                if(@$state_id > 0)
                 {
-                  $selected_option = 'selected';
-              }
-              $field_print.='<option '.@$selected_option.' value="'.$row_2['id'].'">'.$row_2['name'].'</option>';    
-          }
+                    $field_print.='<option value="">Select</option>';
+                    $check_2 = "SELECT id, name FROM cities WHERE state_id = '$state_id' ";
+                    $resul_2 = mysqli_query($db,$check_2); 
+                    while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+                    {
+                        $selected_option = '';
+                        if($row_1['service_field_value_verified'] == $row_2['id'])
+                        {
+                            $selected_option = 'selected';
+                        }
+                        $field_print.='<option '.@$selected_option.' value="'.$row_2['id'].'">'.$row_2['name'].'</option>';    
+                    }
+                }
           $check_2 = "SELECT id, name FROM cities WHERE id = '".$row_1['service_field_value']."' ";
           $resul_2 = mysqli_query($db,$check_2); 
           if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
           {
             $service_field_value = $row_2['name'];
+            $print_verify_js.='
+            if(parseFloat($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val()) > 0)
+            {
+                load_city('.$row_1["service_id"].','.$row_1['order_details_id'].', '.$row_1["service_field_value"].');
+                $("#'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val());
+            }
+            ';
         }
-        $print_verify_js.='
-        if(parseFloat($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val()) > 0)
-        {
-            load_city('.$row_1["service_id"].','.$row_1['order_details_id'].', '.$row_1["service_field_value"].');
-            $("#'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val());
-        }
-        ';
     }
 
     $field_print.='</select></div>';
@@ -476,7 +482,7 @@ echo '
         <b>Additional Comments</b>
         <textarea class="custom-select" rows="3" id="additional_comments_of" name="additional_comments_of"></textarea>
     </div>
-
+    </form>
     <div class="col-md-12">
         <br><br>
         <div class="card-header card-header-primary">
@@ -592,7 +598,7 @@ echo '
     </div>
     <div class="col-md-12"><br></div>
 </div>
-</form>
+
 <div class="modal" id="standard_macro_modal">
     <div class="row">
         <div class="col-md-4">
@@ -652,7 +658,7 @@ echo '
 </div>
 <script>
     <?php
-    if($order_status == 'Sent To QC')
+    if(@$order_status == 'Sent To QC')
     {
         echo "$('#send_to_qc').addClass('disabled_btn');";
     }
@@ -773,7 +779,7 @@ echo '
                 $('#country_id_'+service_id).chosen();
                 $('#country_id_'+service_id).prop('required', is_require);
                 $('#country_id_'+service_id).attr('name', new_name);
-                if($('#country_id_'+service_id).val() != "0" && parseFloat($('#state_id_'+service_id).val() || 0) == "0")
+                if($('#country_id_'+service_id).val() != "0" && parseFloat($('#state_id_'+service_id).val()) == "0")
                 {
                     load_state(service_id, order_details_id, 0)
                 }
@@ -801,7 +807,7 @@ echo '
                 $('#state_id_'+service_id).prop('required', is_require);
                 $('#state_id_'+service_id).attr('name', new_name);
 
-                if($('#state_id_'+service_id).val() != "0" && parseFloat($('#city_id_'+service_id).val() || 0) == "0")
+                if($('#state_id_'+service_id).val() != "0" && parseFloat($('#city_id_'+service_id).val()) == "0")
                 {
                     load_city(service_id, order_details_id, 0)
                 }
@@ -1200,6 +1206,7 @@ if($_POST['action'] == 'load_attached_documents')
     }
     echo '</table>
     <a onclick="download_all_files()" class="pull-right btn btn-default btn-sm"><i class="fa fa-file-archive-o"></i> Download Files Zip</a>
+    </form>
     ';   
 }
 

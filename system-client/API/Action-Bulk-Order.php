@@ -90,23 +90,7 @@ if(@$load_condition == "import_bulk_order")
     {
         $Inv_Code = $row_2['Inv_Code'];
     }
-    $check_2 = "SELECT count(order_id) AS order_id_auto FROM order_master WHERE client_id = '".$client_id."' ";
-    $resul_2 = mysqli_query($db,$check_2); 
-    if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
-    {
-        $order_id_auto = $row_2['order_id_auto'];
-    }
     
-    if($order_id_auto <= 9)
-    {
-        $order_id_auto = '00'.$order_id_auto;
-    }
-    else if($order_id_auto <= 99)
-    {
-        $order_id_auto = '0'.$order_id_auto;
-    }
-    $case_reference_no = $Inv_Code.date('dmY').$order_id_auto;
-
 	$sql = "INSERT INTO bulk_order(client_id, file_name, from_date, from_time, from_date_time, to_date, to_time, to_date_time, service_id) VALUES('$client_id', '$file_name', '$from_date', '$from_time', '$from_date_time', '$to_date', '$to_time', '$to_date_time', '$service_id') ";
 	$query_res1 = $db->query($sql);
 	$bulk_order_id = $db->insert_id;
@@ -115,33 +99,64 @@ if(@$load_condition == "import_bulk_order")
 		for($i=2;$i<=$arrayCount;$i++)
 		{
 			$internal_reference_id = addslashes($allDataInSheet[$i]["A"]);
-			$first_name = addslashes($allDataInSheet[$i]["B"]);
-			$middle_name = addslashes($allDataInSheet[$i]["C"]);
-			$last_name = addslashes($allDataInSheet[$i]["D"]);
-			
-			if($service_id == 2)
+			$applicant_name = addslashes($allDataInSheet[$i]["B"]);
+
+			$check_2 = "SELECT count(order_id) AS order_id_auto FROM order_master WHERE client_id = '".$client_id."' ";
+		    $resul_2 = mysqli_query($db,$check_2); 
+		    if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+		    {
+		        $order_id_auto = $row_2['order_id_auto'];
+		    }
+		    $order_id_auto++;
+		    if($order_id_auto <= 9)
+		    {
+		        $order_id_auto = '00'.$order_id_auto;
+		    }
+		    else if($order_id_auto <= 99)
+		    {
+		        $order_id_auto = '0'.$order_id_auto;
+		    }
+		    $case_reference_no = $Inv_Code.date('dmY').$order_id_auto;
+
+			if (strpos($applicant_name, '.') !== false)
 			{
-				$college_name  = addslashes($allDataInSheet[$i]["E"]);
-				$university = addslashes($allDataInSheet[$i]["F"]);
-				$degree = addslashes($allDataInSheet[$i]["G"]);
-				$year_of_passing = addslashes($allDataInSheet[$i]["H"]);
-				$register_number = addslashes($allDataInSheet[$i]["I"]);
-				$researcher_name = addslashes($allDataInSheet[$i]["J"]);
-				$employee_id = addslashes($allDataInSheet[$i]["K"]);
-				$country = addslashes($allDataInSheet[$i]["L"]);
-				$graduated = addslashes($allDataInSheet[$i]["M"]);
-				$customer_type = addslashes($allDataInSheet[$i]["N"]);
-				$additional_comments = addslashes($allDataInSheet[$i]["O"]);
+			    $str = $applicant_name;
+				$str = explode(".",$str);
+				$first_name = $str[0];
+				$first_name = array_shift($str);
+				$last_name = implode('.', $str);
 			}
 			else
 			{
-				$date_of_birth = addslashes($allDataInSheet[$i]["E"]);
-			    $date_of_birth = str_replace('/', '-', $date_of_birth);
-                $address = addslashes($allDataInSheet[$i]["F"]);
-				$father_name = addslashes($allDataInSheet[$i]["G"]);
-				$customer_type = addslashes($allDataInSheet[$i]["H"]);
-				$additional_comments = addslashes($allDataInSheet[$i]["I"]);
+				$first_name = $applicant_name;
+				$last_name = "";
+			}
+			// $middle_name = addslashes($allDataInSheet[$i]["C"]);
+			// $last_name = addslashes($allDataInSheet[$i]["D"]);
+			
+			if($service_id == 2)
+			{
+				$college_name  = addslashes($allDataInSheet[$i]["C"]);
+				$university = addslashes($allDataInSheet[$i]["D"]);
+				$degree = addslashes($allDataInSheet[$i]["E"]);
+				$year_of_passing = addslashes($allDataInSheet[$i]["F"]);
+				$register_number = addslashes($allDataInSheet[$i]["G"]);
+				$researcher_name = addslashes($allDataInSheet[$i]["H"]);
+				$employee_id = addslashes($allDataInSheet[$i]["I"]);
 				$country = addslashes($allDataInSheet[$i]["J"]);
+				$graduated = addslashes($allDataInSheet[$i]["K"]);
+				$customer_type = addslashes($allDataInSheet[$i]["L"]);
+				$additional_comments = addslashes($allDataInSheet[$i]["M"]);
+			}
+			else
+			{
+				$date_of_birth = addslashes($allDataInSheet[$i]["C"]);
+			    $date_of_birth = str_replace('/', '-', $date_of_birth);
+                $address = addslashes($allDataInSheet[$i]["D"]);
+				$father_name = addslashes($allDataInSheet[$i]["E"]);
+				$customer_type = addslashes($allDataInSheet[$i]["F"]);
+				$additional_comments = addslashes($allDataInSheet[$i]["G"]);
+				$country = addslashes($allDataInSheet[$i]["H"]);
 			}
 
 			if($customer_type == ""){ $customer_type = "Regular"; }
@@ -181,7 +196,7 @@ if(@$load_condition == "import_bulk_order")
 
 						if($assign_service_id > 0)
 						{
-							$sql = "INSERT INTO order_master (case_reference_no, internal_reference_id, first_name, middle_name, last_name, customer_type, additional_comments, bulk_order_id, order_type, client_id, username, password, insufficiency_contact) VALUES('$case_reference_no','$internal_reference_id', '$first_name', '$middle_name', '$last_name', '$customer_type', '$additional_comments', '$bulk_order_id', 'Bulk', '$client_id', '$username', '$password', '$insufficiency_contact')";
+							$sql = "INSERT INTO order_master (case_reference_no, internal_reference_id, first_name, last_name, customer_type, additional_comments, bulk_order_id, order_type, client_id, username, password, insufficiency_contact) VALUES('$case_reference_no','$internal_reference_id', '$first_name', '$last_name', '$customer_type', '$additional_comments', '$bulk_order_id', 'Bulk', '$client_id', '$username', '$password', '$insufficiency_contact')";
 							$query_res2 = $db->query($sql);
 							$order_id = $db->insert_id;
 						    if ($query_res2 > 0) 

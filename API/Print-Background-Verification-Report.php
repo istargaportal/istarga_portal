@@ -8,7 +8,7 @@ if (mysqli_connect_errno($db)) {
 }
 
 $order_id = base64_decode($_GET['order_id']);
-$default_report_color_id = base64_decode($_GET['default_report_color_id']);
+$default_report_color_id = $_GET['default_report_color_id'];
 $check="SELECT c.Client_Name, o.order_id, o.first_name, o.middle_name, o.last_name, o.alias_first_name, o.alias_middle_name, o.alias_last_name, o.email_id, o.internal_reference_id, o.joining_location, o.joining_date, o.additional_comments, o.client_id, o.is_rush, o.insufficiency_contact, o.username, o.password, o.order_status, o.order_creation_date_time, o.case_reference_no, o.order_completion_date, o.complete_info_received_date, c.default_report_color FROM order_master o INNER JOIN client c ON c.id = o.client_id WHERE o.order_id   ='".$order_id."'";
 $resul = mysqli_query($db,$check); 
 if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
@@ -78,7 +78,6 @@ $end_report ='<div class="col-md-12 center">
 				<br>
 				<br>
 				<b>END OF REPORT</b>
-				<br>
 			</div>';
 // <h3 style="color:#666; margin:10px 0; border-bottom:solid 1px #aa50ab">Verification Summary </h3>
 // <p>For '.@$applicant_name.' (Applicant ID: '.@$order_id.' ), the requested <b>'.@$all_services_list.'</b> services were performed successfully and all the information provided by the Applicant is true and accurate.</p>
@@ -96,7 +95,7 @@ p{
 	margin: 50px;
 }
 .page-border{
-	height:1080px;
+	height:880px;
 	padding: 1em;
 	padding-top: 85px;
 	padding-bottom: 185px !important;
@@ -263,6 +262,7 @@ h6{
 	}
 	$html.='
 	</table>
+	<br>
 	<p style="font-size:8pt;">The information in this report may have been procured from third-party sources who maintain this information. Istarga endeavours to ensure accurate results; however, we do not provide a guarantee of the accuracy and/ or completeness of the information provided by our partners and/or sources. By engaging with <b>ISTARGA SOLUTIONS LLP</b>, you release <b>ISTARGA SOLUTIONS LLP</b> and its Affiliates including officers, agents, and employees from all liability for any negligence associated with providing the enclosed information. The information provided in this report is strictly intended only for the confidential use of the designated client named above. Without prior consent of Istarga, reproducing, photocopying and transmitting any part of the report is strictly prohibited and will be considered unlawful.
 	</p>
 </div>
@@ -341,48 +341,47 @@ $check_1='SELECT ad.document_file FROM order_master_uploded_documents ad WHERE a
 $resul_1 = mysqli_query($db,$check_1);
 while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
 {
-	// $html.=$header;
-	// $html.='<h2>Annexure '.$i.'</h2><br>
-	// <div class="col-md-1"><br></div>
-	// <div class="col-md-10">
-	// 	<img src="../system-client/assets/order_master_documents/'.$row_1["document_file"].'" style="width:100%;display:none;"  />
-	// </div>
-	// <div class="col-md-12"><br></div>
-	// ';
-	if($i == 1)
-	{
-		$html.=$header;
-		$html.='<h2>Annexure '.$i.'</h2><br>
-		<div class="col-md-1"><br></div>
-		<div class="col-md-10">
-			<img src="Adhar.PNG" style="width:100%;" />
-		</div>
-		<div class="col-md-12"><br></div>
-		';
-		$html.=$footer;
-	}
-	if($i == 2)
-	{
-		$html.=$header;
-		$html.='<h2>Annexure '.$i.'</h2><br>
-		<div class="col-md-1"><br></div>
-		<div class="col-md-10">
-			<img src="pan.jpg" style="width:100%;" />
-		</div>
-		<div class="col-md-12"><br></div>
-		';
-		if(2 == $i)
-		{
-			$html.=$end_report;	
-		}
-		$html.=$footer;
-	}
-	
-	// if($total_files == $i)
+	$html.=$header;
+	$html.='<h2>Annexure '.$i.'</h2><br>
+	<div class="col-md-1"><br></div>
+	<div class="col-md-10">
+		<img src="../system-client/assets/order_master_documents/'.$row_1["document_file"].'" style="width:100%; height:100%;"  />
+	</div>
+	';
+	// if($i == 1)
 	// {
-	// 	$html.=$end_report;	
+	// 	$html.=$header;
+	// 	$html.='<h2>Annexure '.$i.'</h2><br>
+	// 	<div class="col-md-1"><br></div>
+	// 	<div class="col-md-10">
+	// 		<img src="Adhar.PNG" style="width:100%;" />
+	// 	</div>
+	// 	<div class="col-md-12"><br></div>
+	// 	';
+	// 	$html.=$footer;
 	// }
-    // $html.=$footer;
+	// if($i == 2)
+	// {
+	// 	$html.=$header;
+	// 	$html.='<h2>Annexure '.$i.'</h2><br>
+	// 	<div class="col-md-1"><br></div>
+	// 	<div class="col-md-10">
+	// 		<img src="pan.jpg" style="width:100%;" />
+	// 	</div>
+	// 	<div class="col-md-12"><br></div>
+	// 	';
+	// 	if(2 == $i)
+	// 	{
+	// 		$html.=$end_report;	
+	// 	}
+	// 	$html.=$footer;
+	// }
+	
+	if($total_files == $i)
+	{
+		$html.=$end_report;	
+	}
+    $html.=$footer;
 	$i++;
 }
 

@@ -14,7 +14,7 @@ if($_POST['action'] == 'load_service_list')
 {
 	echo '<select style="margin-top: 2% !important;" id="assign_service_id" class="browser-default custom-select chosen-select">
     <option value="">Select</option>';
-    $check = "SELECT sa.service_id, s.service_name FROM service_list s INNER JOIN assigned_service sa ON sa.service_id = s.id WHERE s.service_type_id = '$service_type_id' AND sa.country_id = '$lod_country_id' ";
+    $check = "SELECT sa.service_id, s.service_name FROM service_list s INNER JOIN assigned_service sa ON sa.service_id = s.id WHERE s.service_type_id = '$service_type_id' AND sa.country_id = '$lod_country_id' GROUP BY sa.service_id ";
     $resul = mysqli_query($db,$check); 
     while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -277,63 +277,70 @@ if($_POST['action'] == 'load_service_order')
                         ';
                     }
 
-                    if($row_1["service_field"] == "state_id" && @$country_id > 0)
+                    if($row_1["service_field"] == "state_id" )
                     {
+                        if(@$country_id > 0)
+                        {
+                              $field_print.='<option value="">Select</option>';
+                              $check_2 = "SELECT id, name FROM states WHERE country_id = '$country_id' ";
+                              $resul_2 = mysqli_query($db,$check_2); 
+                              while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+                              {
+                                $selected_option = '';
+                                if($row_1['service_field_value_verified'] == $row_2['id'])
+                                {
+                                  $state_id = $row_2['id'];
+                                  $selected_option = 'selected';
+                              }
+                              $field_print.='<option '.@$selected_option.' value="'.$row_2['id'].'">'.$row_2['name'].'</option>';    
+                          }
+                      }
+                  $check_2 = "SELECT id, name FROM states WHERE id = '".$row_1['service_field_value']."' ";
+                  $resul_2 = mysqli_query($db,$check_2); 
+                  if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+                  {
+                    $service_field_value = $row_2['name'];
+                    $print_verify_js.='
+                    if(parseFloat($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val()) > 0)
+                    {
+                        load_state('.$row_1["service_id"].','.$row_1['order_details_id'].', '.$row_1["service_field_value"].');
+                        $("#'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val());
+                    }
+                    ';
+                    }
+            }
+
+            if($row_1["service_field"] == "city_id")
+            {
+                if(@$state_id > 0)
+                {
                       $field_print.='<option value="">Select</option>';
-                      $check_2 = "SELECT id, name FROM states WHERE country_id = '$country_id' ";
+                      $check_2 = "SELECT id, name FROM cities WHERE state_id = '$state_id' ";
                       $resul_2 = mysqli_query($db,$check_2); 
                       while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
                       {
                         $selected_option = '';
                         if($row_1['service_field_value_verified'] == $row_2['id'])
                         {
-                          $state_id = $row_2['id'];
                           $selected_option = 'selected';
                       }
                       $field_print.='<option '.@$selected_option.' value="'.$row_2['id'].'">'.$row_2['name'].'</option>';    
                   }
-                  $check_2 = "SELECT id, name FROM states WHERE id = '".$row_1['service_field_value']."' ";
-                  $resul_2 = mysqli_query($db,$check_2); 
-                  if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
-                  {
-                    $service_field_value = $row_2['name'];
-                }
-                $print_verify_js.='
-                if(parseFloat($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val()) > 0)
-                {
-                    load_state('.$row_1["service_id"].','.$row_1['order_details_id'].', '.$row_1["service_field_value"].');
-                    $("#'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val());
-                }
-                ';
-            }
-
-            if($row_1["service_field"] == "city_id" && @$state_id > 0)
-            {
-              $field_print.='<option value="">Select</option>';
-              $check_2 = "SELECT id, name FROM cities WHERE state_id = '$state_id' ";
-              $resul_2 = mysqli_query($db,$check_2); 
-              while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
-              {
-                $selected_option = '';
-                if($row_1['service_field_value_verified'] == $row_2['id'])
-                {
-                  $selected_option = 'selected';
               }
-              $field_print.='<option '.@$selected_option.' value="'.$row_2['id'].'">'.$row_2['name'].'</option>';    
-          }
           $check_2 = "SELECT id, name FROM cities WHERE id = '".$row_1['service_field_value']."' ";
           $resul_2 = mysqli_query($db,$check_2); 
           if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
           {
             $service_field_value = $row_2['name'];
+            $print_verify_js.='
+            if(parseFloat($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val()) > 0)
+            {
+                load_city('.$row_1["service_id"].','.$row_1['order_details_id'].', '.$row_1["service_field_value"].');
+                $("#'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val());
+            }
+            ';
         }
-        $print_verify_js.='
-        if(parseFloat($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val()) > 0)
-        {
-            load_city('.$row_1["service_id"].','.$row_1['order_details_id'].', '.$row_1["service_field_value"].');
-            $("#'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val($("#lbl_print_'.$row_1["service_field"].'_'.$row_1['order_details_id'].'").val());
-        }
-        ';
+        
     }
 
     $field_print.='</select></div>';
@@ -421,6 +428,8 @@ echo '
             </tr>
         </table>
     </div>
+    </form>
+
     <div class="col-md-12">
         <br>
         <div class="card-header card-header-primary">
@@ -600,7 +609,6 @@ echo '
     </div>
     <div class="col-md-12"><br></div>
 </div>
-</form>
 <div class="modal" id="standard_macro_modal">
     <div class="row">
         <div class="col-md-4">
@@ -817,7 +825,7 @@ echo '
                 $('#country_id_'+service_id).chosen();
                 $('#country_id_'+service_id).prop('required', is_require);
                 $('#country_id_'+service_id).attr('name', new_name);
-                if($('#country_id_'+service_id).val() != "0" && parseFloat($('#state_id_'+service_id).val() || 0) == "0")
+                if($('#country_id_'+service_id).val() != "0" && parseFloat($('#state_id_'+service_id).val()) == "0")
                 {
                     load_state(service_id, order_details_id, 0)
                 }
@@ -845,7 +853,7 @@ echo '
                 $('#state_id_'+service_id).prop('required', is_require);
                 $('#state_id_'+service_id).attr('name', new_name);
 
-                if($('#state_id_'+service_id).val() != "0" && parseFloat($('#city_id_'+service_id).val() || 0) == "0")
+                if($('#state_id_'+service_id).val() != "0" && parseFloat($('#city_id_'+service_id).val()) == "0")
                 {
                     load_city(service_id, order_details_id, 0)
                 }
@@ -1153,7 +1161,6 @@ function confirm_to_qc()
     if(r == true)
     {
         let default_report_color_id = $('#default_report_color_id').val();
-        $('#confirm_to_qc').addClass('disabled_btn');        
         var myform = document.getElementById("verifier_details_form");
         var fd = new FormData(myform);
         if(default_report_color_id == "")
@@ -1163,6 +1170,7 @@ function confirm_to_qc()
         }
         else
         {
+            $('#confirm_to_qc').addClass('disabled_btn');        
             $.ajax({
                 url: "./API/QC-Actions.php",
                 data: fd,
@@ -1174,7 +1182,7 @@ function confirm_to_qc()
                   if(html == "updated")
                   {
                     alert('Order successfully submitted!');
-                    window.open('../../API/Print-Background-Verification-Report.php?order_id='+<?php echo base64_encode($order_id); ?>)
+                    window.open('../../API/Print-Background-Verification-Report.php?order_id=<?php echo base64_encode($order_id); ?>&default_report_color_id='+default_report_color_id)
                     $('#confirm_to_qc').addClass('disabled_btn');
                   }
                   else
@@ -1230,6 +1238,7 @@ if($_POST['action'] == 'load_attached_documents')
     }
     echo '</table>
     <a onclick="download_all_files()" class="pull-right btn btn-default btn-sm"><i class="fa fa-file-archive-o"></i> Download Files Zip</a>
+    </form>
     ';   
 }
 

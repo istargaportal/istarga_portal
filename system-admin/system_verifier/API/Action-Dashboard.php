@@ -916,6 +916,7 @@ if($_POST['action'] == 'load_attached_documents')
     }
     echo '</table>
     <a onclick="download_all_files()" class="pull-right btn btn-default btn-sm"><i class="fa fa-file-archive-o"></i> Download Files Zip</a>
+    </form>
     ';   
 }
 
