@@ -70,7 +70,7 @@ if(@$load_condition == "import_bulk_order")
 	}
 	
 	$inputFileName = 'import_bulk_order.xlsx'; 
-	
+
 	try {
 		$objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
 	} catch(Exception $e) {
@@ -83,9 +83,6 @@ if(@$load_condition == "import_bulk_order")
 	$error_code = 0; $alredy_exists = "";
 	$from_date_time = $from_date.' '.$from_time;
 	$to_date_time = $to_date.' '.$to_time;
-
-	echo "MAHESH THROAT";
-	exit();
 
 	$check_2 = "SELECT Inv_Code FROM Client WHERE id = '".$client_id."' ";
     $resul_2 = mysqli_query($db,$check_2); 
