@@ -146,17 +146,17 @@ if(@$load_condition == "import_bulk_order")
 
 		    	if($service_id == 2)
 		    	{
-			    	$college_name = $worksheet->getCellByColumnAndRow(2, $row);
-			    	$university = $worksheet->getCellByColumnAndRow(3, $row);
-			    	$degree = $worksheet->getCellByColumnAndRow(4, $row);
-			    	$year_of_passing = $worksheet->getCellByColumnAndRow(5, $row);
-			    	$register_number = $worksheet->getCellByColumnAndRow(6, $row);
-			    	$researcher_name = $worksheet->getCellByColumnAndRow(7, $row);
-			    	$employee_id = $worksheet->getCellByColumnAndRow(8, $row);
-			    	$country = $worksheet->getCellByColumnAndRow(9, $row);
-			    	$graduated = $worksheet->getCellByColumnAndRow(10, $row);
-			    	$customer_type = $worksheet->getCellByColumnAndRow(11, $row);
-			    	$additional_comments = $worksheet->getCellByColumnAndRow(12, $row);
+			    	$college_name = $worksheet->getCellByColumnAndRow(2, $row_c);
+			    	$university = $worksheet->getCellByColumnAndRow(3, $row_c);
+			    	$degree = $worksheet->getCellByColumnAndRow(4, $row_c);
+			    	$year_of_passing = $worksheet->getCellByColumnAndRow(5, $row_c);
+			    	$register_number = $worksheet->getCellByColumnAndRow(6, $row_c);
+			    	$researcher_name = $worksheet->getCellByColumnAndRow(7, $row_c);
+			    	$employee_id = $worksheet->getCellByColumnAndRow(8, $row_c);
+			    	$country = $worksheet->getCellByColumnAndRow(9, $row_c);
+			    	$graduated = $worksheet->getCellByColumnAndRow(10, $row_c);
+			    	$customer_type = $worksheet->getCellByColumnAndRow(11, $row_c);
+			    	$additional_comments = $worksheet->getCellByColumnAndRow(12, $row_c);
 
 		    		// $college_name  = addslashes($allDataInSheet[$i]["C"]);
 		    		//$university = addslashes($allDataInSheet[$i]["D"]);
@@ -174,17 +174,17 @@ if(@$load_condition == "import_bulk_order")
 		    	{
 		    		if($date_of_birth != "")
 		    		{
-				    	$date_of_birth = $worksheet->getCellByColumnAndRow(2, $row);
+				    	$date_of_birth = $worksheet->getCellByColumnAndRow(2, $row_c);
 			            // $date_of_birth = $cell->getValue();   
 			            // gives you a number like 44444, which is days since 1900
 			            $date_of_birth = \PHPExcel_Style_NumberFormat::toFormattedString($date_of_birth, 'YYYY-MM-DD');
 		    		}
 
-			    	$address = $worksheet->getCellByColumnAndRow(3, $row);
-			    	$father_name = $worksheet->getCellByColumnAndRow(4, $row);
-			    	$customer_type = $worksheet->getCellByColumnAndRow(5, $row);
-			    	$additional_comments = $worksheet->getCellByColumnAndRow(6, $row);
-			    	$country = $worksheet->getCellByColumnAndRow(7, $row);
+			    	$address = $worksheet->getCellByColumnAndRow(3, $row_c);
+			    	$father_name = $worksheet->getCellByColumnAndRow(4, $row_c);
+			    	$customer_type = $worksheet->getCellByColumnAndRow(5, $row_c);
+			    	$additional_comments = $worksheet->getCellByColumnAndRow(6, $row_c);
+			    	$country = $worksheet->getCellByColumnAndRow(7, $row_c);
 
 		    		// $date_of_birth = addslashes($allDataInSheet[$i]["C"]);
 		    		// $address = addslashes($allDataInSheet[$i]["D"]);
