@@ -32,7 +32,7 @@ class States
                       <th>Order Creation</th>
                       <th>Order Completion Date</th>
                       <th>Order status</th>
-                      <th>Actions</th>
+                      <th class="noExport">Actions</th>
                     </thead>';
             $query="SELECT * FROM `order_master` WHERE client_id = '$client_id' ORDER BY order_id DESC ";
             $result=$this->conn->query($query);
@@ -66,7 +66,7 @@ class States
                         <td class="tablehead1">
                           '.$order_status.'
                         </td>
-                        <td>
+                        <td class="noExport">
                           <ul style="list-style: none; padding:0;margin:0;">
                             <li class="nav-item dropdown">
                               <a
