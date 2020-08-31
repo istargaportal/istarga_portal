@@ -10,6 +10,13 @@
   <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
   <link rel="stylesheet" href="assets/css/login.css" />
+  <!--Fontawesome CDN-->
+  <link
+  rel="stylesheet"
+  href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+  integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+  crossorigin="anonymous"
+  />
 </head>
 <style>
   body {
@@ -17,7 +24,9 @@
     background-size: cover;
     background-repeat: no-repeat;
     box-shadow: inset 50px 50px 300px #000000, inset -10px -10px 100px #000000;
-
+  }
+  .form-control{
+    padding: 5px 10px !important;
   }
 </style>
 
@@ -62,9 +71,12 @@
                   <label for="email" class="sr-only">Username</label>
                   <input type="text" name="email" id="email" class="form-control" placeholder="Email address" />
                 </div>
-                <div class="form-group mb-4">
+                <div class="form-group">
                   <label for="password" class="sr-only">Password</label>
-                  <input type="password" name="password" id="password" class="form-control" placeholder="***********" />
+                  <div class="input-group">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="***********" />
+                    <span class="btn_show_password"><i class="fa fa-eye-slash"></i>  </span>
+                  </div>
                 </div>
                 <!--<input
                     name="login"
@@ -140,6 +152,41 @@
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <style type="text/css">
+      .input-group {
+        position: relative;
+      }
+      .btn_show_password{
+        position: absolute;
+        right: 0;
+        padding: 8px 12px;
+        font-size: 15pt;
+        color: #666;
+        cursor: pointer;
+        transition: 0.3s all ease;
+        z-index: 9999999 !important;
+      }
+      .btn_show_password:hover{
+        background: #eee;
+      }
+      .btn_show_password:active{
+       background: #aaa;
+      }
+  </style>
+    <script type="text/javascript">
+      $( ".btn_show_password" ).click(function() {
+        if($("#password").prop('type') == 'text')
+        {
+          $("#password").prop('type', 'password');
+          $('.btn_show_password').html('<i class="fa fa-eye-slash"></i>');
+        }
+        else
+        {
+          $("#password").prop('type', 'text');
+          $('.btn_show_password').html('<i class="fa fa-eye"></i>');
+        }
+      });
+    </script>
   <script>
     let modal = document.querySelector(".new-modal #exampleModal")
     let modalOkBtn = document.querySelector(".new-modal #modal-ok-btn")

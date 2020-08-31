@@ -76,7 +76,7 @@ include 'Header.php';
 <script type="text/javascript">
   function save_email_triggers()
   {
-    var email_body = $('#email_body').val().trim();
+    var email_body = $('#email_body').val();
     var standard_macro_id = $('#standard_macro_id').val();
     if(standard_macro_id == "")
     {

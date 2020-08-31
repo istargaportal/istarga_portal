@@ -90,7 +90,7 @@ include 'Header.php';
                 <div class="col-md-4">
                   <div class="form-group1">
                     <label class="bmd-label-floating">Client Code <i class="fa fa-star"></i></label>
-                    <input name="Client Code" type="number" class="form-control" required value="<?php echo @$Client_Code; ?>" />
+                    <input name="Client Code" type="text" class="form-control" required value="<?php echo @$Client_Code; ?>" />
                   </div>
                 </div>
                 <div class="col-md-4">
@@ -302,15 +302,16 @@ include 'Header.php';
                           </div>
                         </div>
                       </div>
+                      <div class="col-md-12"><br></div>
                       <div class="row justify-content-end">
                         <?php
                         if(isset($_GET['id']))
                         {
-                          echo '<button id="update-client" name="update-client" type="submit" class="btn btn-warning btn-sm" style="margin-right: 1%;"><i class="material-icons icon">edit</i> Update</button>';
+                          echo '<button id="update-client" name="update-client" type="submit" class="btn btn-warning btn-sm" style="margin-right: 1% !important;"><i class="material-icons icon">edit</i> Update</button>';
                         }
                         else
                         {
-                          echo '<button id="add-client" name="add-client" type="submit" class="btn btn-success btn-sm" style="margin-right: 1%;"><i class="material-icons icon">note_add</i> Save</button>';
+                          echo '<button id="add-client" name="add-client" type="submit" class="btn btn-success btn-sm" style="margin-right: 1% !important;"><i class="material-icons icon">note_add</i> Save</button>';
                         }
                         ?>
                         <a href="" class="btn btn-default btn-sm" style="margin-right: 2%;" onclick="formReset()"><i class="material-icons icon">refresh</i> Reset</a>

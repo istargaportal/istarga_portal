@@ -8,12 +8,21 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     />
     <link rel="stylesheet" href="assets/css/login.css" />
+    <link
+    rel="stylesheet"
+    href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+    crossorigin="anonymous"
+    />
     <style>
       body{
         background: url("assets/images/image0.jpg");
         background-size: cover;
         background-repeat: no-repeat;
         box-shadow: inset 50px 50px 300px #000000, inset -10px -10px 100px #000000;
+      }
+      .form-control{
+        padding: 5px 10px !important;
       }
     </style>
   </head>
@@ -75,7 +84,10 @@
                   </div>
                   <div class="form-group mb-4">
                     <label for="password" class="sr-only">Password</label>
-                    <input type="password" name="password" id="password" class="form-control" placeholder="***********" />
+                    <div class="input-group">
+                      <input type="password" name="password" id="password" class="form-control" placeholder="***********" />
+                      <span class="btn_show_password"><i class="fa fa-eye-slash"></i>  </span>
+                    </div>
                   </div>
                   <a href="javascript:login_click()" class="btn btn-block login-btn mb-4">Login</a>
                 </form>
@@ -86,6 +98,41 @@
       </div>
     </main>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style type="text/css">
+      .input-group {
+        position: relative;
+      }
+      .btn_show_password{
+        position: absolute;
+        right: 0;
+        padding: 8px 12px;
+        font-size: 15pt;
+        color: #666;
+        cursor: pointer;
+        transition: 0.3s all ease;
+        z-index: 9999999 !important;
+      }
+      .btn_show_password:hover{
+        background: #eee;
+      }
+      .btn_show_password:active{
+       background: #aaa;
+      }
+  </style>
+    <script type="text/javascript">
+      $( ".btn_show_password" ).click(function() {
+        if($("#password").prop('type') == 'text')
+        {
+          $("#password").prop('type', 'password');
+          $('.btn_show_password').html('<i class="fa fa-eye-slash"></i>');
+        }
+        else
+        {
+          $("#password").prop('type', 'text');
+          $('.btn_show_password').html('<i class="fa fa-eye"></i>');
+        }
+      });
+    </script>
     <script type="text/javascript">
       function login_click()
       {

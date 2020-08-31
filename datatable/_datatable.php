@@ -78,7 +78,7 @@
     location.reload();
   }
 
-  $('#data_table').before('<a class="btn btn-success export_excel btn-sm" onclick="export_to_excel()"><i class="fa fa-download"></i> Export To Excel</a> <a class="btn btn-danger export_print btn-sm" onclick="export_to_print()"><i class="fa fa-print"></i> Print</a>');
+  $('#data_table').after('<a class="btn btn-success export_excel btn-sm" onclick="export_to_excel()"><i class="fa fa-download"></i> Export To Excel</a> <a class="btn btn-danger export_print btn-sm" onclick="export_to_print()"><i class="fa fa-print"></i> Print</a>');
 
   function isAlpha(a){var e=(a=a||window.event).which?a.which:a.keyCode;return!(e>31&&(e<65||e>90)&&(e<97||e>122)&&e>32)}function isNumber(a){var e=(a=a||window.event).which?a.which:a.keyCode;return!(e>31&&(e<48||e>57))}$(".form-control").change(function(){var a="";$(".form-control").each(function(){""==(a=$(this).val())?$(this).removeClass("has_data"):"0"==a?$(this).removeClass("has_data"):"Select"==a?$(this).removeClass("has_data"):$(this).addClass("has_data")})}),$('input[type="email"]').attr("pattern","[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}$"),$("input").on("keypress",function(a){32===a.which&&0===a.target.selectionStart&&a.preventDefault()}),$("textarea").on("keypress",function(a){32===a.which&&0===a.target.selectionStart&&a.preventDefault(),13===a.which&&0===a.target.selectionStart&&a.preventDefault()}),$("input").on("focusout",function(a){var e=$(this).val().trim();""==(e=e.replace(/ +(?= )/g,""))?$(this).val(""):$(this).val(e)}),$("textarea").on("focusout",function(a){var e=$(this).val().trim();""==(e=e.replace(/ +(?= )/g,""))?$(this).val(""):$(this).val(e)}),$("input[type='email']").on("focusout",function(a){return $("#error_email").remove(),/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test($(this).val())||""==$(this).val().trim()?($(".btn-warning").removeClass("disabled"),$(".btn-primary").removeClass("disabled"),!0):($(this).focus(),$(this).after('<span class="btn btn-danger text_normal btn-xs" id="error_email"><i class="fa fa-exclamation-triangle"></i> Invalid Email ID!</span>'),$(".btn-warning").addClass("disabled"),$(".btn-primary").addClass("disabled"),!1)}),$(".mobile_number").on("focusout",function(a){$("#error_mobile_number").remove();return $(this).val().match(/^[0]?[789]\d{9}$/)||""==$(this).val().trim()?($(".btn-warning").removeClass("disabled"),$(".btn-primary").removeClass("disabled"),!0):($(this).focus(),$(this).after('<span class="btn btn-danger text_normal btn-xs" id="error_mobile_number"><i class="fa fa-exclamation-triangle"></i> Invalid Mobile Number!</span>'),$(".btn-warning").addClass("disabled"),$(".btn-primary").addClass("disabled"),!1)}),$(".mobile_tel").on("focusout",function(a){$("#error_mobile_number").remove();var e=$(this).val().length,t=parseInt($(this).val()||0);return e>=7&&e<=12&&t>0||0==e?($(".btn-warning").removeClass("disabled"),$(".btn-primary").removeClass("disabled"),!0):($(this).focus(),$(this).after('<span class="btn btn-danger text_normal btn-xs" id="error_mobile_number"><i class="fa fa-exclamation-triangle"></i> Invalid Mobile Number!</span>'),$(".btn-warning").addClass("disabled"),$(".btn-primary").addClass("disabled"),!1)}),$(".no_space").on("keypress",function(a){if(32==a.which)return!1}),$(document).keyup(function(a){"Escape"===a.key&&$(".modal").each(function(){"none"!=$(this).css("display")&&(1==confirm("Do you want to close this form?")&&$(this).css("display","none"))})}),$(".Number").on("input",function(a){var e;e=a.keyCode?a.keyCode:a.which,0==a.shiftKey&&(46==e||8==e||37==e||39==e||e>=48&&e<=57)||a.preventDefault(),$(".Number").each(function(){var a=$(this).val().replace(/[^0-9\.]/g,"");$(this).val(a)})});
 
@@ -100,16 +100,20 @@
     position: relative;
   }
   .export_excel{
-    position: absolute;
-    bottom: 0;
-    z-index: 99999999 !important;
-    left: 20%;
+    position: static;
+    bottom: 20px;
+    z-index: 9999999999 !important;
+    left: 22%;
+    font-size: 9pt !important;
+    padding: 5px 10px !important;
   }
   .export_print{
-    position: absolute;
-    bottom: 0;
-    z-index: 99999999 !important;
-    left: 36%;
+    position: static;
+    bottom: 20px;
+    z-index: 9999999999 !important;
+    left: 38%;
+    font-size: 9pt !important;
+    padding: 5px 10px !important;
   }
   select.form-control:not([size]):not([multiple]){
     color: #000 !important;

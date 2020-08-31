@@ -89,7 +89,7 @@ include 'Header.php';
               <input type="hidden" name="action" value="<?php echo @$action; ?>" />
               <div class="row" style="margin-top: 1%;">
                 <div class="col-md-3">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label style="font-size: 13px;" class="bmd-label-floating">Title <i class="fa fa-star"></i></label>
                     <select style="margin-top: 2%;" name="prefix" id="Title" class="browser-default custom-select" required>
                       <option selected="selected" hidden value="">Choose..</option>
@@ -100,19 +100,19 @@ include 'Header.php';
                   </div>
                 </div>
                 <div class="col-md-3">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">First Name <i class="fa fa-star"></i></label>
                     <input name="first_name" type="text" value="<?php echo @$first_name; ?>" class="form-control no_space" required="" />
                   </div>
                 </div>
                 <div class="col-md-3">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Middle Name </label>
                     <input name="middle_name" type="text" value="<?php echo @$middle_name; ?>" class="form-control no_space" />
                   </div>
                 </div>
                 <div class="col-md-3">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Last Name <i class="fa fa-star"></i></label>
                     <input name="last_name" type="text" value="<?php echo @$last_name; ?>" class="form-control no_space" required="" />
                   </div>
@@ -134,7 +134,7 @@ include 'Header.php';
                 <div class="col-md-1" style="padding: 0;">
                   <div class="form-group">
                     <input type="file" accept="image/*" id="customFile4" name="profile_pic">
-                    <label style="border: 1px solid grey; margin-top: 3%; padding: 4px; cursor: pointer; letter-spacing: .5px;" for="customFile4">Browse</label>
+                    <label class="btn btn-default btn-sm" for="customFile4">Browse</label>
                   </div>
                 </div>
                 <div class="col-md-1">
@@ -142,13 +142,13 @@ include 'Header.php';
                 </div>
                 
                 <div class="col-md-6">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Permanent Address <i class="fa fa-star"></i></label>
                     <input name="permanent_address" rows="3" required="" class="form-control" value="<?php echo @$permanent_address; ?>" />
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Temporary Address</label>
                     <input name="temporary_address" rows="3" class="form-control" value="<?php echo @$temporary_address; ?>" />
                   </div>
@@ -162,34 +162,34 @@ include 'Header.php';
                 <input type="hidden" name="edit_user_id" value="<?php echo @$edit_user_id; ?>">
 
                 <div class="col-md-2">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating" style="font-size: 13px;">Country <i class="fa fa-star"></i></label>
                     <select class="browser-default custom-select" type="select" id="locality-dropdown" name="country_id" onchange="getservice(this.value)" style="color:#202940;" required>
                     </select>
                   </div>
                 </div>
                 <div class="col-md-2">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating"style="font-size: 13px;">State <i class="fa fa-star"></i></label>
                     <select class="browser-default custom-select" type="select" id="select_state" name="state_id" onchange="getservicename(this.value)" style="color:#202940;">
                     </select>
                   </div>
                 </div>
                 <div class="col-md-2">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating" style="font-size: 13px;">City <i class="fa fa-star"></i></label>
                     <select class="browser-default custom-select" type="select" id="select_city" name="city_id" onchange="getdocumentlist(this.value)" style="color:#202940;">
                     </select>
                   </div>
                 </div>
                 <div class="col-md-2">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Pincode <i class="fa fa-star"></i></label>
                     <input name="pincode" type="text" class="form-control" value="<?php echo @$pincode; ?>" />
                   </div>
                 </div>
                 <div class="col-md-4">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label>TimeZone <i class="fa fa-star"></i></label>
                     <select class="browser-default chosen-select custom-select" required="" name="timezone_id" id="timezone_id">
                       <option value="">Select</option>
@@ -209,19 +209,19 @@ include 'Header.php';
               </div>
               <div class="row justify-content-between" style="margin-top: 1%;">
                 <div class="col-md-5">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Email ID <i class="fa fa-star"></i></label>
                     <input name="email_id" type="email" class="form-control" required="" value="<?php echo @$email_id; ?>" />
                   </div>
                 </div>
                 <div class="col-md-3">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Contact Number <i class="fa fa-star"></i></label>
                     <input name="contact_number" type="number" class="form-control" required="" value="<?php echo @$contact_number; ?>" />
                   </div>
                 </div>
                 <div class="col-md-3">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Alternate Contact Number</label>
                     <input name="alternate_contact" type="number" class="form-control" value="<?php echo @$alternate_contact; ?>" />
                   </div>
@@ -229,41 +229,44 @@ include 'Header.php';
               </div>                       
               <div class="row justify-content-start" style="margin-top: 1%;">
                 <div class="col-md-3" style="padding-right: 0;">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Adhar Number</label>
                     <input name="adhar_number" type="text" class="form-control" value="<?php echo @$adhar_number; ?>" />
                   </div>
                 </div>  
                 <div class="col-md-1" style="padding: 0;">
                   <div class="form-group">
+                    <br>
                     <input type="file" accept="image/*" id="customFile1" name="adhar_file">
-                    <label style="border: 1px solid grey; margin-top: 3%; padding: 4px; cursor: pointer; letter-spacing: .5px;" for="customFile1">Browse</label>
+                    <label class="btn btn-default btn-sm" for="customFile1">Browse</label>
                   </div>
                 </div>
 
                 <div class="col-md-3" style="padding-right: 0;">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">PAN Number</label>
                     <input name="pan_number" type="text" class="form-control" value="<?php echo @$pan_number; ?>" />
                   </div>
                 </div>  
                 <div class="col-md-1" style="padding: 0;">
                   <div class="form-group">
+                    <br>
                     <input type="file" accept="image/*" id="customFile2" name="pan_file">
-                    <label style="border: 1px solid grey; margin-top: 3%; padding: 4px; cursor: pointer; letter-spacing: .5px;" for="customFile2">Browse</label>
+                    <label class="btn btn-default btn-sm" for="customFile2">Browse</label>
                   </div>
                 </div>
 
                 <div class="col-md-3" style="padding-right: 0;">
-                  <div class="form-group">
+                  <div class="form-group1">
                     <label class="bmd-label-floating">Passport</label>
                     <input name="passport_number" type="text" class="form-control" value="<?php echo @$passport_number; ?>" />
                   </div>
                 </div>  
                 <div class="col-md-1" style="padding: 0;">
                   <div class="form-group">
+                    <br>
                     <input type="file" accept="image/*" id="customFile3" name="passport_file">
-                    <label style="border: 1px solid grey; margin-top: 3%; padding: 4px; cursor: pointer; letter-spacing: .5px;" for="customFile3">Browse</label>
+                    <label class="btn btn-default btn-sm" for="customFile3">Browse</label>
                   </div>
                 </div>           
               </div>
@@ -294,14 +297,14 @@ include 'Header.php';
                     </div>
                     <div class="card-body row">
                       <div class="col-md-4">
-                        <div class="form-group">
+                        <div class="form-group1">
                           <label class="bmd-label-floating">Username <i class="fa fa-star"></i></label>
                           <input name="username" type="text" class="form-control" required="" value="<?php echo @$username; ?>" />
                         </div>
                       </div>
 
                       <div class="col-md-4">
-                        <div class="form-group bmd-form-group">
+                        <div class="form-group1 bmd-form-group1">
                           <label for="password" class="bmd-label-floating">Password <i class="fa fa-star"></i></label>
                           <div class="input-group">
                             <input name="password" type="password" class="form-control" autocomplete="off" required value="<?php echo @$password; ?>" >
@@ -313,7 +316,7 @@ include 'Header.php';
                       </div>
                       
                       <div class="col-md-4">
-                        <div class="form-group">
+                        <div class="form-group1">
                           <label class="bmd-label-floating">Password Mail To <i class="fa fa-star"></i></label>
                           <input id="passwordMailTo" name="password_mail_to" type="email" class="form-control" required value="<?php echo @$password_mail_to; ?>" />
                         </div>
@@ -332,19 +335,19 @@ include 'Header.php';
                     <div class="card-body">
                       <div class="row">
                         <div class="col-md-4">
-                          <div class="form-group">
+                          <div class="form-group1">
                             <label  class="bmd-label-floating">Bank Name</label>
                             <input name="bank_name" type="text" class="form-control" value="<?php echo @$bank_name; ?>" />
                           </div>
                         </div>
                         <div class="col-md-4">
-                          <div class="form-group">
+                          <div class="form-group1">
                             <label class="bmd-label-floating">Account Number</label>
                             <input name="account_number" type="text" class="form-control" value="<?php echo @$account_number; ?>" />
                           </div>
                         </div>
                         <div class="col-md-4">
-                          <div class="form-group">
+                          <div class="form-group1">
                             <label class="bmd-label-floating">IFSC Code</label>
                             <input name="ifsc_code" type="text" class="form-control" value="<?php echo @$ifsc_code; ?>" />
                           </div>
@@ -365,7 +368,7 @@ include 'Header.php';
                         <div class="card-body">
                           <div class="row">
                             <div class="col-md-4">
-                              <div class="form-group">
+                              <div class="form-group1">
                                 <label style="font-size: 13px;" class="bmd-label-floating">Groups <i class="fa fa-star"></i></label>
                                 <select style="margin-top: 2%;" name="role_id" class="browser-default custom-select" required>
                                   <option selected="selected" hidden value="">Choose..</option>
@@ -376,7 +379,7 @@ include 'Header.php';
                               </div>
                             </div>
                             <div class="col-md-4">
-                              <div class="form-group">
+                              <div class="form-group1">
                                 <label style="font-size: 13px;" class="bmd-label-floating">Status <i class="fa fa-star"></i></label>
                                 <select style="margin-top: 2%;" name="status" class="browser-default custom-select">
                                   <option selected="selected" hidden value="">Choose..</option>
@@ -386,7 +389,7 @@ include 'Header.php';
                               </div>
                             </div>
                             <div class="col-md-4">
-                              <div class="form-group">
+                              <div class="form-group1">
                                 <label>Date of Joining</label>
                                 <input type="date" name="date_of_join" class="form-control" value="<?php echo @$date_of_join; ?>" />
                               </div>
@@ -637,6 +640,7 @@ include 'Header.php';
     }
     else if(error == 0)
     {
+      $('#modal_loading').css('display', 'block');
       var myform = document.getElementById("add_user_form");
       var fd = new FormData(myform );
       $.ajax({
@@ -647,6 +651,7 @@ include 'Header.php';
         contentType: false,
         type: 'POST',
         success: function (html) {
+          $('#modal_loading').css('display', 'none');
           if(html == "inserted")
           {
             alert('User added successfully!');

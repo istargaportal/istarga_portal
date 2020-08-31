@@ -2,7 +2,7 @@
 
 if(@$admin_status == "1")
 {
-  $first_name = "Admin";
+  $firstname_p = "Admin";
 }
 else
 {
@@ -15,7 +15,7 @@ else
   $resul = mysqli_query($db,$check); 
   if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
   {
-    $first_name = $row['first_name'];
+    $firstname_p = $row['first_name'];
   }
 }
 
@@ -29,7 +29,7 @@ else
         <div class="modal-content row">
           <h4 style="margin: 4px 0; border-bottom: solid 1px #000; " id="process_title" class="card-title"><i class="fa fa-cogs" aria-hidden="true"></i> Change Password</h4>
           <div class="">
-            <h5 style="margin: 10px 0;">Hello, <?php echo $first_name ?></h5>
+            <h5 style="margin: 10px 0;">Hello, <?php echo $firstname_p ?></h5>
             <label>Current Password</label>
             <input type="password" id="current_password" maxlength="20" class="form-control" />
 
