@@ -96,6 +96,7 @@ if(@$load_condition == "import_bulk_order")
 	$bulk_order_id = $db->insert_id;
     if ($query_res1 > 0) 
     {
+    	$service_error = "";
 		for($i=2;$i<=$arrayCount;$i++)
 		{
 			$internal_reference_id = addslashes($allDataInSheet[$i]["A"]);
@@ -190,7 +191,7 @@ if(@$load_condition == "import_bulk_order")
 						}
 						else
 						{
-							$alredy_exists.= '-'.$internal_reference_id.' '.$first_name.'\nService is not assigned to the '.$country.'. Contact Admin!';
+							$service_error.= '\nService is not assigned to the '.$country.'. Contact Admin!';
 							$error_code = 0;
 						}
 
@@ -261,6 +262,7 @@ if(@$load_condition == "import_bulk_order")
 						    }
 							$count=$count+1;
 						}
+						
 					}
 				}
 				else
@@ -288,9 +290,16 @@ if(@$load_condition == "import_bulk_order")
     {
     	$error_code = 0;
     }
+
+	if($service_error != "")
+	{
+		echo "<script>alert('Service is not assigned to the Client'); </script>";
+		exit();
+	}
+
 	if($alredy_exists != "")
 	{
-		echo "<script>alert('Bulk Orders already exists - ".$alredy_exists."'); </script>";
+		echo "<script>alert('Bulk Orders already exists ".$alredy_exists."'); </script>";
 	}
 	
     if($error_code > 0 && @$query_res2 > 0 && @$query_res3 > 0 && @$query_res4 > 0 && @$query_res6 > 0)
