@@ -17,12 +17,16 @@ foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
         for ($col = 0; $col < $highestColumnIndex; ++ $col) {
             $cell = $worksheet->getCellByColumnAndRow($col, $row);
             $val = $cell->getValue();
+            // $excelDate = $cell->getValue(); // gives you a number like 44444, which is days since 1900
+            // $stringDate = \PHPExcel_Style_NumberFormat::toFormattedString($excelDate, 'YYYY-MM-DD');
+
             $dataType = PHPExcel_Cell_DataType::dataTypeForValue($val);
-            echo '<td>' . $val . '<br>(Typ ' . $dataType . ')</td>';
+            echo '<td>' . $cell . '<br>(Typ ' . $dataType . ')</td>';
         }
         echo '</tr>';
     }
     echo '</table>';
 }
+
 
 ?>
