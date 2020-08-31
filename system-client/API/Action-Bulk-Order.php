@@ -73,12 +73,12 @@ if(@$load_condition == "import_bulk_order")
 
 	try {
 		$objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
-		$allDataInSheet = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
-		$arrayCount = count($allDataInSheet);
 	} catch(Exception $e) {
 		die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
 	}
 
+	$allDataInSheet = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+	$arrayCount = count($allDataInSheet);
 	
 	$error_code = 0; $alredy_exists = "";
 	$from_date_time = $from_date.' '.$from_time;
