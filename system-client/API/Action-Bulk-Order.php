@@ -84,7 +84,8 @@ if(@$load_condition == "import_bulk_order")
 	$from_date_time = $from_date.' '.$from_time;
 	$to_date_time = $to_date.' '.$to_time;
 
-	$check_2 = "SELECT Inv_Code FROM Client WHERE id = '".$client_id."' ";
+	echo $check_2 = "SELECT Inv_Code FROM Client WHERE id = '".$client_id."' ";
+    exit();
     $resul_2 = mysqli_query($db,$check_2); 
     if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
     {
