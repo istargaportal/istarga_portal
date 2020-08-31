@@ -78,8 +78,6 @@ if(@$load_condition == "import_bulk_order")
 	}
 
 	$allDataInSheet = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
-	echo "MMT1";
-	exit();
 	$arrayCount = count($allDataInSheet);
 	
 	$error_code = 0; $alredy_exists = "";
