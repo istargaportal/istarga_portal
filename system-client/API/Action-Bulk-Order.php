@@ -84,11 +84,12 @@ if(@$load_condition == "import_bulk_order")
 	$from_date_time = $from_date.' '.$from_time;
 	$to_date_time = $to_date.' '.$to_time;
 
-	$check_2 = "SELECT Inv_Code FROM Client WHERE id = '".$client_id."' ";
+	$check_2 = "SELECT Inv_Code, email FROM Client WHERE id = '".$client_id."' ";
     $resul_2 = mysqli_query($db,$check_2); 
     if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
     {
         $Inv_Code = $row_2['Inv_Code'];
+        $client_email_id = $row_2['email'];
     }
     
 	$sql = "INSERT INTO bulk_order(client_id, file_name, from_date, from_time, from_date_time, to_date, to_time, to_date_time, service_id) VALUES('$client_id', '$file_name', '$from_date', '$from_time', '$from_date_time', '$to_date', '$to_time', '$to_date_time', '$service_id') ";
@@ -97,6 +98,7 @@ if(@$load_condition == "import_bulk_order")
     if ($query_res1 > 0) 
     {
     	$service_error = "";
+    	$order_list = "";
 		for($i=2;$i<=$arrayCount;$i++)
 		{
 			$internal_reference_id = addslashes($allDataInSheet[$i]["A"]);
@@ -197,6 +199,7 @@ if(@$load_condition == "import_bulk_order")
 
 						if($assign_service_id > 0)
 						{
+							$order_list.= "<tr><td style='border:solid 1px #000; border-collapse:collapse;'>".$case_reference_no."</td><td style='border:solid 1px #000; border-collapse:collapse;'>".$first_name." ".$last_name."</td></tr>";
 							$sql = "INSERT INTO order_master (case_reference_no, internal_reference_id, first_name, last_name, customer_type, additional_comments, bulk_order_id, order_type, client_id, username, password, insufficiency_contact) VALUES('$case_reference_no','$internal_reference_id', '$first_name', '$last_name', '$customer_type', '$additional_comments', '$bulk_order_id', 'Bulk', '$client_id', '$username', '$password', '$insufficiency_contact')";
 							$query_res2 = $db->query($sql);
 							$order_id = $db->insert_id;
@@ -305,12 +308,13 @@ if(@$load_condition == "import_bulk_order")
     if($error_code > 0 && @$query_res2 > 0 && @$query_res3 > 0 && @$query_res4 > 0 && @$query_res6 > 0)
     {
     	mysqli_commit($db);
-
-    	// include '../../API/SMTP/sendMail.php';
-	    // include '../../API/SMTP/LOGIN-EMAIL.php';
-	    // $subject = "LOGIN CREDENTILAS FOR - Employment Background Screening";
-	    // smtpmailer($email_id, $from, $name, $subject, @$print_var);
-
+    	if($count > 0)
+    	{
+	    	include '../../API/SMTP/sendMail.php';
+		    include '../../API/SMTP/BULK-ORDER-UPLOAD.php';
+		    $subject = "BULK ORDER IMPORTED - Employment Background Screening";
+		    smtpmailer($client_email_id, $from, $name, $subject, @$print_var);
+		}
 		echo "<script>alert('Bulk Order is Imported. ".$count." records imported.'); </script>";
     }
     else

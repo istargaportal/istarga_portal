@@ -35,6 +35,7 @@ if($_POST['action'] == 'load_manual_search')
 	if($select_criteria == "order_creation_date"){ $sq.= " AND o.order_creation_date LIKE '$search_field%' "; }
 	if($select_criteria == "order_completion_date"){ $sq.= " AND o.order_completion_date LIKE '$search_field%' "; }
 	if($select_criteria == "order_status"){ $sq.= " AND os.order_status LIKE '$search_field%' "; }
+    $sq.="GROUP BY os.order_service_details_id";
 	$result = mysqli_query($db,$sq); 
 	while($row = $result->fetch_assoc())
     {
