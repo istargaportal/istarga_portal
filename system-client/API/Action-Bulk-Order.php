@@ -76,7 +76,8 @@ if(@$load_condition == "import_bulk_order")
 	} catch(Exception $e) {
 		die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
 	}
-
+	echo "MMT";
+	exit();
 	$allDataInSheet = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
 	$arrayCount = count($allDataInSheet);
 
