@@ -1,7 +1,5 @@
 <?php
 
-echo "MAHESH";
-exit();
 session_start();
 $client_id = $_SESSION['uid'];
 
@@ -72,6 +70,8 @@ if(@$load_condition == "import_bulk_order")
 	}
 	
 	$inputFileName = 'import_bulk_order.xlsx'; 
+	echo "MAHESH";
+	exit();
 
 	try {
 		$objPHPExcel = PHPExcel_IOFactory::load($inputFileName);
