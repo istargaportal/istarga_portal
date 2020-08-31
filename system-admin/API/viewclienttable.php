@@ -38,14 +38,15 @@ class States
                     </thead>';
                     if($client_id != 0)
                     {
-                        $sql_condition = " WHERE o.client_id = '$client_id' GROUP BY os.order_service_details_id  "; 
+                        $sql_condition = " WHERE o.client_id = '$client_id'   "; 
                     }
                     if(@$default_client_id != "0")
                     {
                         $default_client_id = base64_decode($default_client_id);
-                        $sql_condition = " WHERE o.client_id = '$default_client_id' GROUP BY os.order_service_details_id  "; 
+                        $sql_condition = " WHERE o.client_id = '$default_client_id'   "; 
                     }
                     $query="SELECT o.*, c.Client_Name, s.service_name, os.order_status FROM `order_master` o INNER JOIN client c ON c.id = o.client_id INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.service_id = os.service_id  ".@$sql_condition;
+                    $query.="GROUP BY os.order_service_details_id";
                     $result=$this->conn->query($query);
                     if($result->num_rows>0)
                     {
