@@ -76,11 +76,12 @@ if(@$load_condition == "import_bulk_order")
 	} catch(Exception $e) {
 		die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
 	}
-	echo "MMT";
-	exit();
-	$allDataInSheet = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
-	$arrayCount = count($allDataInSheet);
 
+	$allDataInSheet = $objPHPExcel->getActiveSheet()->toArray(null,true,true,true);
+	echo "MMT1";
+	exit();
+	$arrayCount = count($allDataInSheet);
+	
 	$error_code = 0; $alredy_exists = "";
 	$from_date_time = $from_date.' '.$from_time;
 	$to_date_time = $to_date.' '.$to_time;
