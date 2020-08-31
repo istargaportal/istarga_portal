@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(1);
+error_reporting(0);
 session_start();
 $client_id = $_SESSION['uid'];
 
