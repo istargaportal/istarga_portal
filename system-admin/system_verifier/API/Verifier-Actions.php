@@ -35,11 +35,25 @@ if($_POST['action'] == 'update_applicant_details')
 
     $verifier_details = addslashes($verifier_details);
     $verifier_comments = addslashes($verifier_comments);
-    $check = "UPDATE order_verifier_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', closed_date = '$closed_date', status = '$status' WHERE order_verify_id = '$order_verify_id' ";
+    $check = "UPDATE order_verifier_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', status = '$status' WHERE order_verify_id = '$order_verify_id' ";
     $result = mysqli_query($db,$check);
     
-    $additional_comments_verifier = addslashes($additional_comments_verifier);
-    $check = "UPDATE order_service_details SET additional_comments_verifier = '$additional_comments_verifier', order_status = 'Sent To OF' WHERE order_service_details_id = '$order_service_details_id' ";
+    $additional_comments_verifier = "";
+    // $additional_comments_verifier = addslashes($additional_comments_verifier);
+    $check = "UPDATE order_service_details SET additional_comments_verifier = '$additional_comments_verifier', order_status = 'Sent To OF', verifier_details = '$verifier_details', verifier_comments = '$verifier_comments' WHERE order_service_details_id = '$order_service_details_id' ";
+    $result = mysqli_query($db,$check);
+
+    echo 'updated';
+}
+
+if($_POST['action'] == 'update_verfier_details')
+{
+    $verifier_details = addslashes($verifier_details);
+    $verifier_comments = addslashes($verifier_comments);
+    $check = "UPDATE order_verifier_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', status = '$status' WHERE order_verify_id = '$order_verify_id' ";
+    $result = mysqli_query($db,$check);
+    
+    $check = "UPDATE order_service_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', order_status = '$status' WHERE order_service_details_id = '$order_service_details_id' ";
     $result = mysqli_query($db,$check);
 
     echo 'updated';

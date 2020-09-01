@@ -155,12 +155,12 @@ if($_POST['action'] == 'load_service_order')
             <h6>Status</h6>
         </div>
         <div class="col-md-3">
-            <h6 style="color:#888;"><?php echo $applicant_name; ?></h6>
-            <h6 style="color:#888;"><?php echo $service_type_name; ?></h6>
-            <h6 style="color:#888;"><?php echo $service_name; ?></h6>
-            <h6 style="color:#888;"><?php echo $maiden_name; ?></h6>
-            <h6 style="color:#888;"><?php echo $client_name; ?></h6>
-            <h6 style="color:#888;"><?php echo $order_status; ?></h6>
+            <h6 style="color:#888;">&nbsp;<?php echo $applicant_name; ?></h6>
+            <h6 style="color:#888;">&nbsp;<?php echo $service_type_name; ?></h6>
+            <h6 style="color:#888;">&nbsp;<?php echo $service_name; ?></h6>
+            <h6 style="color:#888;">&nbsp;<?php echo $maiden_name; ?></h6>
+            <h6 style="color:#888;">&nbsp;<?php echo $client_name; ?></h6>
+            <h6 style="color:#888;">&nbsp;<?php echo $order_status; ?></h6>
         </div>
         <div class="col-md-2">
             <br>
@@ -173,11 +173,11 @@ if($_POST['action'] == 'load_service_order')
             <h6>Closure Date</h6>
         </div>
         <div class="col-md-3">
-            <h6 style="color:#888;"><?php echo $internal_reference_id; ?></h6>
-            <h6 style="color:#888;"><?php echo $order_creation_date; ?></h6>
-            <h6 style="color:#888;"><?php echo $order_creation_date; ?></h6>
-            <h6 style="color:#888;"><?php date('d-m-Y'); ?></h6>
-            <h6 style="color:#888;"><?php echo $expected_course_date; ?></h6>
+            <h6 style="color:#888;">&nbsp;<?php echo $internal_reference_id; ?></h6>
+            <h6 style="color:#888;">&nbsp;<?php echo $order_creation_date; ?></h6>
+            <h6 style="color:#888;">&nbsp;<?php echo $order_creation_date; ?></h6>
+            <h6 style="color:#888;">&nbsp;<?php date('d-m-Y'); ?></h6>
+            <h6 style="color:#888;">&nbsp;<?php echo $expected_course_date; ?></h6>
         </div>
         <div class="col-md-12">
             <br>
@@ -426,6 +426,8 @@ echo '
                     <select onchange="insufficiency_change()" class="browser-default chosen-select custom-select" id="order_status" name="order_status">
                         <option>Pending</option>
                         <option>Insufficiency</option>
+                        <option>Reassigned Verifier</option>
+                        <option>Insufficiency Verifier</option>
                     </select>
                 </td>
                 <td>

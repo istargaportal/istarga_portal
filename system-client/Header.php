@@ -109,10 +109,11 @@ else
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
-      background: #fff;
+      background: transparent;
       border:solid 1px #aaa;
       border-radius: 40px;
       margin-right: 4px;
+      color: #000 !important;
     }
 
     .container_checkbox input {

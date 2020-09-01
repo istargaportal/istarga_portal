@@ -381,4 +381,13 @@
     .btn-sm, .btn-md, .btn-lg{
       margin: 0 !important;
     }
+    .link_btn{
+      cursor: pointer;
+      color: blue !important;
+      transition: 0.3s all ease;
+    }
+    .link_btn:hover{
+      font-weight: bold;
+      text-decoration: underline !important;
+    }
   </style>

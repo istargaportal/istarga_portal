@@ -21,6 +21,9 @@ if($_POST['action'] == 'load_service_order')
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
+        $first_name = $row['first_name'];
+        $middle_name = $row['middle_name'];
+        $last_name = $row['last_name'];
         $service_type_id = $row['service_type_id'];
         $order_service_details_id = $row['order_service_details_id'];
         $order_id = $row['order_id'];
@@ -39,6 +42,15 @@ if($_POST['action'] == 'load_service_order')
         if($row["order_status"] == 2) { $order_status = "Completed"; }
         if($row["order_status"] == 3) { $order_status = "Insufficiency"; }
         $internal_reference_id = $row['internal_reference_id'];
+    }
+
+    $check = "SELECT status, verifier_details, verifier_comments FROM order_verifier_details WHERE order_verify_id = '$order_verify_id' ";
+    $resul = mysqli_query($db,$check); 
+    if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+    {
+        $status = $row['status'];
+        $verifier_details = $row['verifier_details'];
+        $verifier_comments = $row['verifier_comments'];
     }
 
     ?>
@@ -90,39 +102,45 @@ if($_POST['action'] == 'load_service_order')
             <input type="hidden" id="order_service_details_id" name="order_service_details_id" value="<?php echo @$order_service_details_id ; ?>" />
             <input type="hidden" id="service_id" name="service_id" value="<?php echo @$service_id; ?>" />
             <input type="hidden" id="order_verify_id" name="order_verify_id" value="<?php echo @$order_verify_id; ?>" />
-
-            <div class="col-md-2">
-                <h6>Applicant Name</h6>
-                <h6>Service Type</h6>
-                <h6>Service Name</h6>
-                <h6>Maiden Name</h6>
-                <h6>Client Name</h6>
-                <h6>Status</h6>
+            
+            <div class="col-md-4">
+                <h6><label>First Name</label> - <label style="font-weight: bold;"><?php echo $first_name; ?></label></h6>
+            </div>
+            <div class="col-md-4">
+                <h6><label>Middle Name</label> - <label style="font-weight: bold;"><?php echo $middle_name; ?></label></h6>
+            </div>
+            <div class="col-md-4">
+                <h6><label>Last Name</label> - <label style="font-weight: bold;"><?php echo $last_name; ?></label></h6>
+            </div>
+            <div class="col-md-12" style="border-bottom: solid 1px #000;"></div>
+            <div class="col-md-12"><br></div>
+            <div class="col-md-3">
+                <h6><label>Service Type</label></h6>
+                <h6><label>Service Name</label></h6>
+                <h6><label>Maiden Name</label></h6>
+                <h6><label>Client Name</label></h6>
+                <h6><label>Status</label></h6>
             </div>
             <div class="col-md-3">
-                <h6 style="color:#888;"><?php echo $applicant_name; ?></h6>
-                <h6 style="color:#888;"><?php echo $service_type_name; ?></h6>
-                <h6 style="color:#888;"><?php echo $service_name; ?></h6>
-                <h6 style="color:#888;"><?php echo $maiden_name; ?></h6>
-                <h6 style="color:#888;"><?php echo $client_name; ?></h6>
-                <h6 style="color:#888;"><?php echo $order_status; ?></h6>
-            </div>
-            <div class="col-md-2">
-                <br>
-            </div>
-            <div class="col-md-2">
-                <h6>Case Reference ID</h6>
-                <h6>Original Order Date</h6>
-                <h6>Order Creation Date</h6>
-                <h6>Initiation Date</h6>
-                <h6>Closure Date</h6>
+                <h6 style="color:#888;"><label><?php echo $service_type_name; ?></label></h6>
+                <h6 style="color:#888;"><label><?php echo $service_name; ?></label></h6>
+                <h6 style="color:#888;"><label><?php echo $maiden_name; ?></label></h6>
+                <h6 style="color:#888;"><label><?php echo $client_name; ?></label></h6>
+                <h6 style="color:#888;"><label><?php echo $order_status; ?></label></h6>
             </div>
             <div class="col-md-3">
-                <h6 style="color:#888;"><?php echo $internal_reference_id; ?></h6>
-                <h6 style="color:#888;"><?php echo $order_creation_date; ?></h6>
-                <h6 style="color:#888;"><?php echo $order_creation_date; ?></h6>
-                <h6 style="color:#888;"><?php date('d-m-Y'); ?></h6>
-                <h6 style="color:#888;"><?php echo $expected_course_date; ?></h6>
+                <h6><label>Case Reference ID</label></h6>
+                <h6><label>Original Order Date</label></h6>
+                <h6><label>Order Creation Date</label></h6>
+                <h6><label>Initiation Date</label></h6>
+                <h6><label>Closure Date</label></h6>
+            </div>
+            <div class="col-md-3">
+                <h6 style="color:#888;"><label><?php echo $internal_reference_id; ?></label></h6>
+                <h6 style="color:#888;"><label><?php echo $order_creation_date; ?></label></h6>
+                <h6 style="color:#888;"><label><?php echo $order_creation_date; ?></label></h6>
+                <h6 style="color:#888;"><label><?php date('d-m-Y'); ?></label></h6>
+                <h6 style="color:#888;"><label><?php echo $expected_course_date; ?></label></h6>
             </div>
             <div class="col-md-12">
                 <br>
@@ -132,13 +150,13 @@ if($_POST['action'] == 'load_service_order')
                 <br>
             </div>
             <div style="width:35%; float: left;" class="form_center">
-                <h5 style="font-weight:bold;">VERIFIED</h5>
+                <label><h5 style="font-weight:bold;">VERIFIED</h5></label>
             </div>
             <div style="width:25%; float: left;" class="form_center">
                 <a onclick="provided_to_verifed()" class="btn btn-success btn-round btn-sm"><i class="fa fa-arrow-left"></i></a>
             </div>
             <div style="width:40%; float: left;" class="form_center">
-                <h5 style="font-weight:bold;">PROVIDED</h5>
+                <label><h5 style="font-weight:bold;">PROVIDED</h5></label>
             </div>
             <div class="col-md-12 ">
                 <table style="width:100%;">
@@ -160,7 +178,7 @@ if($_POST['action'] == 'load_service_order')
                           echo '<input type="hidden" name="order_details_id[]" value="'.$row_1["order_details_id"].'" />';
                           if($row_1['data_type'] == "date")
                           {
-                            $field_print = '<input type="date" class="form-control" id="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" value="'.$row_1["service_field_value_verified"].'" '.@$is_required.' />';
+                            $field_print = '<input type="text" placeholder="DD-MM-YYYY" onfocus=(this.type="date") onblur=(this.type="text") class="form-control form_center" id="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" name="'.$row_1["service_field"].'_'.$row_1['order_details_id'].'" value="'.$row_1["service_field_value_verified"].'" '.@$is_required.' />';
                         }
                         if($row_1['data_type'] == "short_text")
                         {
@@ -309,19 +327,20 @@ echo '
 <div class="col-md-12">
     <table style="width:100%;">
         <tr>
-            <th style="width:35%" class="form_left">Verifier Details</th>
-            <td style="width:25%"><input type="text" class="form-control" id="verifier_details" name="verifier_details" /></td>
+            <th style="width:35%" class="form_left"><label>Verifier Details</label></th>
+            <td style="width:25%"><input type="text" class="form-control" id="verifier_details" name="verifier_details" value="<?php echo $verifier_details; ?>" /></td>
             <td style="width: 40%">&nbsp;</td>
         </tr>
         <tr>
-            <th class="form_left">Verifier Comments</th>
-            <td><textarea class="custom-select" id="verifier_comments" name="verifier_comments"></textarea></td>
+            <th class="form_left"><label>Verifier Comments</label></th>
+            <td><textarea class="custom-select" id="verifier_comments" name="verifier_comments"><?php echo $verifier_comments; ?></textarea></td>
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <th class="form_left">Status</th>
+            <th class="form_left"><label>Status</label></th>
             <td>
                 <select class="browser-default chosen-select custom-select" id="status" name="status">
+                    <option><?php echo $status; ?></option>
                     <option>Pending</option>
                     <option>Reassigned Verifier</option>
                     <option>Insufficiency Verifier</option>
@@ -331,11 +350,45 @@ echo '
             <td>&nbsp;</td>     
         </tr>
         <tr>
-            <th class="form_left">Closed Date</th>
-            <td><input type="date" class="form-control" id="closed_date" name="closed_date" /></td>
             <td>&nbsp;</td>
+            <td><a onclick="update_verifier_details()" class="btn btn-warning pull-left btn-sm"><i class="fa fa-edit"></i> Update</a></td>
         </tr>
     </table>
+</div>
+<div class="col-md-12">
+    <br>
+    <div class="card-header card-header-primary">
+        <h4 id="process_title" class="card-title"><i class="fa fa-comments"></i> Additional Comments BY OF</h4>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+    <?php
+        $check = "SELECT n.note_type, n.note_description, n.note_date, n.added_date_time, u.first_name, u.last_name FROM order_notes_master n INNER JOIN user_master u ON u.user_id = n.user_id WHERE n.order_service_details_id = '$order_service_details_id' AND n.note_type = 'of_comments' ORDER BY n.order_notes_id DESC ";
+        $resul = mysqli_query($db,$check);
+        $rowcount=mysqli_num_rows($resul);
+        if($rowcount > 0)
+        {
+            while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+            {
+                $note_description = $row['note_description'];
+                $added_date_time = date('d-m-Y H:i', strtotime($row['added_date_time']));
+                echo '
+                <div style="box-shadow:0 0 10px #aaa; border:solid 1px #ccc; border-radius:4px; width:96%;float:left; padding:8px; margin:2%;" >
+                <div>'.$note_description.'</div>
+                <hr style="margin:3px 0;">
+                <b>'.$row["first_name"].' '.$row["last_name"].'</b>
+                <a style="margin:0;" class="pull-right btn btn-round btn_link btn-xs"><i class="fa fa-calendar"></i> '.$added_date_time.'</a>
+                </div>
+                ';
+            }
+        }
+        else
+        {
+            echo '<div style="margin:15px;" ><h3>No Comments!</h3></div>';
+        }
+    ?>
+        </div>
+    </div>
 </div>
 <div class="col-md-12">
     <br>
@@ -345,34 +398,31 @@ echo '
     <br>
 </div>
 <div class="col-md-6">
-    <b>Public Notes</b><br>
+    <label><b>Public Notes</b></label><br>
     <textarea class="custom-select" rows="3" id="public_notes"></textarea>
     <a href="javascript:select_macros()" class="btn btn_link btn-xs">Select Macros</a>
     <a onclick="clear_public_notes()" class="btn btn_danger btn-xs">Clear</a>
     <a href="javascript:add_public_note();" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i> Add</a>
     <br>
-    <b>Notes History</b>
+    <label><b>Notes History</b></label>
     <h5 class="btn btn-primary col-md-12 form_left btn-xs"><i class="fa fa-comments"></i> Comments</h5>
     <div style="height: 200px; overflow-y: scroll;" id="public_notes_panel">
         <br>
     </div>
 </div>
 <div class="col-md-6">
-    <b>Private Notes</b><br>
+    <label><b>Private Notes</b></label><br>
     <textarea class="custom-select" rows="3" id="private_notes"></textarea>
     <a onclick="clear_private_notes()" class="btn btn_danger btn-xs">Clear</a>
     <a href="javascript:add_private_note();" class="btn btn-success btn-xs pull-right"><i class="fa fa-plus"></i> Add</a>
     <br>
-    <b>Notes History</b>
+    <label><b>Notes History</b></label>
     <h5 class="btn btn-primary col-md-12 form_left btn-xs"><i class="fa fa-comments"></i> Comments</h5>
     <div style="height: 200px; overflow-y: scroll;" id="private_notes_panel">
         <br>
     </div>
 </div>
-<div class="col-md-12">
-    <b>Additional Comments</b>
-    <textarea class="custom-select" rows="3" id="additional_comments_verifier" name="additional_comments_verifier"></textarea>
-</div>
+
 </form>
 <div class="col-md-12">
     <br><br>
@@ -381,24 +431,10 @@ echo '
     </div>
     <br>
 </div>
-<div class="col-md-8">
+<div class="col-md-12">
     <div id="documents_panel"></div>
 </div>
-<div class="col-md-4">
-    <?php
-      include '../../../API/File-Formats.php';
-    ?>
-    <?php
-        echo '<br>';
-        $check_1="SELECT d.document_name FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '$order_id' AND ad.documentlist_id IN (SELECT documentlist_id FROM service_list_documents WHERE service_id = '$service_id') ";
-        $resul_1 = mysqli_query($db,$check_1);
-        while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
-        {
-            echo '<h4 class="selection" style="margin:6px 0;"><i class="fa fa-file"></i> '.$row_1['document_name'].'</h4><hr class="col12" style="margin:4px 0">';
-        }
-    ?>
-</div>
-    <!-- <div class="col-md-12">
+    <div class="col-md-12">
         <br><br>
         <div class="card-header card-header-primary">
             <h4 id="process_title" class="card-title"><i class="fa fa-pencil"></i> ETA Notes</h4>
@@ -406,7 +442,7 @@ echo '
         <br>
     </div>
     <div class="col-md-6">
-        <b>Notes</b><br>
+        <label><b>Notes</b></label><br>
         <div class="row">
             <div class="col-md-8">
                 <textarea class="custom-select" rows="3" id="eta_notes"></textarea>
@@ -425,7 +461,7 @@ echo '
         <div style="height: 150px; overflow-y: scroll;" id="eta_notes_panel">
             <br>
         </div>
-    </div> -->
+    </div>
     <div class="col-md-12 form_center">
         <a onclick="save_verifier_details()" id="btn_ok" class="btn btn-success btn-sm"><i class="fa fa-save"></i> Save</a>
         <a href="" class="btn btn-default btn-sm"><i class="fa fa-arrow-left"></i> Back</a>
@@ -491,6 +527,45 @@ echo '
     </div>
 </div>
 <script>
+
+    var order_id = $('#order_id').val();
+    var order_service_details_id = $('#order_service_details_id').val();
+    var order_verify_id = $('#order_verify_id').val();
+    function update_verifier_details()
+    {
+        let verifier_details = $('#verifier_details').val().trim();
+        let verifier_comments = $('#verifier_comments').val().trim();
+        let status = $('#status').val();
+        var action = 'update_verfier_details';
+        if(verifier_details == "")
+        {
+            alert('Please enter verifier details!');
+            $('#verifier_details').focus();
+        }
+        else if(verifier_comments == "")
+        {
+            alert('Please enter verifier comments!');
+            $('#verifier_comments').focus();
+        }
+        else
+        {
+            $.ajax({
+                type:'POST',
+                url:'./API/Verifier-Actions.php',
+                data:{action, verifier_details, verifier_comments, status, order_service_details_id, order_verify_id},
+                success:function(html){
+                    if(html == "updated")
+                    {
+                        alert('Verifier Details Updated!');
+                    }
+                    else
+                    {
+                        alert("Error occurred!");
+                    }
+                }
+            });
+        }        
+    }
 
     function load_country(service_id, order_details_id, country_id)
     {
@@ -569,53 +644,50 @@ echo '
         });
     }
 
-    var order_id = $('#order_id').val();
-    var order_service_details_id = $('#order_service_details_id').val();
-
     $('.chosen-select').chosen();
     
-    load_attached_documents(<?php echo @$order_id; ?>);
+    load_attached_documents(<?php echo @$order_id; ?>, <?php echo @$order_service_details_id; ?>);
 
     function upload_document_file()
     {
         var document_file = $('#document_file').prop('files')[0] || 0;
         if(document_file == "0")
         {
-          alert('Please select file!')
-          $('#document_file').focus();
-      }
-      else
-      {
-          $('#btn_upload').addClass('disabled');
-          $('#modal_loading').css('display', 'block');
-
-          var myform = document.getElementById("upload_document_form");
-          var fd = new FormData(myform );
-          $.ajax({
-            url: "./API/Upload-Document.php",
-            data: fd,
-            cache: false,
-            processData: false,
-            contentType: false,
-            type: 'POST',
-            success: function (html) {
-              if(html == "inserted")
-              {
-                load_attached_documents(<?php echo @$order_id; ?>);
-                alert('File Uploaded successfully!');
-                $('#document_file').val('');
-                $('#btn_upload').removeClass('disabled');
-                $('#selectedFiles').html('');
-                $('#modal_loading').css('display', 'none');
-            }
-            else
-            {
-                alert('Error occurred');
-                $('#btn_upload').removeClass('disabled');
-            }
+            alert('Please select file!')
+            $('#document_file').focus();
         }
-    });
-      }
+        else
+        {
+            $('#btn_upload').addClass('disabled');
+            $('#modal_loading').css('display', 'block');
+
+            var myform = document.getElementById("upload_document_form");
+            var fd = new FormData(myform );
+            $.ajax({
+                url: "./API/Upload-Document.php",
+                data: fd,
+                cache: false,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function (html) {
+                    if(html == "inserted")
+                    {
+                        load_attached_documents(<?php echo @$order_id; ?>, <?php echo @$order_service_details_id; ?>);
+                        alert('File Uploaded successfully!');
+                        $('#document_file').val('');
+                        $('#btn_upload').removeClass('disabled');
+                        $('#selectedFiles').html('');
+                        $('#modal_loading').css('display', 'none');
+                    }
+                    else
+                    {
+                        alert('Error occurred');
+                        $('#btn_upload').removeClass('disabled');
+                    }
+                }
+            });
+        }
   }
 
   function clear_public_notes()
@@ -795,8 +867,21 @@ function download_all_files()
       data:{action, order_id, verifier_user_id},
       success:function(html){
         $('#print_result').html(html);
-    }
-});
+      }
+    });
+}
+
+function download_all_annexure(order_id, order_service_details_id)
+{
+    var action = 'download_all_files';
+    $.ajax({
+      type:'POST',
+      url:'../order_master_annexure/Download-Files-Zip.php',
+      data:{action, order_id, order_service_details_id},
+      success:function(html){
+        $('#print_result').html(html);
+      }
+    });
 }
 
 load_notes_con('public');
@@ -842,7 +927,7 @@ function save_verifier_details()
     }
     else
     {
-        let r = confirm("Are you sure to Submit your Application?")
+        let r = confirm("Are you sure to Submit your Application to OF?")
         if(r == true)
         {
             $('#btn_ok').addClass('disabled');
@@ -880,44 +965,80 @@ function save_verifier_details()
 if($_POST['action'] == 'load_attached_documents')
 {
     echo '
-    <h6 class="selection col-md-12">Upload Multiple Documents Here</h6>
-    <form id="upload_document_form">
-    <input type="hidden" name="order_id" value="'.$order_id.'" />
-    <div class="row">                                  
-    <div class="col-md-4">
-    <input type="file" onchange="file_selected_list()" multiple id="document_file" name="document_file[]" accept="image/*" class="form-control" />
-    </div>
-    <div class="col-md-4">
-    <a class="btn btn-success btn-sm" onclick="upload_document_file()" id="btn_upload"><i class="fa fa-upload"></i> Upload Files</a>
-    </div>
-    </div>
-    </div>
-    <div class="col-md-12" id="selectedFiles"></div>
+    <div class="row">
+    <div class="col-md-6">
+    <label><h5 style="border-bottom:dotted 2px #ccc;">Uploaded Files</h5></label><br>    
     <table class="bordered_table" style="width:100%">
-    <tr>
-    <th>File Name</th>
-    <th>&nbsp;</th>
-    </tr>
+        <tr>
+            <th><label>File Name</label></th>
+            <th>&nbsp;</th>
+        </tr>
     ';
-    $document_print = '';
-    $check_1='SELECT d.document_name FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '.$order_id.'  ';
-    $resul_1 = mysqli_query($db,$check_1);
-    while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
-    {
-        $document_print.='<h4 class="selection" style="margin:6px 0;">'.$row_1['document_name'].'</h4><hr class="col12" style="margin:4px 0">';
-    }
     $check_1='SELECT ad.file_name, ad.document_file, ad.order_master_uploaded_document_id, ad.verifier_user_id FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.' AND ad.verifier_user_id = '.$user_id;
     $resul_1 = mysqli_query($db,$check_1);
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     {
-        echo "<tr><td class='form_left'>".$row_1['file_name']."</td>";
-        echo "<td><a target='_blank' download href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-default btn-xs'><i class='fa fa-download'></i> Download</a></td>";
+        echo "<tr><td class='form_left'><label>".$row_1['file_name']."</label></td>";
+        echo "<td><a target='_blank' download href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a></td>";
         echo '<tr>';
     }
     echo '</table>
-    <a onclick="download_all_files()" class="pull-right btn btn-default btn-sm"><i class="fa fa-file-archive-o"></i> Download Files Zip</a>
-    </form>
-    ';   
+        <div class="form_left">
+            <br>
+            <a onclick="download_all_files()" class="btn btn-primary btn-sm"><i class="fa fa-file-archive-o"></i> Download Files Zip</a>
+            <br>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <h6 class="selection ">Multiple File Upload (.png, .jpg, .jpeg)</h6>
+        <form id="upload_document_form">
+            <input type="hidden" name="order_id" value="'.$order_id.'" />
+            <input type="hidden" name="order_service_details_id" value="'.$order_service_details_id.'" />
+            <div class="row">                                  
+            <div class="col-md-8">
+            <input type="file" onchange="file_selected_list()" multiple id="document_file" name="document_file[]" accept="image/*" class="form-control" />
+            </div>
+            <div class="col-md-4">
+            <a class="btn btn-success btn-sm" onclick="upload_document_file()" id="btn_upload"><i class="fa fa-upload"></i> Upload Files</a>
+            </div>
+            </div>
+        </form>
+        <div class="col-md-12" id="selectedFiles"></div>
+        <br>
+        <div class"col-md-12 row" style="border:dotted 2px #ccc; padding:10px;">
+            <label><h5 style="border-bottom:dotted 2px #ccc;">Annexure</h5></label><br>
+        ';
+        $check_1="SELECT d.document_name FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '$order_id' AND ad.documentlist_id IN (SELECT documentlist_id FROM service_list_documents WHERE service_id = '$service_id') ";
+        $resul_1 = mysqli_query($db,$check_1);
+        while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+        {
+            echo '<h4 class="btn btn-default btn-xs btn-round" ><i class="fa fa-file"></i> '.$row_1['document_name'].'</h4>';
+        }
+        echo '
+        <h5 style="border-bottom:dotted 2px #ccc;">&nbsp;</h5>
+            
+        <table class="bordered_table" style="width:100%">
+        <tr>
+            <th><label>File Name</label></th>
+            <th>&nbsp;</th>
+        </tr>
+        ';
+        $check_1="SELECT ad.file_name, ad.document_file FROM order_annexure_documents ad WHERE ad.order_id = '$order_id' AND ad.order_service_details_id = '$order_service_details_id' ";
+        $resul_1 = mysqli_query($db,$check_1);
+        while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+        {
+            echo "<tr><td class='form_left'><label>".$row_1['file_name']."</label></td>";
+            echo "<td><a target='_blank' download href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a></td>";
+            echo '<tr>';
+        }
+        echo '</table>
+            <div class="form_left">
+                <br>
+                <a onclick="download_all_annexure('.$order_id.', '.$order_service_details_id.')" class="btn btn-primary btn-sm"><i class="fa fa-file-archive-o"></i> Download Files Zip</a>
+                <br>
+            </div>
+    </div></div>';
 }
 
 if($_POST['action'] == 'add_public_notes')

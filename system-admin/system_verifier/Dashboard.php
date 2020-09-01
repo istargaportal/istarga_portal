@@ -16,7 +16,7 @@ $db=$get_connection->connect();
           <div class="card-header card-header-primary">
             <h4 id='process_title' class="card-title"><i class="fa fa-search"></i> Order Search</h4>
           </div>
-          <!-- <a href="javascript:start_processing()" class="btn btn-primary btn-sm"><i class="fa fa-play"></i> Start Processing</a>           -->
+          <!-- <a href="javascript:load_service_order(1, 1)" class="btn btn-primary btn-sm"><i class="fa fa-play"></i> Start Processing</a>           -->
           <div id="process_order">
             <div class="card-body">
               <div class="row justify-content-start">
@@ -62,9 +62,11 @@ $db=$get_connection->connect();
                   </select>
                 </div>
 
-                <div class="col-md-12 form_right">
+                <div class="col-md-12 form_center">
+                  <br>
                   <a href="javascript:load_manual_search()" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Search</a>
                   <a href="" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Reset</a>
+                  <br><br>
                 </div>
 
                 <div id="data_table" class="table-responsive">
@@ -130,14 +132,14 @@ $db=$get_connection->connect();
     });   
   }
 
-  function load_attached_documents(order_id)
+  function load_attached_documents(order_id, order_service_details_id)
   {
     var service_id = $('#service_id').val();
     var action = 'load_attached_documents';
     $.ajax({
       type:'POST',
       url:'./API/Action-Dashboard.php',
-      data:{order_id, service_id, action},
+      data:{order_id, order_service_details_id, service_id, action},
       success:function(html){
         $('#documents_panel').html(html);
       }

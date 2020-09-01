@@ -20,7 +20,7 @@ $db=$get_connection->connect();
             <h4 id='process_title' class="card-title"><i class="fa fa-search"></i> Manual Search</h4>
             <input type="text" style="display: none;" id="focus_input" />
           </div>
-          <!-- <a href="javascript:start_processing()" class="btn btn-primary btn-sm"><i class="fa fa-play"></i> Start Processing</a>           -->
+          <a href="javascript:start_processing()" class="btn btn-primary btn-sm"><i class="fa fa-play"></i> Start Processing</a>          
           <div id="process_order">
             <div class="card-body">
               <div class="row justify-content-start">

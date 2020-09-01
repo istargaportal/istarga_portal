@@ -28,9 +28,9 @@ if(isset($_FILES['document_file']))
 
         if(empty($errors)==true)
         {
-            if(move_uploaded_file($file_tmp,"../../../system-client/assets/order_master_documents/".$file_name))
+            if(move_uploaded_file($file_tmp,"../../order_master_annexure/".$file_name))
             {
-                $sql = "INSERT INTO order_master_uploded_documents(order_id, file_name, file_size, file_type, file_ext, document_file, uploaded_by, user_id, verifier_user_id) VALUES('$order_id', '$file_name_old', '$file_size', '$file_type', '$file_ext', '$file_name', 'Verifier', '$user_id', '$user_id')  ";
+                $sql = "INSERT INTO order_annexure_documents(order_id, order_service_details_id, file_name, file_size, file_type, file_ext, document_file, uploaded_by, user_id) VALUES('$order_id', '$order_service_details_id', '$file_name_old', '$file_size', '$file_type', '$file_ext', '$file_name', 'Verifier', '$user_id')  ";
                 $result = mysqli_query($db,$sql);
             }
         }
