@@ -310,10 +310,13 @@ if(@$load_condition == "import_bulk_order")
     	mysqli_commit($db);
     	if($count > 0)
     	{
-	    	include '../../API/SMTP/sendMail.php';
-		    include '../../API/SMTP/BULK-ORDER-UPLOAD.php';
-		    $subject = "BULK ORDER IMPORTED - Employment Background Screening";
-		    smtpmailer($client_email_id, $from, $name, $subject, @$print_var);
+    		if($client_email_id != "")
+    		{
+		    	include '../../API/SMTP/sendMail.php';
+			    include '../../API/SMTP/BULK-ORDER-UPLOAD.php';
+			    $subject = "BULK ORDER IMPORTED - Employment Background Screening";
+			    smtpmailer($client_email_id, $from, $name, $subject, @$print_var);
+			}
 		}
 		echo "<script>alert('Bulk Order is Imported. ".$count." records imported.'); </script>";
     }
