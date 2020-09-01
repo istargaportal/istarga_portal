@@ -31,7 +31,7 @@ function postname(e){
 			} 
 			else if(this.responseText==0)
 			{
-				// alert("Wrong Details");
+				alert("Wrong Details");
 				modalLabel2.innerHTML = "Wrong Details"
 				modalLaunchButton2.click()
 			}
