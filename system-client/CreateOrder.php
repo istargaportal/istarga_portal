@@ -197,16 +197,10 @@ include 'Header.php';
 								</div>
 
 								<div class="row" style="margin-left:1%;margin-top:2%;">
-									<div class="col-md-9">
+									<div class="col-md-12">
 										<div id="upload_document_list">
 											<h4 class="btn btn-default btn-sm">Select Service First!</h4>
 										</div>
-									</div>
-
-									<div class="col-md-3">
-										<?php
-					                      include '../API/File-Formats.php';
-					                    ?>
 									</div>
 								</div>
 							</div>

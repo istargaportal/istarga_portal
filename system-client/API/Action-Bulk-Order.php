@@ -174,12 +174,12 @@ if(@$load_condition == "import_bulk_order")
 
 				if($country_id != "0" )
 				{
-					$sq="SELECT internal_reference_id, first_name FROM order_master WHERE internal_reference_id = '$internal_reference_id' AND client_id = '$client_id' ";
-					$resul = mysqli_query($db,$sq); 
-					if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-					{ $alredy_exists.= '\n'.$row['internal_reference_id'].' '.$row['first_name']; $error_code++; }
-					else
-					{
+					// $sq="SELECT internal_reference_id, first_name FROM order_master WHERE internal_reference_id = '$internal_reference_id' AND client_id = '$client_id' ";
+					// $resul = mysqli_query($db,$sq); 
+					// if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+					// { $alredy_exists.= '\n'.$row['internal_reference_id'].' '.$row['first_name']; $error_code++; }
+					// else
+					// {
 						$username = randomPassword();
 					    $password = randomPassword().rand(1111,9999);
 					    $insufficiency_contact = "Client";
@@ -266,7 +266,7 @@ if(@$load_condition == "import_bulk_order")
 							$count=$count+1;
 						}
 						
-					}
+					// }
 				}
 				else
 				{

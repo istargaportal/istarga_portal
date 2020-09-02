@@ -167,19 +167,20 @@ include '../../datatable/_datatable.php';
     });
   }
 
-  function load_attached_documents(order_id)
+  function load_attached_documents(order_id, order_service_details_id)
   {
     var service_id = $('#service_id').val();
     var action = 'load_attached_documents';
     $.ajax({
       type:'POST',
       url:'./API/Action-Dashboard.php',
-      data:{order_id, service_id, action},
+      data:{order_id, order_service_details_id, service_id, action},
       success:function(html){
         $('#documents_panel').html(html);
       }
     });
   }
+
 
   load_datatable();
 

@@ -20,7 +20,7 @@ $db=$get_connection->connect();
             <h4 id='process_title' class="card-title"><i class="fa fa-search"></i> Manual Search</h4>
             <input type="text" style="display: none;" id="focus_input" />
           </div>
-          <a href="javascript:start_processing()" class="btn btn-primary btn-sm"><i class="fa fa-play"></i> Start Processing</a>          
+          <!-- <a href="javascript:start_processing()" class="btn btn-primary btn-sm"><i class="fa fa-play"></i> Start Processing</a>           -->
           <div id="process_order">
             <div class="card-body">
               <div class="row justify-content-start">
@@ -167,14 +167,14 @@ include '../../datatable/_datatable.php';
     });
   }
 
-  function load_attached_documents(order_id)
+  function load_attached_documents(order_id, order_service_details_id)
   {
     var service_id = $('#service_id').val();
     var action = 'load_attached_documents';
     $.ajax({
       type:'POST',
       url:'./API/Action-Dashboard.php',
-      data:{order_id, service_id, action},
+      data:{order_id, order_service_details_id, service_id, action},
       success:function(html){
         $('#documents_panel').html(html);
       }

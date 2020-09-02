@@ -3,15 +3,23 @@ session_start();
 require_once "../config/config.php";
 require_once '../config/comman_js.php';
 
-if(!isset($_SESSION['order_id']))
+if(!isset($_GET['encrypted_key']))
 {
-  echo '
-  <script>
-  window.location.href = "Index.php";
-  </script>
-  ';
+  if(!isset($_SESSION['order_id']))
+  {
+    echo '
+    <script>
+    window.location.href = "Index.php";
+    </script>
+    ';
+  }
+  $order_id = $_SESSION['order_id'];
 }
-$order_id = $_SESSION['order_id'];
+else
+{
+ $order_id = base64_decode($_GET['encrypted_key']);
+ $_SESSION['order_id'] = $order_id;
+}
 $get_connection = new connectdb;
 $db = $get_connection->connect();
 
@@ -749,6 +757,7 @@ else
       ?>
     </form>
     <form id="upload_document_form">
+      <input type="hidden" name="order_id" value="<?php echo $order_id; ?>">
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-12">

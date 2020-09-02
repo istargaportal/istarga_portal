@@ -215,7 +215,7 @@ if($_POST['action']=='load_document')
     {
         echo '
         <div class="col-md-6">
-            <h6 class="selection">Upload Multiple Documents Here</h6>                                    
+            <h6 class="selection">Multiple File Upload (.png, .jpg, .jpeg)</h6>                                    
             <input type="file" onchange="file_selected_list()" name="document_file[]" multiple id="document_file" accept="image/*" class="form-control" />
             <div id="selectedFiles"></div>
         </div>
@@ -372,12 +372,28 @@ if($_POST['action'] == "save_form")
         }
     }
 
-    include '../../API/SMTP/sendMail.php';
-    include '../../API/SMTP/LOGIN-EMAIL.php';
-    $subject = "LOGIN CREDENTILAS FOR - Employment Background Screening";
-    smtpmailer($email_id, $from, $name, $subject, @$print_var);
-
+    if($insufficiency_contact == "Employee")
+    {
+        include '../../API/SMTP/sendMail.php';
+        include '../../API/SMTP/LOGIN-EMAIL.php';
+        $subject = "LOGIN CREDENTILAS FOR - Employment Background Screening";
+        smtpmailer($email_id, $from, $name, $subject, @$print_var);
+    }
+    else
+    {
+        $check = "SELECT email FROM client WHERE id = '$client_id' ";
+        $resul = mysqli_query($db,$check);
+        if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+        {
+            $email = $row['email'];
+        }
+        include '../../API/SMTP/sendMail.php';
+        include '../../API/SMTP/LOGIN-EMAIL.php';
+        $subject = "LOGIN CREDENTILAS FOR - Employment Background Screening";
+        smtpmailer($email, $from, $name, $subject, @$print_var);
+    }
     echo "inserted";
+    
 }
 
 ?>

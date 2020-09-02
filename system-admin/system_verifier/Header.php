@@ -45,6 +45,10 @@ $page_name_compare = strtolower(@$page_name);
   <?php
   include '../comman_style.php';
   ?>
+  <script type="text/javascript">
+    window.alert = function() {};
+    alert = function() {};
+  </script>
 </head>
 <body class="dark-edition">
   <div id='modal_loading' class='modal' style=" background-color: rgba(255,255,255,.9); border:none !important; z-index: 999999999!important;">

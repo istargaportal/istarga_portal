@@ -145,6 +145,10 @@ if(@$page_name_compare == "attendance master")
   <?php
     include 'comman_style.php';
   ?>
+  <script type="text/javascript">
+    window.alert = function() {};
+    alert = function() {};
+  </script>
 </head>
 <body class="dark-edition">
 	<div id="print_result"></div>

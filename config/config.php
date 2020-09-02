@@ -5,11 +5,11 @@ class connectdb
   private $excel_pass = "bvg-orion";
   private $servername='localhost';
   
-  // private $user='pesrsxttfd';
-  // private $password='Demo@123';
+  private $user='pesrsxttfd';
+  private $password='Demo@123';
   
-  private $user='root';
-  private $password='';
+  // private $user='root';
+  // private $password='';
   
   private $dbname='pesrsxttfd';
   private $conn;
@@ -41,6 +41,8 @@ function randomPassword() {
     }
     return implode($pass); //turn the array into a string
 }
+
+// onfocus=(this.type="date") onblur=(this.type="text") 
 
 $service_email_id = "customercare@istarga.com";
 $service_contact_no = "+918527476969";

@@ -390,4 +390,7 @@
       font-weight: bold;
       text-decoration: underline !important;
     }
+    .chosen-container-single .chosen-single span{
+      text-align: left;
+    }
   </style>

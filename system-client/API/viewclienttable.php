@@ -84,6 +84,8 @@ class States
                               >
                                 <a onclick="view_order_details('.$row["order_id"].')" class="dropdown-item" > View</a>
                                 <a onclick="delete_order('.$row["order_id"].')" class="dropdown-item delete1" id="">Delete</a>
+                                <a target="_blank" href="../system-applicant/My-Application.php?encrypted_key='.base64_encode($row["order_id"]).')" class="dropdown-item delete1" >Process Order</a>
+
                               </div>
                             </li>
                           </ul>

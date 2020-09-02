@@ -81,15 +81,29 @@ if($_POST['action'] == 'next_prev_array_num')
 if($_POST['action'] == 'load_service_order')
 {
     require_once '../../../config/comman_js.php';
-    $check = "SELECT os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, sa.sla, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_qc FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id LEFT JOIN assigned_service sa ON sa.id = os.assign_service_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
+    $check = "SELECT os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.assign_service_id, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_qc, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
+        $first_name = $row['first_name'];
+        $middle_name = $row['middle_name'];
+        $last_name = $row['last_name'];
+        
         $service_type_id = $row['service_type_id'];
         $order_service_details_id = $row['order_service_details_id'];
         $order_id = $row['order_id'];
         $service_id = $row['service_id'];
-        $sla = $row['sla'];
+        $assign_service_id = $row['assign_service_id'];
+
+        if($assign_service_id != 0)
+        {
+            $check_1 = "SELECT sla FROM assigned_service WHERE id = '$assign_service_id'  ";
+            $resul_1 = mysqli_query($db,$check_1); 
+            if($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+            {
+                $sla = $row_1['sla'];
+            }
+        }
         $expected_course_date = date('d-m-Y', strtotime('+ '.$sla.' days '.$row["order_creation_date"]));
         $order_creation_date = date('d-m-Y', strtotime($row['order_creation_date']));
         $applicant_name = $row['first_name'].' '.$row['middle_name'].' '.$row['last_name'];
@@ -104,7 +118,8 @@ if($_POST['action'] == 'load_service_order')
         $currency_id = $row['currency_id'];
         $additional_fees = $row['additional_fees'];
         $additional_comments_qc = $row['additional_comments_qc'];
-
+        $is_rush = $row['is_rush'];
+        $email_id = $row['email_id'];
     }
 
     ?>
@@ -146,41 +161,45 @@ if($_POST['action'] == 'load_service_order')
     </style>
     <br>
     <div class="row justify-content-start col-md-12">
-        <div class="col-md-2">
-            <h6>Applicant Name</h6>
-            <h6>Service Type</h6>
-            <h6>Service Name</h6>
-            <h6>Maiden Name</h6>
-            <h6>Client Name</h6>
-            <h6>Status</h6>
+        <div class="col-md-3">
+            <label><b>Case Reference No. :</b> <?php echo $internal_reference_id ?></label>
         </div>
         <div class="col-md-3">
-            <h6 style="color:#888;"><?php echo $applicant_name; ?></h6>
-            <h6 style="color:#888;"><?php echo $service_type_name; ?></h6>
-            <h6 style="color:#888;"><?php echo $service_name; ?></h6>
-            <h6 style="color:#888;"><?php echo $maiden_name; ?></h6>
-            <h6 style="color:#888;"><?php echo $client_name; ?></h6>
-            <h6 style="color:#888;"><?php echo $order_status; ?></h6>
-        </div>
-        <div class="col-md-2">
-            <br>
-        </div>
-        <div class="col-md-2">
-            <h6>Case Reference ID</h6>
-            <h6>Original Order Date</h6>
-            <h6>Order Creation Date</h6>
-            <h6>Initiation Date</h6>
-            <h6>Closure Date</h6>
+            <label><b>Applicant First Name :</b> <?php echo $first_name; ?></label>
         </div>
         <div class="col-md-3">
-            <h6 style="color:#888;"><?php echo $internal_reference_id; ?></h6>
-            <h6 style="color:#888;"><?php echo $order_creation_date; ?></h6>
-            <h6 style="color:#888;"><?php echo $order_creation_date; ?></h6>
-            <h6 style="color:#888;"><?php date('d-m-Y'); ?></h6>
-            <h6 style="color:#888;"><?php echo $expected_course_date; ?></h6>
+            <label><b>Applicant Middle Name :</b><?php echo $middle_name; ?></label>
+        </div>
+        <div class="col-md-3">
+            <label><b>Applicant Last Name :</b><?php echo $last_name; ?></label>
+        </div>
+        
+        <div class="col-md-3">
+            <label><b>Client Order ID/Applicant ID :</b><?php echo $order_id ?></label>
+        </div>
+        <div class="col-md-3">
+            <label><b>Is Rush Order :</b><?php echo $is_rush; ?> </label>
+        </div>
+        <div class="col-md-3">
+            <label><b>Order Creation Date :</b><?php echo $order_creation_date; ?> </label>
+        </div>
+        <div class="col-md-3">
+            <label><b>Expected Closure :</b><?php echo $expected_course_date; ?> </label>
+        </div>
+        <div class="col-md-3">
+            <label><b>Client Name :</b><?php echo $client_name; ?> </label>
+        </div>
+        <div class="col-md-3">
+            <label><b>Service Type :</b><?php echo $service_type_name; ?> </label>
+        </div>
+        <div class="col-md-3">
+            <label><b>Service :</b><?php echo $service_name; ?> </label>
+        </div>
+        <div class="col-md-3">
+            <label><b>Email ID. :</b><?php echo $email_id; ?> </label>
         </div>
         <div class="col-md-12">
-            <br>
+            <br><br>
             <div class="card-header card-header-primary">
                 <h4 id="process_title" class="card-title"><i class="fa fa-arrow-right"></i> <?php echo @$service_type_name; ?> / <?php echo @$service_name; ?></h4>
             </div>
@@ -474,23 +493,10 @@ echo '
         </div>
         <br>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-12">
         <div id="documents_panel"></div>
     </div>
-    <div class="col-md-4">
-        <?php
-          include '../../../API/File-Formats.php';
-        ?>
-        <?php
-            echo '<br>';
-            $check_1="SELECT d.document_name FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '$order_id' AND ad.documentlist_id IN (SELECT documentlist_id FROM service_list_documents WHERE service_id = '$service_id') ";
-            $resul_1 = mysqli_query($db,$check_1);
-            while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
-            {
-                echo '<h4 class="selection" style="margin:6px 0;"><i class="fa fa-file"></i> '.$row_1['document_name'].'</h4><hr class="col12" style="margin:4px 0">';
-            }
-        ?>
-    </div>
+    
     <!-- <div class="col-md-12">
         <br><br>
         <div class="card-header card-header-primary">
@@ -902,7 +908,7 @@ echo '
             $('.insufficiency_panel').css('display', 'none');
         }
     }
-    load_attached_documents(<?php echo @$order_id; ?>);
+    load_attached_documents(<?php echo @$order_id; ?>, <?php echo @$order_service_details_id; ?>);
 
     function upload_document_file()
     {
@@ -929,7 +935,7 @@ echo '
             success: function (html) {
               if(html == "inserted")
               {
-                load_attached_documents(<?php echo @$order_id; ?>);
+                
                 alert('File Uploaded successfully!');
                 $('#document_file').val('');
                 $('#btn_upload').removeClass('disabled_btn');
@@ -1181,9 +1187,9 @@ function confirm_to_qc()
                 success: function (html) {
                   if(html == "updated")
                   {
-                    alert('Order successfully submitted!');
-                    window.open('../../API/Print-Background-Verification-Report.php?order_id=<?php echo base64_encode($order_id); ?>&default_report_color_id='+default_report_color_id)
+                    window.open('../../API/Print-Background-Verification-Report.php?order_id=<?php echo $order_id; ?>&default_report_color_id='+default_report_color_id)
                     $('#confirm_to_qc').addClass('disabled_btn');
+                    alert('Order successfully submitted!');
                   }
                   else
                   {
@@ -1195,6 +1201,117 @@ function confirm_to_qc()
         }
     }
 }
+
+function delete_note(order_notes_id)
+    {
+        var r = confirm("Are you sure to delete this Note?");
+        if(r == true)
+        {
+            var action = 'delete_note';
+            $.ajax({
+              type:'POST',
+              url: "./API/QC-Actions.php",
+              data:{action, order_notes_id},
+              success:function(html){
+                $('#print_result').html(html);
+                load_notes_con('public');
+                load_notes_con('private');
+                load_notes_con('eta');
+              }
+            });
+        }
+    }
+
+    function delete_annexure_document(order_annexure_document_id)
+    {
+        var r = confirm("Are you sure to delete this File?");
+        if(r == true)
+        {
+            var action = 'delete_annexure_document';
+            $.ajax({
+              type:'POST',
+              url: "./API/QC-Actions.php",
+              data:{action, order_annexure_document_id},
+              success:function(html){
+                $('#print_result').html(html);
+                load_attached_documents(<?php echo @$order_id; ?>, <?php echo @$order_service_details_id; ?>);
+              }
+            });
+        }
+    }
+
+    function delete_client_document(order_master_uploaded_document_id)
+    {
+        var r = confirm("Are you sure to delete this File?");
+        if(r == true)
+        {
+            var action = 'delete_client_document';
+            $.ajax({
+              type:'POST',
+              url: "./API/QC-Actions.php",
+              data:{action, order_master_uploaded_document_id},
+              success:function(html){
+                $('#print_result').html(html);
+                load_attached_documents(<?php echo @$order_id; ?>, <?php echo @$order_service_details_id; ?>);
+              }
+            });
+        }
+    }
+
+    function view_all_annexure(order_id, order_service_details_id)
+    {
+        var action = 'view_all_annexure';
+        $.ajax({
+          type:'POST',
+          url: "./API/QC-Actions.php",
+          data:{action, order_id, order_service_details_id},
+          success:function(html){
+            $('#print_result').html(html);
+          }
+        });
+    }
+
+    function upload_document_annexure_file()
+    {
+        var document_file_annexure = $('#document_file_annexure').prop('files')[0] || 0;
+        if(document_file_annexure == "0")
+        {
+            alert('Please select file!')
+            $('#document_file_annexure').focus();
+        }
+        else
+        {
+            $('#btn_upload_annexure').addClass('disabled_btn');
+            $('#modal_loading').css('display', 'block');
+
+            var myform = document.getElementById("upload_document_annexure_form");
+            var fd = new FormData(myform );
+            $.ajax({
+                url: "./API/Upload-Annexure-Document.php",
+                data: fd,
+                cache: false,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function (html) {
+                    if(html == "inserted")
+                    {
+                        load_attached_documents(<?php echo @$order_id; ?>, <?php echo @$order_service_details_id; ?>);
+                        alert('File Uploaded successfully!');
+                        $('#document_file_annexure').val('');
+                        $('#btn_upload_annexure').removeClass('disabled_btn');
+                        $('#selectedFiles_annexure').html('');
+                        $('#modal_loading').css('display', 'none');
+                    }
+                    else
+                    {
+                        alert('Error occurred');
+                        $('#btn_upload_annexure').removeClass('disabled_btn');
+                    }
+                }
+            });
+        }
+    }
 </script>
 <?php
 }
@@ -1202,23 +1319,27 @@ function confirm_to_qc()
 if($_POST['action'] == 'load_attached_documents')
 {
     echo '
-    <h6 class="selection col-md-12">Upload Multiple Documents Here</h6>
+    <div class="row">
+    <div class="col-md-6">
+    <label><h5 style="border-bottom:dotted 2px #ccc;">Client Uploaded Files</h5></label><br>
+    <h6 class="selection ">Multiple File Upload (.png, .jpg, .jpeg)</h6>
     <form id="upload_document_form">
-    <input type="hidden" name="order_id" value="'.$order_id.'" />
-    <div class="row">                                  
-    <div class="col-md-4">
-    <input type="file" onchange="file_selected_list()" multiple id="document_file" name="document_file[]" accept="image/*" class="form-control" />
-    </div>
-    <div class="col-md-4">
-    <a class="btn btn-success btn-sm" onclick="upload_document_file()" id="btn_upload"><i class="fa fa-upload"></i> Upload Files</a>
-    </div>
-    </div>
-    </div>
+        <input type="hidden" name="order_id" value="'.$order_id.'" />
+        <input type="hidden" name="order_service_details_id" value="'.$order_service_details_id.'" />
+        <div class="row">
+            <div class="col-md-8">
+            <input type="file" onchange="file_selected_list()" multiple id="document_file" name="document_file[]" accept="image/*" class="form-control" />
+            </div>
+            <div class="col-md-4">
+            <a class="btn btn-success btn-sm" onclick="upload_document_file()" id="btn_upload"><i class="fa fa-upload"></i> Upload Files</a>
+            </div>
+        </div>
     <div class="col-md-12" id="selectedFiles"></div>
     <table class="bordered_table" style="width:100%">
     <tr>
-    <th>File Name</th>
-    <th>&nbsp;</th>
+    <th style="width:20%;">File Name</th>
+    <th style="width:40%;">&nbsp;</th>
+    <th style="width:10%;">&nbsp;</th>
     </tr>
     ';
     $document_print = '';
@@ -1228,17 +1349,78 @@ if($_POST['action'] == 'load_attached_documents')
     {
         $document_print.='<h4 class="selection" style="margin:6px 0;">'.$row_1['document_name'].'</h4><hr class="col12" style="margin:4px 0">';
     }
-    $check_1='SELECT ad.file_name, ad.document_file, ad.order_master_uploaded_document_id, ad.verifier_user_id FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
+    $check_1='SELECT ad.file_name, ad.document_file, ad.order_master_uploaded_document_id, ad.verifier_user_id, ad.user_id FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
     $resul_1 = mysqli_query($db,$check_1);
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     {
         echo "<tr><td class='form_left'>".$row_1['file_name']."</td>";
-        echo "<td><a target='_blank' download href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-default btn-xs'><i class='fa fa-download'></i> Download</a></td>";
+        $delete_client_documents = '<a onclick="delete_client_document('.$row_1['order_master_uploaded_document_id'].');" style="margin:0;" class="btn btn-danger btn-xs pull-right"><i class="fa fa-trash"></i></a>';
+        echo "<td><a target='_blank' download href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a></td>".'<td>'.$delete_client_documents.'</td>';
         echo '<tr>';
     }
     echo '</table>
-    <a onclick="download_all_files()" class="pull-right btn btn-default btn-sm"><i class="fa fa-file-archive-o"></i> Download Files Zip</a>
+    <div class="form_left">
+        <br>
+        <a onclick="download_all_files()" class="btn btn-primary btn-sm"><i class="fa fa-file-archive-o"></i> Download Files Zip</a>
+        <br>
+    </div>
+
     </form>
+    </div>
+    <div style="border-left:dotted 1px #aaa;" class="col-md-6">
+        <label><h5 style="border-bottom:dotted 2px #ccc;">Annexure</h5></label><br>
+        <h6 class="selection ">Multiple File Upload (.png, .jpg, .jpeg)</h6>
+        <form id="upload_document_annexure_form">
+            <input type="hidden" name="order_id" value="'.$order_id.'" />
+            <input type="hidden" name="order_service_details_id" value="'.$order_service_details_id.'" />
+            <div class="row">
+            <div class="col-md-8">
+            <input type="file" onchange="file_selected_list_annexure()" multiple id="document_file_annexure" name="document_file_annexure[]" accept="image/*" class="form-control" />
+            </div>
+            <div class="col-md-4">
+            <a class="btn btn-success btn-sm" onclick="upload_document_annexure_file()" id="btn_upload_annexure"><i class="fa fa-upload"></i> Upload Files</a>
+            </div>
+            </div>
+        </form>
+        <div class="col-md-12" id="selectedFiles_annexure"></div>
+        ';
+        // <div class"col-md-12 row" style="border:dotted 2px #ccc; padding:10px;">
+        $check_1="SELECT d.document_name FROM order_master_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.order_id = '$order_id' AND ad.documentlist_id IN (SELECT documentlist_id FROM service_list_documents WHERE service_id = '$service_id') ";
+        $resul_1 = mysqli_query($db,$check_1);
+        while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+        {
+            // echo '<h4 class="btn btn-default btn-xs btn-round" ><i class="fa fa-file"></i> '.$row_1['document_name'].'</h4>';
+        }
+        // <h5 style="border-bottom:dotted 2px #ccc;">&nbsp;</h5>
+        echo '
+        <br>    
+        <table class="bordered_table" style="width:100%">
+        <tr>
+            <th><label>File Name</label></th>
+            <th style="width:10%;">&nbsp;</th>
+            <th style="width:5%;">&nbsp;</th>
+        </tr>
+        ';
+        $check_1="SELECT ad.order_annexure_document_id, ad.file_name, ad.document_file, ad.user_id FROM order_annexure_documents ad WHERE ad.order_id = '$order_id' AND ad.order_service_details_id = '$order_service_details_id' ";
+        $resul_1 = mysqli_query($db,$check_1);
+        while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+        {    
+            $delete_annexure_documents = '<a onclick="delete_annexure_document('.$row_1['order_annexure_document_id'].');" style="margin:0;" class="btn btn-danger btn-xs pull-right"><i class="fa fa-trash"></i></a>';
+            echo "<tr><td class='form_left'><label>".$row_1['file_name']."</label></td>";
+            echo "<td><a target='_blank' download href='../order_master_annexure/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a></td>
+            <td>".$delete_annexure_documents."</td>
+            ";
+            echo '<tr>';
+        }
+        echo '</table>
+            <div class="form_left">
+                <br>
+                <a onclick="download_all_annexure('.$order_id.', '.$order_service_details_id.')" class="btn btn-primary btn-sm"><i class="fa fa-file-archive-o"></i> Download Files Zip</a>
+                <a onclick="view_all_annexure('.$order_id.', '.$order_service_details_id.')" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> View All</a>
+                <br>
+            </div>
+    </div>
+    </div>
     ';   
 }
 
@@ -1298,7 +1480,7 @@ if($_POST['action'] == 'add_eta_notes')
 
 if($_POST['action'] == 'load_notes_con')
 {
-    $check = "SELECT n.note_type, n.note_description, n.note_date, n.added_date_time, u.first_name, u.last_name FROM order_notes_master n INNER JOIN user_master u ON u.user_id = n.user_id WHERE n.order_service_details_id = '$order_service_details_id' AND n.note_type = '$condition' ORDER BY n.order_notes_id DESC ";
+    $check = "SELECT n.order_notes_id, n.note_type, n.note_description, n.note_date, n.added_date_time, u.first_name, u.last_name, u.user_id FROM order_notes_master n INNER JOIN user_master u ON u.user_id = n.user_id WHERE n.order_service_details_id = '$order_service_details_id' AND n.note_type = '$condition' ORDER BY n.order_notes_id DESC ";
     $resul = mysqli_query($db,$check);
     while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -1308,16 +1490,22 @@ if($_POST['action'] == 'load_notes_con')
         $added_date_time = date('d-m-Y H:i', strtotime($row['added_date_time']));
         $eta_text = "";
         if($note_type == "eta") { $eta_text = "ETA Date - ".$note_date.' '; }
+        $user_name = $row["first_name"].' '.$row["last_name"];
+        $delete_note_button = '<a onclick="delete_note('.$row['order_notes_id'].');" style="margin:0;" class="btn btn-danger btn-xs pull-right"><i class="fa fa-trash"></i></a>';
         echo '
         <div style="box-shadow:0 0 10px #aaa; border:solid 1px #ccc; border-radius:4px; width:100%;float:left; padding:8px;" >
-        <div><b>'.$eta_text.'</b>'.$note_description.'</div>
+        <div><b>'.$eta_text.'</b>'.$note_description.' 
+        '.$delete_note_button.'
+        </div>
         <hr style="margin:3px 0;">
-        <b>'.$row["first_name"].' '.$row["last_name"].'</b>
+        <b>- '.$user_name.'</b>
         <a style="margin:0;" class="pull-right btn btn-round btn_link btn-xs"><i class="fa fa-calendar"></i> '.$added_date_time.'</a>
+        
         </div>
         ';
     }
 }
+
 
 if($_POST['action'] == 'save_reassigned_order')
 {

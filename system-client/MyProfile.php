@@ -5,10 +5,11 @@ include 'Header.php';
       <div class="content">
         <div class="container-fluid">
           <div class="row">
+            <div class="col-md-2"><br></div>
             <div class="col-md-8">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title">My Profile</h4>
+                  <h4 class="card-title"> <i class="fa fa-user"></i> Profile</h4>
                   <!--<p class="card-category"></p>-->
                 </div>
                  <div class="card-body">
@@ -173,7 +174,7 @@ include 'Header.php';
                       </div> 
                     </div>
                     </div>
-                    <button class="btn btn-primary pull-right" > <label style="color:white !important" class="pull-right"> upload profile image
+                    <button hidden="" class="btn btn-primary pull-right" > <label style="color:white !important" class="pull-right"> upload profile image
                       <input type="file" id="path" class=" pull-right" style="display: none;">
                     
                     </input></label></button>
@@ -207,22 +208,7 @@ include 'Header.php';
               </div>
             </div> -->
          
-            <div class="col-md-4">
-                <div class="card card-profile">
-                  <div class="card-avatar">
-                    <a href="#pablo" id="pablo">
-                      <img class="img" src="assets\img\faces\marc copy.jpg" />
-                    </a>
-                  </div>
-                  <div class="card-body">
-                    <h6 class="card-category">Dell</h6>
-                    <a href="#pablo" class="btn btn-primary btn-round"
-                      >Follow</a
-                    >
-                  </div>
-                </div>
-              </div>
-         
+          
           </div>
         </div>
       </div>

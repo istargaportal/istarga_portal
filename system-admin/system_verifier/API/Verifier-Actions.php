@@ -35,7 +35,7 @@ if($_POST['action'] == 'update_applicant_details')
 
     $verifier_details = addslashes($verifier_details);
     $verifier_comments = addslashes($verifier_comments);
-    $check = "UPDATE order_verifier_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', status = '$status' WHERE order_verify_id = '$order_verify_id' ";
+    $check = "UPDATE order_verifier_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', status = 'Verifier Completed' WHERE order_verify_id = '$order_verify_id' ";
     $result = mysqli_query($db,$check);
     
     $additional_comments_verifier = "";
@@ -50,13 +50,75 @@ if($_POST['action'] == 'update_verfier_details')
 {
     $verifier_details = addslashes($verifier_details);
     $verifier_comments = addslashes($verifier_comments);
-    $check = "UPDATE order_verifier_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', status = '$status' WHERE order_verify_id = '$order_verify_id' ";
+    $check = "UPDATE order_verifier_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', status = 'Verifier Completed' WHERE order_verify_id = '$order_verify_id' ";
     $result = mysqli_query($db,$check);
     
-    $check = "UPDATE order_service_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', order_status = '$status' WHERE order_service_details_id = '$order_service_details_id' ";
+    $additional_comments_verifier = "";
+    // $additional_comments_verifier = addslashes($additional_comments_verifier);
+    $check = "UPDATE order_service_details SET additional_comments_verifier = '$additional_comments_verifier', order_status = 'Sent To OF', verifier_details = '$verifier_details', verifier_comments = '$verifier_comments' WHERE order_service_details_id = '$order_service_details_id' ";
     $result = mysqli_query($db,$check);
-
     echo 'updated';
+}
+
+if($_POST['action'] == 'delete_note')
+{
+    $check = "DELETE FROM order_notes_master WHERE order_notes_id = '$order_notes_id' ";
+    $result = mysqli_query($db,$check);
+    echo '<script>alert("Note Deleted!")</script>';
+}
+
+if($_POST['action'] == 'delete_annexure_document')
+{
+    $check_1 = "SELECT document_file FROM order_annexure_documents WHERE order_annexure_document_id = '$order_annexure_document_id' ";
+    $resul_1 = mysqli_query($db,$check_1); 
+    if ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+    {
+        unlink('../../order_master_annexure/'.$row_1['document_file']);
+    }
+    $check = "DELETE FROM order_annexure_documents WHERE order_annexure_document_id = '$order_annexure_document_id' ";
+    $result = mysqli_query($db,$check);
+    echo '<script>alert("Annexure Deleted!")</script>';
+}
+
+if($_POST['action'] == 'delete_client_document')
+{
+    $check_1 = "SELECT document_file FROM order_master_uploded_documents WHERE order_master_uploaded_document_id = '$order_master_uploaded_document_id' ";
+    $resul_1 = mysqli_query($db,$check_1); 
+    if ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+    {
+        unlink('../../system-client/assets/order_master_documents/'.$row_1['document_file']);
+    }
+    $check = "DELETE FROM order_master_uploded_documents WHERE order_master_uploaded_document_id = '$order_master_uploaded_document_id' ";
+    $result = mysqli_query($db,$check);
+    echo '<script>alert("Client Document Deleted!")</script>';
+}
+
+if($_POST['action'] == 'view_all_annexure')
+{
+    ?>
+    <div class="modal" style="display:block">
+        <div class="row">
+            <div class="col-md-3"><p></p></div>
+            <div class="col-md-6">
+                <div class="modal-content">
+                    <h5 style="border-bottom: solid 1px #000;"><b><i class="fa fa-file"></i> View Annexure</b>
+                        <a onclick='$("#print_result").html("")' class="btn btn-danger btn-sm pull-right"><i class="fa fa-remove" aria-hidden="true"></i> Close</a>
+                    </h5>
+                    <div class="row">
+                        <?php
+                            $check_1="SELECT ad.file_name, ad.order_annexure_document_id, ad.file_name, ad.document_file, ad.user_id FROM order_annexure_documents ad WHERE ad.order_id = '$order_id' AND ad.order_service_details_id = '$order_service_details_id' ";
+                            $resul_1 = mysqli_query($db,$check_1);
+                            while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+                            {
+                                echo '<div class="col-md-3" style="margin:2%;text-align:center;"><a href="../order_master_annexure/'.$row_1['document_file'].'" target="_blank"><img style="width:120px;height:170px;border:solid 1px #000;" src="../order_master_annexure/'.$row_1['document_file'].'"/><br><label style="width:100%; word-wrap: break-word;">'.$row_1['file_name'].'</label> </a></div>'; 
+                            }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php
 }
 
 ?>

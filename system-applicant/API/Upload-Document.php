@@ -2,7 +2,7 @@
 error_reporting(0);
 require_once "../../config/config.php";
 session_start();
-$order_id = $_SESSION['order_id'];
+$order_id = $_POST['order_id'];
 
 $get_connection=new connectdb;
 $db=$get_connection->connect();

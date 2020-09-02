@@ -7,7 +7,7 @@ if (mysqli_connect_errno($db)) {
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
 
-$order_id = base64_decode($_GET['order_id']);
+$order_id = $_GET['order_id'];
 $default_report_color_id = $_GET['default_report_color_id'];
 $check="SELECT c.Client_Name, o.order_id, o.first_name, o.middle_name, o.last_name, o.alias_first_name, o.alias_middle_name, o.alias_last_name, o.email_id, o.internal_reference_id, o.joining_location, o.joining_date, o.additional_comments, o.client_id, o.is_rush, o.insufficiency_contact, o.username, o.password, o.order_status, o.order_creation_date_time, o.case_reference_no, o.order_completion_date, o.complete_info_received_date, c.default_report_color FROM order_master o INNER JOIN client c ON c.id = o.client_id WHERE o.order_id   ='".$order_id."'";
 $resul = mysqli_query($db,$check); 
@@ -300,6 +300,42 @@ while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     		$html.='</table>'.$footer.$header.'<table class="input_data_table">';
     		$count_fields = 0;
     	}
+    	if($row_1["service_field"] == "city_id")
+        {
+        	$check_2 = "SELECT name FROM cities WHERE id = '".$row_1["service_field_value"]."' ";
+	        $resul_2 = mysqli_query($db,$check_2); 
+	        if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+	        { $row_1["service_field_value"] = $row_2['name']; }
+        
+        	$check_2 = "SELECT name FROM cities WHERE id = '".$row_1["service_field_value_verified"]."' ";
+	        $resul_2 = mysqli_query($db,$check_2); 
+	        if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+	        { $row_1["service_field_value_verified"] = $row_2['name']; }
+        }
+        if($row_1["service_field"] == "state_id")
+        {
+        	$check_2 = "SELECT name FROM states WHERE id = '".$row_1["service_field_value"]."' ";
+	        $resul_2 = mysqli_query($db,$check_2); 
+	        if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+	        { $row_1["service_field_value"] = $row_2['name']; }
+        
+        	$check_2 = "SELECT name FROM states WHERE id = '".$row_1["service_field_value_verified"]."' ";
+	        $resul_2 = mysqli_query($db,$check_2); 
+	        if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+	        { $row_1["service_field_value_verified"] = $row_2['name']; }
+        }
+        if($row_1["service_field"] == "country_id")
+        {
+        	$check_2 = "SELECT name FROM countries WHERE id = '".$row_1["service_field_value"]."' ";
+	        $resul_2 = mysqli_query($db,$check_2); 
+	        if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+	        { $row_1["service_field_value"] = $row_2['name']; }
+        
+        	$check_2 = "SELECT name FROM countries WHERE id = '".$row_1["service_field_value_verified"]."' ";
+	        $resul_2 = mysqli_query($db,$check_2); 
+	        if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+	        { $row_1["service_field_value_verified"] = $row_2['name']; }
+        }
     	$html.='
     	<tr>
     		<td class="border_right">'.$row_1["service_field_text"].'</td>
