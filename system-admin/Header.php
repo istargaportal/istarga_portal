@@ -146,6 +146,12 @@ if(@$page_name_compare == "attendance master")
     include 'comman_style.php';
   ?>
   <script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    $("input").each(function () {
+      $(this).attr("autocomplete", "off");
+    })
+  }, false);
+
     $("input").each(function () {
       $(this).attr("autocomplete", "off");
     })

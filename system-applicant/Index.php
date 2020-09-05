@@ -14,7 +14,12 @@
   integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
   crossorigin="anonymous"
   />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
+
   <style>
+    *{
+      font-family: 'Rajdhani', sans-serif;
+    }
 
   #LogoAnimation{
     position: absolute; 
@@ -43,12 +48,40 @@
       background-repeat: no-repeat;
       box-shadow: inset 50px 50px 300px #000000, inset -10px -10px 100px #000000;
     }
-    .form-control{
-      padding: 5px 10px !important;
-    }
-    .login-card .card-body {
-      padding: 20px;
-    }
+  .form-control{
+    padding: 5px 10px !important;
+  }
+  .login_panel {
+    padding: 15px;
+    background: linear-gradient(rgba(160,160,160,0.2),rgba(10,10,10,0.8)) !important;  
+  }
+  .form-control{
+    padding: 15px !important;
+    height: 42px;
+  }
+  .input-group-text{
+    height: 41px;
+  }
+  .btn-default{
+    padding: 4px 16px;
+    background: #ef6c00;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+  .btn-reset{
+    background: #fff;
+    color: #ef6c00;
+  }
+  .container_checkbox{
+    color: #fff;
+    border: solid;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: linear-gradient(rgba(10,10,10,0.5),rgba(10,10,10,0.5)) !important;  
+  
+  }
   </style>
 </head>
 <body>
@@ -65,7 +98,7 @@
       <div class="row">
           <div class="col-md-8"><br></div>
           <div class="col-md-4">      
-          <div class="card login-card">
+            <div class="login_panel">
             <div class="row no-gutters">
                 <!-- <div class="col-md-7">
                   <div
@@ -104,27 +137,30 @@
                 </div> -->
                 <div class="col-md-12">
                   <div class="card-body">
-                    <div class="brand-wrapper">
-                      <img
-                      src="./assets/images/Istarga_logo.jpg"
-                      alt="logo"
-                      class="logo"
-                      />
+                    <div class="brand-wrapper" style="border-bottom: solid 1px #fff;">
+                      <img src="../system-client/assets/img/logo.png" alt="logo" class="logo" />
+                      <p><strong style="color: #fff">APPLICANT PORTAL</strong></p>
+
                     </div>
-                    <p class="login-card-description">Sign in</p>
+                    <p style="color: #fff" class="login-card-description">SIGN IN</p>
                     <form action="#!">
-                      <div class="form-group">
-                        <label for="email" class="sr-only">Username</label>
-                        <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username" />
-                      </div>
-                      <div class="form-group mb-4">
-                        <label for="password" class="sr-only">Password</label>
-                        <div class="input-group">
-                          <input type="password" name="password" id="password" class="form-control" placeholder="***********" />
-                          <span class="btn_show_password"><i class="fa fa-eye-slash"></i>  </span>
+                      <div class="input-group form-group" style="padding-bottom: 0;">
+                        <div class="input-group-prepend" style="padding-bottom: 0;">
+                          <span class="input-group-text" style="padding-bottom: 0;"><i class="fas fa-user"></i></span>
                         </div>
+                        <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username"  />
                       </div>
-                      <a href="javascript:login_click()" class="btn btn-block login-btn mb-4">Login</a>
+                      <div class="input-group form-group" style="padding-bottom: 0;">
+                        <div class="input-group-prepend" style="padding-bottom: 0;">
+                          <span class="input-group-text" style="padding-bottom: 0;"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Enter Password" style="margin-bottom: 5px;" />
+                          <span class="btn_show_password"><i class="fa fa-eye-slash"></i>  </span>
+                      </div>
+                      <b style="color: #fff;"><a class="forgot-password-link">Forgot password?</a></b>
+                      <br> <br>
+                      <button type='submit' class="btn btn-default login-btn mb-4">Login</button>
+                      <a href="" class="btn btn-default btn-reset mb-4">Reset</a>
                     </form>
                   </div>
                 </div>
@@ -135,6 +171,11 @@
       </div>
     </main>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      $("input").each(function () {
+        $(this).attr("autocomplete", "off");
+      })
+    </script>
     <style type="text/css">
       .input-group {
         position: relative;

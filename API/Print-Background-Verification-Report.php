@@ -376,7 +376,7 @@ while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 }
 
 $total_files = 0;
-$check_1='SELECT COUNT(ad.document_file) AS total_files FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
+$check_1='SELECT COUNT(ad.document_file) AS total_files FROM order_annexure_documents ad WHERE ad.order_id = '.$order_id.'  ';
 $resul_1 = mysqli_query($db,$check_1);
 if ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
 {
@@ -384,7 +384,7 @@ if ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
 }
 
 $i = 1;
-$check_1='SELECT ad.document_file FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
+$check_1='SELECT ad.document_file FROM order_annexure_documents ad WHERE ad.order_id = '.$order_id.'  ';
 $resul_1 = mysqli_query($db,$check_1);
 while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
 {
@@ -392,7 +392,7 @@ while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
 	$html.='<h2>Annexure '.$i.'</h2><br>
 	<div class="col-md-1"><br></div>
 	<div class="col-md-10">
-		<img src="../system-client/assets/order_master_documents/'.$row_1["document_file"].'" style="width:100%; height:100%;"  />
+		<img src="../system-admin/order_master_annexure/'.$row_1["document_file"].'" style="width:100%; height:100%;"  />
 	</div>
 	';
 	// if($i == 1)

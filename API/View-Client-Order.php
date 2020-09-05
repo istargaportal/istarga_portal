@@ -168,7 +168,7 @@ $print_form = "'print_form'";
 	{
 		$service_print.= '<h6>NO SERVICE SELECTED</h6>';
 	}
-	if($order_status == "Verified")
+	if($order_status == "Completed")
 	{
 		$download_button = "<a target='_blank' href='../API/Print-Background-Verification-Report.php?order_id=".$order_id."&default_report_color_id=0&download=true' class='btn btn-success'> <i class='fa fa-download'></i> Download</a>";
 	}

@@ -151,7 +151,7 @@ class country
                         echo '
                         <tr>
                             <td class="tablehead1">'.$i.'</td>
-                            <td class="tablehead1">'.$row["Client_Name"].'</td>
+                            <td class="tablehead1 form_left">'.$row["Client_Name"].'</td>
                             <td class="tablehead1">'.$row["Client_Code"].'</td>
                             <td class="tablehead1">'.$row["Client_SPOC"].'</td>
                             <td class="tablehead1">'.$row["Live_DateDate"].'</td>

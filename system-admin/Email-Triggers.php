@@ -82,8 +82,8 @@ include 'Header.php';
         url:'./API/Action-Email-Triggers.php',
         success:function(html){
           alert("Email Triggers added successfully!");
+          location.reload();
           $('#email_body').val('');
-          load_email_triggers();
         }
       });
     }
@@ -101,8 +101,8 @@ include 'Header.php';
         data:{action, delete_email_trigger_id },
         url:'./API/Action-Email-Triggers.php',
         success:function(html){
-          load_email_triggers();
           alert("Email Triggers deleted successfully!");
+          location.reload();
         }
       });
     }
@@ -136,7 +136,7 @@ include 'Header.php';
         success:function(html){
           alert("Email Triggers updated successfully!");
           $('#email_body_txt_'+email_trigger_id ).val('');
-          load_email_triggers();
+          window.location.href = "Email-Triggers.php";
         }
       });
     }

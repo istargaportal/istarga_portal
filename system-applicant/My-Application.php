@@ -47,7 +47,7 @@ if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
   $order_status = $row['order_status'];
 }
 
-if($order_status == "Pending" || $order_status == 'Insufficiency')
+if($order_status == "Fresh" || $order_status == 'Insufficiency')
 {
   $btn_disabled = "";
   $btn_click = 'onclick="save_my_application()"';

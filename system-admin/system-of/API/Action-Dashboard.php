@@ -29,7 +29,7 @@ if($_POST['action'] == 'load_service_list')
 if($_POST['action'] == 'load_start_processing')
 {
     $button_array = ""; $total_array = 0;
-    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.order_status IN ('Fresh', 'Sent To OF', 'Re-Assign To OF', 'In Progress') AND os.of_user_id != 0 ";
+    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.order_status = '$order_status_select' AND (os.of_user_id = 0 OR os.of_user_id = '$user_id') ";
     $resul = mysqli_query($db,$check); 
     while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -46,7 +46,7 @@ if($_POST['action'] == 'load_start_processing')
     if($total_array == 0)
     {
      echo '<script>
-            alert("No orders are available!");
+            confirm("No orders are available!");
         </script>';
         exit();
     }
@@ -83,8 +83,11 @@ if($_POST['action'] == 'next_prev_array_num')
 
 if($_POST['action'] == 'load_service_order')
 {
+    $cmd = "UPDATE order_service_details SET of_user_id = '$user_id', of_qc_order_status = 'Pending', of_assigned_date = '".date('Y-m-d H:i:s')."' WHERE order_service_details_id  = '$order_service_details_id' AND of_user_id = '0' ";
+    $result = mysqli_query($db,$cmd);
+
     require_once '../../../config/comman_js.php';
-    $check = "SELECT o.case_reference_no, os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.assign_service_id, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_of, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
+    $check = "SELECT os.of_qc_order_status, o.case_reference_no, os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.assign_service_id, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_of, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -116,6 +119,7 @@ if($_POST['action'] == 'load_service_order')
         $service_name = $row['service_name'];
         $service_type_name = $row['name'];
         $order_status = $row["order_status"];
+        $of_qc_order_status = $row["of_qc_order_status"];
         $internal_reference_id = $row['internal_reference_id'];
         $verifier_details = $row['verifier_details'];
         $verifier_comments = $row['verifier_comments'];
@@ -211,6 +215,7 @@ if($_POST['action'] == 'load_service_order')
             <br>
         </div>
         <form class="row" id="verifier_details_form">
+            <input type="hidden" name="order_status_select" id="order_status_select" value="<?php echo @$order_status_select; ?>" />
             <input type="hidden" name="order_id" id="order_id" value="<?php echo @$order_id; ?>" />
             <input type="hidden" name="service_type_id" id="service_type_id" value="<?php echo @$service_type_id; ?>" />
             <input type="hidden" name="assign_service_id" id="assign_service_id" value="<?php echo @$service_id; ?>" />
@@ -367,9 +372,6 @@ if($_POST['action'] == 'load_service_order')
     }
 
     $field_print.='</select></div>';
-
-    $cmd = "UPDATE order_service_details SET of_user_id = '$user_id' WHERE order_service_details_id  = '$order_service_details_id' ";
-    $result = mysqli_query($db,$cmd);
     
 }
 else
@@ -393,6 +395,7 @@ echo '
 ';
 }
 }
+
 ?>
 </table>
 </div>
@@ -451,24 +454,52 @@ echo '
             <tr>
                 <th class="form_left">Status</th>
                 <td>
+                    <select class="browser-default chosen-select custom-select" id="of_qc_order_status" name="of_qc_order_status">
+                        <?php
+                            $pending_checked = ""; $canceled_checked = ""; $discrepancy_checked = ""; $utv_checked = ""; $inconclusive_checked = ""; $minor_checked = ""; $verified_checked = ""; 
+                            if($of_qc_order_status == "Pending") { $pending_checked = "checked"; }
+                            if($of_qc_order_status == "Canceled") { $canceled_checked = "checked"; }
+                            if($of_qc_order_status == "Discrepancy") { $discrepancy_checked = "checked"; }
+                            if($of_qc_order_status == "UTV") { $utv_checked = "checked"; }
+                            if($of_qc_order_status == "Inconclusive") { $inconclusive_checked = "checked"; }
+                            if($of_qc_order_status == "Minor Discrepancy") { $minor_checked = "checked"; }
+                            if($of_qc_order_status == "Verified Clear") { $verified_checked = "checked"; }
+                        echo '
+                        <option '.$pending_checked.'>Pending</option>
+                        <option '.$canceled_checked.'>Canceled</option>
+                        <option '.$discrepancy_checked.'>Discrepancy</option>
+                        <option '.$utv_checked.'>UTV</option>
+                        <option '.$inconclusive_checked.'>Inconclusive</option>
+                        <option '.$minor_checked.'>Minor Discrepancy</option>
+                        <option '.$verified_checked.'>Verified</option>   
+                        ';
+                        ?>
+                    </select>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th class="form_left">Queue</th>
+                <td>
                     <select onchange="insufficiency_change()" class="browser-default chosen-select custom-select" id="order_status" name="order_status">
                         <option><?php echo $order_status; ?></option>
-                        <option>Fresh</option>
                         <option>Insufficiency</option>
-                        <option>Reassigned Verifier</option>
-                        <option>Insufficiency Verifier</option>
+                        <option>Check QC</option>
+                        <option>Completed Checks</option>
                     </select>
                 </td>
                 <td>
-                    <div class="insufficiency_panel" style="background: #ccc; padding: 10px;" >
+                    <div class="insufficiency_panel form_left" style="background: #ccc; padding: 10px;" >
                         <label class="pull-left">Comments</label>
                         <textarea class="custom-select" id="insufficiency_comment" name="insufficiency_comment" placeholder="Enter Comments" style="border:solid !important;"></textarea>
+                        <br>
+                        <a id="insufficiency_btn" class="btn btn-danger btn-xs" href="javascript:raise_insufficiency()"><i class="fa fa-send"></i> Raise Insufficiency</a>
                     </div>
                 </td>
             </tr>
             <tr>
                 <th class="form_left">Closed Date</th>
-                <td><input type="date" class="form-control" id="of_closure_date" name="of_closure_date" value="<?php echo $of_closure_date; ?>" /></td>
+                <td><input type="date" class="form-control" id="of_closure_date" name="of_closure_date" value="<?php echo @$of_closure_date; ?>" /></td>
                 <td>&nbsp;</td>
             </tr>
         </table>
@@ -595,8 +626,8 @@ echo '
         {
             $actual_key = $actual_key_val - 1;
             $temp_order_service_details_id_array = $order_service_details_id_array[$actual_key];
-            $onclick_prev = "prev_array_num()";
-            $onclick_prev = "load_service_order(".$temp_order_service_details_id_array.")";
+            $onclick_prev = "prev_array_num();";
+            $onclick_prev = "load_service_order(".$temp_order_service_details_id_array.");";
         }
 
         end($order_service_details_id_array);
@@ -607,8 +638,8 @@ echo '
         {
             $actual_key = $actual_key_val + 1;
             $temp_order_service_details_id_array = $order_service_details_id_array[$actual_key];
-            $onclick_next = "next_array_num()";
-            $onclick_next = "load_service_order(".$temp_order_service_details_id_array.")";
+            $onclick_next = "next_array_num();";
+            $onclick_next = "load_service_order(".$temp_order_service_details_id_array.");";
         }
         ?>
         <script type="text/javascript">
@@ -794,6 +825,7 @@ echo '
             }
             else
             {
+                $('#modal_loading').css('display', 'block');
                 $('#insufficiency_btn').addClass('disabled_btn');
                 var action = 'raise_insufficiency';
                 $.ajax({
@@ -803,6 +835,8 @@ echo '
                     success:function(html){
                         if(html == "success")
                         {
+                            $('#modal_loading').css('display', 'none');
+                            <?php echo $onclick_next; ?>
                             alert('Insufficiency raised!');
                         }
                     }
@@ -1178,9 +1212,9 @@ function provided_to_verifed()
 
 function send_to_qc()
 {
-    let r = confirm('Are you sure to Send To QC?')
-    if(r == true)
-    {
+    // let r = confirm('Are you sure to Send To QC?')
+    // if(r == true)
+    // {
         $('#send_to_qc').addClass('disabled_btn');        
         var myform = document.getElementById("verifier_details_form");
         var fd = new FormData(myform);
@@ -1194,6 +1228,7 @@ function send_to_qc()
             success: function (html) {
               if(html == "updated")
               {
+                <?php echo $onclick_next; ?>
                 $('#send_to_qc').addClass('disabled_btn');
                 $(".btn-warning").addClass("disabled_btn");
                 $(".btn-success").addClass("disabled_btn");
@@ -1206,7 +1241,7 @@ function send_to_qc()
               }
             }
         });
-    }
+    // }
 }
 
     function delete_note(order_notes_id)

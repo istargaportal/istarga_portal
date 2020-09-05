@@ -48,8 +48,11 @@ else
   <link rel="stylesheet" type="text/css" href="assets/css/IndexDemo.css" />
   <!-- <link rel="stylesheet" type="text/css" href="assets/css/indexStyle.css" /> -->
   <!-- <script type="text/javascript" src="assets/js/IndexSlideEffects.js"></script> -->
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap" rel="stylesheet">
   <style>
-
+    *{
+      font-family: 'Rajdhani', sans-serif;
+    }
    #LogoAnimation{
     position: absolute; 
     z-index: 10;
@@ -89,8 +92,43 @@ else
     color: #fff;
     font-weight: bold;
   }
+  p{
+    margin-bottom: 0;
+  }
+  .form-control{
+    padding: 5px 10px !important;
+  }
+  .login_panel {
+    padding: 15px;
+    background: linear-gradient(rgba(160,160,160,0.2),rgba(10,10,10,0.8)) !important;  
+  }
+  .form-control{
+    padding: 15px !important;
+    height: 42px;
+  }
+  .input-group-text{
+    height: 41px;
+  }
+  .btn-default{
+    padding: 4px 16px;
+    background: #ecb614;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+  .btn-reset{
+    background: #fff;
+    color: #ecb614;
+  }
+  .container_checkbox{
+    color: #fff;
+    border: solid;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: linear-gradient(rgba(10,10,10,0.5),rgba(10,10,10,0.5)) !important;  
   
-
+  }
 </style>
 
 </head>
@@ -172,12 +210,15 @@ else
               font-size: 80%;
               "
               >
-              <p><strong>CLIENT ERP</strong></p>
+              <!-- <p><strong>CLIENT PORTAL</strong></p> -->
             </div>
+            <p><strong style="color: #fff;">CLIENT PORTAL</strong></p>
           </div>
-          <div class="card-body" style="padding-bottom: 0;">
+          <div class="card-body" style="padding-bottom: 0;border-top: solid 1px #fff;">
+            <h4 style="color: #fff" class="login-card-description">SIGN IN</h4>
+
             <form id="postform" class="my-login-validation" style="padding-bottom: 0;">
-              <div class="input-group form-group" style="padding-bottom: 0;">
+              <div class="input-group form-group" style="padding-bottom: 0;margin-bottom: 0">
                 <div class="input-group-prepend" style="padding-bottom: 0;">
                   <span class="input-group-text" style="padding-bottom: 0;"
                   ><i class="fas fa-user"></i
@@ -209,7 +250,6 @@ else
                     />
                     <span class="btn_show_password"><i class="fa fa-eye-slash"></i>  </span>
                   </div>
-                  <a href="forgotPassword.php">Forgot your password?</a>
               <!-- <div class="row align-items-center remember">
                 <div class="form-check" style=" margin-top: 2% !important;"  >
                   <label class="form-check-label"  style="margin-bottom:14px !important;">Remember
@@ -221,12 +261,10 @@ else
                 </div>
               </div> -->
               <div class="form-group">
-                <input
-                type="submit"
-                value="Login"
-                class="btn float-right login_btn"
-                />
-                <br><br>
+                <b style="color: #fff;"><a class="forgot-password-link">Forgot password?</a></b>
+                      <br> <br>
+                <button type='submit' class="btn btn-default login_btn mb-4">Login</button>
+                <a href="" class="btn btn-default btn-reset mb-4">Reset</a>
               </div>
             </form>
           </div>
@@ -237,7 +275,11 @@ else
       </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    
+    <script type="text/javascript">
+      $("input").each(function () {
+        $(this).attr("autocomplete", "off");
+      })
+    </script>
     <style type="text/css">
       .input-group {
         position: relative;

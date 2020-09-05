@@ -13,41 +13,38 @@ class login
   }
   public function update_details()
   {
+    extract($_POST);
     global $service_email_id;
     global $service_contact_no;
     global $company_name;
     global $web_url;
     global $client_login_url;
     global $applicant_login_url;
-
-    $json_data = file_get_contents("php://input");
-    if( !empty($json_data) )
-    {
-      $data = json_decode($json_data, true);
-      $Client_Name=$data['Client Name'];	
-      $Client_Code=$data['Client Code'];	 
-      $Client_SPOC=$data['Client SPOC'];
-      $Zip_Code=$data['Zip Code'];
-      $Contact_Number=$data['Contact Number'];
-      $App_Response_Time=$data['Applicant Response Time'];
-      $Inv_Address=$data['Invoice Address Details'];
-      $Inv_Bank=$data['Invoice Bank Detail']; 
-      $Inv_Due_Days=$data['Invoice Payment Due Days'];
-      $Inv_Code=$data['Invoice Code'];
-      $Is_GSTIN=$data['Is GSTIN'];
-      $Email=$data['Email ID'];
-      $dob=$data['dateofbirth'];
-      $Is_Package=@$data['Is Package'];
-      $Email_radio=@$data['Email ID radio']; 
-      $Is_LOB_Mapping=@$data['Is LOB Mapping'];	 
-      $Country=$data['locality-dropdown'];
-      $State=$data['select_state'];
-      $City=$data['select_city'];
-      $currency=$data['currency'];
-      $password = $data['Password'];
-      $lob_master = $data['lob_master'];
-      $reference_name= $data['Client Name'];
-      $reference_number=$data['dateofbirth'];
+    
+      $Client_Name=$_POST['Client_Name'];	
+      $Client_Code=$_POST['Client_Code'];	 
+      $Client_SPOC=$_POST['Client_SPOC'];
+      $Zip_Code=$_POST['Zip_Code'];
+      $Contact_Number=$_POST['Contact_Number'];
+      $App_Response_Time=$_POST['Applicant_Response_Time'];
+      $Inv_Address=$_POST['Invoice_Address_Details'];
+      $Inv_Bank=$_POST['Invoice_Bank_Detail']; 
+      $Inv_Due_Days=$_POST['Invoice_Payment_Due_Days'];
+      $Inv_Code=$_POST['Invoice_Code'];
+      $Is_GSTIN=$_POST['Is_GSTIN'];
+      $Email=$_POST['Email_ID'];
+      $dob=$_POST['dateofbirth'];
+      $Is_Package=@$_POST['Is Package'];
+      $Email_radio=@$_POST['Email_ID_radio']; 
+      $Is_LOB_Mapping=@$_POST['Is_LOB_Mapping'];	 
+      $Country=$_POST['locality-dropdown'];
+      $State=$_POST['select_state'];
+      $City=$_POST['select_city'];
+      $currency=$_POST['currency'];
+      $password = $_POST['Password'];
+      $lob_master = @$_POST['lob_master'];
+      $reference_name= $_POST['Client_Name'];
+      $reference_number=$_POST['dateofbirth'];
       $reference_number2=rand(10060,99999);
       $randorm=rand(1000,9999);
       $reference_name=strtoupper(substr($reference_name,0,3));
@@ -57,8 +54,8 @@ class login
 
       if($Client_Name != "")
       {
-        if($data['edit_id'] == "") { $check = "INSERT INTO `client`"; }
-        if($data['edit_id'] != "") { $check = "UPDATE `client`"; }
+        if($_POST['edit_id'] == "") { $check = "INSERT INTO `client`"; }
+        if($_POST['edit_id'] != "") { $check = "UPDATE `client`"; }
 
         $check.= "SET `Client_Name`='".$Client_Name."',
         `Client_Code`='".$Client_Code."',
@@ -84,15 +81,15 @@ class login
         `lob_master`='".$lob_master."',
         `Currency`='".$currency."',
         `password`='".$password."' ";
-        if($data['edit_id'] != "") { $check.= " WHERE id = ".$data['edit_id']; } 
+        if($_POST['edit_id'] != "") { $check.= " WHERE id = ".$_POST['edit_id']; } 
         $result=$this->conn->query($check);
         if($result)
         {
-          if($data['edit_id'] != "")
+          if($_POST['edit_id'] != "")
           {
             echo "updated";
           }
-          if($data['edit_id'] == "")
+          if($_POST['edit_id'] == "")
           {
             echo "inserted";
             include '../../API/SMTP/sendMail.php';
@@ -106,11 +103,7 @@ class login
           echo "error";
         }
       }
-    }
-    else 
-    {
-      echo "Empty JSON object, something's wrong!";
-    }
+    
   }
 }
 

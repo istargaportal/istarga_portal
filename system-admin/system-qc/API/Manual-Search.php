@@ -27,14 +27,12 @@ if($_POST['action'] == 'load_manual_search')
  </thead>
  ';
 	$sr = 0;
-	$sq="SELECT o.*, c.Client_Name, s.service_name, os.order_creation_date, os.order_completion_date, os.category, os.of_closure_date, sa.sla, os.order_status FROM `order_master` o INNER JOIN client c ON c.id = o.client_id INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.service_id = os.service_id WHERE 1 = 1 ";
-	if($select_criteria == "first_last_name"){ $sq.= " AND (o.first_name LIKE '$search_field%' OR o.last_name LIKE '$search_field%') "; }
-	if($select_criteria == "internal_reference_id"){ $sq.= " AND o.internal_reference_id LIKE '$search_field%' "; }
-	if($select_criteria == "joining_location"){ $sq.= " AND o.joining_location LIKE '$search_field%' "; }
-	if($select_criteria == "email_id"){ $sq.= " AND o.email_id LIKE '$search_field%' "; }
-	if($select_criteria == "order_creation_date"){ $sq.= " AND o.order_creation_date LIKE '$search_field%' "; }
-	if($select_criteria == "order_completion_date"){ $sq.= " AND o.order_completion_date LIKE '$search_field%' "; }
-	if($select_criteria == "order_status"){ $sq.= " AND os.order_status LIKE '$search_field%' "; }
+	$sq="SELECT o.*, c.Client_Name, s.service_name, os.order_creation_date, os.order_completion_date, os.category, os.of_closure_date, sa.sla, os.order_status, os.of_qc_order_status FROM `order_master` o INNER JOIN client c ON c.id = o.client_id INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.service_id = os.service_id WHERE 1 = 1 ";
+	if($applicant_name != ""){ $sq.= " AND (o.first_name LIKE '$applicant_name%' OR o.last_name LIKE '$applicant_name%') "; }
+	if($case_reference_no != ""){ $sq.= " AND o.case_reference_no LIKE '$case_reference_no%' "; }
+	if($order_creation_date != ""){ $sq.= " AND o.order_creation_date LIKE '$order_creation_date%' "; }
+	if($order_status != ""){ $sq.= " AND os.order_status LIKE '$order_status%' "; }
+	if($service_id != ""){ $sq.= " AND os.service_id = '$service_id' "; }
     $sq.="GROUP BY os.order_service_details_id";
 	$result = mysqli_query($db,$sq); 
 	while($row = $result->fetch_assoc())
@@ -61,14 +59,14 @@ if($_POST['action'] == 'load_manual_search')
         echo '
         <tr>
 	        <td class="tablehead1">'.$sr.'</td>
-	        <td class="tablehead1">'.$row["internal_reference_id"].'</td>
+	        <td class="tablehead1 form_left">'.$row["case_reference_no"].'</td>
 	        <td class="tablehead1">'.$row['is_rush'].'</td>
 	        <td class="tablehead1 form_left">'.$row["first_name"].' '.$row["last_name"].' </td>
 	        <td class="tablehead1">'.$row["order_creation_date"].'</td>
 	        <td class="tablehead1">'.$expected_course_date.'</td>
 	        <td class="tablehead1">'.$row["service_name"].'</td>
 	        <td class="tablehead1">'.$order_status.'</td>
-	        <td class="tablehead1">'.$row["category"].'</td>
+	        <td class="tablehead1">'.$row["of_qc_order_status"].'</td>
 	        <td class="tablehead1">'.$row["of_closure_date"].'</td>
         </tr>
         ';

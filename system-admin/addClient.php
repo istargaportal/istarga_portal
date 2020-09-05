@@ -1,14 +1,14 @@
 <?php
 
+require_once "../config/config.php";
+
+$get_connection=new connectdb;
+$db=$get_connection->connect();
+
 if(isset($_GET['id']))
 {
   $page_name = "Edit Client";
   $id = $_GET['id'];
-
-  require_once "../config/config.php";
-
-  $get_connection=new connectdb;
-  $db=$get_connection->connect();
 
   if(isset($id))
   {
@@ -90,7 +90,7 @@ include 'Header.php';
                 <div class="col-md-4">
                   <div class="form-group1">
                     <label class="bmd-label-floating">Client Name <i class="fa fa-star"></i></label>
-                    <input name="Client Name" type="text" class="form-control" required value="<?php echo @$Client_Name; ?>" />
+                    <input name="Client_Name" type="text" class="form-control" required value="<?php echo @$Client_Name; ?>" />
                   </div>
                 </div>
                 <div class="col-md-2">
@@ -104,13 +104,13 @@ include 'Header.php';
                 <div class="col-md-2">
                   <div class="form-group1">
                     <label class="bmd-label-floating">Client Code <i class="fa fa-star"></i></label>
-                    <input name="Client Code" type="text" class="form-control" required value="<?php echo @$Client_Code; ?>" />
+                    <input name="Client_Code" type="text" class="form-control" required value="<?php echo @$Client_Code; ?>" />
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group1">
                     <label class="bmd-label-floating">Client SPOC</label>
-                    <input name="Client SPOC" type="text" class="form-control" value="<?php echo @$Client_SPOC; ?>" />
+                    <input name="Client_SPOC" type="text" class="form-control" value="<?php echo @$Client_SPOC; ?>" />
                   </div> 
                 </div>
               </div>
@@ -124,85 +124,106 @@ include 'Header.php';
                     <input type="hidden" name="edit_id" value="<?php echo @$id; ?>">
 
                     <label class="bmd-label-floating" style="font-size: 13px;">Country <i class="fa fa-star"></i></label>
-                    <select class="browser-default custom-select" type="select" id="locality-dropdown" name="locality-dropdown" onchange="getservice(this.value)" style="color:#202940;" required>
-                    </select>
+                    <div id="country_div">
+                      <?php
+                        echo '<select onchange="load_state()" class="browser-default chosen-select custom-select" id="locality-dropdown" name="locality-dropdown"><option value="">Select<option>';
+                        $check = "SELECT id, name FROM countries ";
+                        $resul = mysqli_query($db,$check); 
+                        while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                        {
+                          $selected = "";
+                          if(@$country == $row['id'])
+                          {
+                            $selected = "selected";
+                          }
+                          echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['name'].'</option>';
+                        }
+                        echo '</select>';
+                      ?>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group1">
                     <label class="bmd-label-floating"style="font-size: 13px;">State</label>
-                    <select class="browser-default custom-select" type="select" id="select_state" name="select_state" onchange="getservicename(this.value)" style="color:#202940;">
-                    </select>
+                    <div id="state_div">
+                      <select class="browser-default chosen-select custom-select" type="select" id="select_state" name="select_state" style="color:#202940;">
+                        <option value=""></option>
+                      </select>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group1">
                     <label class="bmd-label-floating" style="font-size: 13px;">City</label>
-                    <select class="browser-default custom-select" type="select" id="select_city" name="select_city" onchange="getdocumentlist(this.value)" style="color:#202940;">
-                    </select>
+                    <div id="city_div">
+                      <select class="browser-default chosen-select custom-select" type="select" id="select_city" name="select_city" style="color:#202940;">
+                        <option value=""></option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 
                 <div class="col-md-4">
                   <div class="form-group1">
                     <label class="bmd-label-floating">Zip Code</label>
-                    <input name="Zip Code" type="number" min="0" class="form-control" value="<?php echo $Zip_Code; ?>" />
+                    <input name="Zip_Code" type="text" min="0" class="form-control Number" value="<?php echo @$Zip_Code; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
                   <div class="form-group1">
                     <label class="bmd-label-floating">Contact Number <i class="fa fa-star"></i></label>
-                    <input name="Contact Number" type="number" min="0" required="" class="form-control" value="<?php echo @$Contact_Number; ?>" />
+                    <input name="Contact_Number" type="text" min="0" required="" class="form-control Number" value="<?php echo @$Contact_Number; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
                   <div class="form-group1">
                     <label class="bmd-label-floating">Applicant Response Time</label>
-                    <input name="Applicant Response Time" type="number" min="0" class="form-control" value="<?php echo @$App_Response_Time; ?>" />
+                    <input name="Applicant_Response_Time" type="text" min="0" class="form-control Number" value="<?php echo @$App_Response_Time; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
                   <div class="form-group1">
                     <label class="bmd-label-floating">Invoice Address Details</label>
-                    <input name="Invoice Address Details" type="text" class="form-control" value="<?php echo @$Inv_Address; ?>" />
+                    <input name="Invoice_Address_Details" type="text" class="form-control" value="<?php echo @$Inv_Address; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
                   <div class="form-group1">
                     <label class="bmd-label-floating">Invoice Bank Detail</label>
-                    <input name="Invoice Bank Detail" type="text" class="form-control" value="<?php echo @$Inv_Bank; ?>" />
+                    <input name="Invoice_Bank_Detail" type="text" class="form-control" value="<?php echo @$Inv_Bank; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
                   <div class="form-group1">
                     <label class="bmd-label-floating">Invoice Payment Due Days</label>
-                    <input name="Invoice Payment Due Days" type="number" min="0" class="form-control" value="<?php echo @$Inv_Due_Days; ?>" />
+                    <input name="Invoice_Payment_Due_Days" type="text" min="0" class="form-control Number" value="<?php echo @$Inv_Due_Days; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
                   <div class="form-group1">
                     <label class="bmd-label-floating">Invoice Code <i class="fa fa-star"></i></label>
-                    <input name="Invoice Code" type="text" required="" class="form-control" value="<?php echo @$Inv_Code; ?>" />
+                    <input name="Invoice_Code" type="text" required="" class="form-control" value="<?php echo @$Inv_Code; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
                   <div class="form-group1">
                     <label class="bmd-label-floating">Is GSTIN</label>
-                    <input name="Is GSTIN" type="text" class="form-control" value="<?php echo @$Is_GSTIN; ?>" />
+                    <input name="Is_GSTIN" type="text" class="form-control" value="<?php echo @$Is_GSTIN; ?>" />
                   </div>
                 </div>
 
                 <div class="col-md-4">
                   <div class="form-group1">
                     <label class="bmd-label-floating">Email ID <i class="fa fa-star"></i></label>
-                    <input name="Email ID" type="email" class="form-control" required="" autocomplete="off" value="<?php echo @$email; ?>" <?php echo @$readonly; ?> />
+                    <input name="Email_ID" type="email" class="form-control" required="" autocomplete="off" value="<?php echo @$email; ?>" <?php echo @$readonly; ?> />
                   </div>
                 </div>
                 <!--checkBoxes-->
@@ -294,7 +315,21 @@ include 'Header.php';
                         <div class="col-md-4">
                           <div class="form-group1">
                             <label style="font-size: 13px;" for="Currency" class="bmd-label-floating" style="margin-left: 4%;">Currency <i class="fa fa-star"></i></label>
-                            <select style="margin-top: 2%;" id="currency" name="currency" class="browser-default custom-select" required>
+                            <select style="margin-top: 2%;" id="currency" name="currency" class="browser-default custom-select chosen-select" >
+                              <option value="">Select</option>
+                              <?php
+                                $check = "SELECT id, currency FROM countries ";
+                                $resul = mysqli_query($db,$check); 
+                                while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                                {
+                                  $selected = "";
+                                  if(@$Currency == $row['id'])
+                                  {
+                                    $selected = "selected";
+                                  }
+                                  echo '<option '.@$selected.' value="'.$row['id'].'">'.$row['currency'].'</option>';
+                                }
+                              ?>
                             </select>
                           </div>
                         </div>
@@ -321,14 +356,15 @@ include 'Header.php';
                         <?php
                         if(isset($_GET['id']))
                         {
-                          echo '<button id="update-client" name="update-client" type="submit" class="btn btn-warning btn-sm" style="margin-right: 1% !important;"><i class="material-icons icon">edit</i> Update</button>';
+                          echo '<button onclick="save_add_client()" name="update-client" type="submit" class="btn btn-warning btn-sm" style="margin-right: 1% !important;"><i class="material-icons icon">edit</i> Update</button>';
                         }
                         else
                         {
-                          echo '<button id="add-client" name="add-client" type="submit" class="btn btn-success btn-sm" style="margin-right: 1% !important;"><i class="material-icons icon">note_add</i> Save</button>';
+                          echo '<button onclick="save_add_client()" name="add-client" type="submit" class="btn btn-success btn-sm" style="margin-right: 1% !important;"><i class="material-icons icon">note_add</i> Save</button>';
                         }
                         ?>
-                        <a href="" class="btn btn-default btn-sm" style="margin-right: 2%;" onclick="formReset()"><i class="material-icons icon">refresh</i> Reset</a>
+                        <a href="" class="btn btn-primary btn-sm" style="margin-right: 2%;" onclick="formReset()"><i class="material-icons icon">refresh</i> Reset</a>&nbsp;&nbsp; 
+                        <a href="modifyClient.php" class="btn btn-default btn-sm" style="margin-right: 2%;"><i class="material-icons icon">close</i> Cancel</a>
                       </div>
                       <div class="clearfix"></div>
                     </form>
@@ -365,6 +401,115 @@ include 'Header.php';
     </div>
     <!--mode changing-->
     <script>
+
+      function load_state(state_id)
+      {
+        var country_id = $('#locality-dropdown').val();
+        var load_data = "load_state";
+
+        $.ajax({
+          type:'POST',
+          data:{load_data, country_id, state_id},
+          url:'./API/Address-Functions.php',
+          success:function(html){
+            $('#state_div').html(html);
+            $('#select_state').chosen();
+            <?php
+              if(@$State > 0)
+              {
+                echo 'load_city('.@$city.');';
+              }
+            ?>
+          }
+        });
+      }
+
+      function load_city(city_id)
+      {
+        var state_id = $('#select_state').val();
+        var load_data = "load_city";
+        $.ajax({
+          type:'POST',
+          data:{load_data, state_id, city_id},
+          url:'./API/Address-Functions.php',
+          success:function(html){
+            $('#city_div').html(html);
+            $('#select_city').chosen();
+          }
+        });
+      }
+
+      <?php
+        if(@$country > 0)
+        {
+          echo 'load_state('.@$State.');';
+        }
+      ?>
+
+      function save_add_client()
+      {
+        var error = 0;
+        $("input, select, textarea").each(function ()
+        {
+          if($(this).prop('required'))
+          {
+            if($(this).val() == '')
+            {
+              alert('Please enter data');
+              $(this).focus();
+              error++;
+              exit();
+            }
+          }
+        })
+        var locality_dropdown = $('#locality-dropdown').val();
+        var currency = $('#currency').val();
+        if(locality_dropdown == "")
+        {
+          alert('Please select country!');
+        }
+        else if(currency == "")
+        {
+          alert('Please select currency!');
+        }
+        else if(error == 0)
+        {
+          $('#modal_loading').css('display', 'block');
+          var myform = document.getElementById("ajax");
+          var fd = new FormData(myform );
+          $.ajax({
+            url: "./API/addClient.php",
+            data: fd,
+            cache: false,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function (html) {
+              $('#modal_loading').css('display', 'none');
+              if(html == "inserted")
+              {
+                alert('Client added successfully!');
+                window.location.href = "modifyClient.php";
+              }
+              else if(html == "updated")
+              {
+                alert('Client updated successfully!');
+                window.location.href = "modifyClient.php";
+              }
+              else if(html == "already")
+              {
+                alert('This user account already exists!');
+              }
+              else
+              {
+                alert('Error occurred');
+              }
+            }
+          });
+        }
+      }
+
+
       let darkmode = localStorage.getItem("darkmode");
       const darkmodetoggle = document.querySelector('input[name=theme]');
 
@@ -404,10 +549,10 @@ include 'Header.php';
       }
     </script>
     <!--   Core JS Files   -->
-    <script src="assets/js/core/jquery.min.js"></script>
+    <!-- <script src="assets/js/core/jquery.min.js"></script> -->
     <script src="assets/js/core/popper.min.js"></script>
     <script src="assets/js/core/bootstrap-material-design.min.js"></script>
-    <script src="https://unpkg.com/default-passive-events"></script>
+    <!-- <script src="https://unpkg.com/default-passive-events"></script> -->
     <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -421,20 +566,11 @@ include 'Header.php';
     <script src="assets/js/material-dashboard.js?v=2.1.0"></script>
     <!-- Material Dashboard DEMO methods, don't include it in your project! -->
     <script src="assets/demo/demo.js"></script>
-    <script src="data.js"></script>
-    <?php
-    if(isset($_GET['id']))
-    {
-      echo '
-      <script>
-      getservice('.@$country.');
-      getservicename('.@$State.');
-      </script>
-      ';
-    }
-    ?>
-    
+    <!-- <script src="data.js"></script> -->
+      
     <script>
+      $('.chosen-select').chosen();
+  
       function formReset() {
         document.getElementById("ajax").reset();
       }

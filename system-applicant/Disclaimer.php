@@ -10,6 +10,18 @@ if (mysqli_connect_errno($db)) {
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
 
+if(!isset($_SESSION['order_id']))
+{
+  echo '
+  <script>
+  window.location.href = "Index.php";
+  </script>
+  ';
+}
+else
+{
+  $order_id = $_SESSION['order_id'];
+}
 $check = "SELECT first_name, last_name FROM order_master WHERE order_id = '$order_id' ";
 $resul = mysqli_query($db,$check); 
 if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))

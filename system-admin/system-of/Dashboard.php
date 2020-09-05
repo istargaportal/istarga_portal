@@ -24,30 +24,53 @@ $db=$get_connection->connect();
           <div id="process_order">
             <div class="card-body">
               <div class="row justify-content-start">
-                <div class="col-md-2">
-                  <h4 for="DocumentName" class="bmd-label-floating">Search Order</h4>
+                <div class="col-md-5">
+                  <label>Applicant Name</label>
+                  <input type="text" class="form-control" id="applicant_name" />
                 </div>
-
+                <div class="col-md-4">
+                  <label>Case Ref. No.</label>
+                  <input type="text" class="form-control" id="case_reference_no" />
+                </div>
                 <div class="col-md-3">
-                  <select id="select_criteria" class="browser-default custom-select">
-                    <option value="">Select Criteria</option>
-                    <option value="first_last_name">First Name / Last Name</option>
-                    <option value="internal_reference_id">Internal Reference ID</option>
-                    <option value="joining_location">Joining Location</option>
-                    <option value="email_id">Email ID</option>
-                    <option value="order_creation_date">Order Creation Date</option>
-                    <option value="order_completion_date">Order Completion Date</option>
-                    <option value="order_status">Order Status</option>
+                  <label>Initiation Date</label>
+                  <input type="text" class="form-control form_center" id="initiation_date" onfocus='(this.type="date")' onblur='(this.type="text")' placeholder="DD-MM-YYYY" />
+                </div>
+                <div class="col-md-2">
+                  <label>Status</label>
+                  <select class="form-control chosen-select" id="order_status">
+                    <option value="">ALL</option>
+                    <option>Canceled</option>
+                    <option>Discrepancy</option>
+                    <option>UTV</option>
+                    <option>Inconclusive</option>
+                    <option>Minor Discrepancy</option>
+                    <option>Verified Clear</option>
                   </select>
                 </div>
                 <div class="col-md-3">
-                  <input type="text" class="form-control" id="search_field">
+                  <label>Service Name</label>
+                  <select class="form-control chosen-select" id="service_id">
+                    <option value="">ALL</option>
+                    <?php
+                      $check='SELECT id, service_name FROM service_list ';
+                      $resul = mysqli_query($db,$check); 
+                      while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                      {
+                        echo '<option value="'.$row['id'].'">'.$row['service_name'].'</option>';
+                      }
+                    ?>
+                  </select>
                 </div>
-                <div class="col-md-4">
-                  <a href="javascript:load_manual_search()" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Search</a>
+                
+                <div class="col-md-7 form_right" style="margin-top: 4px;">
+                  <br>
+                  <a href="javascript:load_manual_search()" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Search</a> &nbsp;
+                  <a href="" class="btn btn-default btn-sm"><i class="fa fa-close"></i> Reset</a>
                 </div>
 
                 <div id="data_table" class="table-responsive">
+                  <br>
                   <table id="datatable_tbl" class="table table-hover" style="margin-top: 4%;">
                    <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
                      <th width="10">SR.NO.</th>
@@ -63,7 +86,7 @@ $db=$get_connection->connect();
                    </thead>
                  </table>
                </div>
-             </div>
+              </div>
             </div>
             <div class="col-md-12">
               <br>
@@ -72,7 +95,7 @@ $db=$get_connection->connect();
               </div>
               <br>
               <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label>Country</label>
                   <select class="browser-default chosen-select custom-select" type="select" id="lod_country_id" onchange="load_service_list()">
                     <option value="">Select</option>
@@ -86,7 +109,7 @@ $db=$get_connection->connect();
                     ?>
                   </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <label for="Service Type" >Service Type</label>
                   <select style="margin-top: 2% !important;" id="service_type_id" onchange="load_service_list()" class="browser-default custom-select chosen-select" required>
                     <option value="">Select</option>
@@ -108,9 +131,19 @@ $db=$get_connection->connect();
                     </select>
                   </div>
                 </div>
+                <div class="col-md-2">
+                  <label>Select Status</label>
+                  <select class="form-control chosen-select" id="order_status_select">
+                    <option value="">Select</option>
+                    <option>Fresh</option>
+                    <option>In Progress</option>
+                    <option>Re-Assigned</option>
+                    <option>Insufficiency</option>
+                  </select>
+                </div>
                 <div class="col-md-3">
                   <br>
-                  <a href="javascript:start_processing()" class="btn btn-primary btn-sm"><i class="fa fa-play"></i> Start Processing</a>
+                  <a style="margin-top: 5px !important;" href="javascript:start_processing()" class="btn btn-primary btn-sm"><i class="fa fa-play"></i> Start Processing</a>
                 </div>
               </div>
               <br>
@@ -128,24 +161,23 @@ include '../../datatable/_datatable.php';
   $('.chosen-select').chosen();
   function load_manual_search()
   {
-    var select_criteria = $('#select_criteria').val();
-    var search_field = $('#search_field').val();
-    if(select_criteria == "")
+    var applicant_name = $('#applicant_name').val();
+    var case_reference_no = $('#case_reference_no').val();
+    var order_creation_date = $('#initiation_date').val();
+    var order_status = $('#order_status').val();
+    var service_id = $('#service_id').val();
+
+    if(applicant_name == "" && case_reference_no == "" && order_creation_date == "" && order_status == "" && service_id == "")
     {
-      alert("Please Select Criteria!");
-      $('#select_criteria').focus();
-    }
-    else if(search_field == "")
-    {
-      alert("Please Select Criteria!");
-      $('#search_field').focus();
+      $('#applicant_name').focus();
+      alert('Please provide data');
     }
     else
     {
       var action = 'load_manual_search';
       $.ajax({
         type:'POST',
-        data:{action, select_criteria, search_field},
+        data:{action, applicant_name, case_reference_no, order_creation_date, order_status, service_id},
         url:'./API/Manual-Search.php',
         success:function(html){
           $('#data_table').html(html);
@@ -216,6 +248,7 @@ include '../../datatable/_datatable.php';
     var lod_country_id = $('#lod_country_id').val();
     var service_type_id = $('#service_type_id').val();
     var service_id = $('#assign_service_id').val();
+    var order_status_select = $('#order_status_select').val();
     
     if(lod_country_id == "")
     {
@@ -229,13 +262,17 @@ include '../../datatable/_datatable.php';
     {
       alert("Please select Service!");
     }
+    else if(order_status_select == "")
+    {
+      alert("Please select Order Status!");
+    }
     else
     {
       var action = "load_start_processing";
       $.ajax({
         type:'POST',
         url:'./API/Action-Dashboard.php',
-        data:{action, lod_country_id, service_type_id, service_id},
+        data:{action, lod_country_id, service_type_id, service_id, order_status_select},
         success:function(html) {
           $('#print_result').html(html);
          }

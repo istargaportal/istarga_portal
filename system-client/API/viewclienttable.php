@@ -69,7 +69,7 @@ class States
                   {
                     $row["order_completion_date"] = date('d-m-Y', strtotime($row["order_completion_date"]));
                   }
-                  if($row['order_status'] == "Verified")
+                  if($row['order_status'] == "Completed")
                   {
                     $download_button = "<a target='_blank' href='../API/Print-Background-Verification-Report.php?order_id=".$row['order_id']."&default_report_color_id=0&download=true' class='btn btn-success btn-sm'> <i class='fa fa-download'></i> Download</a>";
                   }

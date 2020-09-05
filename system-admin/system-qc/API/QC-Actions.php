@@ -19,7 +19,7 @@ if($_POST['action'] == 'update_applicant_details')
 
     $verifier_details = addslashes($verifier_details);
     $verifier_comments = addslashes($verifier_comments);
-    $cmd = "UPDATE order_service_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', currency_id = '$currency_id', additional_fees = '$additional_fees', of_closure_date = '$of_closure_date', qc_user_id = '$qc_user_id', order_status = 'Verified' WHERE order_service_details_id = '$order_service_details_id' ";
+    $cmd = "UPDATE order_service_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', currency_id = '$currency_id', additional_fees = '$additional_fees', of_closure_date = '$of_closure_date', qc_user_id = '$qc_user_id', order_status = 'Completed' WHERE order_service_details_id = '$order_service_details_id' ";
     $result = mysqli_query($db,$cmd);
     $result = 1;
     if($result > 0)
@@ -46,7 +46,7 @@ if($_POST['action'] == 'update_applicant_details')
         }
 
         $not_verified = 0;
-        $check_1 = "SELECT order_status FROM order_service_details WHERE order_status != 'Verified' ";
+        $check_1 = "SELECT order_status FROM order_service_details WHERE order_status != 'Completed' ";
         $resul_1 = mysqli_query($db,$check_1); 
         while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
         {
@@ -54,12 +54,12 @@ if($_POST['action'] == 'update_applicant_details')
         }
         if($not_verified == 0)
         {
-            $check = "UPDATE order_master SET order_status = 'Pending' WHERE order_id  = '$order_id' ";
+            $check = "UPDATE order_master SET order_status = 'In Process' WHERE order_id  = '$order_id' ";
             $result = mysqli_query($db,$check);
         }
         else
         {
-            $check = "UPDATE order_master SET order_status = 'Verified', order_completion_date = '".date("Y-m-d H:i:s")."' WHERE order_id  = '$order_id' ";
+            $check = "UPDATE order_master SET order_status = 'Completed', order_completion_date = '".date("Y-m-d H:i:s")."' WHERE order_id  = '$order_id' ";
             $result = mysqli_query($db,$check);
         }
         echo 'updated';
