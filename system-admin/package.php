@@ -41,6 +41,16 @@ else
 }
 include 'Header.php';
 ?>
+<style type="text/css">
+  .export_excel{
+    width: 150px;
+    float: left;
+  }
+  .export_print{
+    width: 100px;
+    float: left;
+  }
+</style>
 <div class="content">
   <div class="container-fluid">
     <div class="row">
@@ -103,7 +113,7 @@ include 'Header.php';
                     </select>
                   </div>
                 </div>
-                <div class="col-md-12 form_right">
+                <div class="col-md-12 form_right" style="margin-top: 8px;">
                   <?php
                   if(isset($_GET['id']))
                   {
@@ -120,7 +130,10 @@ include 'Header.php';
               </div>
             </form>
           </div>
-          <div id="data_table"></div>
+          <div class="col-md-12">
+            <div id="data_table"></div>
+            <br><br>
+          </div>
         </div>
       </div>
     </div>
@@ -129,6 +142,9 @@ include 'Header.php';
 <script type="text/javascript">
   $('.chosen-select').chosen();
 </script>
+<?php
+include '../datatable/_datatable.php';
+?>
 <script>
 
   function load_package()
@@ -192,7 +208,7 @@ include 'Header.php';
     {
       alert('Please select at least service!');
     }
-    else if(error == 0)
+    else if (error == 0)
     {
       var myform = document.getElementById("package_form");
       var fd = new FormData(myform );
@@ -212,7 +228,7 @@ include 'Header.php';
           else if(html == "updated")
           {
             alert('Package updated successfully!');
-            load_package();
+            window.location.href = "package.php";
           }
           else
           {
@@ -259,9 +275,13 @@ include 'Header.php';
 </script>
 <!--mode change end-->
 
+
 <!-- <script src="assets/js/core/jquery.min.js"></script> -->
 <script src="assets/js/core/popper.min.js"></script>
 <script src="assets/js/core/bootstrap-material-design.min.js"></script>
+<!-- <script src="https://unpkg.com/default-passive-events"></script> -->
+<script src="assets/js/plugins/xlsx.full.min.js"></script>
+<script src="assets/js/plugins/FileSaver.min.js"></script>
 <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
@@ -271,8 +291,7 @@ include 'Header.php';
 <script src="assets/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="assets/js/material-dashboard.js?v=2.1.0"></script>
-<?php
-include '../datatable/_datatable.php';
-?>
+<!-- <script src="updateservice.js"></script> -->
+
 </body>
 </html>

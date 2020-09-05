@@ -54,6 +54,12 @@ if(isset($_GET['id']))
       $user_status=$reed['user_status'];
       $is_block=$reed['is_block'];
       $email = $reed['email'];
+      $lob_master = $reed['lob_master'];
+      $lob_master_checked = "";
+      if($lob_master == "1")
+      {
+        $lob_master_checked = "checked";
+      }
     }
     else
     {
@@ -87,7 +93,15 @@ include 'Header.php';
                     <input name="Client Name" type="text" class="form-control" required value="<?php echo @$Client_Name; ?>" />
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
+                  <label class="bmd-label-floating">LOB Master</label>
+                  <label class="material_checkbox" style="padding-top: 6px;padding-bottom: 4px;">
+                    <input style=" cursor: pointer;" class="form-check-input" type="checkbox" name="lob_master" id="lob_master" <?php echo @$lob_master_checked; ?> value="1" >
+                    Select
+                    <span class="checkmark" style="top: 3px;"></span>
+                  </label>
+                </div>
+                <div class="col-md-2">
                   <div class="form-group1">
                     <label class="bmd-label-floating">Client Code <i class="fa fa-star"></i></label>
                     <input name="Client Code" type="text" class="form-control" required value="<?php echo @$Client_Code; ?>" />
@@ -294,7 +308,7 @@ include 'Header.php';
                           <div class="form-group1">
                             <label for="Password" class="bmd-label-floating">Password <i class="fa fa-star"></i></label>
                             <div class="input-group">
-                              <input name="Password" <?php echo @$readonly; ?> type="password" class="form-control" autocomplete="off" required value="<?php echo @$password; ?>" />
+                              <input name="Password" <?php echo @$readonly; ?> type="password" class="form-control" minlength="12" autocomplete="off" required value="<?php echo @$password; ?>" />
                               <div class="input-group-addon eye">
                                 <i class="fas fa-eye-slash"></i>
                               </div>

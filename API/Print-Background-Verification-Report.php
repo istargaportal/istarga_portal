@@ -1,4 +1,8 @@
 <?php
+if(@$download == "true")
+{
+	error_reporting(0);
+}
 include '../config/config.php';
 $get_connection=new connectdb;
 $db=$get_connection->connect();
@@ -6,7 +10,7 @@ $db=$get_connection->connect();
 if (mysqli_connect_errno($db)) {
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
-
+$download = @$_GET['download'];
 $order_id = $_GET['order_id'];
 $default_report_color_id = $_GET['default_report_color_id'];
 $check="SELECT c.Client_Name, o.order_id, o.first_name, o.middle_name, o.last_name, o.alias_first_name, o.alias_middle_name, o.alias_last_name, o.email_id, o.internal_reference_id, o.joining_location, o.joining_date, o.additional_comments, o.client_id, o.is_rush, o.insufficiency_contact, o.username, o.password, o.order_status, o.order_creation_date_time, o.case_reference_no, o.order_completion_date, o.complete_info_received_date, c.default_report_color FROM order_master o INNER JOIN client c ON c.id = o.client_id WHERE o.order_id   ='".$order_id."'";
@@ -39,22 +43,29 @@ if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
   $default_report_color = $row['default_report_color'];
 }
 
-if($default_report_color == 0)
+if(@$download == "true" || $_GET['default_report_color_id'] == "0")
 {
-	$check="SELECT color_code FROM default_report_color WHERE default_report_color_id = '$default_report_color_id' ";
+	$color_code = "#eee";
 }
 else
 {
-	$check="SELECT color_code FROM client_default_report_color WHERE default_report_color_id = '$default_report_color_id' AND client_id = '$client_id' ";
+	if($default_report_color == 0)
+	{
+		$check="SELECT color_code FROM default_report_color WHERE default_report_color_id = '$default_report_color_id' ";
+	}
+	else
+	{
+		$check="SELECT color_code FROM client_default_report_color WHERE default_report_color_id = '$default_report_color_id' AND client_id = '$client_id' ";
+	}
+	$resul = mysqli_query($db,$check); 
+	if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+	{
+		$color_code = $row['color_code'];
+	}
+	if($color_code == "Red"){ $color_code = "#eb1e2f"; }
+	if($color_code == "Green"){ $color_code = "#25ce60"; }
+	if($color_code == "Amber"){ $color_code = "#ffbf00"; }
 }
-$resul = mysqli_query($db,$check); 
-if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-{
-	$color_code = $row['color_code'];
-}
-if($color_code == "Red"){ $color_code = "#eb1e2f"; }
-if($color_code == "Green"){ $color_code = "#25ce60"; }
-if($color_code == "Amber"){ $color_code = "#ffbf00"; }
 
 $applicant_name = $first_name.' '.$middle_name.' '.$last_name;
 
@@ -435,11 +446,22 @@ $mpdf->showWatermarkImage = true;
 $mpdf->watermarkImageAlpha = 1;
 
 $mpdf->mirrorMargins = true;
-
 // $mpdf->SetDisplayMode('fullpage','two');
 $mpdf->WriteHTML($html);
-$mpdf->Output($case_reference_no.'.pdf', 'I');
-// $mpdf->Output("MAHESH.pdf", "D");
+
+if(@$download == "true")
+{
+	$mpdf->Output($case_reference_no.".pdf", "D");
+	echo '
+	<script>
+		window.close();
+	</script>
+	';
+}
+else
+{
+	$mpdf->Output($case_reference_no.'.pdf', 'I');
+}
 // $mpdf->Output("MAHESH.pdf", "F");
 
 $mpdf=new mPDF('','A4');

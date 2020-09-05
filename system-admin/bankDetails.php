@@ -14,54 +14,55 @@
                   <form id="ajax">
                     <div class="row">
                       <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Bank Name*</label>
+                        <div class="form-group1">
+                          <label class="bmd-label-floating">Bank Name <i class="fa fa-star"></i></label>
                           <input name="Name" type="text" class="form-control" required />
                         </div>
                       </div>
                       <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Account No*</label>
+                        <div class="form-group1">
+                          <label class="bmd-label-floating">Account No <i class="fa fa-star"></i></label>
                           <input name="Account No" type="number" class="form-control" required />
                         </div>
                       </div>
                       <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Address Line 1*</label>
+                        <div class="form-group1">
+                          <label class="bmd-label-floating">Address Line 1 <i class="fa fa-star"></i></label>
                           <input name="Address Line 1" type="text" class="form-control" required />
                         </div>
                       </div>
                       <div class="col-md-4">
-                        <div class="form-group">
+                        <div class="form-group1">
                           <label class="bmd-label-floating">Address Line 2</label>
                           <input name="Address Line 2" type="text" class="form-control" />
                         </div>
                       </div>
                       <div class="col-md-4">
-                        <div class="form-group">
+                        <div class="form-group1">
                           <label class="bmd-label-floating">IFSC Code</label>
                           <input name="IFSC Code" type="text" class="form-control" />
                         </div>
                       </div>
                       <div class="col-md-4">
-                        <div class="form-group">
+                        <div class="form-group1">
                           <label class="bmd-label-floating">Favour Of</label>
                           <input name="Favour" type="text" class="form-control" />
                         </div>
                       </div>
                       <div class="col-md-4">
-                        <div class="form-group">
+                        <div class="form-group1">
                           <label class="bmd-label-floating">Swift Code</label>
                           <input name="Swift Code" type="text" class="form-control" />
                         </div>
                       </div>
                       <div class="col-md-4">
-                        <div class="form-group">
+                        <div class="form-group1">
                           <label class="bmd-label-floating">Routing Code</label>
                           <input name="Routing Code" type="text" class="form-control" />
                         </div>
                       </div>
                       <div class="col-md-4">
+                        <br>
                         <button type="submit" class="btn btn-success btn-sm" style="margin-right: 3%;">
                           <i class="material-icons icon">note_add</i> Save
                         </button>
@@ -71,8 +72,9 @@
                         </button>
                       </div>
                       <div class="col-md-12">
-                        <div class="">
-                          <table class="table table-hover" style="margin-top: 4%;">
+                        <br>
+                        <div id='data_table'>
+                          <table id="datatable_tbl" class="table table-hover" style="margin-top: 4%;">
                             <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
                               <th>
                                 Company Name
@@ -134,8 +136,8 @@
                 </button>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="modal-ok-btn">Yes</button>
+                <button type="button" class="btn btn-secondary btn-default btn-sm" data-dismiss="modal">Close</button> &nbsp; &nbsp;
+                <button type="button" class="btn btn-primary btn-success btn-sm" id="modal-ok-btn">Yes</button>
               </div>
             </div>
           </div>
@@ -157,7 +159,7 @@
                 </button>
               </div>
               <div class="modal-footer">
-                <button type="button" id="modal-ok-btn" data-dismiss="modal" class="btn btn-primary">OK</button>
+                <button type="button" id="modal-ok-btn" data-dismiss="modal" class="btn btn-primary btn-sm btn-default">Close</button>
               </div>
             </div>
           </div>
@@ -170,9 +172,13 @@
       </script>
     </div>
   </div>
-  <!--   Core JS Files   -->
-  <!--mode changing-->
+  
+  <?php
+    include '../datatable/_datatable.php';
+  ?>
+  
   <script>
+    load_datatable();
     let darkmode = localStorage.getItem("darkmode");
     const darkmodetoggle = document.querySelector('input[name=theme]');
 
@@ -212,10 +218,10 @@
     }
   </script>
   <!--mode change end-->
-  <script src="assets/js/core/jquery.min.js"></script>
+  <!-- <script src="assets/js/core/jquery.min.js"></script> -->
   <script src="assets/js/core/popper.min.js"></script>
   <script src="assets/js/core/bootstrap-material-design.min.js"></script>
-  <script src="https://unpkg.com/default-passive-events"></script>
+  <!-- <script src="https://unpkg.com/default-passive-events"></script> -->
   <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>

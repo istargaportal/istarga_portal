@@ -393,6 +393,7 @@ include '../datatable/_datatable.php';
           else if(html == "updated")
           {
             alert('Service updated successfully!');
+            window.location.href="createService.php";
           }
           else
           {

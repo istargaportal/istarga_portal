@@ -17,10 +17,11 @@ if($_POST['action'] == 'load_service_order')
 {
     require_once '../../../config/comman_js.php';
 
-    $check = "SELECT os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.assign_service_id, os.order_status, s.service_type_id, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.order_service_details_id = '$order_service_details_id' ";
+    $check = "SELECT o.case_reference_no, os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.assign_service_id, os.order_status, s.service_type_id, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.order_service_details_id = '$order_service_details_id' ";
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
+        $case_reference_no = $row['case_reference_no'];
         $first_name = $row['first_name'];
         $middle_name = $row['middle_name'];
         $last_name = $row['last_name'];
@@ -114,7 +115,7 @@ if($_POST['action'] == 'load_service_order')
             <input type="hidden" id="order_verify_id" name="order_verify_id" value="<?php echo @$order_verify_id; ?>" />
             
             <div class="col-md-3">
-                <label><b>Case Reference No. :</b> <?php echo $internal_reference_id ?></label>
+                <label><b>Case Reference No. :</b> <?php echo $case_reference_no ?></label>
             </div>
             <div class="col-md-3">
                 <label><b>Applicant First Name :</b> <?php echo $first_name; ?></label>
@@ -352,7 +353,7 @@ echo '
             <td>
                 <select class="browser-default chosen-select form_left custom-select" id="status" name="status">
                     <option><?php echo $status; ?></option>
-                    <option>Pending</option>
+                    <option>Fresh</option>
                     <option>Reassigned Verifier</option>
                     <option>Insufficiency Verifier</option>
                     <option>Verifier Completed</option>

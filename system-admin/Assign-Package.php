@@ -449,6 +449,7 @@ include 'API/dropdown.css';
               else if(html == "updated")
               {
                 alert('Service assigned update successfully!');
+                window.location.href = "Assign-Package.php";
                 load_assign_package();
               }
               else

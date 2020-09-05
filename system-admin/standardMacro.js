@@ -167,7 +167,9 @@ const onSave = (id, action, j) => {
     btn2.type = "button";
     btn2.className = "btn btn-success btn-xs";
     btn2.innerHTML = "<i class='material-icons icon'>note_add</i> SAVE";
-    btn2.onclick = (() => { confirm('Are you sure you want to Save it?') ? onSave(id, action, j) : popuTable() });
+    btn2.onclick = (() => { 
+      // confirm('Are you sure you want to Save it?') ?
+      onSave(id, action, j) ; popuTable() });
     edit.appendChild(btn2);
   }
   const onDelete = (id, action) => {

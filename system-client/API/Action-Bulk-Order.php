@@ -181,8 +181,8 @@ if(@$load_condition == "import_bulk_order")
 					// else
 					// {
 						$username = randomPassword();
-					    $password = randomPassword().rand(1111,9999);
-					    $insufficiency_contact = "Client";
+				        $password = randomPassword().rand(111111,999999);
+						$insufficiency_contact = "Client";
 					   
 					    $assign_service_id = 0;
 				    	$sq="SELECT id FROM assigned_service WHERE client_id = '$client_id' AND country_id = '$country_id' AND service_id = '$service_id' ";

@@ -58,10 +58,10 @@ if($_POST['action']=='display')
       <textarea class="custom-select" style="display:none;" id="comment_txt_'.$row["eta_macro_id"].'">'.$row["comment"].'</textarea>
     </td>
     <td class="tablehead1 noExport">
-      <a id="update_btn_'.$row["eta_macro_id"].'" style="display:none" onclick="update_eta_macro('.$row["eta_macro_id"].')" class="btn btn-success btn-round btn-xs"><i class="fa fa-save"></i> Save</a>
-      <a id="edit_btn_'.$row["eta_macro_id"].'" onclick="edit_eta_macro('.$row["eta_macro_id"].')" class="btn btn-warning btn-round btn-xs"><i class="fa fa-pencil"></i> Edit</a>
+      <a id="update_btn_'.$row["eta_macro_id"].'" style="display:none" onclick="update_eta_macro('.$row["eta_macro_id"].')" class="btn btn-success btn-xs"><i class="fa fa-save"></i> Save</a>
+      <a id="edit_btn_'.$row["eta_macro_id"].'" onclick="edit_eta_macro('.$row["eta_macro_id"].')" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> Edit</a>
     </td>
-    <td class="tablehead1 noExport"><a onclick="delete_eta_macro('.$row["eta_macro_id"].')" class="btn btn-danger btn-round btn-xs"><i class="fa fa-remove"></i> Delete</a></td>
+    <td class="tablehead1 noExport"><a onclick="delete_eta_macro('.$row["eta_macro_id"].')" class="btn btn-danger btn-xs"><i class="fa fa-remove"></i> Delete</a></td>
   </tr>
   ';
 }

@@ -14,6 +14,7 @@ const onSave = (id, action, value) => {
     }
     else if(data == "already")
     {
+      $('#DocumentName').focus();
       alert('Mandatory Document already exists');
     }
     else
@@ -50,12 +51,6 @@ const onEdit = (id, action) => {
       edit.appendChild(btn2);
 }
 const onDelete = (id, action) => {
-  if(value.trim() == "")
-  {
-    alert("Please enter Mandatory Document!");
-    $('#'+id+'a').focus();
-    return;
-  }
   obj = { "id": id, "action": action };
   fetch('./API/modifyDocumentName.php', {
     method: 'post',
@@ -100,6 +95,7 @@ const popuTable = () => {
       btn1.innerHTML = "<i class='material-icons icon'>edit</i> EDIT";
       btn1.onclick = (() => { onEdit(stat[i].id, "edit")});
       cell2.appendChild(btn1);
+      cell2.setAttribute("id",stat[i].id+"c");
       cell2.setAttribute("class","noExport");
       cell3.setAttribute("class","noExport");
       var btn = document.createElement('button');

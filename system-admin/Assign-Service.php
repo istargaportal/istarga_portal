@@ -573,6 +573,7 @@ include 'API/dropdown.css';
               else if(html == "updated")
               {
                 alert('Service assigned update successfully!');
+                window.location.href = "Assign-Service.php";
                 load_assign_services();
               }
               else

@@ -26,8 +26,8 @@ if($_POST['action'] == 'load_service_list')
 if($_POST['action'] == 'load_start_processing')
 {
     $button_array = ""; $total_array = 0;
-    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.order_status IN ('Sent To QC') ";
-    $resul = mysqli_query($db,$check); 
+    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.order_status IN ('Sent To QC') AND os.qc_user_id != 0 ";
+    $resul = mysqli_query($db,$check);
     while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
         if($button_array == "")
@@ -81,10 +81,11 @@ if($_POST['action'] == 'next_prev_array_num')
 if($_POST['action'] == 'load_service_order')
 {
     require_once '../../../config/comman_js.php';
-    $check = "SELECT os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.assign_service_id, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_qc, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
+    $check = "SELECT o.case_reference_no, os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.assign_service_id, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_qc, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
+        $case_reference_no = $row['case_reference_no'];
         $first_name = $row['first_name'];
         $middle_name = $row['middle_name'];
         $last_name = $row['last_name'];
@@ -162,7 +163,7 @@ if($_POST['action'] == 'load_service_order')
     <br>
     <div class="row justify-content-start col-md-12">
         <div class="col-md-3">
-            <label><b>Case Reference No. :</b> <?php echo $internal_reference_id ?></label>
+            <label><b>Case Reference No. :</b> <?php echo $case_reference_no ?></label>
         </div>
         <div class="col-md-3">
             <label><b>Applicant First Name :</b> <?php echo $first_name; ?></label>
@@ -363,6 +364,9 @@ if($_POST['action'] == 'load_service_order')
     }
 
     $field_print.='</select></div>';
+
+    $cmd = "UPDATE order_service_details SET qc_user_id = '$user_id' WHERE order_service_details_id  = '$order_service_details_id' ";
+    $result = mysqli_query($db,$cmd);
 }
 else
 {

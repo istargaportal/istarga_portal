@@ -26,7 +26,7 @@ if($_POST["action"]=='delete'){
 
 if($_POST["action"]=='add')
 {
-  $sql = "INSERT INTO lob_master(lob_name) VALUES ('$lob_name')";
+  $sql = "INSERT INTO lob_master(lob_master_client_id) VALUES ('$lob_master_client_id')";
   $result = mysqli_query($db,$sql);
   $lob_id = $db->insert_id;
   if(isset($client_id))
@@ -44,7 +44,7 @@ if($_POST["action"]=='add')
 }
 else if($_POST["action"]=='edit')
 {
-  $sql = "UPDATE lob_master SET lob_name = '$lob_name' WHERE `lob_id`='$edit_id' ";
+  $sql = "UPDATE lob_master SET lob_master_client_id = '$lob_master_client_id' WHERE `lob_id`='$edit_id' ";
   $result = mysqli_query($db,$sql);
   if(isset($client_id))
   {
@@ -69,12 +69,12 @@ else if($_POST["action"]=='display')
           <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.856) !important;">
             <th width="10">SR.NO.</th>
             <th>LOB</th>
-            <th>Clients</th>
+            <th>Companies</th>
             <th class="noExport">Action</th>
           </thead>
         ';
   $sr = 0;
-  $sq="SELECT lob_id, lob_name FROM lob_master ORDER BY lob_id ";
+  $sq="SELECT l.lob_id, l.lob_master_client_id, c.Client_Name FROM lob_master l INNER JOIN client c ON c.id = l.lob_master_client_id ORDER BY l.lob_id ";
   $resul = mysqli_query($db,$sq); 
   while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
   {
@@ -89,7 +89,7 @@ else if($_POST["action"]=='display')
     $sr++;
     echo "<tr>";
       echo "<td>".$sr."</td>";
-      echo "<td class='form_left'>".$row['lob_name']."</td>";
+      echo "<td class='form_left'>".$row['Client_Name']."</td>";
       echo "<td class='form_left'>".$all_documents."</td>";
       echo '<td class="noExport">
                 <a href="LOB.php?lob_id='.base64_encode($row["lob_id"]).'" title="Edit LOB" class="btn btn-xs btn-round btn-warning"><i class="material-icons icon">create</i></a>

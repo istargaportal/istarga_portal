@@ -41,7 +41,7 @@ if($_POST["action"]=='add')
 
 if($_POST["action"]=='edit')
 {
-  $sql = "UPDATE package_list SET package_name = '$package_name' WHERE `id`='$edit_id' ";
+  $sql = "UPDATE package_list SET package_name = '$package_name', country_id = '$country_id' WHERE `id`='$edit_id' ";
   $result = mysqli_query($db,$sql);
   if(isset($service_id))
   {

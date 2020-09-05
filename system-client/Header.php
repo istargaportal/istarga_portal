@@ -229,6 +229,17 @@ else
       -ms-user-select: none !important;
       user-select: none !important;            
     }
+    .disabled_btn
+    {
+      pointer-events:none !important;
+      cursor: not-allowed !important;
+      opacity: 0.7 !important;
+      outline: none !important;
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;            
+    }
     
     .dark-edition .table>thead>tr>th, .dark-edition .table>tbody>tr>th, .dark-edition .table>tfoot>tr>th, .dark-edition .table>thead>tr>td, .dark-edition .table>tbody>tr>td, .dark-edition .table>tfoot>tr>td{
       padding: 4px !important;
@@ -411,6 +422,19 @@ else
     .main-panel>.content {
       margin-top: 50px;
       padding: 20px 15px;
+    }
+    .btn_link{
+      color: #3354d6 !important;
+      background: #fff !important;
+      transition: 0.4s all ease;
+      font-weight: bold !important;
+      cursor: pointer;
+    }
+    .btn_link:hover{
+    }
+    .dark-edition .table>thead>tr>th, .dark-edition .table>tbody>tr>th, .dark-edition .table>tfoot>tr>th, .dark-edition .table>thead>tr>td, .dark-edition .table>tbody>tr>td, .dark-edition .table>tfoot>tr>td
+    {
+      font-size: 9pt !important;
     }
   </style>  
 </head>

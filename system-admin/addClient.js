@@ -28,7 +28,8 @@ function sendJSON(){
  let Applicant_Check_List=document.querySelector('#Applicant_Check_List');
  let Internal_Reference_ID=document.querySelector('#Internal_Reference_ID');
  let Currency=document.querySelector('#Currency');	 
- let Live_DateDate=document.querySelector('#Live_DateDate');	
+ let Live_DateDate=document.querySelector('#Live_DateDate');
+ let Lob_Master=document.querySelector('#lob_master');
 
 
      var ispack = Is_Package.checked ? 1 : 0;
@@ -69,7 +70,7 @@ var data = JSON.stringify({ "Client_Name": Client_Name.value, "Client_Code": Cli
 "Is_GSTIN": Is_GSTIN.value, "Is_Package": ispack,  "Is_Cancelled_Report": Cancelled, "Is_SEZ": SEZ,  
 "Contact_Applicant": Applicant, "Is_Bulk_Upload":Bulk_Upload,  "Is_Prin_Merge": Merge,
 "Is_LOB_Mapping": Mapping, "Contact_Aggregator": Aggregator,  "Email_ID": ID, 
-"Applicant_Check_List": Check_List, "Internal_Reference_ID": Reference_ID,  "Currency": Currency.value, "Live_DateDate": Live_DateDate.value, 
+"Applicant_Check_List": Check_List, "Internal_Reference_ID": Reference_ID,  "Currency": Currency.value, "Live_DateDate": Live_DateDate.value, "lob_master": Lob_Master.value, 
      }); 
 
 //           console.log(data);

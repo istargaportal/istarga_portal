@@ -146,8 +146,9 @@ if(@$page_name_compare == "attendance master")
     include 'comman_style.php';
   ?>
   <script type="text/javascript">
-    window.alert = function() {};
-    alert = function() {};
+    $("input").each(function () {
+      $(this).attr("autocomplete", "off");
+    })
   </script>
 </head>
 <body class="dark-edition">

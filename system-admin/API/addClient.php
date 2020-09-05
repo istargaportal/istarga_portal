@@ -45,7 +45,7 @@ class login
       $City=$data['select_city'];
       $currency=$data['currency'];
       $password = $data['Password'];
-
+      $lob_master = $data['lob_master'];
       $reference_name= $data['Client Name'];
       $reference_number=$data['dateofbirth'];
       $reference_number2=rand(10060,99999);
@@ -81,6 +81,7 @@ class login
         `State`='".$State."',
         `city`='".$City."',
         `internal_reference_id`='".$random_string."',
+        `lob_master`='".$lob_master."',
         `Currency`='".$currency."',
         `password`='".$password."' ";
         if($data['edit_id'] != "") { $check.= " WHERE id = ".$data['edit_id']; } 

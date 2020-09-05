@@ -169,12 +169,13 @@ if($_POST['action']=='select_service')
                 <div class="col-md-2">
                     <h4 class="selection" style="margin:6px 0;">'.$country_name.'</h4>
                 </div>
-                <div class="col-md-2">
-                    <h4 class="selection" style="margin:6px 0;">'.$price.'.'.$currency_name.'</h4>
-                </div>
-                <div class="col-md-3">
+                
+                <div class="col-md-5">
                     '.@$all_documents.'
                 </div>';
+                // <div class="col-md-2">
+                //     <h4 class="selection" style="margin:6px 0;">'.$price.'.'.$currency_name.'</h4>
+                // </div>
         if(@$sub_action != "preview_service")
         {
             echo '
@@ -228,7 +229,7 @@ if($_POST['action']=='load_document')
 if($_POST['action'] == "save_form")
 {
     $username = randomPassword();
-    $password = randomPassword().rand(1111,9999);
+    $password = randomPassword().rand(111111,999999);
 
     $check_2 = "SELECT Inv_Code FROM Client WHERE id = '".$client_id."' ";
     $resul_2 = mysqli_query($db,$check_2); 
@@ -372,7 +373,7 @@ if($_POST['action'] == "save_form")
         }
     }
 
-    if($insufficiency_contact == "Employee")
+    if($insufficiency_contact == "Applicant")
     {
         include '../../API/SMTP/sendMail.php';
         include '../../API/SMTP/LOGIN-EMAIL.php';

@@ -220,8 +220,8 @@ include 'Header.php';
 
 										<label class="container_checkbox" >
 											<input style=" cursor: pointer;" class="form-check-input" type="radio" name="insufficiency_contact" name="In Case Of Insufficiency Contact?"
-											id="exampleRadios2" value="Employee" >
-											Employee
+											id="exampleRadios2" value="Applicant" >
+											Applicant
 											<span class="checkmark"></span>
 										</label>
 									</div>
@@ -476,6 +476,7 @@ include 'Header.php';
 					data:{action, assign_service_id, service_name, sub_action},
 					success:function(html) {
 						$('#selected_services').append(html);
+						load_services();
 					}
 				});
 				
@@ -488,7 +489,6 @@ include 'Header.php';
 						$('#preview_selected_services').append(html);
 					}
 				});
-				load_services();
 			}
 		}
 	}
@@ -532,9 +532,9 @@ include 'Header.php';
 		}
 		else
 		{
-			var r = confirm("Are you sure to lock this services?");
-			if(r == true)
-			{
+			// var r = confirm("Are you sure to lock this services?");
+			// if(r == true)
+			// {
 				$('#btn_preview').removeClass('disabled');
 				$('#btn_ok').removeClass('disabled');
 				$('#check_package_service_btn').addClass('disabled');
@@ -566,7 +566,7 @@ include 'Header.php';
 						$('#preview_document').html(html);
 					}
 				});
-			}
+			// }
 		}
 	}
 
@@ -597,9 +597,9 @@ include 'Header.php';
 		})
 		if(error == 0)
 		{
-			var r = confirm("Are you sure to Place this order?")
-			if(r == true)
-			{
+			// var r = confirm("Are you sure to Place this order?")
+			// if(r == true)
+			// {
 				$('#modal_loading').css('display', 'block');
     			$('#btn_ok').addClass('disabled');
 				$('#btn_place_order').addClass('disabled');
@@ -627,7 +627,7 @@ include 'Header.php';
 						}
 					}
 				});
-			}
+			// }
 		}
 		else
 		{

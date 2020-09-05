@@ -13,11 +13,11 @@ if(isset($_GET['lob_id']))
 
   if(isset($lob_id))
   {
-    $checbk='SELECT lob_name FROM lob_master WHERE lob_id = '.$lob_id.' ';
+    $checbk='SELECT lob_master_client_id FROM lob_master WHERE lob_id = '.$lob_id.' ';
     $resul = mysqli_query($db,$checbk); 
     if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
-      $lob_name = $row['lob_name'];
+      $lob_master_client_id = $row['lob_master_client_id'];
     }
 
     $all_client_id = 0;
@@ -54,11 +54,29 @@ include 'Header.php';
               <input type="hidden" name="action" value="<?php echo @$action; ?>" />
               <div class="row justify-content-between">
                 <div class="col-md-4">
-                  <label>LOB Name</label>
-                  <span class="bmd-form-group"><input name="lob_name" required="" value="<?php echo @$lob_name; ?>" type="text" class="form-control"></span>
+                  <label>Select LOB</label>
+                  <select id="lob_master_client_id" class="form-control chosen-select" name="lob_master_client_id" required="">
+                    <?php
+                      if(@$lob_master_client_id > 0)
+                      {
+                        $check = "SELECT c.id, c.Client_Name FROM client c WHERE c.id = '$lob_master_client_id' ";
+                      }
+                      else
+                      {
+                        $check = "SELECT c.id, c.Client_Name FROM client c WHERE c.lob_master = 1 AND c.id NOT IN(SELECT lob_master_client_id FROM lob_master) ";
+                        echo '<option value="">Select</option>';
+                      }
+                      
+                      $resul = mysqli_query($db,$check); 
+                      while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+                      {
+                        echo '<option value="'.$row['id'].'">'.$row['Client_Name'].'</option>';
+                      }
+                    ?>
+                  </select>
                 </div>
                 <div class="col-md-4">
-                  <label>Clients</label>
+                  <label>Companies</label>
                   <div id="client_div" >
                     <select multiple="" name="client_id[]" class="chosen-select">
                       <?php    
@@ -72,7 +90,7 @@ include 'Header.php';
                           }
                         }
                         $check = "SELECT c.id, c.Client_Name FROM client c WHERE c.is_block = 0 AND c.id NOT IN (SELECT client_id FROM lob_details) ";
-                        $resul = mysqli_query($db,$check); 
+                        $resul = mysqli_query($db,$check);
                         while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
                         {
                           echo '<option value="'.$row['id'].'">'.$row['Client_Name'].'</option>';
@@ -188,8 +206,12 @@ include 'Header.php';
         }
       }
     })
-
-    if(error == 0)
+    var lob_master_client_id = $('#lob_master_client_id').val();
+    if(lob_master_client_id == "")
+    {
+      alert('Please select LOB');
+    }
+    else if(error == 0)
     {
       var myform = document.getElementById("lob_form");
       var fd = new FormData(myform );
@@ -209,6 +231,7 @@ include 'Header.php';
           else if(html == "updated")
           {
             alert('LOB updated successfully!');
+            window.location.href = "LOB.php";
             load_lob();
           }
           else
