@@ -768,7 +768,7 @@ else
               <div class="row" style="margin-left:1%;margin-top:2%;">
                 <?php
                 echo '
-                <h6 class="selection col-md-12">Upload Multiple Documents Here</h6>                                    
+                <h6 class="selection col-md-12">MULTIPLE FILE UPLOAD (.PNG, .JPG, .JPEG)</h6>                                    
                 <div class="col-md-4">
                 <input type="file" onchange="file_selected_list()" multiple id="document_file" name="document_file[]" accept="image/*" class="form-control" />
                 </div>
@@ -780,12 +780,7 @@ else
                 ';  
                 ?>
                 <div class="row col-md-12">
-                  <div class="col-md-8" id="documents_panel"></div>
-                  <div class="col-md-4">
-                    <?php
-                      include '../API/File-Formats.php';
-                    ?>
-                  </div>
+                  <div class="col-md-12" id="documents_panel"></div>
                 </div>
                 <div class="col-md-12"><br></div>
               </div>

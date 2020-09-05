@@ -19,8 +19,29 @@
   />
 </head>
 <style>
+  #LogoAnimation{
+    position: absolute; 
+    z-index: 10;
+    color: white;
+    animation: myAnimation;
+    animation-duration:4s;
+    animation-fill-mode:forwards ;
+    animation-timing-function: ease-out;
+  }
+  @keyframes myAnimation{
+    0%{
+      top: -50%;
+      left: 5%;
+    }
+
+    100%{
+      top: 10%;
+      left: 5%;
+    }
+
+  } 
   body {
-    background: url("assets/images/img5.jpg");
+    background: url("../images/admin.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     box-shadow: inset 50px 50px 300px #000000, inset -10px -10px 100px #000000;
@@ -28,15 +49,24 @@
   .form-control{
     padding: 5px 10px !important;
   }
+  .login-card .card-body {
+    padding: 20px;
+  }
 </style>
 
 <body>
   <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
     <div class="container">
-      <div class="card login-card">
+      <div id="LogoAnimation">
+        <a class="navbar-brand" >
+          <img src="../system-client/assets/img/logo.png" width="30%" height="20%" alt="" />
+        </a>
+        <p class="tagLine" style="color: yellow;">
+          <strong>SPECIALIZED IN BACKGROUND VERIFICATION</strong>
+        </p>
+      </div>
         <div class="row no-gutters">
-          <div class="col-md-7">
-            <!-- <img src="assets/images/login.jpg" alt="login" class="login-card-img"> -->
+          <!-- <div class="col-md-7">
             <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" style="height: 100%;">
               <div class="carousel-inner" style="height: 100%;">
                 <div class="carousel-item active" style="height: 100%;">
@@ -50,8 +80,10 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-5">
+          </div> -->
+          <div class="col-md-8"><br></div>
+          <div class="col-md-4">
+      <div class="card login-card">
             <div class="card-body">
               <div class="brand-wrapper">
                 <img src="assets/images/Istarga_logo.jpg" alt="logo" class="logo" />

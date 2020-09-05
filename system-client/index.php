@@ -145,7 +145,7 @@ else
           <a class="navbar-brand" href="#">
             <img src="./assets/img/logo.png" width="30%" height="20%" alt="" />
           </a>
-          <p class="tagLine" style="color: aqua;">
+          <p class="tagLine" style="color: yellow;">
             <strong>SPECIALIZED IN BACKGROUND VERIFICATION</strong>
           </p>
         </div>
