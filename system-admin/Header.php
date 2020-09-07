@@ -328,7 +328,11 @@ if(@$page_name_compare == "attendance master")
                 </div>
               </form> -->
               <ul class="navbar-nav">
-               
+                <li class="nav-item dropdown">
+                  <a class="nav-link" style="text-transform: none;">
+                    Admin<br> <b><i style="font-size: 11pt !important" class="fa fa-envelope"></i> <?php echo @$_SESSION['email']; ?></b>
+                  </a>
+                </li>
             <!-- <li class="nav-item dropdown">
               <a class="nav-link" href="javscript:void(0)" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                <i style="color: white;" class="material-icons">notifications</i>

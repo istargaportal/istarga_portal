@@ -40,11 +40,20 @@ $db=$get_connection->connect();
                   <label>Status</label>
                   <select class="form-control chosen-select" id="order_status">
                     <option value="">ALL</option>
+                    <option>Fresh</option>
                     <option>Canceled</option>
                     <option>Discrepancy</option>
                     <option>UTV</option>
                     <option>Inconclusive</option>
+                    <option>Insufficiency</option>
+                    <option>Insufficiency Cleared</option>
+                    <option>Insufficiency Verifier</option>
                     <option>Minor Discrepancy</option>
+                    <option>Park</option>
+                    <option>Pending</option>
+                    <option>Re-assigned</option>
+                    <option>Verifier Initiated</option>
+                    <option>Verifier Completed</option>
                     <option>Verified Clear</option>
                   </select>
                 </div>
@@ -136,9 +145,20 @@ $db=$get_connection->connect();
                   <select class="form-control chosen-select" id="order_status_select">
                     <option value="">Select</option>
                     <option>Fresh</option>
-                    <option>In Progress</option>
-                    <option>Re-Assigned</option>
+                    <option>Canceled</option>
+                    <option>Discrepancy</option>
+                    <option>UTV</option>
+                    <option>Inconclusive</option>
                     <option>Insufficiency</option>
+                    <option>Insufficiency Cleared</option>
+                    <option>Insufficiency Verifier</option>
+                    <option>Minor Discrepancy</option>
+                    <option>Park</option>
+                    <option>Pending</option>
+                    <option>Re-assigned</option>
+                    <option>Verifier Initiated</option>
+                    <option>Verifier Completed</option>
+                    <option>Verified Clear</option>
                   </select>
                 </div>
                 <div class="col-md-3">

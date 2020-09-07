@@ -307,7 +307,7 @@ include 'Header.php';
                         <div class="form-group1 bmd-form-group1">
                           <label for="password" class="bmd-label-floating">Password <i class="fa fa-star"></i></label>
                           <div class="input-group">
-                            <input name="password" type="password" class="form-control" autocomplete="off" required value="<?php echo @$password; ?>" >
+                            <input name="password" id="password" type="password" class="form-control" autocomplete="off" required value="<?php echo @$password; ?>" >
                             <div class="input-group-addon eye">
                               <i class="fas fa-eye" aria-hidden="true"></i>
                             </div>
@@ -634,9 +634,14 @@ include 'Header.php';
       }
     })
     var timezone_id = $('#timezone_id').val();
+    var password_length = $("#password").val().trim().length;
     if(timezone_id == "")
     {
       alert('Please select timezone!');
+    }
+    else if(password_length < 11)
+    {
+      alert('Please enter minimum 12 digit password!')
     }
     else if(error == 0)
     {

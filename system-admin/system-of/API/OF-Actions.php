@@ -19,8 +19,38 @@ if($_POST['action'] == 'update_applicant_details')
 
     $verifier_details = addslashes($verifier_details);
     $verifier_comments = addslashes($verifier_comments);
-    $cmd = "UPDATE order_service_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', currency_id = '$currency_id', additional_fees = '$additional_fees', of_closure_date = '$of_closure_date', additional_comments_of = '$additional_comments_of', of_qc_order_status = '$of_qc_order_status', order_status = '$order_status', of_user_id = '$of_user_id' WHERE order_service_details_id = '$order_service_details_id' ";
+
+    if($of_qc_order_status == 'Canceled') { $order_status = 'Completed'; }
+    if($of_qc_order_status == 'Discrepancy') { $order_status = 'Completed'; }
+    if($of_qc_order_status == 'UTV') { $order_status = 'Completed'; }
+    if($of_qc_order_status == 'Fresh') { $order_status = 'Fresh'; }
+    if($of_qc_order_status == 'Inconclusive') { $order_status = 'Completed'; }
+    if($of_qc_order_status == 'Insufficiency') { $order_status = 'Insufficiency'; }
+    if($of_qc_order_status == 'Insufficiency Cleared') { $order_status = 'Insufficiency'; }
+    if($of_qc_order_status == 'Insufficiency Verifier') { $order_status = 'In Progress'; }
+    if($of_qc_order_status == 'Minor Discrepancy') { $order_status = 'Completed'; }
+    if($of_qc_order_status == 'Park') { $order_status = 'Park'; }
+    if($of_qc_order_status == 'Pending') { $order_status = 'In Progress'; }
+    if($of_qc_order_status == 'Re-assigned') { $order_status = 'Re-assigned'; }
+    if($of_qc_order_status == 'Verifier Initiated ') { $order_status = 'In Progress'; }
+    if($of_qc_order_status == 'Verifier Completed') { $order_status = 'In Progress'; }
+    if($of_qc_order_status == 'Verified Clear') { $order_status = 'Completed'; }
+
+    $order_creation_date_cleared_que = "";
+    if($of_qc_order_status == "Insufficiency Cleared")
+    {
+        $order_creation_date_cleared_que = ", order_creation_date_cleared = '".date('Y-m-d')."' ";
+    }
+
+    $cmd = "UPDATE order_service_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', currency_id = '$currency_id', additional_fees = '$additional_fees', of_closure_date = '$of_closure_date', additional_comments_of = '$additional_comments_of', of_qc_order_status = '$of_qc_order_status', order_status = '$order_status', of_user_id = '$of_user_id' ".@$order_creation_date_cleared_que." WHERE order_service_details_id = '$order_service_details_id' ";
     $result = mysqli_query($db,$cmd);
+    
+    if($of_qc_order_status == 'Re-assigned' || $of_qc_order_status == 'Insufficiency Verifier')
+    {
+        $cmd = "UPDATE order_verifier_details SET status = '$of_qc_order_status' WHERE order_service_details_id = '$order_service_details_id' ";
+        $result = mysqli_query($db,$cmd);    
+    }
+
     $result = 1;
     if($result > 0)
     {
@@ -45,7 +75,7 @@ if($_POST['action'] == 'update_applicant_details')
             }
         }
         
-        $check = "UPDATE order_master SET order_status = 'In Progress', complete_info_received_date = '".date("Y-m-d H:i:s")."' WHERE order_id  = '$order_id' ";
+        $check = "UPDATE order_master SET order_status = '$order_status', complete_info_received_date = '".date("Y-m-d H:i:s")."' WHERE order_id  = '$order_id' ";
         $result = mysqli_query($db,$check);
         echo 'updated';
     }

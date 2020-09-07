@@ -39,18 +39,17 @@ $db=$get_connection->connect();
                 <div class="col-md-2">
                   <h6>Status</h6>
                   <select id="status" class="browser-default chosen-select custom-select">
-                    <option value="">Select</option>
-                    <option>Pending</option>
-                    <option>Reassigned Verifier</option>
+                    <option value="">ALL</option>
+                    <option>Verifier Initiated</option>
                     <option>Insufficiency Verifier</option>
-                    <option>Verifier Completed</option>
+                    <option>Re-assigned</option>
                   </select>
                 </div>
                 
                 <div class="col-md-3">
                   <h6>Service</h6>
                   <select id="service_id" class="browser-default chosen-select custom-select">
-                    <option value="">Select</option>
+                    <option value="">ALL</option>
                     <?php
                       $check = "SELECT id, service_name FROM service_list ORDER BY service_name ";
                       $resul = mysqli_query($db,$check); 

@@ -102,7 +102,7 @@
   .export_excel{
     position: static;
     bottom: 20px;
-    z-index: 9999999999 !important;
+    z-index: 999999 !important;
     left: 22%;
     font-size: 9pt !important;
     padding: 5px 10px !important;
@@ -110,7 +110,7 @@
   .export_print{
     position: static;
     bottom: 20px;
-    z-index: 9999999999 !important;
+    z-index: 999999 !important;
     left: 38%;
     font-size: 9pt !important;
     padding: 5px 10px !important;

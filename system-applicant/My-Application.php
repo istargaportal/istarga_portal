@@ -540,6 +540,11 @@ else
       <div class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav">
           <li class="nav-item dropdown">
+            <a class="nav-link" style="text-transform: none;">
+              <b>APPLICANT</b> : <?php echo @$first_name; ?> <br> <b><i style="font-size: 11pt !important" class="fa fa-envelope"></i> <?php echo @$email_id; ?></b>
+            </a>
+          </li>
+          <li class="nav-item dropdown">
             <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-user"></i>

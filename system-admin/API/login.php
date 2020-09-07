@@ -65,7 +65,7 @@ class login
           } 
           else if($data['user-type']=='Employee')
           {
-            $check='SELECT user_id, username, password, role_id FROM user_master WHERE username="'.$email.'" AND password="'.$password.'"';
+            $check='SELECT user_id, username, first_name, last_name, password, role_id FROM user_master WHERE username="'.$email.'" AND password="'.$password.'"';
             $result=$this->conn->query($check);
             if($result->num_rows==1)
             {
@@ -75,6 +75,8 @@ class login
               $_SESSION['username'] = $email;
               $_SESSION['password'] = $password;
               $_SESSION['role_id'] = $row['role_id'];
+              $_SESSION['first_name'] = $row['first_name'];
+              $_SESSION['last_name'] = $row['last_name'];
               if($row['role_id'] == 1) { echo "qf_login"; }
               if($row['role_id'] == 2) { echo "qc_login"; }
               if($row['role_id'] == 3) { echo "verifier_login"; }

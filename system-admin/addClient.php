@@ -94,7 +94,7 @@ include 'Header.php';
                   </div>
                 </div>
                 <div class="col-md-2">
-                  <label class="bmd-label-floating">LOB Master</label>
+                  <label class="bmd-label-floating">LOB Master</label><br>
                   <label class="material_checkbox" style="padding-top: 6px;padding-bottom: 4px;">
                     <input style=" cursor: pointer;" class="form-check-input" type="checkbox" name="lob_master" id="lob_master" <?php echo @$lob_master_checked; ?> value="1" >
                     Select
@@ -343,9 +343,9 @@ include 'Header.php';
                           <div class="form-group1">
                             <label for="Password" class="bmd-label-floating">Password <i class="fa fa-star"></i></label>
                             <div class="input-group">
-                              <input name="Password" <?php echo @$readonly; ?> type="password" class="form-control" minlength="12" autocomplete="off" required value="<?php echo @$password; ?>" />
+                              <input name="Password" id="password" <?php echo @$readonly; ?> type="password" class="form-control" minlength="12" autocomplete="off" required value="<?php echo @$password; ?>" />
                               <div class="input-group-addon eye">
-                                <i class="fas fa-eye-slash"></i>
+                                <i class="fas fa-eye"></i>
                               </div>
                             </div>
                           </div>
@@ -463,6 +463,7 @@ include 'Header.php';
           }
         })
         var locality_dropdown = $('#locality-dropdown').val();
+        var password_length = $("#password").val().trim().length;
         var currency = $('#currency').val();
         if(locality_dropdown == "")
         {
@@ -471,6 +472,10 @@ include 'Header.php';
         else if(currency == "")
         {
           alert('Please select currency!');
+        }
+        else if(password_length < 11)
+        {
+          alert('Please enter minimum 12 digit password!')
         }
         else if(error == 0)
         {
@@ -569,6 +574,18 @@ include 'Header.php';
     <!-- <script src="data.js"></script> -->
       
     <script>
+      let eye = document.querySelector(".eye")
+      let passwordInput = document.querySelector("[name='Password']")
+      eye.onclick = () => {
+        if (passwordInput.type == "text") {
+          passwordInput.type = "password"
+          eye.innerHTML = "<i class='fa fa-eye'></i>"
+        } else { 
+          passwordInput.type = "text"
+          eye.innerHTML = "<i class='fa fa-eye-slash'></i>"
+        }
+      }
+
       $('.chosen-select').chosen();
   
       function formReset() {

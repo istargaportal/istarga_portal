@@ -113,6 +113,11 @@ $page_name_compare = strtolower(@$page_name);
     </button>
     <div class="collapse navbar-collapse justify-content-end">
       <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link" style="text-transform: none;">
+            <b>QC</b> : <?php echo @$_SESSION['first_name']; ?><br> <b><i style="font-size: 11pt !important" class="fa fa-envelope"></i> <?php echo @$_SESSION['username']; ?></b>
+          </a>
+        </li>
        <li class="nav-item dropdown">
         <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
          <i style="color: white;" class="material-icons">person</i>

@@ -531,6 +531,11 @@ else
             </button>
             <div class="collapse navbar-collapse justify-content-end">
               <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                  <a class="nav-link" style="text-transform: none;">
+                    <b>CLIENT</b> : <?php echo @$_SESSION['Client_Name']; ?><br> <b><i style="font-size: 11pt !important" class="fa fa-envelope"></i> <?php echo @$_SESSION['uname']; ?></b>
+                  </a>
+                </li>
               <li class="nav-item dropdown">
                 <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">

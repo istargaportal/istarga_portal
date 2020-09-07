@@ -30,8 +30,10 @@ if($_POST['action'] == 'load_manual_search')
 	if($applicant_name != ""){ $sq.= " AND (o.first_name LIKE '$applicant_name%' OR o.last_name LIKE '$applicant_name%') "; }
 	if($case_reference_no != ""){ $sq.= " AND o.case_reference_no LIKE '$case_reference_no%' "; }
 	if($initiation_date != ""){ $sq.= " AND ov.assigned_date_time LIKE '$initiation_date%' "; }
-	if($status != ""){ $sq.= " AND ov.status LIKE '$status%' "; }
-	if($service_id != ""){ $sq.= " AND os.service_id = '$service_id%' "; }
+	if($status != ""){ $sq.= " AND ov.status = '$status' "; }
+    else
+        { $sq.= " AND ov.status IN ('Verifier Initiated', 'Insufficiency Verifier', 'Re-assigned') "; }
+    if($service_id != ""){ $sq.= " AND os.service_id = '$service_id%' "; }
 	$sq.="GROUP BY os.order_service_details_id";
     $result = mysqli_query($db,$sq); 
 	while($row = $result->fetch_assoc())

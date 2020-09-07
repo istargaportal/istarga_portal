@@ -33,7 +33,7 @@ class States
                     <th>Service</th>
                     <th>Assign To</th>
                     <th>Status</th>
-                    <th>Unlock</th>
+                    <th class="noExport">Unlock</th>
                     <th class="noExport">Actions</th>
                     </thead>';
                     if($client_id != 0)
@@ -45,7 +45,7 @@ class States
                         $default_client_id = base64_decode($default_client_id);
                         $sql_condition = " WHERE o.client_id = '$default_client_id'   "; 
                     }
-                    $query="SELECT o.*, c.Client_Name, s.service_name, os.order_status FROM `order_master` o INNER JOIN client c ON c.id = o.client_id INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.service_id = os.service_id  ".@$sql_condition;
+                    $query="SELECT o.*, c.Client_Name, s.service_name, os.order_status, os.of_user_id, os.lock_status FROM `order_master` o INNER JOIN client c ON c.id = o.client_id INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.service_id = os.service_id  ".@$sql_condition;
                     $query.="GROUP BY os.order_service_details_id";
                     $result=$this->conn->query($query);
                     if($result->num_rows>0)
@@ -56,10 +56,10 @@ class States
 
                             $order_status = $row['order_status'];
                             $user_name = "";
-                            if($row["assign_to"] == 0) { $row["assign_to"] = "-"; }
+                            if($row["of_user_id"] == 0) { $row["of_user_id"] = "-"; }
                             else
                             {
-                                $query_1="SELECT first_name, last_name FROM user_master WHERE user_id = '".$row['assign_to']."' ";
+                                $query_1="SELECT first_name, last_name FROM user_master WHERE user_id = '".$row['of_user_id']."' ";
                                 $result_1=$this->conn->query($query_1);
                                 if($result_1->num_rows>0)
                                 {
@@ -91,7 +91,7 @@ class States
                             <td class="tablehead1">'.$user_name.'</td>
 
                             <td class="tablehead1">'.$order_status.'</td>
-                            <td class="tablehead1">'.$lock_status.'</td>
+                            <td class="noExport tablehead1">'.$lock_status.'</td>
                             <td class="noExport">
                                 <a onclick="view_order_details('.$row['order_id'].')" class="btn btn-default btn-round btn-sm "><i class="material-icons icon">visibility</i> View</a>
                             </td>

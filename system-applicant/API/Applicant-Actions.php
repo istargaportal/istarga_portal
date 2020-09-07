@@ -62,7 +62,7 @@ if($_POST['action'] == 'update_applicant_details')
         {
             if($row_1['order_status'] == 'Insufficiency')
             {
-                $check = "UPDATE order_service_details SET insufficiency_status = 0, order_status = 'Sent To OF' WHERE order_id  = '$order_id' AND order_service_details_id = '".$row_1['order_service_details_id']."' ";
+                $check = "UPDATE order_service_details SET insufficiency_status = 0, order_status = 'Fresh' WHERE order_id = '$order_id' AND order_service_details_id = '".$row_1['order_service_details_id']."' ";
                 $result = mysqli_query($db,$check);
             }
         }

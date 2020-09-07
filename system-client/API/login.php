@@ -48,9 +48,9 @@ class login
           $_SESSION['uname'] = $uname;
           $_SESSION['password']=$password;
           $_SESSION['uid']=$row['id'];
+          $_SESSION['Client_Name']=$row['Client_Name'];
 
           echo 1;
-
         }
         else
         {

@@ -350,12 +350,16 @@ echo '
         </tr>
         <tr>
             <th class="form_left"><label>Status</label></th>
-            <td>
-                <select class="browser-default chosen-select form_left custom-select" id="status" name="status">
+            <?php
+                $disabled_status = ""; 
+                if($status == "Re-assigned")
+                {
+                    $disabled_status = "disabled_btn disabled";
+                }
+            ?>
+            <td class="<?php echo $disabled_status; ?>">
+                <select class="browser-default chosen-select form_left custom-select" id="status" name="status" >
                     <option><?php echo $status; ?></option>
-                    <option>Fresh</option>
-                    <option>Reassigned Verifier</option>
-                    <option>Insufficiency Verifier</option>
                     <option>Verifier Completed</option>
                 </select>
             </td>
@@ -396,7 +400,7 @@ echo '
         }
         else
         {
-            echo '<div style="margin:15px;" ><h3>No Comments!</h3></div>';
+            echo '<div style="margin:15px;" ><h4><i class="fa fa-ban"></i> No Comments!</h4></div>';
         }
     ?>
         </div>
@@ -540,14 +544,6 @@ echo '
 </div>
 <script>
 
-    <?php
-    if($order_status == "Pending" || $order_status == "Reassigned Verifier" || $order_status == "Insufficiency Verifier" )
-    {
-        echo '$("#btn_ok").addClass("disabled_btn");';
-        echo '$(".btn-warning").addClass("disabled_btn");';
-        echo '$(".btn-success").addClass("disabled_btn");';
-    }
-    ?>
 
     var order_id = $('#order_id').val();
     var order_service_details_id = $('#order_service_details_id').val();
@@ -573,7 +569,7 @@ echo '
             $.ajax({
                 type:'POST',
                 url:'./API/Verifier-Actions.php',
-                data:{action, verifier_details, verifier_comments, status, order_service_details_id, order_verify_id},
+                data:{action, verifier_details, verifier_comments, status, order_service_details_id, order_verify_id, order_id, },
                 success:function(html){
                     if(html == "updated")
                     {

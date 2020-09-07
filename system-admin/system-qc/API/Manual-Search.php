@@ -30,7 +30,7 @@ if($_POST['action'] == 'load_manual_search')
 	$sq="SELECT o.*, c.Client_Name, s.service_name, os.order_creation_date, os.order_completion_date, os.category, os.of_closure_date, sa.sla, os.order_status, os.of_qc_order_status FROM `order_master` o INNER JOIN client c ON c.id = o.client_id INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.service_id = os.service_id WHERE 1 = 1 ";
 	if($applicant_name != ""){ $sq.= " AND (o.first_name LIKE '$applicant_name%' OR o.last_name LIKE '$applicant_name%') "; }
 	if($case_reference_no != ""){ $sq.= " AND o.case_reference_no LIKE '$case_reference_no%' "; }
-	if($order_creation_date != ""){ $sq.= " AND o.order_creation_date LIKE '$order_creation_date%' "; }
+	if($order_creation_date != ""){ $sq.= " AND os.order_creation_date LIKE '$order_creation_date%' "; }
 	if($order_status != ""){ $sq.= " AND os.order_status LIKE '$order_status%' "; }
 	if($service_id != ""){ $sq.= " AND os.service_id = '$service_id' "; }
     $sq.="GROUP BY os.order_service_details_id";

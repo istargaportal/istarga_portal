@@ -29,7 +29,7 @@ if($_POST['action'] == 'load_service_list')
 if($_POST['action'] == 'load_start_processing')
 {
     $button_array = ""; $total_array = 0;
-    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.order_status = '$order_status_select' AND (os.of_user_id = 0 OR os.of_user_id = '$user_id') ";
+    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.of_qc_order_status = '$order_status_select' AND (os.of_user_id = 0 OR os.of_user_id = '$user_id') ";
     $resul = mysqli_query($db,$check); 
     while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -83,11 +83,59 @@ if($_POST['action'] == 'next_prev_array_num')
 
 if($_POST['action'] == 'load_service_order')
 {
-    $cmd = "UPDATE order_service_details SET of_user_id = '$user_id', of_qc_order_status = 'Pending', of_assigned_date = '".date('Y-m-d H:i:s')."' WHERE order_service_details_id  = '$order_service_details_id' AND of_user_id = '0' ";
-    $result = mysqli_query($db,$cmd);
+    if(is_numeric($order_service_details_id_array))
+    {
+        $order_service_details_id_array = array($order_service_details_id_array);
+    }
+    else
+    {
+        $order_service_details_id_array = explode(',', $order_service_details_id_array);
+    }
+    $actual_key_val = array_search($order_service_details_id, $order_service_details_id_array);
+    $disabled_back = ""; $disabled_next = ""; $onclick_prev = ""; $onclick_next = "";
+    if($actual_key_val == "0") { $disabled_back = "disabled_btn"; }
+    else
+    {
+        $actual_key = $actual_key_val - 1;
+        $temp_order_service_details_id_array = $order_service_details_id_array[$actual_key];
+        $onclick_prev = "prev_array_num();";
+        $onclick_prev = "load_service_order(".$temp_order_service_details_id_array.");";
+    }
 
+    end($order_service_details_id_array);
+    $temp_array_key = key($order_service_details_id_array);
+
+    if($actual_key_val == $temp_array_key) { $disabled_next = "disabled_btn"; }
+    else
+    {
+        $actual_key = $actual_key_val + 1;
+        $temp_order_service_details_id_array = $order_service_details_id_array[$actual_key];
+        $onclick_next = "next_array_num();";
+        $onclick_next = "load_service_order(".$temp_order_service_details_id_array.");";
+    }
+    $check = "SELECT of_user_id FROM order_service_details WHERE order_service_details_id = '$order_service_details_id' AND of_user_id != 0 AND of_user_id != '$user_id' ";
+    $resul = mysqli_query($db,$check); 
+    if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+    {
+        echo '<script>'.@$onclick_next.';</script>';
+        if($onclick_next == "")
+        {
+            echo '<script>
+            confirm("All orders are finished! Please restart using another criteria!");
+            </script>';
+        }
+        exit();
+    }
+
+    $check = "SELECT of_user_id FROM order_service_details WHERE order_service_details_id = '$order_service_details_id' AND of_user_id = '0' ";
+    $resul = mysqli_query($db,$check); 
+    if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+    {
+        $cmd = "UPDATE order_service_details SET lock_status = 1, of_user_id = '$user_id', of_assigned_date = '".date('Y-m-d H:i:s')."' WHERE order_service_details_id  = '$order_service_details_id' AND of_user_id = '0' ";
+        $result = mysqli_query($db,$cmd);
+    }
     require_once '../../../config/comman_js.php';
-    $check = "SELECT os.of_qc_order_status, o.case_reference_no, os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.assign_service_id, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_of, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
+    $check = "SELECT os.of_qc_order_status, o.case_reference_no, os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.order_creation_date_cleared, os.assign_service_id, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_of, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -129,6 +177,13 @@ if($_POST['action'] == 'load_service_order')
         $internal_reference_id = $row['internal_reference_id'];
         $is_rush = $row['is_rush'];
         $email_id = $row['email_id'];
+        $order_creation_date_cleared = $row['order_creation_date_cleared'];
+    }
+
+    $category_print = 'Open';
+    if($order_status == 'Completed')
+    {
+        $category_print = 'Closed';
     }
 
     ?>
@@ -190,7 +245,7 @@ if($_POST['action'] == 'load_service_order')
             <label><b>Is Rush Order :</b><?php echo $is_rush; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Order Creation Date :</b><?php echo $order_creation_date; ?> </label>
+            <label><b>Order Creation Date :</b><?php echo $order_creation_date_cleared; ?> </label>
         </div>
         <div class="col-md-3">
             <label><b>Expected Closure :</b><?php echo $expected_course_date; ?> </label>
@@ -206,6 +261,12 @@ if($_POST['action'] == 'load_service_order')
         </div>
         <div class="col-md-3">
             <label><b>Email ID. :</b><?php echo $email_id; ?> </label>
+        </div>
+        <div class="col-md-6">
+            <label><b>Original Order Creation Date :</b><?php echo $order_creation_date; ?> </label>
+        </div>
+        <div class="col-md-3">
+            <label><b>Category :</b> <?php echo $category_print; ?> </label>
         </div>
         <div class="col-md-12">
             <br><br>
@@ -454,38 +515,20 @@ echo '
             <tr>
                 <th class="form_left">Status</th>
                 <td>
-                    <select class="browser-default chosen-select custom-select" id="of_qc_order_status" name="of_qc_order_status">
-                        <?php
-                            $pending_checked = ""; $canceled_checked = ""; $discrepancy_checked = ""; $utv_checked = ""; $inconclusive_checked = ""; $minor_checked = ""; $verified_checked = ""; 
-                            if($of_qc_order_status == "Pending") { $pending_checked = "checked"; }
-                            if($of_qc_order_status == "Canceled") { $canceled_checked = "checked"; }
-                            if($of_qc_order_status == "Discrepancy") { $discrepancy_checked = "checked"; }
-                            if($of_qc_order_status == "UTV") { $utv_checked = "checked"; }
-                            if($of_qc_order_status == "Inconclusive") { $inconclusive_checked = "checked"; }
-                            if($of_qc_order_status == "Minor Discrepancy") { $minor_checked = "checked"; }
-                            if($of_qc_order_status == "Verified Clear") { $verified_checked = "checked"; }
-                        echo '
-                        <option '.$pending_checked.'>Pending</option>
-                        <option '.$canceled_checked.'>Canceled</option>
-                        <option '.$discrepancy_checked.'>Discrepancy</option>
-                        <option '.$utv_checked.'>UTV</option>
-                        <option '.$inconclusive_checked.'>Inconclusive</option>
-                        <option '.$minor_checked.'>Minor Discrepancy</option>
-                        <option '.$verified_checked.'>Verified</option>   
-                        ';
-                        ?>
-                    </select>
-                </td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <th class="form_left">Queue</th>
-                <td>
-                    <select onchange="insufficiency_change()" class="browser-default chosen-select custom-select" id="order_status" name="order_status">
-                        <option><?php echo $order_status; ?></option>
+                    <select onchange="insufficiency_change()" class="browser-default chosen-select custom-select" id="of_qc_order_status" name="of_qc_order_status">
+                        <option><?php echo $of_qc_order_status; ?></option>
+                        <option>Canceled</option>
+                        <option>Discrepancy</option>
+                        <option>UTV</option>
+                        <option>Inconclusive</option>
                         <option>Insufficiency</option>
-                        <option>Check QC</option>
-                        <option>Completed Checks</option>
+                        <option>Insufficiency Cleared</option>
+                        <option>Insufficiency Verifier</option>
+                        <option>Minor Discrepancy</option>
+                        <option>Park</option>
+                        <option>Pending</option>
+                        <option>Re-assigned</option>
+                        <option>Verified Clear</option>
                     </select>
                 </td>
                 <td>
@@ -496,6 +539,20 @@ echo '
                         <a id="insufficiency_btn" class="btn btn-danger btn-xs" href="javascript:raise_insufficiency()"><i class="fa fa-send"></i> Raise Insufficiency</a>
                     </div>
                 </td>
+            </tr>
+            <tr>
+                <th class="form_left">Queue</th>
+                <td class="disabled">
+                    <select class="browser-default chosen-select custom-select" id="order_status" name="order_status">
+                        <option><?php echo $order_status; ?></option>
+                        <!-- <option>In Progress</option>
+                        <option>Insufficiency</option>
+                        <option>Re-Assigned</option>
+                        <option>Check QC Completed Checks</option>
+                        <option>Final QC</option> -->
+                    </select>
+                </td>
+                <td>&nbsp;</td>
             </tr>
             <tr>
                 <th class="form_left">Closed Date</th>
@@ -610,38 +667,6 @@ echo '
         </div>
     </div>
     <div class="col-md-12 form_center">
-        <?php
-        if(is_numeric($order_service_details_id_array))
-        {
-            $order_service_details_id_array = array($order_service_details_id_array);
-        }
-        else
-        {
-            $order_service_details_id_array = explode(',', $order_service_details_id_array);
-        }
-        $actual_key_val = array_search($order_service_details_id, $order_service_details_id_array);
-        $disabled_back = ""; $disabled_next = ""; $onclick_prev = ""; $onclick_next = "";
-        if($actual_key_val == "0") { $disabled_back = "disabled_btn"; }
-        else
-        {
-            $actual_key = $actual_key_val - 1;
-            $temp_order_service_details_id_array = $order_service_details_id_array[$actual_key];
-            $onclick_prev = "prev_array_num();";
-            $onclick_prev = "load_service_order(".$temp_order_service_details_id_array.");";
-        }
-
-        end($order_service_details_id_array);
-        $temp_array_key = key($order_service_details_id_array);
-
-        if($actual_key_val == $temp_array_key) { $disabled_next = "disabled_btn"; }
-        else
-        {
-            $actual_key = $actual_key_val + 1;
-            $temp_order_service_details_id_array = $order_service_details_id_array[$actual_key];
-            $onclick_next = "next_array_num();";
-            $onclick_next = "load_service_order(".$temp_order_service_details_id_array.");";
-        }
-        ?>
         <script type="text/javascript">
             $('#actual_array_count').val('<?php echo $actual_key_val; ?>');
         </script>
@@ -712,11 +737,12 @@ echo '
 </div>
 <script>
     <?php
-    if(@$order_status == 'Sent To QC')
+    if(@$category_print == 'Closed')
     {
         echo "$('#send_to_qc').addClass('disabled_btn');";
         echo '$(".btn-warning").addClass("disabled_btn");';
         echo '$(".btn-success").addClass("disabled_btn");';
+        echo '$(".btn-danger").addClass("disabled_btn");';
     }
     ?>
 
@@ -932,8 +958,8 @@ echo '
     $('.chosen-select').chosen();
     function insufficiency_change()
     {
-        var order_status = $('#order_status').val();
-        if(order_status == "Insufficiency")
+        var of_qc_order_status = $('#of_qc_order_status').val();
+        if(of_qc_order_status == "Insufficiency")
         {
             $('.insufficiency_panel').css('display', 'block');
             $('#insufficiency_comment').focus();
@@ -1590,7 +1616,7 @@ if($_POST['action'] == 'raise_insufficiency')
     $check = "INSERT INTO order_insufficiency_details (order_service_details_id, order_id, insufficiency_comment, user_id) VALUES('$order_service_details_id', '$order_id', '$insufficiency_comment', '$user_id') ";
     $result = mysqli_query($db,$check);
 
-    $check = "UPDATE order_service_details SET of_insufficiency_status = 'Insufficiency', order_status = 'Insufficiency' WHERE order_service_details_id  = '$order_service_details_id ' ";
+    $check = "UPDATE order_service_details SET of_insufficiency_status = 'Insufficiency', of_qc_order_status = 'Insufficiency', order_status = 'Insufficiency' WHERE order_service_details_id  = '$order_service_details_id ' ";
     $result = mysqli_query($db,$check);
 
     $check = "UPDATE order_master SET order_status = 'Insufficiency' WHERE order_id  = '$order_id ' ";
@@ -1635,9 +1661,15 @@ if($_POST['action'] == 'assign_to_verifier')
     }
     else
     {
-        $check = "INSERT INTO order_verifier_details (order_id, order_service_details_id, verifier_id, assigned_by) VALUES('$order_id', '$order_service_details_id', '$verifier_id', '$assigned_by') ";
+        $check = "INSERT INTO order_verifier_details (order_id, order_service_details_id, verifier_id, assigned_by, status) VALUES('$order_id', '$order_service_details_id', '$verifier_id', '$assigned_by', 'Verifier Initiated') ";
         $result = mysqli_query($db,$check);
     }
+
+    $check = "UPDATE order_service_details SET order_status = 'In Progress' of_qc_order_status = 'Verifier Initiated' WHERE order_service_details_id = '$order_service_details_id' ";
+    $result = mysqli_query($db,$check);
+
+    $check = "UPDATE order_master SET order_status = 'In Progress' WHERE order_id = '$order_id' ";
+    $result = mysqli_query($db,$check);
 
     $order_master_uploaded_document_id = explode(',', $order_master_uploaded_document_id);
     foreach ($order_master_uploaded_document_id as $order_master_uploaded_document_id_s)
