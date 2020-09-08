@@ -51,5 +51,6 @@ $company_name = 'ISTARGA';
 $web_url = "https://" . $_SERVER['SERVER_NAME'];
 $client_login_url = $web_url."/system-client/";
 $applicant_login_url = $web_url."/system-applicant/";
+$forget_password_url_admin = $web_url."/system-admin/Change-Password.php";
 
 ?>

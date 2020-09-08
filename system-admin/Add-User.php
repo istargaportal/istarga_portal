@@ -639,7 +639,7 @@ include 'Header.php';
     {
       alert('Please select timezone!');
     }
-    else if(password_length < 11)
+    else if(password_length < 12)
     {
       alert('Please enter minimum 12 digit password!')
     }

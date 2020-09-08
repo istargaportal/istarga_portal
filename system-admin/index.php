@@ -96,7 +96,7 @@
           <strong>SPECIALIZED IN BACKGROUND VERIFICATION</strong>
         </p>
       </div>
-        <div class="row no-gutters">
+      <div class="row no-gutters">
           <!-- <div class="col-md-7">
             <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" style="height: 100%;">
               <div class="carousel-inner" style="height: 100%;">
@@ -114,54 +114,54 @@
           </div> -->
           <div class="col-md-8"><br></div>
           <div class="col-md-4">
-      <div class="login_panel">
-            <div class="card-body">
-              <div class="brand-wrapper" style="border-bottom: solid 1px #fff;">
-                <img src="../system-client/assets/img/logo.png" alt="logo" class="logo" />
-                <p><strong style="color: #fff">ADMIN PORTAL</strong></p>
-              </div>
-              <p style="color: #fff;" class="login-card-description">SIGN IN</p>
-              <form id="ajax">
-                <label class="container_checkbox">Admin
-                  <input type="radio" id="Admin" name="user-type" value="Admin" />
-                  <span class="checkmark"></span>
-                </label>
-
-                <label class="container_checkbox">Employee
-                  <input type="radio" id="Employee" name="user-type" value="Employee" />
-                  <span class="checkmark"></span>
-                </label>
-                <div class="input-group form-group" style="padding-bottom: 0;">
-                  <div class="input-group-prepend" style="padding-bottom: 0;">
-                    <span class="input-group-text" style="padding-bottom: 0;"><i class="fas fa-user"></i></span>
-                  </div>
-                  <input type="text" name="email" id="email" class="form-control" placeholder="Email address" />
+            <div class="login_panel">
+              <div class="card-body">
+                <div class="brand-wrapper" style="border-bottom: solid 1px #fff;">
+                  <img src="../system-client/assets/img/logo.png" alt="logo" class="logo" />
+                  <p><strong style="color: #fff">ADMIN PORTAL</strong></p>
                 </div>
-                
-                <div class="input-group form-group" style="padding-bottom: 0;">
-                  <div class="input-group-prepend" style="padding-bottom: 0;">
-                    <span class="input-group-text" style="padding-bottom: 0;"><i class="fas fa-key"></i></span>
+                <p style="color: #fff;" class="login-card-description">SIGN IN</p>
+                <form id="ajax">
+                  <label class="container_checkbox">Admin
+                    <input type="radio" id="Admin" name="user-type" value="Admin" />
+                    <span class="checkmark"></span>
+                  </label>
+
+                  <label class="container_checkbox">Employee
+                    <input type="radio" id="Employee" name="user-type" value="Employee" />
+                    <span class="checkmark"></span>
+                  </label>
+                  <div class="input-group form-group" style="padding-bottom: 0;">
+                    <div class="input-group-prepend" style="padding-bottom: 0;">
+                      <span class="input-group-text" style="padding-bottom: 0;"><i class="fas fa-user"></i></span>
+                    </div>
+                    <input type="text" name="email" id="email" class="form-control" placeholder="Email address" />
                   </div>
+
+                  <div class="input-group form-group" style="padding-bottom: 0;">
+                    <div class="input-group-prepend" style="padding-bottom: 0;">
+                      <span class="input-group-text" style="padding-bottom: 0;"><i class="fas fa-key"></i></span>
+                    </div>
                     <input type="password" name="password" id="password" class="form-control" placeholder="Enter Password" style="margin-bottom: 5px;" />
                     <span class="btn_show_password"><i class="fa fa-eye-slash"></i>  </span>
-                </div>
-                
-                <div class="form-group" style="margin-bottom: 0;">
-                  <label for="password" class="sr-only">Password</label>
-                  
-                </div>
+                  </div>
+
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label for="password" class="sr-only">Password</label>
+
+                  </div>
                 <!--<input
                     name="login"
                     id="login"
                     class="btn btn-block login-btn mb-4"
                     type="button"
                     value="Login"
-                  />-->
-                <b style="color: #fff;"><a class="forgot-password-link">Forgot password?</a></b>
-                <br> <br>
-                <button type='submit' class="btn btn-default login-btn mb-4">Login</button>
-                <a href="" class="btn btn-default btn-reset mb-4">Reset</a>
-              </form>
+                    />-->
+                    <b><a style="color: #fff;text-decoration: underline;" href="Forgot-Password.php?forgot_type=<?php echo base64_encode('admin_forgot'); ?>" class="forgot-password-link">Forgot password?</a></b>
+                    <br> <br>
+                    <button type='submit' class="btn btn-default login-btn mb-4">Login</button>
+                    <a href="" class="btn btn-default btn-reset mb-4">Reset</a>
+                  </form>
               <!-- <p class="login-card-footer-text">
                   Don't have an account?
                   <a href="#!" class="text-reset">Register here</a>
@@ -170,31 +170,31 @@
                   <a href="#!">Terms of use.</a>
                   <a href="#!">Privacy policy</a>
                 </nav> -->
+              </div>
             </div>
           </div>
-        </div>
-        <div class="new-modal">
-          <button style="opacity: 0; pointer-events: none; display: none;" type="button" class="btn btn-primary launch" data-toggle="modal" data-target="#exampleModal">
-            Launch demo modal
-          </button>
-    
-          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Service Assigned Successfully</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" id="modal-ok-btn" data-dismiss="modal" class="btn btn-primary">OK</button>
+          <div class="new-modal">
+            <button style="opacity: 0; pointer-events: none; display: none;" type="button" class="btn btn-primary launch" data-toggle="modal" data-target="#exampleModal">
+              Launch demo modal
+            </button>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Service Assigned Successfully</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" id="modal-ok-btn" data-dismiss="modal" class="btn btn-primary">OK</button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       <!-- <div class="card login-card">
         <img src="assets/images/login.jpg" alt="login" class="login-card-img">
         <div class="card-body">
@@ -227,99 +227,99 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <style type="text/css">
-      .input-group {
-        position: relative;
-      }
-      .btn_show_password{
-        position: absolute;
-        right: 0;
-        padding: 6px 12px;
-        font-size: 15pt;
-        color: #666;
-        cursor: pointer;
-        transition: 0.3s all ease;
-        z-index: 9999999 !important;
-      }
-      .btn_show_password:hover{
-        background: #eee;
-      }
-      .btn_show_password:active{
-       background: #aaa;
-      }
-  </style>
-  <script type="text/javascript">
-    $("input").each(function () {
-      $(this).attr("autocomplete", "off");
-    })
-  </script>
-    <script type="text/javascript">
-      $( ".btn_show_password" ).click(function() {
-        if($("#password").prop('type') == 'text')
-        {
-          $("#password").prop('type', 'password');
-          $('.btn_show_password').html('<i class="fa fa-eye-slash"></i>');
-        }
-        else
-        {
-          $("#password").prop('type', 'text');
-          $('.btn_show_password').html('<i class="fa fa-eye"></i>');
-        }
-      });
-    </script>
-  <script>
-    let modal = document.querySelector(".new-modal #exampleModal")
-    let modalOkBtn = document.querySelector(".new-modal #modal-ok-btn")
-    let modalLabel = document.querySelector(".new-modal #exampleModalLabel")
+    .input-group {
+      position: relative;
+    }
+    .btn_show_password{
+      position: absolute;
+      right: 0;
+      padding: 6px 12px;
+      font-size: 15pt;
+      color: #666;
+      cursor: pointer;
+      transition: 0.3s all ease;
+      z-index: 9999999 !important;
+    }
+    .btn_show_password:hover{
+      background: #eee;
+    }
+    .btn_show_password:active{
+     background: #aaa;
+   }
+ </style>
+ <script type="text/javascript">
+  $("input").each(function () {
+    $(this).attr("autocomplete", "off");
+  })
+</script>
+<script type="text/javascript">
+  $( ".btn_show_password" ).click(function() {
+    if($("#password").prop('type') == 'text')
+    {
+      $("#password").prop('type', 'password');
+      $('.btn_show_password').html('<i class="fa fa-eye-slash"></i>');
+    }
+    else
+    {
+      $("#password").prop('type', 'text');
+      $('.btn_show_password').html('<i class="fa fa-eye"></i>');
+    }
+  });
+</script>
+<script>
+  let modal = document.querySelector(".new-modal #exampleModal")
+  let modalOkBtn = document.querySelector(".new-modal #modal-ok-btn")
+  let modalLabel = document.querySelector(".new-modal #exampleModalLabel")
   
-    let modalLaunchButton = document.querySelector(".new-modal .launch")
-    let modalCloseButton = document.querySelector(".new-modal .close")
-  </script>
-  <script>
-    const form = document.getElementById('ajax');
+  let modalLaunchButton = document.querySelector(".new-modal .launch")
+  let modalCloseButton = document.querySelector(".new-modal .close")
+</script>
+<script>
+  const form = document.getElementById('ajax');
 
-    $("form").submit(function(event) {
-      event.preventDefault();
-      var formdata = $("form").serializeArray();
-      var data = {};
-      $(formdata).each(function(index, obj) {
-        data[obj.name] = obj.value;
-      });
-      fetch('./API/login.php', {
-        method: 'post',
-        body: JSON.stringify(data),
-      }).then(function(response) {
-        return response.text();
-      }).then(function(text) {
-        if (text == "Please Select User-type") {
-          modalLabel.innerHTML = text
-          modalLaunchButton.click()
-        } else if (text == "Please enter Email Address") {
-          modalLabel.innerHTML = text
-          modalLaunchButton.click()
-        } else if (text == "Please enter Password") {
-          modalLabel.innerHTML = text
-          modalLaunchButton.click()
-        } else if (text == "Wrong admin Credentials") {
-          modalLabel.innerHTML = text
-          modalLaunchButton.click()
-        } else if (text == "admin_login") {
-          window.location.href = "Dashboard.php";
-        } else if (text == "qf_login") {
-          window.location.href = "./system-of/Dashboard.php";
-        } else if (text == "qc_login") {
-          window.location.href = "./system-qc/Dashboard.php";
-        } else if (text == "verifier_login") {
-          window.location.href = "./system_verifier/Dashboard.php";
-        } else if (text == "Wrong User Credentials") {
-          modalLabel.innerHTML = text
-          modalLaunchButton.click()
-        }
-      }).catch(function(error) {
+  $("form").submit(function(event) {
+    event.preventDefault();
+    var formdata = $("form").serializeArray();
+    var data = {};
+    $(formdata).each(function(index, obj) {
+      data[obj.name] = obj.value;
+    });
+    fetch('./API/login.php', {
+      method: 'post',
+      body: JSON.stringify(data),
+    }).then(function(response) {
+      return response.text();
+    }).then(function(text) {
+      if (text == "Please Select User-type") {
+        modalLabel.innerHTML = text
+        modalLaunchButton.click()
+      } else if (text == "Please enter Email Address") {
+        modalLabel.innerHTML = text
+        modalLaunchButton.click()
+      } else if (text == "Please enter Password") {
+        modalLabel.innerHTML = text
+        modalLaunchButton.click()
+      } else if (text == "Wrong admin Credentials") {
+        modalLabel.innerHTML = text
+        modalLaunchButton.click()
+      } else if (text == "admin_login") {
+        window.location.href = "Dashboard.php";
+      } else if (text == "qf_login") {
+        window.location.href = "./system-of/Dashboard.php";
+      } else if (text == "qc_login") {
+        window.location.href = "./system-qc/Dashboard.php";
+      } else if (text == "verifier_login") {
+        window.location.href = "./system_verifier/Dashboard.php";
+      } else if (text == "Wrong User Credentials") {
+        modalLabel.innerHTML = text
+        modalLaunchButton.click()
+      }
+    }).catch(function(error) {
         // console.error(error);
       })
-    })
-    $.ajax;
-  </script>
+  })
+  $.ajax;
+</script>
 </body>
 
 </html>
