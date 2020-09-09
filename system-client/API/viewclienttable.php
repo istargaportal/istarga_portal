@@ -61,7 +61,7 @@ class States
                   {
                     while($row_1 = $result_1->fetch_assoc())
                     {
-                      $selected_packages.= $package_name."<br>"; 
+                      $selected_packages.= $row_1['package_name']."<br>"; 
                     }
                   }
                   $row["order_creation_date_time"] = date('d-m-Y', strtotime($row["order_creation_date_time"]));

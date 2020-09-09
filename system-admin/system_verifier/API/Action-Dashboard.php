@@ -115,41 +115,41 @@ if($_POST['action'] == 'load_service_order')
             <input type="hidden" id="order_verify_id" name="order_verify_id" value="<?php echo @$order_verify_id; ?>" />
             
             <div class="col-md-3">
-                <label><b>Case Reference No. :</b> <?php echo $case_reference_no ?></label>
+                <label><b>Case Reference No:</b> <?php echo $case_reference_no ?></label>
             </div>
             <div class="col-md-3">
-                <label><b>Applicant First Name :</b> <?php echo $first_name; ?></label>
+                <label><b>Applicant First Name:</b> <?php echo $first_name; ?></label>
             </div>
             <div class="col-md-3">
-                <label><b>Applicant Middle Name :</b><?php echo $middle_name; ?></label>
+                <label><b>Applicant Middle Name:</b><?php echo $middle_name; ?></label>
             </div>
             <div class="col-md-3">
-                <label><b>Applicant Last Name :</b><?php echo $last_name; ?></label>
+                <label><b>Applicant Last Name:</b><?php echo $last_name; ?></label>
             </div>
             
             <div class="col-md-3">
-                <label><b>Client Order ID/Applicant ID :</b><?php echo $order_id ?></label>
+                <label><b>Client Order ID/Applicant ID:</b><?php echo $order_id ?></label>
             </div>
             <div class="col-md-3">
-                <label><b>Is Rush Order :</b><?php echo $is_rush; ?> </label>
+                <label><b>Is Rush Order:</b><?php echo $is_rush; ?> </label>
             </div>
             <div class="col-md-3">
-                <label><b>Order Creation Date :</b><?php echo $order_creation_date; ?> </label>
+                <label><b>Order Creation Date:</b><?php echo $order_creation_date; ?> </label>
             </div>
             <div class="col-md-3">
-                <label><b>Expected Closure :</b><?php echo $expected_course_date; ?> </label>
+                <label><b>Expected Closure:</b><?php echo $expected_course_date; ?> </label>
             </div>
             <div class="col-md-3">
-                <label><b>Client Name :</b><?php echo $client_name; ?> </label>
+                <label><b>Client Name:</b><?php echo $client_name; ?> </label>
             </div>
             <div class="col-md-3">
-                <label><b>Service Type :</b><?php echo $service_type_name; ?> </label>
+                <label><b>Service Type:</b><?php echo $service_type_name; ?> </label>
             </div>
             <div class="col-md-3">
-                <label><b>Service :</b><?php echo $service_name; ?> </label>
+                <label><b>Service:</b><?php echo $service_name; ?> </label>
             </div>
             <div class="col-md-3">
-                <label><b>Email ID. :</b><?php echo $email_id; ?> </label>
+                <label><b>Email ID:</b><?php echo $email_id; ?> </label>
             </div>
 
             <div class="col-md-12">

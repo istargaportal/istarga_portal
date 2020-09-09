@@ -46,6 +46,25 @@ $page_name_compare = strtolower(@$page_name);
   include '../comman_style.php';
   ?>
   <script type="text/javascript">
+    function view_order_details(order_id)
+    {
+      $.ajax({
+        type:'POST',
+        url:'../API/View-Client-Order.php',
+        data:{order_id},
+        success:function(html){
+          $('#print_result').html(html);
+        }
+      });
+    }
+
+    function close_preview_order()
+    {
+      // window.history.replaceState({}, document.title, "/" + "BGVHWD-master/system-client/ClientViewOrder.php");
+      $('#print_result').html('');
+    }
+  </script>
+  <script type="text/javascript">
     window.alert = function() {};
     alert = function() {};
   </script>

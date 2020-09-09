@@ -181,6 +181,25 @@ include 'Header.php';
 										<a href="javascript:select_service()" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add</a>
 									</div>
 									<div class="col-md-12">
+										<br>
+										<div class="row">
+							                <div class="col-md-3">
+							                    <b>Service Name</b>
+							                </div>
+							                <div class="col-md-2">
+							                    <b>Country</b>
+							                </div>
+							                <div class="col-md-4">
+							                    <b>Mandatory Documents</b>
+							                </div>
+							                <div class="col-md-1">
+							                    <b>SLA</b>
+							                </div>
+							                <div class="col-md-2">
+							                    <b>Action</b>
+							                </div>
+							                <hr class="col12" style="margin:4px 0">
+							            </div>
 										<div id="selected_services"></div>
 									</div>
 								</div>
@@ -278,6 +297,21 @@ include 'Header.php';
 				<div class="card-header card-header-primary" style="padding: 4px 8px; margin-top: 10px;">
 					<h4 style="color: #fff;margin: 0;" class="card-title"><i class="fa fa-arrow-circle-right"></i> Selected Services</h4>
 				</div>
+				<div class="row">
+	                <div class="col-md-4">
+	                    <b>Service Name</b>
+	                </div>
+	                <div class="col-md-2">
+	                    <b>Country</b>
+	                </div>
+	                <div class="col-md-5">
+	                    <b>Mandatory Documents</b>
+	                </div>
+	                <div class="col-md-1">
+	                    <b>SLA</b>
+	                </div>
+	                <hr class="col12" style="margin:4px 0">
+	            </div>
 				<span id="preview_selected_services"></span>
 				<div class="card-header card-header-primary" style="padding: 4px 8px; margin-bottom: 15px; margin-top: 10px;">
 					<h4 style="color: #fff;margin: 0;" class="card-title"><i class="fa fa-files-o"></i> Documents</h4>
@@ -411,6 +445,7 @@ include 'Header.php';
 				data:{action, country_id_package, package_id, client_id, sub_action},
 				success:function(html) {
 					$('#selected_packages').append(html);
+					load_packages();
 				}
 			});
 			
@@ -423,7 +458,6 @@ include 'Header.php';
 					$('#preview_selected_packages').append(html);
 				}
 			});
-			load_packages();		
 		}
 	}
 

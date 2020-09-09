@@ -38,7 +38,7 @@ $db=$get_connection->connect();
                 </div>
                 <div class="col-md-2">
                   <label>Status</label>
-                  <select class="form-control chosen-select" id="order_status">
+                  <select class="form-control chosen-select" id="of_qc_order_status">
                     <option value="">ALL</option>
                     <option>Fresh</option>
                     <option>Canceled</option>
@@ -71,8 +71,20 @@ $db=$get_connection->connect();
                     ?>
                   </select>
                 </div>
-                
-                <div class="col-md-7 form_right" style="margin-top: 4px;">
+                <div class="col-md-2">
+                  <label>Category</label>
+                  <select class="form-control chosen-select" id="order_status">
+                    <option value="">ALL</option>
+                    <option>Fresh</option>
+                    <option>In Progress</option>
+                    <option>Re-Assigned</option>
+                    <option>Insufficiency</option>
+                    <option>Check QC Completed Checks </option>
+                    <option>Final QC</option>
+                    <option>Completed</option>
+                  </select>
+                </div>
+                <div class="col-md-3 form_right" style="margin-top: 4px;">
                   <br>
                   <a href="javascript:load_manual_search()" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Search</a> &nbsp;
                   <a href="" class="btn btn-default btn-sm"><i class="fa fa-close"></i> Reset</a>
@@ -184,10 +196,11 @@ include '../../datatable/_datatable.php';
     var applicant_name = $('#applicant_name').val();
     var case_reference_no = $('#case_reference_no').val();
     var order_creation_date = $('#initiation_date').val();
+    var of_qc_order_status = $('#of_qc_order_status').val();
     var order_status = $('#order_status').val();
     var service_id = $('#service_id').val();
 
-    if(applicant_name == "" && case_reference_no == "" && order_creation_date == "" && order_status == "" && service_id == "")
+    if(applicant_name == "" && case_reference_no == "" && order_creation_date == "" && of_qc_order_status == "" && order_status == "" && service_id == "")
     {
       $('#applicant_name').focus();
       alert('Please provide data');
@@ -197,7 +210,7 @@ include '../../datatable/_datatable.php';
       var action = 'load_manual_search';
       $.ajax({
         type:'POST',
-        data:{action, applicant_name, case_reference_no, order_creation_date, order_status, service_id},
+        data:{action, applicant_name, case_reference_no, order_creation_date, of_qc_order_status, order_status, service_id},
         url:'./API/Manual-Search.php',
         success:function(html){
           $('#data_table').html(html);

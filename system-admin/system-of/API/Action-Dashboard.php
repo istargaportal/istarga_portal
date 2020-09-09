@@ -226,47 +226,47 @@ if($_POST['action'] == 'load_service_order')
     <br>
     <div class="row justify-content-start col-md-12">
         <div class="col-md-3">
-            <label><b>Case Reference No. :</b> <?php echo $case_reference_no ?></label>
+            <label><b>Case Reference No:</b> <?php echo $case_reference_no ?></label>
         </div>
         <div class="col-md-3">
-            <label><b>Applicant First Name :</b> <?php echo $first_name; ?></label>
+            <label><b>Applicant First Name:</b> <?php echo $first_name; ?></label>
         </div>
         <div class="col-md-3">
-            <label><b>Applicant Middle Name :</b><?php echo $middle_name; ?></label>
+            <label><b>Applicant Middle Name:</b><?php echo $middle_name; ?></label>
         </div>
         <div class="col-md-3">
-            <label><b>Applicant Last Name :</b><?php echo $last_name; ?></label>
+            <label><b>Applicant Last Name:</b><?php echo $last_name; ?></label>
         </div>
         
         <div class="col-md-3">
-            <label><b>Client Order ID/Applicant ID :</b><?php echo $order_id ?></label>
+            <label><b>Client Order ID/Applicant ID:</b><?php echo $order_id ?></label>
         </div>
         <div class="col-md-3">
-            <label><b>Is Rush Order :</b><?php echo $is_rush; ?> </label>
+            <label><b>Is Rush Order:</b><?php echo $is_rush; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Order Creation Date :</b><?php echo $order_creation_date_cleared; ?> </label>
+            <label><b>Order Creation Date:</b><?php echo $order_creation_date_cleared; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Expected Closure :</b><?php echo $expected_course_date; ?> </label>
+            <label><b>Expected Closure:</b><?php echo $expected_course_date; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Client Name :</b><?php echo $client_name; ?> </label>
+            <label><b>Client Name:</b><?php echo $client_name; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Service Type :</b><?php echo $service_type_name; ?> </label>
+            <label><b>Service Type:</b><?php echo $service_type_name; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Service :</b><?php echo $service_name; ?> </label>
+            <label><b>Service:</b><?php echo $service_name; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Email ID. :</b><?php echo $email_id; ?> </label>
+            <label><b>Email ID:</b><?php echo $email_id; ?> </label>
         </div>
         <div class="col-md-6">
-            <label><b>Original Order Creation Date :</b><?php echo $order_creation_date; ?> </label>
+            <label><b>Original Order Creation Date:</b><?php echo $order_creation_date; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Category :</b> <?php echo $category_print; ?> </label>
+            <label><b>Category:</b> <?php echo $category_print; ?> </label>
         </div>
         <div class="col-md-12">
             <br><br>
@@ -515,7 +515,7 @@ echo '
             <tr>
                 <th class="form_left">Status</th>
                 <td>
-                    <select onchange="insufficiency_change()" class="browser-default chosen-select custom-select" id="of_qc_order_status" name="of_qc_order_status">
+                    <select onchange="insufficiency_change(); load_queue()" class="browser-default chosen-select custom-select" id="of_qc_order_status" name="of_qc_order_status">
                         <option><?php echo $of_qc_order_status; ?></option>
                         <option>Canceled</option>
                         <option>Discrepancy</option>
@@ -543,7 +543,7 @@ echo '
             <tr>
                 <th class="form_left">Queue</th>
                 <td class="disabled">
-                    <select class="browser-default chosen-select custom-select" id="order_status" name="order_status">
+                    <select class="browser-default custom-select" id="order_status" name="order_status">
                         <option><?php echo $order_status; ?></option>
                         <!-- <option>In Progress</option>
                         <option>Insufficiency</option>
@@ -556,7 +556,7 @@ echo '
             </tr>
             <tr>
                 <th class="form_left">Closed Date</th>
-                <td><input type="date" class="form-control" id="of_closure_date" name="of_closure_date" value="<?php echo @$of_closure_date; ?>" /></td>
+                <td><input type="date" class="form-control" id="of_closure_date" name="of_closure_date" value="<?php echo @$of_closure_date; ?>" readonly /></td>
                 <td>&nbsp;</td>
             </tr>
         </table>
@@ -597,14 +597,17 @@ echo '
         <h5 class="btn btn-primary col-md-12 form_left btn-xs"><i class="fa fa-comments" aria-hidden="true"></i> Re-assigned Logs</h5>
         <div style="height: 200px; overflow-y: scroll;" id="print_reassigned_order"></div>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-5">
         <b>Additional Comments</b>
         <textarea class="custom-select" rows="3" id="additional_comments_of" name="additional_comments_of"></textarea>
     </div>
     <div class="col-md-2">
         <br>
-        <br>
         <a href="javascript:add_additional_comments_of()" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add</a>
+    </div>
+    <div class="col-md-5">
+        <h5 class="btn btn-primary col-md-12 form_left btn-xs"><i class="fa fa-comments" aria-hidden="true"></i> Re-assigned Logs</h5>
+        <div style="height: 200px; overflow-y: scroll;" id="of_comments_notes_panel"></div>
     </div>
     </form>
     <div class="col-md-12">
@@ -746,6 +749,28 @@ echo '
     }
     ?>
 
+    function load_queue()
+    {
+        var of_qc_order_status = $('#of_qc_order_status').val();
+        var order_status = "";
+        if(of_qc_order_status == 'Canceled') { order_status = 'Completed'; }
+        if(of_qc_order_status == 'Discrepancy') { order_status = 'Completed'; }
+        if(of_qc_order_status == 'UTV') { order_status = 'Completed'; }
+        if(of_qc_order_status == 'Fresh') { order_status = 'Fresh'; }
+        if(of_qc_order_status == 'Inconclusive') { order_status = 'Completed'; }
+        if(of_qc_order_status == 'Insufficiency') { order_status = 'Insufficiency'; }
+        if(of_qc_order_status == 'Insufficiency Cleared') { order_status = 'Insufficiency'; }
+        if(of_qc_order_status == 'Insufficiency Verifier') { order_status = 'In Progress'; }
+        if(of_qc_order_status == 'Minor Discrepancy') { order_status = 'Completed'; }
+        if(of_qc_order_status == 'Park') { order_status = 'Park'; }
+        if(of_qc_order_status == 'Pending') { order_status = 'In Progress'; }
+        if(of_qc_order_status == 'Re-assigned') { order_status = 'Re-assigned'; }
+        if(of_qc_order_status == 'Verifier Initiated ') { order_status = 'In Progress'; }
+        if(of_qc_order_status == 'Verifier Completed') { order_status = 'In Progress'; }
+        if(of_qc_order_status == 'Verified Clear') { order_status = 'Completed'; }
+        $('#order_status').html('<option>'+order_status+'</option>');
+    }
+
     function add_additional_comments_of()
     {
         var order_id = $('#order_id').val();
@@ -768,6 +793,7 @@ echo '
                 data:{action, additional_comments_of, order_status, order_id, order_service_details_id},
                 success:function(html){
                     $('#print_result').html(html);
+                    load_notes_con('of_comments');
                     alert('Additional comment added!');
                 }
             });
@@ -1224,6 +1250,7 @@ function download_all_annexure(order_id, order_service_details_id)
 load_notes_con('public');
 load_notes_con('private');
 load_notes_con('eta');
+load_notes_con('of_comments');
 
 function provided_to_verifed()
 {
@@ -1285,6 +1312,7 @@ function send_to_qc()
                 load_notes_con('public');
                 load_notes_con('private');
                 load_notes_con('eta');
+                load_notes_con('of_comments');
               }
             });
         }
@@ -1383,6 +1411,7 @@ function send_to_qc()
 </script>
 <?php
 }
+
 
 if($_POST['action'] == 'load_attached_documents')
 {
@@ -1665,7 +1694,7 @@ if($_POST['action'] == 'assign_to_verifier')
         $result = mysqli_query($db,$check);
     }
 
-    $check = "UPDATE order_service_details SET order_status = 'In Progress' of_qc_order_status = 'Verifier Initiated' WHERE order_service_details_id = '$order_service_details_id' ";
+    $check = "UPDATE order_service_details SET order_status = 'In Progress', of_qc_order_status = 'Verifier Initiated' WHERE order_service_details_id = '$order_service_details_id' ";
     $result = mysqli_query($db,$check);
 
     $check = "UPDATE order_master SET order_status = 'In Progress' WHERE order_id = '$order_id' ";

@@ -227,47 +227,47 @@ if($_POST['action'] == 'load_service_order')
     <br>
     <div class="row justify-content-start col-md-12">
         <div class="col-md-3">
-            <label><b>Case Reference No. :</b> <?php echo $case_reference_no ?></label>
+            <label><b>Case Reference No:</b> <?php echo $case_reference_no ?></label>
         </div>
         <div class="col-md-3">
-            <label><b>Applicant First Name :</b> <?php echo $first_name; ?></label>
+            <label><b>Applicant First Name:</b> <?php echo $first_name; ?></label>
         </div>
         <div class="col-md-3">
-            <label><b>Applicant Middle Name :</b><?php echo $middle_name; ?></label>
+            <label><b>Applicant Middle Name:</b><?php echo $middle_name; ?></label>
         </div>
         <div class="col-md-3">
-            <label><b>Applicant Last Name :</b><?php echo $last_name; ?></label>
+            <label><b>Applicant Last Name:</b><?php echo $last_name; ?></label>
         </div>
         
         <div class="col-md-3">
-            <label><b>Client Order ID/Applicant ID :</b><?php echo $order_id ?></label>
+            <label><b>Client Order ID/Applicant ID:</b><?php echo $order_id ?></label>
         </div>
         <div class="col-md-3">
-            <label><b>Is Rush Order :</b><?php echo $is_rush; ?> </label>
+            <label><b>Is Rush Order:</b><?php echo $is_rush; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Order Creation Date :</b><?php echo $order_creation_date; ?> </label>
+            <label><b>Order Creation Date:</b><?php echo $order_creation_date; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Expected Closure :</b><?php echo $expected_course_date; ?> </label>
+            <label><b>Expected Closure:</b><?php echo $expected_course_date; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Client Name :</b><?php echo $client_name; ?> </label>
+            <label><b>Client Name:</b><?php echo $client_name; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Service Type :</b><?php echo $service_type_name; ?> </label>
+            <label><b>Service Type:</b><?php echo $service_type_name; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Service :</b><?php echo $service_name; ?> </label>
+            <label><b>Service:</b><?php echo $service_name; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Email ID. :</b><?php echo $email_id; ?> </label>
+            <label><b>Email ID:</b><?php echo $email_id; ?> </label>
         </div>
         <div class="col-md-6">
-            <label><b>Original Order Creation Date :</b><?php echo $order_creation_date; ?> </label>
+            <label><b>Original Order Creation Date:</b><?php echo $order_creation_date; ?> </label>
         </div>
         <div class="col-md-3">
-            <label><b>Category :</b> <?php echo $category_print; ?> </label>
+            <label><b>Category:</b> <?php echo $category_print; ?> </label>
         </div>
         <div class="col-md-12">
             <br><br>
@@ -514,7 +514,7 @@ echo '
             </tr>
             <tr>
                 <th class="form_left">Closed Date</th>
-                <td><input type="date" class="form-control" id="of_closure_date" name="of_closure_date" value="<?php echo @$of_closure_date; ?>" /></td>
+                <td><input type="date" class="form-control" id="of_closure_date" name="of_closure_date" value="<?php echo @$of_closure_date; ?>" readonly /></td>
                 <td>&nbsp;</td>
             </tr>
             <tr>
@@ -528,8 +528,6 @@ echo '
                         <option>Inconclusive</option>
                         <option>Insufficiency Verifier</option>
                         <option>Minor Discrepancy</option>
-                        <option>Pending</option>
-                        <option>Re-assigned</option>
                         <option>Verified Clear</option>
                     </select>
                 </td>

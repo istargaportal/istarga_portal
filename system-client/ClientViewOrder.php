@@ -4,8 +4,8 @@ include 'Header.php';
 ?>
 <div class="content">
   <div class="container-fluid">
-
     <div class="col-md-12 no_padding">
+      <br>
       <div class="card card-plain">
         <div class="card-header card-header-primary">
           <h4 class="card-title mt-0"> Search</h4>
@@ -26,7 +26,7 @@ include 'Header.php';
               <option value="">ALL</option>
               <option>Fresh</option>
               <option>In Progress</option>
-              <option>Insuffiency</option>
+              <option>Insufficiency</option>
               <option>Completed</option>
             </select>
           </div>

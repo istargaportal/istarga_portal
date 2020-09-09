@@ -135,7 +135,7 @@
                     <div class="input-group-prepend" style="padding-bottom: 0;">
                       <span class="input-group-text" style="padding-bottom: 0;"><i class="fas fa-user"></i></span>
                     </div>
-                    <input type="text" name="email" id="email" class="form-control" placeholder="Email address" />
+                    <input type="text" name="email" id="email" class="form-control" placeholder="Enter Username" />
                   </div>
 
                   <div class="input-group form-group" style="padding-bottom: 0;">
@@ -293,7 +293,7 @@
       if (text == "Please Select User-type") {
         modalLabel.innerHTML = text
         modalLaunchButton.click()
-      } else if (text == "Please enter Email Address") {
+      } else if (text == "Please enter Username") {
         modalLabel.innerHTML = text
         modalLaunchButton.click()
       } else if (text == "Please enter Password") {

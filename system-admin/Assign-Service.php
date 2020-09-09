@@ -184,12 +184,12 @@ include 'API/dropdown.css';
 
                 <div class="col-md-3">
                   <label>Price</label>
-                  <input type="text" class="form-control Number" name="price" value="<?php echo @$price; ?>" />
+                  <input type="text" class="form-control Number" name="price" id="price" value="<?php echo @$price; ?>" />
                 </div>
 
                 <div class="col-md-3">
                   <h6 style="color: #000">SLA <small style="float: right;">in Days</small></h6>
-                  <input type="text" class="form-control Number" name="sla" value="<?php echo @$sla; ?>" />
+                  <input type="text" class="form-control Number" name="sla" id="sla" value="<?php echo @$sla; ?>" />
                 </div>
                 
                 <div hidden="" class="col-md-3">
@@ -548,10 +548,12 @@ include 'API/dropdown.css';
         else if(price == "")
         {
           alert('Please enter price!');
+          $('#price').focus();
         }
         else if(sla == "")
         {
           alert('Please enter sla!');
+          $('#sla').focus();
         }
         else
         {

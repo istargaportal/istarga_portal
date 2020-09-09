@@ -31,7 +31,8 @@ if($_POST['action'] == 'load_manual_search')
 	if($applicant_name != ""){ $sq.= " AND (o.first_name LIKE '$applicant_name%' OR o.last_name LIKE '$applicant_name%') "; }
 	if($case_reference_no != ""){ $sq.= " AND o.case_reference_no LIKE '$case_reference_no%' "; }
 	if($order_creation_date != ""){ $sq.= " AND os.order_creation_date LIKE '$order_creation_date%' "; }
-	if($order_status != ""){ $sq.= " AND os.order_status LIKE '$order_status%' "; }
+	if($order_status != ""){ $sq.= " AND os.order_status = '$order_status' "; }
+	if($of_qc_order_status != ""){ $sq.= " AND os.of_qc_order_status = '$of_qc_order_status' "; }
 	if($service_id != ""){ $sq.= " AND os.service_id = '$service_id' "; }
     $sq.="GROUP BY os.order_service_details_id";
 	$result = mysqli_query($db,$sq); 
@@ -59,14 +60,14 @@ if($_POST['action'] == 'load_manual_search')
         echo '
         <tr>
 	        <td class="tablehead1">'.$sr.'</td>
-	        <td class="tablehead1">'.$row["case_reference_no"].'</td>
+	        <td class="tablehead1"><a onclick="view_order_details('.$row["order_id"].')"  class="btn_link">'.$row["case_reference_no"].'</a></td>
 	        <td class="tablehead1">'.$row['is_rush'].'</td>
 	        <td class="tablehead1 form_left">'.$row["first_name"].' '.$row["last_name"].' </td>
 	        <td class="tablehead1">'.$row["order_creation_date"].'</td>
 	        <td class="tablehead1">'.$expected_course_date.'</td>
 	        <td class="tablehead1">'.$row["service_name"].'</td>
-	        <td class="tablehead1">'.$order_status.'</td>
 	        <td class="tablehead1">'.$row["of_qc_order_status"].'</td>
+	        <td class="tablehead1">'.$order_status.'</td>
 	        <td class="tablehead1">'.$row["of_closure_date"].'</td>
         </tr>
         ';

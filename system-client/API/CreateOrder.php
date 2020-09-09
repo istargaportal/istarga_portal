@@ -60,7 +60,7 @@ if($_POST['action']=='select_package')
         $package_panel_id = "package_id_panel_";
         $package_width = "97%";
     }
-    echo '<div id="'.$package_panel_id.$package_id.'"><br><div class="col-md-12" style="border:solid 2px #aa50ab; border-radius:10px; width:'.@$package_width.';position:relative;"><h4 class="btn btn-primary btn-sm btn-round" style="position:absolute;top:-20px; left:15px;">'.@$package_name.'</h4><h4 class="btn btn-primary btn-sm btn-round" style="position:absolute;top:-20px; right:15px;">'.$price.'.'.$currency_name.'</h4> <br>';
+    echo '<div id="'.$package_panel_id.$package_id.'"><br><div class="col-md-12" style="border:solid 2px #aa50ab; border-radius:10px; width:'.@$package_width.';position:relative;"><h4 class="btn btn-primary btn-sm btn-round" style="position:absolute;top:-20px; left:15px;">'.@$package_name.'</h4><h4 class="btn btn-primary btn-sm btn-round" style="position:absolute;top:-20px; right:15px; display:none;">'.$price.'.'.$currency_name.'</h4> <br>';
 
     if(@$sub_action != "preview_package")
     {
@@ -136,12 +136,12 @@ if($_POST['action']=='select_service')
         $service_panel_id = "preview_service_id_panel_";
         $service_width = "97%";
     }
-    echo '<div id="'.$service_panel_id.$assign_service_id.'"><br><div class="col-md-12" style="border:solid 2px #aa50ab; border-radius:10px; width:'.@$service_width.';posiion:relative;">';
+    echo '<div id="'.$service_panel_id.$assign_service_id.'"><div class="col-md-12" style="border-bottom:solid 1px #ccc; width:'.@$service_width.';posiion:relative;">';
     if(@$sub_action != "preview_service")
     {
         echo '<input type="hidden" name="assign_service_id[]" class="assign_service_id" value="'.$assign_service_id.'" />';
     }
-    $sq="SELECT s.id AS service_id, s.service_name, sa.price, c.name AS country_name, c.currency AS currency_name FROM assigned_service sa INNER JOIN service_list s ON s.id= sa.service_id INNER JOIN countries c ON c.id = sa.country_id WHERE sa.id = '$assign_service_id' ";
+    $sq="SELECT s.id AS service_id, s.service_name, sa.price, sa.sla, c.name AS country_name, c.currency AS currency_name FROM assigned_service sa INNER JOIN service_list s ON s.id= sa.service_id INNER JOIN countries c ON c.id = sa.country_id WHERE sa.id = '$assign_service_id' ";
     $resul = mysqli_query($db,$sq); 
     while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -169,17 +169,20 @@ if($_POST['action']=='select_service')
                 <div class="col-md-2">
                     <h4 class="selection" style="margin:6px 0;">'.$country_name.'</h4>
                 </div>
-                
-                <div class="col-md-5">
+                <div class="col-md-4">
                     '.@$all_documents.'
-                </div>';
+                </div>
+                <div class="col-md-1">
+                    <h4 class="selection" style="margin:6px 0;">'.$row['sla'].'</h4>
+                </div>
+                ';
                 // <div class="col-md-2">
                 //     <h4 class="selection" style="margin:6px 0;">'.$price.'.'.$currency_name.'</h4>
                 // </div>
         if(@$sub_action != "preview_service")
         {
             echo '
-                <div class="col-md-2">
+                <div class="col-md-2 form_center">
                     <a onclick="remove_selected_service('.$assign_service_id.')" class="btn btn-danger btn_remove btn-xs btn-round"><i class="fa fa-remove"></i> Remove</a>
                 </div>';
         }
@@ -309,33 +312,12 @@ if($_POST['action'] == "save_form")
 
     $all_services = "";
 
-    $check_2="SELECT od.package_id, od.service_id FROM order_master_details od WHERE od.order_id   ='".$order_id."' ";
+    $check_2="SELECT s.service_name FROM order_master_details od INNER JOIN service_list s ON s.id = od.service_id WHERE od.order_id   ='".$order_id."' GROUP BY od.service_id ";
     $resul_2 = mysqli_query($db,$check_2); 
     while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
     {
-        $package_id = $row_2['package_id'];
-        $service_id = $row_2['service_id'];
-        if($package_id != "0")
-        {
-            $sq="SELECT ps.service_id, s.service_name, s.price, c.name AS country_name, cs.currency AS currency_name FROM package_list_service ps INNER JOIN service_list s ON s.id = ps.service_id INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cs ON cs.id = s.currency_id WHERE ps.package_id = '$package_id' ";
-            $resul = mysqli_query($db,$sq); 
-            while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-            {
-                $service_name = $row['service_name'];
-                $all_services.="<h5 style='margin:4px 0;font-weight:bold;'>".$service_name."</h5>";
-            }
-        }
-        
-        if($service_id != "0")
-        {
-            $sq="SELECT s.id AS service_id, s.service_name, s.price, c.name AS country_name, cs.currency AS currency_name FROM service_list s INNER JOIN countries c ON c.id = s.country_id INNER JOIN countries cs ON cs.id = s.currency_id WHERE s.id = '$service_id' ";
-            $resul = mysqli_query($db,$sq); 
-            while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-            {
-                $service_name = $row['service_name'];
-                $all_services.="<h5 style='margin:4px 0;font-weight:bold;'>".$service_name."</h5>";
-            }
-        }
+        $service_name = $row_2['service_name'];
+        $all_services.="<h5 style='margin:4px 0;font-weight:bold;'>".$service_name."</h5>";
     }
     
     if(isset($documentlist_id))
@@ -372,7 +354,7 @@ if($_POST['action'] == "save_form")
             $i++;
         }
     }
-
+    
     if($insufficiency_contact == "Applicant")
     {
         include '../../API/SMTP/sendMail.php';

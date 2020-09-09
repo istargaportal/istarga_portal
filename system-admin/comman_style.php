@@ -302,8 +302,9 @@
     .btn_link{
       color: #3354d6 !important;
       background: #fff !important;
-      border:solid 1px #ccc !important;
+      transition: 0.4s all ease;
       font-weight: bold !important;
+      cursor: pointer;
     }
     .count_panel
     {

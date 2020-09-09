@@ -32,10 +32,19 @@ if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 	$order_creation_date_time = date('d-m-Y', strtotime($row['order_creation_date_time']));
 	$order_completion_date = "";
 	if($row["order_completion_date"] != "")
-	  {
+	{
 	    $order_completion_date = date('d-m-Y', strtotime($row["order_completion_date"]));
-	  }
+	}
 }
+if($order_status == "Completed")
+{
+	$download_button = "<a target='_blank' href='../API/Print-Background-Verification-Report.php?order_id=".$order_id."&default_report_color_id=0&download=true' class='btn btn-success'> <i class='fa fa-download'></i> Download</a>";
+}
+else
+{
+	$download_button = "<a class='btn btn-default disabled_btn'> <i class='fa fa-download'></i> Download</a>";
+}
+$print_button = "<a target='_blank' href='../API/Print-Background-Verification-Report.php?order_id=".$order_id."&default_report_color_id=0' class='btn btn-primary'> <i class='fa fa-print'></i> Print Report</a>";
 if($is_rush == "1") { $is_rush_checked = "checked"; }
 $print_form = "'print_form'";
 	echo '
@@ -55,7 +64,24 @@ $print_form = "'print_form'";
 	$document_head = '<div class="card-header card-header-primary" style="padding: 4px 8px; margin-bottom: 15px; margin-top: 10px;"><h4 style="color: #fff;margin: 0;" class="card-title"><i class="fa fa-files-o"></i> Documents</h4></div>';
 	$package_print = $service_print = $document_print = "";
 	$pacakge_count = $service_count = $all_package_id = 0;
-	$check_2="SELECT od.assign_package_id, od.assign_service_id, od.package_id, od.service_id FROM order_service_details od WHERE od.order_id ='".$_POST['order_id']."' ";
+	$service_print.= '
+		<div class="row">
+            <div class="col-md-5">
+                <b>Service Name</b>
+            </div>
+            <div class="col-md-2">
+                <b>Country</b>
+            </div>
+            <div class="col-md-4 no_padding">
+                <b>Mandatory Documents</b>
+            </div>
+            <div class="col-md-1">
+                <b>SLA</b>
+            </div>
+            <hr class="col12" style="margin:4px 0">
+        </div>
+	';
+	$check_2="SELECT od.assign_package_id, od.assign_service_id, od.package_id, od.service_id, od.order_creation_date_cleared FROM order_service_details od WHERE od.order_id ='".$_POST['order_id']."' ";
 	$resul_2 = mysqli_query($db,$check_2); 
 	while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
 	{
@@ -125,8 +151,8 @@ $print_form = "'print_form'";
 	    if($service_id_compare != "0")
 		{
 			$service_count++;
-			$service_print.= '<div><br><div class="col-md-12" style="border:solid 2px #aa50ab; border-radius:10px; width:100%;posiion:relative;">';
-		    $sq="SELECT s.id AS service_id, s.service_name, c.name AS country_name, c.currency AS currency_name, a.price FROM service_list s INNER JOIN assigned_service a ON a.service_id = s.id INNER JOIN countries c ON c.id = a.country_id WHERE a.id = '$service_id_compare' ";
+			$service_print.= '<div><div class="col-md-12" style=" width:100%;posiion:relative;">';
+		    $sq="SELECT s.id AS service_id, s.service_name, c.name AS country_name, c.currency AS currency_name, a.price, a.sla FROM service_list s INNER JOIN assigned_service a ON a.service_id = s.id INNER JOIN countries c ON c.id = a.country_id WHERE a.id = '$service_id_compare' ";
 		    $resul = mysqli_query($db,$sq); 
 		    while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 		    {
@@ -135,6 +161,7 @@ $print_form = "'print_form'";
 		        $country_name = @$row['country_name'];
 		        $currency_name = @$row['currency_name'];
 
+		        $sla = $row['sla'];
 		        $all_documents = "";
 		        $check_1='SELECT d.document_name FROM service_list_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.service_id = '.$row['service_id'].'  ';
 		        $resul_1 = mysqli_query($db,$check_1);
@@ -143,16 +170,20 @@ $print_form = "'print_form'";
 		          $all_documents.="<a class='btn btn-default btn-small'>".$row_1['document_name']."</a>";
 		        }
 		        $service_print.= '
-		            <div class="row">
-		                <div class="col-md-4">
+		            <div class="row" style="border-bottom:solid 1px #ccc;">
+		                <div class="col-md-5 no_padding">
 		                    <h4 class="selection" style="margin:6px 0;">'.@$service_name.'</h4>
 		                </div>
 		                <div class="col-md-2">
 		                    <h4 class="selection" style="margin:6px 0;">'.$country_name.'</h4>
 		                </div>
-		                <div class="col-md-6">
+		                <div class="col-md-4">
 		                    '.@$all_documents.'
-		                </div>';
+		                </div>
+		                <div class="col-md-1">
+		                    <h4 class="selection form_center" style="margin:6px 0;">'.$sla.'</h4>
+		                </div>
+		                ';
 		        $service_print.= '</div>';        
 		    }
 		    $service_print.= '</div></div>';
@@ -168,45 +199,37 @@ $print_form = "'print_form'";
 	{
 		$service_print.= '<h6>NO SERVICE SELECTED</h6>';
 	}
-	if($order_status == "Completed")
-	{
-		$download_button = "<a target='_blank' href='../API/Print-Background-Verification-Report.php?order_id=".$order_id."&default_report_color_id=0&download=true' class='btn btn-success'> <i class='fa fa-download'></i> Download</a>";
-	}
-	else
-	{
-		$download_button = "<a class='btn btn-default disabled_btn'> <i class='fa fa-download'></i> Download</a>";
-	}
-	$print_button = "<a target='_blank' href='../API/Print-Background-Verification-Report.php?order_id=".$order_id."&default_report_color_id=0' class='btn btn-primary'> <i class='fa fa-print'></i> Print Report</a>";
+	
 	
 	echo '
 	<div id="print_form">
 		<div class="row">
 			<div class="col-md-6 no_padding">
-		        <label><b>Applicant Name :</b> '.$applicant_name.'</label>
+		        <label><b>Applicant Name:</b> '.$applicant_name.'</label>
 		    </div>
 		    <div class="col-md-6 no_padding">
-		        <label><b>Case Ref. No. :</b> '.$case_reference_no.'</label>
+		        <label><b>Case Ref No:</b> '.$case_reference_no.'</label>
 		    </div>
 		    <div class="col-md-6 no_padding">
-		        <label><b>Internal Reference ID :</b> '.$internal_reference_id.'</label>
+		        <label><b>Internal Reference ID:</b> '.$internal_reference_id.'</label>
 		    </div>
 		    <div class="col-md-6 no_padding">
-		        <label><b>Joining Date :</b> '.$joining_date.'</label>
+		        <label><b>Joining Date:</b> '.$joining_date.'</label>
 		    </div>
 		    <div class="col-md-6 no_padding">
-		        <label><b>Joining Location :</b> '.$joining_location.'</label>
+		        <label><b>Joining Location:</b> '.$joining_location.'</label>
 		    </div>
 		    <div class="col-md-6 no_padding">
-		        <label><b>Order Creation Date :</b> '.$order_creation_date_time.'</label>
+		        <label><b>Original Order Creation Date:</b> '.$order_creation_date_time.'</label>
 		    </div>
 		    <div class="col-md-6 no_padding">
-		        <label><b>Completion Date :</b> '.$order_completion_date.'</label>
+		        <label><b>Completion Date:</b> '.$order_completion_date.'</label>
 		    </div>
 		    <div class="col-md-6 no_padding">
-		        <label><b>Completion Status :</b> '.$order_status.'</label>
+		        <label><b>Completion Status:</b> '.$order_status.'</label>
 		    </div>
 		    <div class="col-md-6 no_padding">
-		        <label><b>Email ID :</b> '.$email_id.'</label>
+		        <label><b>Email ID:</b> '.$email_id.'</label>
 		    </div>
 	    </div>
 	';
@@ -214,18 +237,23 @@ $print_form = "'print_form'";
 	echo $service_head.$service_print;
 ?>
 	<?php
-      $check="SELECT os.order_service_details_id, os.service_id, s.service_name, os.assign_package_id, os.assign_service_id FROM order_service_details os INNER JOIN service_list s ON s.id = os.service_id WHERE os.order_id   ='".$order_id."'";
+      $check="SELECT os.order_service_details_id, os.service_id, s.service_name, os.assign_package_id, os.assign_service_id, os.order_creation_date_cleared FROM order_service_details os INNER JOIN service_list s ON s.id = os.service_id WHERE os.order_id   ='".$order_id."'";
       $resul = mysqli_query($db,$check); 
       while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
       {
-      	$order_service_details_id = $row['order_service_details_id'];
+      	if($row["order_creation_date_cleared"] != "")
+      	{
+      		$row["order_creation_date_cleared"] = date('d-m-Y', strtotime($row["order_creation_date_cleared"]));
+      	}
+
+        $order_service_details_id = $row['order_service_details_id'];
         echo '
         <div class="container-fluid no_padding">
         <div class="row">
         <div class="col-md-12 no_padding">
         <div class="card">
         <div class="card-header card-header-primary" id="panel_msg_'.$row["service_id"].'">
-        <h4 style=" color: white;" class="card-title"><i class="fa fa-edit"></i> '.$row["service_name"].'</h4>
+        <h4 style=" color: white;" class="card-title"><i class="fa fa-edit"></i> '.$row["service_name"].' <a class="pull-right">Order Creation Date : <b>'.$row["order_creation_date_cleared"].'</b></a></h4>
         </div>
         <div id="toggle_div_'.$row["service_id"].'" class="row" style="margin-top: 1%;">
         <br><br>
@@ -243,7 +271,7 @@ $print_form = "'print_form'";
 	    {
 	    	if($count_fields == 20)
 	    	{
-	    		echo '</table>'.$footer.$header.'<table class="input_data_table">';
+	    		echo '</table>'.@$footer.@$header.'<table class="input_data_table">';
 	    		$count_fields = 0;
 	    	}
 	    	if($row_1["service_field"] == "city_id")
@@ -316,8 +344,8 @@ $print_form = "'print_form'";
         </div>
         </div>
         ';
-        echo $download_button.' '.$print_button;
       }
+    	echo $download_button.' '.$print_button;
       ?>
 <?php
 	echo '	</div>

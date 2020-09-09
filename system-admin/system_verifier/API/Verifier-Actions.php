@@ -37,6 +37,7 @@ if($_POST['action'] == 'update_applicant_details')
     $verifier_comments = addslashes($verifier_comments);
     $check = "UPDATE order_verifier_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', status = '$status' WHERE order_verify_id = '$order_verify_id' ";
     $result = mysqli_query($db,$check);
+    $order_status = 'In Progress';
     if($status == "Re-assigned") { $order_status = "Re-assigned"; }
 
     $additional_comments_verifier = "";
@@ -56,6 +57,7 @@ if($_POST['action'] == 'update_verfier_details')
     $verifier_comments = addslashes($verifier_comments);
     $check = "UPDATE order_verifier_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', status = '$status' WHERE order_verify_id = '$order_verify_id' ";
     $result = mysqli_query($db,$check);
+    $order_status = 'In Progress';
     if($status == "Re-assigned") { $order_status = "Re-assigned"; }
     
     $additional_comments_verifier = "";

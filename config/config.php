@@ -49,8 +49,8 @@ $service_contact_no = "+918527476969";
 
 $company_name = 'ISTARGA';
 $web_url = "https://" . $_SERVER['SERVER_NAME'];
-$client_login_url = $web_url."/system-client/";
-$applicant_login_url = $web_url."/system-applicant/";
+$client_login_url = $web_url."/system-client/Index.php";
+$applicant_login_url = $web_url."/system-applicant/Index.php";
 $forget_password_url_admin = $web_url."/system-admin/Change-Password.php";
 
 ?>
