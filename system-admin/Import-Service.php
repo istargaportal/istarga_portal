@@ -40,13 +40,13 @@ for($i=5;$i<=$arrayCount;$i++)
 {
 	$service_name = addslashes($allDataInSheet[$i]["A"]);
 	$service_type_name = addslashes($allDataInSheet[$i]["B"]);
-	$is_webservices = addslashes($allDataInSheet[$i]["C"]);
+	// $is_webservices = addslashes($allDataInSheet[$i]["C"]);
 	// $country = addslashes($allDataInSheet[$i]["C"]);
 	// $price = addslashes($allDataInSheet[$i]["D"]);
 	// $currency = addslashes($allDataInSheet[$i]["E"]);
-	$document_name = addslashes($allDataInSheet[$i]["D"]);
-	if(strtolower($is_webservices) == "yes"){ $is_webservices = 1; } else { $is_webservices = 0; }
-	if($is_webservices == ""){ $is_webservices = 0; }
+	$document_name = addslashes($allDataInSheet[$i]["C"]);
+	// if(strtolower($is_webservices) == "yes"){ $is_webservices = 1; } else { $is_webservices = 0; }
+	// if($is_webservices == ""){ $is_webservices = 0; }
 	if($service_name != "")
 	{
 		$service_type_id = $country_id = $currency_id = $document_id = 0;
@@ -75,7 +75,7 @@ for($i=5;$i<=$arrayCount;$i++)
 			}
 			else
 			{
-				$sql = "INSERT INTO service_list(service_name, service_type_id, is_webservices) VALUES ('$service_name','$service_type_id', '$is_webservices')";
+				$sql = "INSERT INTO service_list(service_name, service_type_id) VALUES ('$service_name','$service_type_id')";
 				$result = mysqli_query($db,$sql);
 				$service_id = $db->insert_id;
 				

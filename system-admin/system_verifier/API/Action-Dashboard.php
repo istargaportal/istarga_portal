@@ -944,33 +944,29 @@ function save_verifier_details()
     }
     else
     {
-        let r = confirm("Are you sure to Submit your Application to OF?")
-        if(r == true)
-        {
-            $('#btn_ok').addClass('disabled_btn');
-            var myform = document.getElementById("verifier_form");
-            var fd = new FormData(myform );
-            $.ajax({
-                url: "./API/Verifier-Actions.php",
-                data: fd,
-                cache: false,
-                processData: false,
-                contentType: false,
-                type: 'POST',
-                success: function (html) {
-                if(html == "updated")
-                {
-                    alert('Application updated successfully!');
-                    window.location.href = "Dashboard.php";
-                }
-                else
-                {
-                    alert('Error occurred');
-                    $('#btn_ok').removeClass('disabled_btn');
-                }
-              }
-            });
+        $('#btn_ok').addClass('disabled_btn');
+        var myform = document.getElementById("verifier_form");
+        var fd = new FormData(myform );
+        $.ajax({
+            url: "./API/Verifier-Actions.php",
+            data: fd,
+            cache: false,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function (html) {
+            if(html == "updated")
+            {
+                alert('Application updated successfully!');
+                window.location.href = "Dashboard.php";
             }
+            else
+            {
+                alert('Error occurred');
+                $('#btn_ok').removeClass('disabled_btn');
+            }
+          }
+        });
         }
     }
 

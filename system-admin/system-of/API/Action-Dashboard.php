@@ -893,7 +893,7 @@ echo '
                 $('#country_id_'+service_id).chosen();
                 $('#country_id_'+service_id).prop('required', is_require);
                 $('#country_id_'+service_id).attr('name', new_name);
-                if($('#country_id_'+service_id).val() != "0" && parseFloat($('#state_id_'+service_id).val()) == "0")
+                if($('#country_id_'+service_id).val() != "0" && parseFloat($('#state_id_'+service_id).val() || 0) == "0")
                 {
                     load_state(service_id, order_details_id, 0)
                 }
@@ -921,7 +921,7 @@ echo '
                 $('#state_id_'+service_id).prop('required', is_require);
                 $('#state_id_'+service_id).attr('name', new_name);
 
-                if($('#state_id_'+service_id).val() != "0" && parseFloat($('#city_id_'+service_id).val()) == "0")
+                if($('#state_id_'+service_id).val() != "0" && parseFloat($('#city_id_'+service_id).val() || 0) == "0")
                 {
                     load_city(service_id, order_details_id, 0)
                 }
