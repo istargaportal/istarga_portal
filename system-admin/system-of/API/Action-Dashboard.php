@@ -607,7 +607,7 @@ echo '
         <a href="javascript:add_additional_comments_of()" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add</a>
     </div>
     <div class="col-md-5">
-        <h5 class="btn btn-primary col-md-12 form_left btn-xs"><i class="fa fa-comments" aria-hidden="true"></i> Re-assigned Logs</h5>
+        <h5 class="btn btn-primary col-md-12 form_left btn-xs"><i class="fa fa-comments" aria-hidden="true"></i> Additional Comments</h5>
         <div style="height: 200px; overflow-y: scroll;" id="of_comments_notes_panel"></div>
     </div>
     </form>
