@@ -6,6 +6,10 @@ if(isset($_SESSION['username']))
 {
 	$back_link = '../';
 }
+if(isset($_SESSION['email']))
+{
+	$back_link = "";
+}
 require_once "../config/config.php";
 
 $get_connection=new connectdb;
