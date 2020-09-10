@@ -7,11 +7,12 @@ class connectdb
   
   private $user='pesrsxttfd';
   private $password='Demo@123';
-  
+  private $dbname='pesrsxttfd';
+
+  // private $dbname='instagra_db';
   // private $user='root';
   // private $password='';
-  
-  private $dbname='pesrsxttfd';
+
   private $conn;
   
   public function connect()

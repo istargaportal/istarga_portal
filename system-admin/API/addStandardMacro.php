@@ -35,7 +35,7 @@ class service
 
       if ($data != "") {
         $check = "INSERT INTO `standard_macro` SET
-    `macro_id`='" . $MacroType . "',
+    `macro_type`='" . $MacroType . "',
     `service_type_id`='" . $service_type_id . "',
     `scenario`='" . $Scenario . "',
     `comment`='" . $comment . "'";

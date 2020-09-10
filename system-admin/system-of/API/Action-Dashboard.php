@@ -131,7 +131,7 @@ if($_POST['action'] == 'load_service_order')
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
-        $cmd = "UPDATE order_service_details SET lock_status = 1, of_user_id = '$user_id', of_assigned_date = '".date('Y-m-d H:i:s')."' WHERE order_service_details_id  = '$order_service_details_id' AND of_user_id = '0' ";
+        $cmd = "UPDATE order_service_details SET lock_status = 1, of_user_id = '$user_id', of_assigned_date = '".date('Y-m-d H:i:s')."' WHERE order_service_details_id  = '$order_service_details_id' ";
         $result = mysqli_query($db,$cmd);
     }
     require_once '../../../config/comman_js.php';
@@ -150,6 +150,7 @@ if($_POST['action'] == 'load_service_order')
         $service_id = $row['service_id'];
         $assign_service_id = $row['assign_service_id'];
 
+        $sla = 0;        
         if($assign_service_id != 0)
         {
             $check_1 = "SELECT sla FROM assigned_service WHERE id = '$assign_service_id'  ";

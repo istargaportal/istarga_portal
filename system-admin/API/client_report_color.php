@@ -91,10 +91,11 @@ class country
         {
             while($row = $result->fetch_assoc())
             {
-            	$yel_selected = $red_selected = $gre_selected = $amb_selected = $wht_selected = $blu_selected = ""; 
+            	$yel_selected = $red_selected = $gre_selected = $amb_selected = $gray_selected = $wht_selected = $blu_selected = ""; 
             	if($row["color_code"] == "Red"){ $red_selected = "selected"; }
             	if($row["color_code"] == "Green"){ $gre_selected = "selected"; }
-            	if($row["color_code"] == "Amber"){ $amb_selected = "selected"; }
+                if($row["color_code"] == "Amber"){ $amb_selected = "selected"; }
+            	if($row["color_code"] == "Gray"){ $gray_selected = "selected"; }
             	echo '
             	<tr>
             		<input type="hidden" name="default_report_color_id[]" value="'.$row["default_report_color_id"].'" />
@@ -107,7 +108,8 @@ class country
 	            			<select id="color_code_'.$row["default_report_color_id"].'" onchange="change_color_selection('.$row["default_report_color_id"].')" class="browser-default custom-select" name="color_code[]">
 	            				<option '.$gre_selected.'>Green</option>
 	            				<option '.$red_selected.'>Red</option>
-	            				<option '.$amb_selected.'>Amber</option>
+                                <option '.$amb_selected.'>Amber</option>
+	            				<option '.$gray_selected.'>Gray</option>
 	            			</select>
                             <script>change_color_selection('.$row["default_report_color_id"].');</script>
             			</div>

@@ -17,13 +17,9 @@
         {
             $mail->SMTPSecure = 'ssl';
             $mail->Host = 'smtp.gmail.com';
-            $mail->Port = 465;  
-
-            $mail->Username = 'maheshmthorat@gmail.com';  
-            $mail->Password = 'ccjxizotbjxfidfa';
-
-            // $mail->Username = 'verify@istargascreening.com';
-            // $mail->Password = 'gqvihwvucykerahu';
+            $mail->Port = 465;
+            $mail->Username = 'verify@istargascreening.com';
+            $mail->Password = 'gqvihwvucykerahu';
 
         }
                 

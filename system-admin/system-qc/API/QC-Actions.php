@@ -36,7 +36,46 @@ if($_POST['action'] == 'update_applicant_details')
     $verifier_details = addslashes($verifier_details);
     $verifier_comments = addslashes($verifier_comments);
 
-    $cmd = "UPDATE order_service_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', currency_id = '$currency_id', additional_fees = '$additional_fees', of_closure_date = '$of_closure_date', qc_user_id = '$qc_user_id', order_status = '$order_status', of_qc_order_status = '$of_qc_order_status', order_completion_date = '".date("Y-m-d H:i:s")."' WHERE order_service_details_id = '$order_service_details_id' ";
+    if($of_qc_order_status == "Discrepancy") { $default_report_color_id = "4"; }
+    if($of_qc_order_status == "Minor Discrepancy") { $default_report_color_id = "1"; }
+    if($of_qc_order_status == "Canceled") { $default_report_color_id = "6"; }
+    if($of_qc_order_status == "Inconclusive") { $default_report_color_id = "8"; }
+    if($of_qc_order_status == "UTV") { $default_report_color_id = "5"; }
+    if($of_qc_order_status == "Verified Clear") { $default_report_color_id = "2"; }
+
+    $check="SELECT client_id FROM order_master WHERE order_id = '".$order_id."'";
+    $resul = mysqli_query($db,$check); 
+    if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+    {
+        $client_id = $row['client_id'];
+    }
+
+    $check="SELECT default_report_color FROM client WHERE id = '$client_id' ";
+    $resul = mysqli_query($db,$check); 
+    if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+    {
+        $default_report_color = $row['default_report_color'];
+    }
+
+    if($default_report_color == 0)
+    {
+        $check="SELECT color_code FROM default_report_color WHERE default_report_color_id = '$default_report_color_id' ";
+    }
+    else
+    {
+        $check="SELECT color_code FROM client_default_report_color WHERE default_report_color_id = '$default_report_color_id' AND client_id = '$client_id' ";
+    }
+    $resul = mysqli_query($db,$check); 
+    if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+    {
+        $color_code = $row['color_code'];
+    }
+    if($color_code == "Red"){ $color_code = "#eb1e2f"; }
+    if($color_code == "Green"){ $color_code = "#25ce60"; }
+    if($color_code == "Amber"){ $color_code = "#ffbf00"; }
+    if($color_code == "Gray"){ $color_code = "#ccc"; }
+
+    $cmd = "UPDATE order_service_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', currency_id = '$currency_id', additional_fees = '$additional_fees', of_closure_date = '$of_closure_date', qc_user_id = '$qc_user_id', order_status = '$order_status', of_qc_order_status = '$of_qc_order_status', order_completion_date = '".date("Y-m-d H:i:s")."', default_report_color_id = '$default_report_color_id', color_code = '$color_code' WHERE order_service_details_id = '$order_service_details_id' ";
     $result = mysqli_query($db,$cmd);
     $result = 1;
     if($result > 0)
@@ -63,7 +102,7 @@ if($_POST['action'] == 'update_applicant_details')
         }
         
         $not_verified = 0;
-        $check_1 = "SELECT order_status FROM order_service_details WHERE order_status != 'Completed' ";
+        $check_1 = "SELECT order_status FROM order_service_details WHERE order_status != 'Completed' AND order_id = '$order_id' ";
         $resul_1 = mysqli_query($db,$check_1); 
         while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
         {
@@ -71,12 +110,7 @@ if($_POST['action'] == 'update_applicant_details')
         }
         if($not_verified == 0)
         {
-            $check = "UPDATE order_master SET order_status = '$order_status' WHERE order_id  = '$order_id' ";
-            $result = mysqli_query($db,$check);
-        }
-        else
-        {
-            $check = "UPDATE order_master SET order_status = 'Completed', order_completion_date = '".date("Y-m-d H:i:s")."' WHERE order_id  = '$order_id' ";
+            $check = "UPDATE order_master SET order_status = 'Completed', default_report_color_id = '$default_report_color_id', order_completion_date = '".date("Y-m-d H:i:s")."' WHERE order_id  = '$order_id' ";
             $result = mysqli_query($db,$check);
         }
         echo 'updated';

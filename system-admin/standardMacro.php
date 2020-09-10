@@ -13,25 +13,38 @@ include 'Header.php';
           <div class="card-body">
             <form id="ajax" method="POST">
               <div class="row justify-content-between">
-                <div class="form-group col-md-4">
-                  <label for="Service Type" class="bmd-label-floating" style="margin-left: 4%; font-size:13px">Service Type</label>
+                <div class="form-group1 col-md-4">
+                  <label for="Service Type" class="bmd-label-floating1" style=" font-size:13px">Service Type</label>
                   <select style="margin-top:1%" name="ServiceType" id="Service Type" class="browser-default custom-select" required>
                   </select>
                 </div>
 
-                <div class="form-group col-md-4">
-                  <label for="Macro" class="bmd-label-floating" style="margin-left: 4%; font-size:13px">Macro Type</label>
-                  <select  style="margin-top:1%" name="MacroType" id="Macro Type" class="browser-default custom-select" required>
+                <div class="form-group1 col-md-4">
+                  <label for="Macro" class="bmd-label-floating1" style=" font-size:13px">Macro Type</label>
+                  <select  style="margin-top:1%" name="MacroType" id="MacroType" class="browser-default custom-select" required>
+                    <option value="">Select</option>
+                    <option>Canceled</option>
+                    <option>Discrepancy</option>
+                    <option>UTV</option>
+                    <option>Inconclusive</option>
+                    <option>Insufficiency</option>
+                    <option>Insufficiency Cleared</option>
+                    <option>Insufficiency Verifier</option>
+                    <option>Minor Discrepancy</option>
+                    <option>Park</option>
+                    <option>Pending</option>
+                    <option>Re-assigned</option>
+                    <option>Verified Clear</option>
                   </select>
                 </div>
-                <div class="form-group col-md-4">
-                  <label for="Service" style="margin-left: 4%;">Scenario</label>
+                <div class="form-group1 col-md-4">
+                  <label for="Service" style="">Scenario</label>
                   <input name="Scenario" id="Scenario" type="text" class="form-control" placeholder="" required />
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-8">
-                  <label class="bmd-label-floating" for="Service">Comment</label>
+                  <label class="bmd-label-floating1" for="Service">Comment</label>
                   <input name="Comment" id="Comment" type="text" class="form-control" placeholder="" required />
                 </div>
                 <div class="col-md-4 form_right">
@@ -355,14 +368,12 @@ include '../datatable/_datatable.php';
         data[obj.name] = obj.value;
       });
 
-      console.log(data);
       fetch('./API/addStandardMacro.php', {
         method: 'post',
         body: JSON.stringify(data)
       }).then(function(res) {
-        console.log(res.text());
-        alert('Standard Macro saved Successfully');
         popuTable();
+        alert('Standard Macro saved Successfully');
         reset();
       }).catch(err => {
         //console.log(err);

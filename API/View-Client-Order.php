@@ -1,5 +1,11 @@
 <?php
 
+session_start();
+$back_link = "";
+if(isset($_SESSION['username']))
+{
+	$back_link = '../';
+}
 require_once "../config/config.php";
 
 $get_connection=new connectdb;
@@ -36,15 +42,8 @@ if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 	    $order_completion_date = date('d-m-Y', strtotime($row["order_completion_date"]));
 	}
 }
-if($order_status == "Completed")
-{
-	$download_button = "<a target='_blank' href='../API/Print-Background-Verification-Report.php?order_id=".$order_id."&default_report_color_id=0&download=true' class='btn btn-success'> <i class='fa fa-download'></i> Download</a>";
-}
-else
-{
-	$download_button = "<a class='btn btn-default disabled_btn'> <i class='fa fa-download'></i> Download</a>";
-}
-$print_button = "<a target='_blank' href='../API/Print-Background-Verification-Report.php?order_id=".$order_id."&default_report_color_id=0' class='btn btn-primary'> <i class='fa fa-print'></i> Print Report</a>";
+
+$print_button = "<a target='_blank' href='../".@$back_link."API/Print-Background-Verification-Report.php?order_id=".$order_id."' class='btn btn-primary'> <i class='fa fa-print'></i> Print Report</a>";
 if($is_rush == "1") { $is_rush_checked = "checked"; }
 $print_form = "'print_form'";
 	echo '
@@ -81,10 +80,18 @@ $print_form = "'print_form'";
             <hr class="col12" style="margin:4px 0">
         </div>
 	';
-	$check_2="SELECT od.assign_package_id, od.assign_service_id, od.package_id, od.service_id, od.order_creation_date_cleared FROM order_service_details od WHERE od.order_id ='".$_POST['order_id']."' ";
+	$check_2="SELECT od.assign_package_id, od.assign_service_id, od.package_id, od.service_id, od.order_creation_date_cleared, od.color_code FROM order_service_details od WHERE od.order_id ='".$_POST['order_id']."' ";
 	$resul_2 = mysqli_query($db,$check_2); 
 	while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
 	{
+		if($row_2['color_code'] != "")
+		{
+			$download_button = "<a target='_blank' href='../".@$back_link."API/Print-Background-Verification-Report.php?order_id=".$order_id."&download=true' class='btn btn-success'> <i class='fa fa-download'></i> Download</a>";
+		}
+		else
+		{
+			$download_button = "<a class='btn btn-default disabled_btn'> <i class='fa fa-download'></i> Download</a>";
+		}
 		$package_id_compare = $row_2['assign_package_id'];
 		$package_id = $row_2['package_id'];
 		$service_id_compare = $row_2['assign_service_id'];

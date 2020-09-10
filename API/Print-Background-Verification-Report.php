@@ -12,8 +12,7 @@ if (mysqli_connect_errno($db)) {
 }
 $download = @$_GET['download'];
 $order_id = $_GET['order_id'];
-$default_report_color_id = $_GET['default_report_color_id'];
-$check="SELECT c.Client_Name, o.order_id, o.first_name, o.middle_name, o.last_name, o.alias_first_name, o.alias_middle_name, o.alias_last_name, o.email_id, o.internal_reference_id, o.joining_location, o.joining_date, o.additional_comments, o.client_id, o.is_rush, o.insufficiency_contact, o.username, o.password, o.order_status, o.order_creation_date_time, o.case_reference_no, o.order_completion_date, o.complete_info_received_date, c.default_report_color FROM order_master o INNER JOIN client c ON c.id = o.client_id WHERE o.order_id   ='".$order_id."'";
+$check="SELECT c.Client_Name, o.order_id, o.first_name, o.middle_name, o.last_name, o.alias_first_name, o.alias_middle_name, o.alias_last_name, o.email_id, o.internal_reference_id, o.joining_location, o.joining_date, o.additional_comments, o.client_id, o.is_rush, o.insufficiency_contact, o.username, o.password, o.order_status, o.order_creation_date_time, o.case_reference_no, o.order_completion_date, o.complete_info_received_date, c.default_report_color, o.default_report_color_id FROM order_master o INNER JOIN client c ON c.id = o.client_id WHERE o.order_id   ='".$order_id."'";
 $resul = mysqli_query($db,$check); 
 if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 {
@@ -43,37 +42,24 @@ if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
   $default_report_color = $row['default_report_color'];
 }
 
-if(@$download == "true" || $_GET['default_report_color_id'] == "0")
-{
-	$color_code = "#eee";
-}
-else
-{
-	if($default_report_color == 0)
-	{
-		$check="SELECT color_code FROM default_report_color WHERE default_report_color_id = '$default_report_color_id' ";
-	}
-	else
-	{
-		$check="SELECT color_code FROM client_default_report_color WHERE default_report_color_id = '$default_report_color_id' AND client_id = '$client_id' ";
-	}
-	$resul = mysqli_query($db,$check); 
-	if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-	{
-		$color_code = $row['color_code'];
-	}
-	if($color_code == "Red"){ $color_code = "#eb1e2f"; }
-	if($color_code == "Green"){ $color_code = "#25ce60"; }
-	if($color_code == "Amber"){ $color_code = "#ffbf00"; }
-}
 
 $applicant_name = $first_name.' '.$middle_name.' '.$last_name;
 
 $all_services_list = '';
-$check="SELECT s.service_name FROM order_service_details os INNER JOIN service_list s ON s.id = os.service_id WHERE os.order_id   ='".$order_id."'";
+$of_qc_order_status_temp = array();
+$check="SELECT s.service_name, os.default_report_color_id, os.of_qc_order_status FROM order_service_details os INNER JOIN service_list s ON s.id = os.service_id WHERE os.order_id   ='".$order_id."'";
 $resul = mysqli_query($db,$check); 
 while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 {
+	$default_report_color_id = $row['default_report_color_id'];
+    
+    if($row['of_qc_order_status'] == "Discrepancy") { $of_qc_order_status_temp[0] = 'Discrepancy'; }
+    if($row['of_qc_order_status'] == "Minor Discrepancy") { $of_qc_order_status_temp[1] = 'Minor Discrepancy'; }
+    if($row['of_qc_order_status'] == "Canceled") { $of_qc_order_status_temp[2] = 'Canceled'; }
+    if($row['of_qc_order_status'] == "Inconclusive") { $of_qc_order_status_temp[3] = 'Inconclusive'; }
+    if($row['of_qc_order_status'] == "UTV") { $of_qc_order_status_temp[4] = 'UTV'; }
+    if($row['of_qc_order_status'] == "Verified Clear") { $of_qc_order_status_temp[5] = 'Verified Clear'; }
+
 	if($all_services_list == "")
 	{
 		$all_services_list = $row['service_name'];
@@ -83,6 +69,44 @@ while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 		$all_services_list = $all_services_list.', '.$row['service_name'];
 	}
 }
+
+ksort($of_qc_order_status_temp);
+$report_status =  reset($of_qc_order_status_temp);
+
+if($report_status == "Discrepancy") { $default_report_color_id_temp = "4"; }
+if($report_status == "Minor Discrepancy") { $default_report_color_id_temp = "1"; }
+if($report_status == "Canceled") { $default_report_color_id_temp = "6"; }
+if($report_status == "Inconclusive") { $default_report_color_id_temp = "8"; }
+if($report_status == "UTV") { $default_report_color_id_temp = "5"; }
+if($report_status == "Verified Clear") { $default_report_color_id_temp = "2"; }
+
+if($default_report_color == 0)
+{
+    $check="SELECT color_code FROM default_report_color WHERE default_report_color_id = '$default_report_color_id_temp' ";
+}
+else
+{
+    $check="SELECT color_code FROM client_default_report_color WHERE default_report_color_id = '$default_report_color_id_temp' AND client_id = '$client_id' ";
+}
+$resul = mysqli_query($db,$check); 
+if ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+{
+    $color_code_default = $row['color_code'];
+}
+if(@$color_code_default == "Red"){ $color_code_default = "#eb1e2f"; }
+else if(@$color_code_default == "Green"){ $color_code_default = "#25ce60"; }
+else if(@$color_code_default == "Amber"){ $color_code_default = "#ffbf00"; }
+else if(@$color_code_default == "Gray"){ $color_code_default = "#ccc"; }
+else
+{
+	$report_status = $order_status;
+	$color_code_default = "#eee";
+}
+if($default_report_color_id == "0")
+{
+	$color_code = "#eee";
+}
+
 $header = '<div class="page-border">';
 $footer = '</div>';
 $end_report ='<div class="col-md-12 center">
@@ -173,7 +197,7 @@ h6{
 }
 .border_background_color
 {
-	background-color:'.$color_code.';;
+	background-color:'.@$color_code.';
 }
 .table_services table, .table_services, .table_services tr, .table_services th{
 	color:#000;
@@ -246,15 +270,13 @@ h6{
 	<div class="col-md-12"><br></div>
 	<div class="col-md-12 border_verify_status border_report_status">
 		<div class="col-md-4">REPORT STATUS</div>
-		<div class="col-md-8 border_background_color">'.strtoupper($order_status).'</div>
+		<div class="col-md-8 border_background_color" style="background:'.@$color_code_default.'">'.strtoupper($report_status).'</div>
 	</div>
-	
 	<h3 style="color:#666; margin:10px 0;" class="center">Investigation Summary </h3>
-
 	<table class="table_services">
 		<tr>
 			<th class="left">SERVICE NAME</th>
-			<th> ---- Verification Status ----</th>
+			<th>---- Verification Status ----</th>
 		</tr>
 	';
 	$check="SELECT s.service_name, os.order_status, st.name AS service_type_name FROM order_service_details os INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.order_id   ='".$order_id."'";
@@ -278,10 +300,30 @@ h6{
 	</p>
 </div>
 '.$footer;
-$check="SELECT s.service_name, os.order_status, st.name AS service_type_name, os.service_id, os.order_service_details_id FROM order_service_details os INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.order_id   ='".$order_id."'";
+
+$total_services = 0;
+$check_1 = "SELECT COUNT(os.order_service_details_id) AS total_services FROM order_service_details os INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.order_id  = $order_id ";
+$resul_1 = mysqli_query($db,$check_1);
+if ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+{
+	$total_services = $row_1['total_services'];
+}
+
+$total_files = 0;
+$check_1='SELECT COUNT(ad.document_file) AS total_files FROM order_annexure_documents ad WHERE ad.order_id = '.$order_id.'  ';
+$resul_1 = mysqli_query($db,$check_1);
+if ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
+{
+	$total_files = $row_1['total_files'];
+}
+
+$inc = 0;
+$check="SELECT s.service_name, os.of_qc_order_status, st.name AS service_type_name, os.service_id, os.order_service_details_id, os.color_code FROM order_service_details os INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.order_id   ='".$order_id."'";
 $resul = mysqli_query($db,$check); 
 while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 {
+	$color_code = $row['color_code'];
+
 	$order_service_details_id = $row['order_service_details_id'];
 	$html.=$header;
 	// <h1>'.$row["service_name"].'</h1>
@@ -292,7 +334,7 @@ while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 	<div class="col-md-12"><br></div>
 	<div class="col-md-12 border_verify_status border_report_status">
 		<div class="col-md-4">'.$row["service_name"].'</div>
-		<div class="col-md-8 border_background_color">'.strtoupper($row['order_status']).'</div>
+		<div class="col-md-8 border_background_color" style="background:'.@$color_code.'">'.strtoupper($row['of_qc_order_status']).'</div>
 	</div>
 	<table class="input_data_table">
 		<tr>
@@ -372,15 +414,15 @@ while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
         </div>
         ';
     }
+	$inc++;
+	if($inc == $total_services)
+	{
+		if($total_files == 0)
+		{
+			$html.=$end_report;	
+		}
+	}
 	$html.=$footer;
-}
-
-$total_files = 0;
-$check_1='SELECT COUNT(ad.document_file) AS total_files FROM order_annexure_documents ad WHERE ad.order_id = '.$order_id.'  ';
-$resul_1 = mysqli_query($db,$check_1);
-if ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
-{
-	$total_files = $row_1['total_files'];
 }
 
 $i = 1;
@@ -432,10 +474,6 @@ while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
 	$i++;
 }
 
-if($total_files == 0)
-{
-	$html.=$end_report;	
-}
 
 include("mpdf60/mpdf.php");
 

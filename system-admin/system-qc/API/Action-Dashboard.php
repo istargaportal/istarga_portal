@@ -29,7 +29,7 @@ if($_POST['action'] == 'load_service_list')
 if($_POST['action'] == 'load_start_processing')
 {
     $button_array = ""; $total_array = 0;
-    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.of_qc_order_status = '$order_status_select' AND os.of_user_id != 0 AND (os.qc_user_id = 0 OR os.qc_user_id = '$user_id') ";
+    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.of_qc_order_status = '$order_status_select' AND os.color_code IS NULL AND os.of_user_id != 0 AND (os.qc_user_id = 0 OR os.qc_user_id = '$user_id') ";
     $resul = mysqli_query($db,$check);
     while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -153,6 +153,7 @@ if($_POST['action'] == 'load_service_order')
         $service_id = $row['service_id'];
         $assign_service_id = $row['assign_service_id'];
 
+        $sla = 0;        
         if($assign_service_id != 0)
         {
             $check_1 = "SELECT sla FROM assigned_service WHERE id = '$assign_service_id'  ";
@@ -520,15 +521,23 @@ echo '
             <tr>
                 <th class="form_left">Status</th>
                 <td>
-                    <select class="browser-default chosen-select custom-select" id="of_qc_order_status" name="of_qc_order_status">
+                    <select class="browser-default chosen-select custom-select" onchange="load_queue()" id="of_qc_order_status" name="of_qc_order_status">
                         <option><?php echo $of_qc_order_status; ?></option>
                         <option>Canceled</option>
                         <option>Discrepancy</option>
                         <option>UTV</option>
                         <option>Inconclusive</option>
-                        <option>Insufficiency Verifier</option>
                         <option>Minor Discrepancy</option>
                         <option>Verified Clear</option>
+                    </select>
+                </td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th class="form_left">Queue</th>
+                <td class="disabled">
+                    <select class="browser-default custom-select" id="order_status" name="order_status">
+                        <option><?php echo $order_status; ?></option>
                     </select>
                 </td>
                 <td>&nbsp;</td>
@@ -632,16 +641,8 @@ echo '
                 <label>Error Log</label>
             </div>
             <div class="col-md-4">
-                <select id="default_report_color_id" class="form-control">
+                <select id="error_log" class="form-control">
                     <option value="">Select Log</option>
-                    <?php
-                        $check='SELECT default_report_color_id, order_status FROM default_report_color ';
-                        $resul = mysqli_query($db,$check); 
-                        while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                        {
-                            echo '<option value="'.$row['default_report_color_id'].'">'.$row['order_status'].'</option>';
-                        }
-                    ?>
                 </select>
             </div>
         </div>
@@ -748,6 +749,28 @@ echo '
         echo "$('.btn-warning').removeClass('disabled_btn');";
     }
     ?>
+
+    function load_queue()
+    {
+        var of_qc_order_status = $('#of_qc_order_status').val();
+        var order_status = "";
+        if(of_qc_order_status == 'Canceled') { order_status = 'Completed'; }
+        if(of_qc_order_status == 'Discrepancy') { order_status = 'Completed'; }
+        if(of_qc_order_status == 'UTV') { order_status = 'Completed'; }
+        if(of_qc_order_status == 'Fresh') { order_status = 'Fresh'; }
+        if(of_qc_order_status == 'Inconclusive') { order_status = 'Completed'; }
+        if(of_qc_order_status == 'Insufficiency') { order_status = 'Insufficiency'; }
+        if(of_qc_order_status == 'Insufficiency Cleared') { order_status = 'Insufficiency'; }
+        if(of_qc_order_status == 'Insufficiency Verifier') { order_status = 'In Progress'; }
+        if(of_qc_order_status == 'Minor Discrepancy') { order_status = 'Completed'; }
+        if(of_qc_order_status == 'Park') { order_status = 'Park'; }
+        if(of_qc_order_status == 'Pending') { order_status = 'In Progress'; }
+        if(of_qc_order_status == 'Re-assigned') { order_status = 'Re-assigned'; }
+        if(of_qc_order_status == 'Verifier Initiated ') { order_status = 'In Progress'; }
+        if(of_qc_order_status == 'Verifier Completed') { order_status = 'In Progress'; }
+        if(of_qc_order_status == 'Verified Clear') { order_status = 'Completed'; }
+        $('#order_status').html('<option>'+order_status+'</option>');
+    }
     
     function save_reassigned_order()
     {
@@ -1238,19 +1261,19 @@ function provided_to_verifed()
 
 function confirm_to_qc()
 {
-    let r = confirm('Are you sure to Complete this verification?')
-    if(r == true)
-    {
-        let default_report_color_id = $('#default_report_color_id').val();
+    // let r = confirm('Are you sure to Complete this verification?')
+    // if(r == true)
+    // {
+        // let default_report_color_id = $('#default_report_color_id').val();
         var myform = document.getElementById("verifier_details_form");
         var fd = new FormData(myform);
-        if(default_report_color_id == "")
-        {
-            alert('Please select Log!');
-            $('#default_report_color_id').focus();
-        }
-        else
-        {
+        // if(default_report_color_id == "")
+        // {
+        //     alert('Please select Log!');
+        //     $('#default_report_color_id').focus();
+        // }
+        // else
+        // {
             $('#confirm_to_qc').addClass('disabled_btn');        
             $.ajax({
                 url: "./API/QC-Actions.php",
@@ -1262,7 +1285,7 @@ function confirm_to_qc()
                 success: function (html) {
                   if(html == "updated")
                   {
-                    window.open('../../API/Print-Background-Verification-Report.php?order_id=<?php echo $order_id; ?>&default_report_color_id='+default_report_color_id)
+                    window.open('../../API/Print-Background-Verification-Report.php?order_id=<?php echo $order_id; ?>')
                     $('#confirm_to_qc').addClass('disabled_btn');
                     $('.btn-success').addClass('disabled_btn');
                     <?php echo $onclick_next; ?>
@@ -1275,8 +1298,8 @@ function confirm_to_qc()
                   }
                 }
             });
-        }
-    }
+        // }
+    // }
 }
 
     function delete_note(order_notes_id)
@@ -1504,13 +1527,13 @@ if($_POST['action'] == 'load_attached_documents')
     $resul_1 = mysqli_query($db,$check_1);
     if ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     {
-        echo "<script>$('.btn-success').addClass('disabled_btn');</script>";
-        echo "<script>$('.btn-danger').addClass('disabled_btn');</script>";
+         "<script>$('.btn-success').addClass('disabled_btn');</script>";
+         "<script>$('.btn-danger').addClass('disabled_btn');</script>";
     }
     else
     {
-        echo "<script>$('.btn-success').removeClass('disabled_btn');</script>";
-        echo "<script>$('.btn-danger').removeClass('disabled_btn');</script>";
+         "<script>$('.btn-success').removeClass('disabled_btn');</script>";
+         "<script>$('.btn-danger').removeClass('disabled_btn');</script>";
     }
 }
 

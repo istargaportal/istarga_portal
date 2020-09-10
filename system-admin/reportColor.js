@@ -30,6 +30,7 @@ function load_report_color(condition)
 			  if(color_code == "Red"){ color_code = "#eb1e2f"; }
 			  if(color_code == "Green"){ color_code = "#25ce60"; }
 			  if(color_code == "Amber"){ color_code = "#ffbf00"; }
+			  if(color_code == "Gray"){ color_code = "#ccc"; }
 			  $(this).css("background-color", color_code);
 			})
 		}
@@ -43,6 +44,7 @@ function change_color_selection(default_report_color_id)
 	if(color_code == "Red"){ color_code = "#eb1e2f"; }
 	if(color_code == "Green"){ color_code = "#25ce60"; }
 	if(color_code == "Amber"){ color_code = "#ffbf00"; }
+	if(color_code == "Gray"){ color_code = "#ccc"; }
 	$('#bg_color_div_'+default_report_color_id).css('background', color_code);
 }
 

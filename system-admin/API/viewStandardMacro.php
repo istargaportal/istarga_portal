@@ -23,12 +23,11 @@ class service
         while ($row = $rer->fetch_assoc()) {
             //$states[$i]['Scenario'] = $row['Scenario'];
             //$states[$i]['Comments'] = $row['Comments'];
-            $macro_type_id = $row['macro_id'];
-            $query1 = "SELECT name from macro_type where `id`='" . $macro_type_id . "'";
-            $rer1 = $this->conn->query($query1);
-            while ($row1 = $rer1->fetch_assoc()) {
-                $states[$i]['macro_name'] = $row1['name'];
-            }
+            // $macro_type_id = $row['macro_id'];
+            // $query1 = "SELECT name from macro_type where `id`='" . $macro_type_id . "'";
+            // $rer1 = $this->conn->query($query1);
+            // while ($row1 = $rer1->fetch_assoc()) {
+            // }
             $service_type_id = $row['service_type_id'];
             $query2 = "SELECT name from service_type where `id`='" . $service_type_id . "'";
             $rer2 = $this->conn->query($query2);
@@ -37,7 +36,9 @@ class service
             }
             $states[$i]['Scenario'] = $row['scenario'];
             $states[$i]['Comment'] = $row['comment'];
+            $states[$i]['macro_name'] = $row['macro_type'];
             $states[$i]['id'] = $row['id'];
+            
             $i++;
         }
         echo json_encode($states);

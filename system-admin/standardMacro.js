@@ -1,11 +1,9 @@
 
 let Dtable = document.querySelector("#downloadable-table tbody")
-fetch("https://www.bgvhwd.xyz/Project_files/API/viewStandardMacro.php")
+fetch("./API/viewStandardMacro.php")
   .then(res => res.json())
   .then(data => {
-    console.log(data)
     data.map(v => {
-      console.log("hello")
       Dtable.innerHTML += `
       <tr>
         <td>
@@ -22,8 +20,6 @@ fetch("https://www.bgvhwd.xyz/Project_files/API/viewStandardMacro.php")
         </td>
       </tr>
     `
-    console.log(Dtable)
-    
     })
     
   })
@@ -76,36 +72,6 @@ fetch(service).then(function(response) {
   console.error(error);
 })
 
-let macrotype = document.getElementById('Macro Type');
-macrotype.length = 0;
-
-let defaultmacrotype = document.createElement('option');
-defaultmacrotype.text = 'Select Macro Type';
-defaultmacrotype.value = "";
-
-macrotype.add(defaultmacrotype);
-macrotype.selectedIndex = 0;
-
-const macro = "./API/viewMacroType.php";
-fetch(macro).then(function(response) {
-  //console.log(response);
-  return response.text();
-}).then(function(text) {
-  //console.log(text);
-
-  let stat = JSON.parse(text);
-  let option;
-
-  for (let i = 0; i < stat.length; i++) {
-    option = document.createElement('option');
-    option.text = stat[i].name;
-    option.value = stat[i].id;
-    macrotype.add(option);
-  }
-
-}).catch(function(error) {
-  console.error(error);
-})
 
 const onSave = (id, action, j) => {
     fn = document.getElementById(id + "afn").value;
@@ -138,7 +104,6 @@ const onSave = (id, action, j) => {
   }
   
   const onEdit = (id, action, j) => {
-    //console.log(id);
     let elem1 = document.getElementById(id + "fn");
     let elem2 = document.getElementById(id + "ln");
     let edit = document.getElementById(id + "c");
@@ -169,7 +134,7 @@ const onSave = (id, action, j) => {
     btn2.innerHTML = "<i class='material-icons icon'>note_add</i> SAVE";
     btn2.onclick = (() => { 
       // confirm('Are you sure you want to Save it?') ?
-      onSave(id, action, j) ; popuTable() });
+      onSave(id, action, j) ; });
     edit.appendChild(btn2);
   }
   const onDelete = (id, action) => {

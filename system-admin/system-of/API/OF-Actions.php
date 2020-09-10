@@ -42,7 +42,7 @@ if($_POST['action'] == 'update_applicant_details')
         $order_creation_date_cleared_que = ", order_creation_date_cleared = '".date('Y-m-d H:i:s')."' ";
     }
 
-    $cmd = "UPDATE order_service_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', currency_id = '$currency_id', additional_fees = '$additional_fees', of_closure_date = '$of_closure_date', additional_comments_of = '$additional_comments_of', of_qc_order_status = '$of_qc_order_status', order_status = '$order_status', of_user_id = '$of_user_id' ".@$order_creation_date_cleared_que." WHERE order_service_details_id = '$order_service_details_id' ";
+    $cmd = "UPDATE order_service_details SET verifier_details = '$verifier_details', verifier_comments = '$verifier_comments', currency_id = '$currency_id', additional_fees = '$additional_fees', of_closure_date = '$of_closure_date', additional_comments_of = '$additional_comments_of', of_qc_order_status = '$of_qc_order_status', order_status = '$order_status' ".@$order_creation_date_cleared_que." WHERE order_service_details_id = '$order_service_details_id' ";
     $result = mysqli_query($db,$cmd);
     
     if($of_qc_order_status == 'Re-assigned' || $of_qc_order_status == 'Insufficiency Verifier')
