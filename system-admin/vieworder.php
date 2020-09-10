@@ -112,8 +112,26 @@ include 'Header.php';
   <script src="assets/demo/demo.js"></script>
   <script src="vieworder.js"></script>
 
-  
   <script>
+
+    function unlock_order(order_id, order_service_details_id )
+    {
+      var order_id = order_id;
+      var order_service_details_id = order_service_details_id ;
+      $.ajax({
+        type:'POST',
+        url:'./API/Unlock-Order.php',
+        data:{order_id, order_service_details_id },
+        success:function(html){
+          if(html == "updated")
+          {
+            alert('Order Service Unlocked!');
+            getAllClientData();
+          }
+        }
+      });
+    }
+
     let darkmode = localStorage.getItem("darkmode");
     const darkmodetoggle = document.querySelector('input[name=theme]');
 

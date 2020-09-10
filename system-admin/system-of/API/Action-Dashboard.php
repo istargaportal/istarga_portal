@@ -29,7 +29,7 @@ if($_POST['action'] == 'load_service_list')
 if($_POST['action'] == 'load_start_processing')
 {
     $button_array = ""; $total_array = 0;
-    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.of_qc_order_status = '$order_status_select' AND (os.of_user_id = 0 OR os.of_user_id = '$user_id') ";
+    $check = "SELECT os.order_service_details_id FROM order_service_details os WHERE os.service_id = '$service_id' AND os.of_qc_order_status = '$order_status_select' AND os.color_code IS NULL AND (os.of_user_id = 0 OR os.of_user_id = '$user_id') ";
     $resul = mysqli_query($db,$check); 
     while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {

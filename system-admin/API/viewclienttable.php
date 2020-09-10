@@ -45,7 +45,7 @@ class States
                         $default_client_id = base64_decode($default_client_id);
                         $sql_condition = " WHERE o.client_id = '$default_client_id'   "; 
                     }
-                    $query="SELECT o.*, c.Client_Name, s.service_name, os.order_status, os.of_user_id, os.lock_status FROM `order_master` o INNER JOIN client c ON c.id = o.client_id INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.service_id = os.service_id  ".@$sql_condition;
+                    $query="SELECT o.*, os.order_service_details_id, c.Client_Name, s.service_name, os.order_status, os.of_user_id, os.lock_status FROM `order_master` o INNER JOIN client c ON c.id = o.client_id INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.service_id = os.service_id  ".@$sql_condition;
                     $query.="GROUP BY os.order_service_details_id";
                     $result=$this->conn->query($query);
                     if($result->num_rows>0)
@@ -76,12 +76,12 @@ class States
                             }
                             else
                             {
-                                $lock_status = "<a title='Unlock' class='btn btn-default btn-sm'><i class='fa fa-lock' style='color:#eb1e2f !important;'></i></a>";
+                                $lock_status = "<a title='Unlock' onclick='unlock_order(".$row['order_id'].", ".$row['order_service_details_id'].")' class='btn btn-default btn-sm'><i class='fa fa-lock' style='color:#eb1e2f !important;'></i></a>";
                             }
 
                             echo '
                             <tr>
-                            <td class="tablehead1">'.$row["case_reference_no"].'</td>
+                            <td class="tablehead1"><a class="btn_link" onclick="view_order_details('.$row['order_id'].')" >'.$row["case_reference_no"].'</a></td>
                             <td class="tablehead1">'.$row['is_rush'].'</td>
                             <td class="tablehead1 form_left">'.$row['Client_Name'].'</td>
                             <td class="tablehead1 form_left">'.$row["first_name"].' '.$row["last_name"].' </td>
