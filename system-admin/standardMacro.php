@@ -2,6 +2,15 @@
 $page_name = "Standard Macro";
 include 'Header.php';
 ?>
+<style type="text/css">
+  .custom-select{
+    background: transparent;
+  }
+  .odd, #datatable_tbl_filter, .dataTables_info{
+    display: none;
+  }
+</style>
+
 <div class="content">
   <div class="container-fluid">
     <div class="row">
@@ -12,7 +21,7 @@ include 'Header.php';
           </div>
           <div class="card-body">
             <form id="ajax" method="POST">
-              <div class="row justify-content-between">
+              <!-- <div class="row justify-content-between">
                 <div class="form-group1 col-md-4">
                   <label for="Service Type" class="bmd-label-floating1" style=" font-size:13px">Service Type</label>
                   <select style="margin-top:1%" name="ServiceType" id="Service Type" class="browser-default custom-select" required>
@@ -41,11 +50,11 @@ include 'Header.php';
                   <label for="Service" style="">Scenario</label>
                   <input name="Scenario" id="Scenario" type="text" class="form-control" placeholder="" required />
                 </div>
-              </div>
+              </div> -->
               <div class="row">
                 <div class="col-md-8">
                   <label class="bmd-label-floating1" for="Service">Comment</label>
-                  <input name="Comment" id="Comment" type="text" class="form-control" placeholder="" required />
+                  <textarea name="Comment" id="Comment" type="text" class="custom-select" placeholder="" required rows="3" ></textarea>
                 </div>
                 <div class="col-md-4 form_right">
                   <br>
@@ -61,18 +70,18 @@ include 'Header.php';
                     <div id="data_table">
                       <table id="datatable_tbl" class="table table-hover" >
                        <thead class="text-light" style="background-color: rgba(15, 13, 13, 0.856) !important;">
-                        <th width="150">
+                        <!-- <th width="150">
                           Scenario
-                        </th>
-                        <th width="250">
+                        </th> -->
+                        <th width="60%">
                           Comments
                         </th>
-                        <th>
+                        <!-- <th>
                           Service Type
                         </th>
                         <th>
                           Macro Type
-                        </th>
+                        </th> -->
                         <th class="noExport">
                           Edit
                         </th>
@@ -102,11 +111,6 @@ include 'Header.php';
 </div>
 </div>
 
-<script>
-  const x = new Date().getFullYear();
-  let date = document.getElementById("date");
-  date.innerHTML = "&copy; " + x + date.innerHTML;
-</script>
 </div>
 </div>
 <!--   Core JS Files   -->

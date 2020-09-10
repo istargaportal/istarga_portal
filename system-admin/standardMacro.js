@@ -7,18 +7,9 @@ fetch("./API/viewStandardMacro.php")
       Dtable.innerHTML += `
       <tr>
         <td>
-          ${v.Scenario}
-        </td>
-        <td>
           ${v.Comment}
         </td>
-        <td>
-          ${v.service_name}
-        </td>
-        <td>
-          ${v.macro_name}
-        </td>
-      </tr>
+       </tr>
     `
     })
     
@@ -41,49 +32,41 @@ const xlxsInit = () => {
   });
 }
 
-let servicetype = document.getElementById('Service Type');
-servicetype.length = 0;
+// let servicetype = document.getElementById('Service Type');
+// servicetype.length = 0;
 
-let defaultservicetype = document.createElement('option');
-defaultservicetype.text = 'Select Service Type';
-defaultservicetype.value = "";
+// let defaultservicetype = document.createElement('option');
+// defaultservicetype.text = 'Select Service Type';
+// defaultservicetype.value = "";
 
-servicetype.add(defaultservicetype);
-servicetype.selectedIndex = 0;
+// servicetype.add(defaultservicetype);
+// servicetype.selectedIndex = 0;
 
-const service = "./API/servicetypelist.php";
-fetch(service).then(function(response) {
-  //console.log(response);
-  return response.text();
-}).then(function(text) {
-  //console.log(text);
+// const service = "./API/servicetypelist.php";
+// fetch(service).then(function(response) {
+//   //console.log(response);
+//   return response.text();
+// }).then(function(text) {
+//   //console.log(text);
 
-  let stat = JSON.parse(text);
-  let option;
+//   let stat = JSON.parse(text);
+//   let option;
 
-  for (let i = 0; i < stat.length; i++) {
-    option = document.createElement('option');
-    option.text = stat[i].name;
-    option.value = stat[i].Id;
-    servicetype.add(option);
-  }
+//   for (let i = 0; i < stat.length; i++) {
+//     option = document.createElement('option');
+//     option.text = stat[i].name;
+//     option.value = stat[i].Id;
+//     servicetype.add(option);
+//   }
 
-}).catch(function(error) {
-  console.error(error);
-})
+// }).catch(function(error) {
+//   console.error(error);
+// })
 
 
 const onSave = (id, action, j) => {
-    fn = document.getElementById(id + "afn").value;
     ln = document.getElementById(id + "aln").value;
-    fn = fn.trim();
     ln = ln.trim();
-    if(fn == "")
-    {
-      alert('Please enter Scenario!');
-      $("#"+ id + "afn").focus();
-      return;
-    }
     if(ln == "")
     {
       alert('Please enter Comments!');
@@ -91,7 +74,7 @@ const onSave = (id, action, j) => {
       return;
     }
     
-    obj = { "id": id, "action": action, "scenario": fn, "comment": ln };
+    obj = { "id": id, "action": action, "comment": ln };
 
     fetch('./API/modifyStandardMacro.php', {
       method: 'post',
@@ -104,24 +87,14 @@ const onSave = (id, action, j) => {
   }
   
   const onEdit = (id, action, j) => {
-    let elem1 = document.getElementById(id + "fn");
     let elem2 = document.getElementById(id + "ln");
     let edit = document.getElementById(id + "c");
-    let x = document.createElement("INPUT");
-    x.setAttribute("type", "text");
-    x.setAttribute("value", elem1.textContent);
-    x.setAttribute("id", id + "afn");
-    x.setAttribute("class", "form-control focus");
-    x.style.maxWidth = "80%";
-    elem1.innerHTML = "";
-    elem1.appendChild(x).focus();
-    //x.setSelectionRange(x.value.length, x.value.length, "forward");
-    let x2 = document.createElement("INPUT");
-    x2.setAttribute("type", "text");
-    x2.setAttribute("value", elem2.textContent);
+     //x.setSelectionRange(x.value.length, x.value.length, "forward");
+    let x2 = document.createElement("textarea");
+    // x2.setAttribute("type", "text");
+    x2.value = elem2.textContent;
     x2.setAttribute("id", id + "aln");
-    x2.setAttribute("class", "form-control focus");
-    x2.style.maxWidth = "80%";
+    x2.setAttribute("class", "custom-select");
     elem2.innerHTML = "";
     elem2.appendChild(x2);
     // x1.focus()
@@ -167,20 +140,14 @@ const onSave = (id, action, j) => {
       for (let i = 0, j = stat.length; i < stat.length; i++, j--) {
         var row = table.insertRow(0);
         //var cell0 = row.insertCell(0);
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        var cell4 = row.insertCell(3);
-        var cell5 = row.insertCell(4);
-        var cell6 = row.insertCell(5);
+        // var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(0);
+        var cell3 = row.insertCell(1);
+        var cell5 = row.insertCell(1);
+        var cell6 = row.insertCell(2);
         //cell0.innerHTML = j;
-        cell1.innerHTML = '<div class="tablehead1 form_left">'+stat[i].Scenario+'</div>';
-        cell1.setAttribute("id", stat[i].id + "fn");
         cell2.innerHTML = '<div class="tablehead1 form_left">'+stat[i].Comment+'</div>';
         cell2.setAttribute("id", stat[i].id + "ln");
-        cell3.innerHTML = '<div class="tablehead1">'+stat[i].service_name+'</div>';
-        //cell3.setAttribute("id", stat[i].id + "em");
-        cell4.innerHTML = '<div class="tablehead1">'+stat[i].macro_name+'</div>';
         //cell4.setAttribute("id", stat[i].id + "gp"+j);
         var btn1 = document.createElement('button');
         btn1.type = "button";

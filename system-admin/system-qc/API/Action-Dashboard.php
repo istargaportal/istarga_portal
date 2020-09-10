@@ -673,63 +673,14 @@ echo '
     </div>
     <div class="col-md-12"><br></div>
 </div>
-<div class="modal" id="standard_macro_modal">
-    <div class="row">
-        <div class="col-md-4">
-            <br>
-        </div>
-        <div class="col-md-4">
-            <div class="modal-content">
-                <h5 style="border-bottom: solid 1px #000;"><b><i class="fa fa-check"></i> Select Macros</b>
-                    <a onclick="close_select_macros()" class="btn btn-danger btn-sm pull-right"><i class="fa fa-remove"></i> Close</a>
-                </h5>
-                <?php
-                $check='SELECT id, comment, scenario FROM standard_macro WHERE service_type_id = '.$service_type_id;
-                $resul = mysqli_query($db,$check); 
-                while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                {
-                    echo '
-                    <div style="padding:10px;width:100%;float:left;box-shadow:0 0 10px #aaa;border:dotted 2px #ab60b7; border-radius:10px; ">
-                    <b>'.$row["scenario"].'</b>
-                    <hr style="margin:3px 0;">
-                    <span id="macros_comment_'.$row['id'].'">'.$row['comment'].'</span>
-                    <br>
-                    <a onclick="select_macros_text('.$row['id'].')" class="btn btn-success pull-right btn-xs"><i class="fa fa-check"></i> Select</a>
-                    </div>';
-                }
-                ?>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="modal" id="eta_macro_master_modal">
-    <div class="row">
-        <div class="col-md-4">
-            <br>
-        </div>
-        <div class="col-md-4">
-            <div class="modal-content">
-                <h5 style="border-bottom: solid 1px #000;"><b><i class="fa fa-check"></i> Select ETA</b>
-                    <a onclick="close_select_eta()" class="btn btn-danger btn-sm pull-right"><i class="fa fa-remove"></i> Close</a>
-                </h5>
-                <?php
-                $check='SELECT eta_macro_id, comment FROM eta_macro_master ';
-                $resul = mysqli_query($db,$check); 
-                while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
-                {
-                    echo '
-                    <div style="padding:10px;width:100%;float:left;box-shadow:0 0 10px #aaa;border:dotted 2px #ab60b7; border-radius:10px; ">
-                    <span id="macros_comment_'.$row['eta_macro_id'].'">'.$row['comment'].'</span>
-                    <br>
-                    <a onclick="select_eta_text('.$row['eta_macro_id'].')" class="btn btn-success pull-right btn-xs"><i class="fa fa-check"></i> Select</a>
-                    </div>';
-                }
-                ?>
-            </div>
-        </div>
-    </div>
-</div>
+<?php
+    include '../../../API/Standard-Macros.php';
+?>
+<?php
+    include '../../../API/ETA-Macros.php';
+?>
+
 <script>
     <?php
     if($order_status == 'Completed')
@@ -1081,40 +1032,6 @@ function clear_eta_notes()
     $('#eta_notes').val('');
     $('#eta_date').val('');
     $('#eta_notes').focus();    
-}
-
-function select_macros()
-{
-    $('#standard_macro_modal').css('display', 'block');
-}
-
-function select_macros_text(macro_id)
-{
-    close_select_macros();
-    $('#public_notes').val($('#macros_comment_'+macro_id).html());
-    $('#public_notes').focus();
-}
-
-function close_select_macros()
-{
-    $('#standard_macro_modal').css('display', 'none');
-}
-
-function select_eta()
-{
-    $('#eta_macro_master_modal').css('display', 'block');
-}
-
-function select_eta_text(macro_id)
-{
-    close_select_eta();
-    $('#eta_notes').val($('#macros_comment_'+macro_id).html());
-    $('#eta_notes').focus();
-}
-
-function close_select_eta()
-{
-    $('#eta_macro_master_modal').css('display', 'none');
 }
 
 function add_public_note()

@@ -26,20 +26,21 @@ class service
       // Decodes the JSON object to an Array
       $data = json_decode($json_data, true);
       //echo $data;
-      $MacroType=$data['MacroType'];
-      $service_type_id=$data['ServiceType'];
-      $Scenario=$data['Scenario'];
+      // $MacroType=$data['MacroType'];
+      // $service_type_id=$data['ServiceType'];
+      // $Scenario=$data['Scenario'];
       $comment = $data['Comment'];
 
 
 
       if ($data != "") {
         $check = "INSERT INTO `standard_macro` SET
-    `macro_type`='" . $MacroType . "',
-    `service_type_id`='" . $service_type_id . "',
-    `scenario`='" . $Scenario . "',
     `comment`='" . $comment . "'";
 
+// `macro_type`='" . $MacroType . "',
+//     `service_type_id`='" . $service_type_id . "',
+//     `scenario`='" . $Scenario . "',
+    
 
         $result = $this->conn->query($check) or die('Error in fetching records'.mysqli_error($this->conn));
         if ($result) {
