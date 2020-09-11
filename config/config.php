@@ -48,7 +48,7 @@ function randomPassword() {
 $service_email_id = "customercare@istarga.com";
 $service_contact_no = "+918527476969";
 
-$company_name = 'ISTARGA';
+$company_name = 'iSTARGA';
 $web_url = "https://" . $_SERVER['SERVER_NAME'];
 $client_login_url = $web_url."/system-client/Index.php";
 $applicant_login_url = $web_url."/system-applicant/Index.php";

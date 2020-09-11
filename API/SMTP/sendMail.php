@@ -20,7 +20,6 @@
             $mail->Port = 465;
             $mail->Username = 'verify@istargascreening.com';
             $mail->Password = 'gqvihwvucykerahu';
-
         }
                 
         $mail->IsHTML(true);
@@ -28,7 +27,13 @@
         $mail->FromName = $name;
         $mail->Sender = $from;
         $mail->AddReplyTo($from, $from_name);
-      
+
+        global $send_file;
+        if($send_file != "")
+        {
+            $mail->addAttachment('../../../API/'.$send_file, $send_file);
+        }
+        
         $mail->Subject = $subject;
         $mail->Body = $body;
         $mail->AddAddress($to);
@@ -41,7 +46,7 @@
         else
         {
             $error = 'Message sent!';
-            return false;
+            return $error;
         }
     }
 ?>

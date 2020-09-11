@@ -137,10 +137,11 @@ if($_POST['action'] == 'load_service_order')
     }
 
     require_once '../../../config/comman_js.php';
-    $check = "SELECT os.order_creation_date_cleared, os.of_closure_date, os.of_qc_order_status, o.case_reference_no, os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.assign_service_id, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_qc, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
+    $check = "SELECT os.color_code, os.order_creation_date_cleared, os.of_closure_date, os.of_qc_order_status, o.case_reference_no, os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.assign_service_id, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_qc, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
+        $color_code = $row['color_code'];
         $of_closure_date = $row['of_closure_date'];
         $case_reference_no = $row['case_reference_no'];
         $first_name = $row['first_name'];
@@ -683,13 +684,13 @@ echo '
 
 <script>
     <?php
-    if($order_status == 'Completed')
+    if($color_code != '')
     {
-        // echo "$('#confirm_to_qc').addClass('disabled_btn');";
-        // echo "$('#reassigned_order_btn').addClass('disabled_btn');";
-        // echo "$('.btn-success').addClass('disabled_btn');";
-        // echo "$('.btn-danger').addClass('disabled_btn');";
-        // echo "$('.btn-warning').addClass('disabled_btn');";
+        echo "$('#confirm_to_qc').addClass('disabled_btn');";
+        echo "$('#reassigned_order_btn').addClass('disabled_btn');";
+        echo "$('.btn-success').addClass('disabled_btn');";
+        echo "$('.btn-danger').addClass('disabled_btn');";
+        echo "$('.btn-warning').addClass('disabled_btn');";
     }
     else
     {
@@ -1191,7 +1192,8 @@ function confirm_to_qc()
         // }
         // else
         // {
-            $('#confirm_to_qc').addClass('disabled_btn');        
+            // window.open('../../API/Print-Background-Verification-Report.php?order_id=<?php echo $order_id; ?>&attachement=true');
+            $('#confirm_to_qc').addClass('disabled_btn');     
             $.ajax({
                 url: "./API/QC-Actions.php",
                 data: fd,

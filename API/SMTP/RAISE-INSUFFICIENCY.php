@@ -3,8 +3,6 @@
 $print_var = "
 <div style='background:#eee; width:90%; padding:2% 5%; float:left'>
 <div style='background:#fff; width:96%; padding:1% 2%; float:left'>
-
-<h3>Pre-Employment Background Screening - Insufficiency</h3>
 <p>
 Dear ".@$first_name.",
 <br><br>
@@ -20,7 +18,7 @@ As the information is being collected for Background Verification, we request yo
 In addition to details provided for the check, kindly include below mentioned information as well.
 <br>
 <br><br>
-".@$insufficiency_comment."
+<b>* ".@$insufficiency_comment."</b>
 <br><br>
 <b>Your Login Credentials:</b><br>
 <b>Login Name:</b> ".@$username."<br>
@@ -28,8 +26,7 @@ In addition to details provided for the check, kindly include below mentioned in
 Have a great day!
 <br><br>
 Regards<br>
-ABV companyApplicant<br>
-Services Team | <a target='_blank' href='tel:".@$service_contact_no."'><b style='color:blue'>".@$service_email_id."</b></a> | <a target='_blank' href='mailto:".@$service_contact_no."'><b style='color:blue'>".@$service_contact_no."</b></a>
+".@$company_name." <br>Services Team | <a target='_blank' href='https://".@$web_url."'><b style='color:blue;font-size:11pt;'>".@$web_url."</b></a> | <a target='_blank' href='tel:".@$service_contact_no."'><b style='color:blue;font-size:11pt;'>".@$service_contact_no."</b></a> | <a target='_blank' href='mailto:".@$service_email_id."'><b style='color:blue;font-size:11pt;'>".@$service_email_id."</b></a>
 </p>
 </div>
 </div>

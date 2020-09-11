@@ -4,7 +4,7 @@ require_once "../../config/config.php";
 
 session_start();
 $client_id = $_SESSION['uid'];
-
+$Client_Name = $_SESSION['Client_Name'];
 $get_connection=new connectdb;
 $db=$get_connection->connect();
 
@@ -312,12 +312,12 @@ if($_POST['action'] == "save_form")
 
     $all_services = "";
 
-    $check_2="SELECT s.service_name FROM order_master_details od INNER JOIN service_list s ON s.id = od.service_id WHERE od.order_id   ='".$order_id."' GROUP BY od.service_id ";
+    $check_2="SELECT s.service_name FROM order_master_details od INNER JOIN service_list s ON s.id = od.service_id WHERE od.order_id = '".$order_id."' GROUP BY od.service_id ";
     $resul_2 = mysqli_query($db,$check_2); 
     while ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
     {
         $service_name = $row_2['service_name'];
-        $all_services.="<h5 style='margin:4px 0;font-weight:bold;'>".$service_name."</h5>";
+        $all_services.="<h5 style='margin:4px 0;font-weight:bold;'> - ".$service_name."</h5>";
     }
     
     if(isset($documentlist_id))
@@ -359,7 +359,7 @@ if($_POST['action'] == "save_form")
     {
         include '../../API/SMTP/sendMail.php';
         include '../../API/SMTP/LOGIN-EMAIL.php';
-        $subject = "LOGIN CREDENTILAS FOR - Employment Background Screening";
+        $subject = $company_name." Background Screening | ".$case_reference_no;
         smtpmailer($email_id, $from, $name, $subject, @$print_var);
     }
     else
@@ -372,7 +372,7 @@ if($_POST['action'] == "save_form")
         }
         include '../../API/SMTP/sendMail.php';
         include '../../API/SMTP/LOGIN-EMAIL.php';
-        $subject = "LOGIN CREDENTILAS FOR - Employment Background Screening";
+        $subject = $company_name." Background Screening | ".$case_reference_no;
         smtpmailer($email, $from, $name, $subject, @$print_var);
     }
     echo "inserted";

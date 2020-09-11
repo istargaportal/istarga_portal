@@ -1568,7 +1568,7 @@ if($_POST['action'] == 'raise_insufficiency')
     $check = "UPDATE order_master SET order_status = 'Insufficiency' WHERE order_id  = '$order_id ' ";
     $result = mysqli_query($db,$check);
 
-    $check = "SELECT first_name, username, password, email_id, insufficiency_contact, client_id FROM order_master WHERE order_id = '$order_id' ";
+    $check = "SELECT first_name, username, password, email_id, insufficiency_contact, client_id, case_reference_no FROM order_master WHERE order_id = '$order_id' ";
     $resul = mysqli_query($db,$check);
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -1578,6 +1578,7 @@ if($_POST['action'] == 'raise_insufficiency')
         $email_id = $row['email_id'];
         $insufficiency_contact = $row['insufficiency_contact'];
         $client_id = $row['client_id'];
+        $case_reference_no = $row['case_reference_no'];
     }
     if($insufficiency_contact == "Client")
     {
@@ -1585,14 +1586,13 @@ if($_POST['action'] == 'raise_insufficiency')
         $resul = mysqli_query($db,$check);
         if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
         {
-            $email = $row['email'];
+            $email_id = $row['email'];
         }
     }
     include '../../../API/SMTP/sendMail.php';
     include '../../../API/SMTP/RAISE-INSUFFICIENCY.php';
-    $subject = "PRE-EMPLOYMENT BACKGROUND SCREENING - INSUFFICIENCY";
+    $subject = $company_name." Background Screening - Insufficiency | ".$case_reference_no;
     smtpmailer($email_id, $from, $name, $subject, @$print_var);
-    smtpmailer($email, $from, $name, $subject, @$print_var);
     echo 'success';
 }
 

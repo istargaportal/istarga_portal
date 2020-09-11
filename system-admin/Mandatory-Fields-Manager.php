@@ -8,6 +8,11 @@ $db=$get_connection->connect();
 $page_name = "Mandatory Fields Manager";
 include 'Header.php';
 ?>
+<style type="text/css">
+  .disabled_box .chosen-single, .chosen-container, .disabled_box .chosen-container-single{
+    background: #ccc !important
+  }
+</style>
 <div class="content">
   <div class="container-fluid">
     <div class="row">
@@ -32,17 +37,22 @@ include 'Header.php';
             </div>
             <div class="col-md-3">
               <label>Enter Filed Name</label>
-              <input type="text" id="" class="form-control" />
+              <input type="text" id="service_field_text" class="form-control" />
             </div>
             <div class="col-md-3">
               <label>Filed Type</label>
-              <select class="browser-default chosen-select custom-select" id="">
+              <select id='data_type' class="browser-default chosen-select custom-select" id="">
                 <option value="">Select</option>
+                <option value="short_text">Short Text</option>
+                <option value="date">Date</option>
+                <option value="email">Email</option>
+                <option value="long_text">Long Text</option>
+                <option value="number">Number</option>
               </select>
             </div>
             <div class="col-md-2">
               <br>
-              <a class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Add </a>
+              <a href="javascript:save_mandatory_field()" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> Add </a>
             </div>
           </div>
         </div>
@@ -65,34 +75,108 @@ include 'Header.php';
       url:'./API/Action-Mandatory-Fields-Manager.php',
       success:function(html){
         $('#print_mandatory_fields').html(html);
+        $('.chosen-select').chosen();
       }
     });
   }
   load_mandatory_fields();
 
-  function update_mandatory_fields()
+  function save_mandatory_field()
   {
-    var myform = document.getElementById("mandatory_fields_form");
-    var fd = new FormData(myform );
-    $.ajax({
-      url: "./API/Action-Mandatory-Fields-Manager.php",
-      data: fd,
-      cache: false,
-      processData: false,
-      contentType: false,
-      type: 'POST',
-      success: function (html) {
-        if(html == "updated")
-        {
-          alert('Mandatory Fields updated successfully!');
+    let service_id = $('#service_id').val();
+    var data_type = $('#data_type').val();
+    var service_field_text = $('#service_field_text').val();
+    let load_condition = 'save_mandatory_field';
+    if(service_field_text == "")
+    {
+      alert('Please enter field name!');
+    }
+    else if(data_type == "")
+    {
+      alert('Please select data type!');
+    } 
+    else
+    {
+      $.ajax({
+        type:'POST',
+        data:{load_condition, service_id, data_type, service_field_text },
+        url:'./API/Action-Mandatory-Fields-Manager.php',
+        success:function(html){
+          load_mandatory_fields();
+          $('#service_field_text').val('');
+        }
+      });
+    }
+  }
+
+  function delete_mandatory_field(service_field_id)
+  {
+    var r = confirm('Are you sure to delete this field?');
+    if(r == true)
+    {
+      var load_condition = 'delete_mandatory_field';
+      $.ajax({
+        type:'POST',
+        data:{load_condition, service_field_id },
+        url:'./API/Action-Mandatory-Fields-Manager.php',
+        success:function(html){
+          $('#print_result').html(html);
           load_mandatory_fields();
         }
-        else
-        {
-          alert('Error occurred');
+      });
+    }
+  }
+
+  function update_mandatory_fields(service_field_id, service_id)
+  {
+    let load_condition = 'update_mandatory_fields';
+    var service_field_text = $('#service_field_'+service_field_id).val().trim();
+    var data_type = $('#data_type_'+service_field_id).val().trim();
+    var check_service_field = 0;
+    if($('#check_service_field_'+service_field_id).prop('checked') == true)
+    {
+      check_service_field = 1;
+    }
+
+    if(service_field_text == "")
+    {
+      alert('Service Field should have any text');
+      $('#service_field_'+service_field_id).focus();
+    }
+    else
+    {
+      $.ajax({
+        type:'POST',
+        data:{load_condition, service_field_text, service_field_id, service_id, data_type, check_service_field },
+        url:'./API/Action-Mandatory-Fields-Manager.php',
+        success:function(html){
+          $('#print_result').html(html);
+          // $('.chosen-select').chosen();
         }
-      }
-    });
+      });
+    }
+    
+    // var myform = document.getElementById("mandatory_fields_form");
+    // var fd = new FormData(myform );
+    // $.ajax({
+    //   url: "./API/Action-Mandatory-Fields-Manager.php",
+    //   data: fd,
+    //   cache: false,
+    //   processData: false,
+    //   contentType: false,
+    //   type: 'POST',
+    //   success: function (html) {
+    //     if(html == "updated")
+    //     {
+    //       alert('Mandatory Fields updated successfully!');
+    //       load_mandatory_fields();
+    //     }
+    //     else
+    //     {
+    //       alert('Error occurred');
+    //     }
+    //   }
+    // });
   }
 
   let darkmode = localStorage.getItem("darkmode");
@@ -135,9 +219,8 @@ include 'Header.php';
 <script src="assets/js/core/bootstrap-material-design.min.js"></script>
 <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 <!-- Place this tag in your head or just before your close body tag. -->
-<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
 <!--  Google Maps Plugin    -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
 <!-- Chartist JS -->
 <script src="assets/js/plugins/chartist.min.js"></script>
 <!--  Notifications Plugin    -->

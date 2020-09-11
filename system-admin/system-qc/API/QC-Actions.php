@@ -113,6 +113,42 @@ if($_POST['action'] == 'update_applicant_details')
             $check = "UPDATE order_master SET order_status = 'Completed', default_report_color_id = '$default_report_color_id', order_completion_date = '".date("Y-m-d H:i:s")."' WHERE order_id  = '$order_id' ";
             $result = mysqli_query($db,$check);
         }
+
+        $check = "SELECT first_name, username, password, email_id, insufficiency_contact, client_id, case_reference_no FROM order_master WHERE order_id = '$order_id' ";
+        $resul = mysqli_query($db,$check);
+        if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+        {
+            $first_name = $row['first_name'];
+            $username = $row['username'];
+            $password = $row['password'];
+            $email_id = $row['email_id'];
+            $insufficiency_contact = $row['insufficiency_contact'];
+            $client_id = $row['client_id'];
+            $case_reference_no = $row['case_reference_no'];
+        }
+        
+        $check = "SELECT email FROM client WHERE id = '$client_id' ";
+        $resul = mysqli_query($db,$check);
+        if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+        {
+            $email_id = $row['email'];
+        }
+    
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $web_url."/API/Print-Background-Verification-Report.php?order_id=".$order_id."&attachement=true");
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_exec($ch);
+        curl_close($ch);
+        
+        include '../../../API/SMTP/sendMail.php';
+        include '../../../API/SMTP/ORDER-COMPLETED.php';
+        $subject = $company_name." : ORDER COMPLETED";
+        $send_file = $case_reference_no.'.pdf'; 
+        $error = smtpmailer($email_id, $from, $name, $subject, @$print_var);
+        if($error = "Message sent!")
+        {
+            unlink('../../../API/'.$send_file);
+        }
         echo 'updated';
     }
     else

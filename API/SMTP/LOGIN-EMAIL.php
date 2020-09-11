@@ -3,16 +3,14 @@
 $print_var = "
 <div style='background:#eee; width:90%; padding:2% 5%; float:left'>
 <div style='background:#fff; width:96%; padding:1% 2%; float:left'>
-
-<h3>Employment Background Screening</h3>
 <p>
 Dear ".@$first_name.",
 <br><br>
-We have been authorised by Applicant to perform a background verification as required by the organisation.                                                                               
+We have been authorised by <b>“".@$Client_Name."”</b> to perform a background verification as required by the organisation.                                                                               
 <br>
-We request that you log in to the portal <b style='color:blue'>(".@$applicant_login_url.")</b> with the login credentials mentioned below and complete all requested information.                                           
+We request that you log in to the portal <b style='color:blue;font-size:11pt;'>(".@$applicant_login_url.")</b> with the login credentials mentioned below and complete all requested information.                                           
 <br><br>
-Additionally, please sign the release document included in the email and submit it along with other necessary documents as required for verification by uploading the signed release and documents via our portal; if you have technical challenges with uploading the documentation, you can reach us on <a target='_blank' href='tel:".@$service_contact_no."'><b style='color:blue'>".@$service_contact_no."</b></a> or write us at :- <a target='_blank' href='mailto:".@$service_contact_no."'><b style='color:blue'>".@$service_email_id."</b></a> for assistance.    
+Additionally, please sign the release document included in the email and submit it along with other necessary documents as required for verification by uploading the signed release and documents via our portal; if you have technical challenges with uploading the documentation, you can reach us on <a target='_blank' href='tel:".@$service_contact_no."'><b style='color:blue;font-size:11pt;'>".@$service_contact_no."</b></a> or write us at :- <a target='_blank' href='mailto:".@$service_contact_no."'><b style='color:blue;font-size:11pt;'>".@$service_email_id."</b></a> for assistance.    
 <br><br>
 When providing your details, we ask you to take care and double check all information before submitting, as mistakes may cause complications and delays in your background screening.
 <br><br>
@@ -28,8 +26,7 @@ If you have any questions please feel free to reach out to us and we will be gla
 Have a great day!
 <br><br>
 Regards<br>
-".$company_name."<br>
-Services Team | <a target='_blank' href='https://".@$web_url."'><b style='color:blue'>".@$web_url."</b></a> <a target='_blank' href='tel:".@$service_contact_no."'><b style='color:blue'>".@$service_contact_no."</b></a> | <a target='_blank' href='mailto:".@$service_email_id."'><b style='color:blue'>".@$service_email_id."</b></a>
+".@$company_name." <br>Services Team | <a target='_blank' href='https://".@$web_url."'><b style='color:blue;font-size:11pt;'>".@$web_url."</b></a> | <a target='_blank' href='tel:".@$service_contact_no."'><b style='color:blue;font-size:11pt;'>".@$service_contact_no."</b></a> | <a target='_blank' href='mailto:".@$service_email_id."'><b style='color:blue;font-size:11pt;'>".@$service_email_id."</b></a>
 </p>
 </div>
 </div>

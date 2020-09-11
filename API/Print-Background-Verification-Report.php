@@ -1,5 +1,8 @@
 <?php
-if(@$download == "true")
+$download = @$_GET['download'];
+$attachement = @$_GET['attachement'];
+
+if(@$download == "true" || @$attachement == "true")
 {
 	error_reporting(0);
 }
@@ -10,7 +13,6 @@ $db=$get_connection->connect();
 if (mysqli_connect_errno($db)) {
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
-$download = @$_GET['download'];
 $order_id = $_GET['order_id'];
 $check="SELECT c.Client_Name, o.order_id, o.first_name, o.middle_name, o.last_name, o.alias_first_name, o.alias_middle_name, o.alias_last_name, o.email_id, o.internal_reference_id, o.joining_location, o.joining_date, o.additional_comments, o.client_id, o.is_rush, o.insufficiency_contact, o.username, o.password, o.order_status, o.order_creation_date_time, o.case_reference_no, o.order_completion_date, o.complete_info_received_date, c.default_report_color, o.default_report_color_id FROM order_master o INNER JOIN client c ON c.id = o.client_id WHERE o.order_id   ='".$order_id."'";
 $resul = mysqli_query($db,$check); 
@@ -496,12 +498,21 @@ if(@$download == "true")
 	</script>
 	';
 }
+else if(@$attachement == "true")
+{
+	$mpdf->Output($case_reference_no.'.pdf', "F");
+}
 else
 {
 	$mpdf->Output($case_reference_no.'.pdf', 'I');
 }
-// $mpdf->Output("MAHESH.pdf", "F");
 
 $mpdf=new mPDF('','A4');
 
+if(@$attachement == "true")
+{
+	echo '<script>
+	window.close();
+	</script>';
+}
 ?>
