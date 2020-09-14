@@ -5,8 +5,9 @@ $print_var = "
 <div style='background:#fff; width:96%; padding:1% 2%; float:left'>
 <p>
 Hello Team,
-<br><br>
-Your order “".$case_reference_no."” has been processed.                                                                               
+<br><br>";
+$print_var.='Your order "'.$case_reference_no.'" has been processed.';
+$print_var.="                                                                         
 <br>
 Please find the screening report attached along with.
 <br><br>

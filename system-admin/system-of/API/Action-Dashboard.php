@@ -135,7 +135,7 @@ if($_POST['action'] == 'load_service_order')
         $result = mysqli_query($db,$cmd);
     }
     require_once '../../../config/comman_js.php';
-    $check = "SELECT os.of_qc_order_status, o.case_reference_no, os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.order_creation_date_cleared, os.assign_service_id, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_of, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
+    $check = "SELECT os.of_qc_order_status, o.case_reference_no, os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.order_creation_date_cleared, os.assign_service_id, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_of, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.order_service_details_id = '$order_service_details_id' ";
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -238,7 +238,6 @@ if($_POST['action'] == 'load_service_order')
         <div class="col-md-3">
             <label><b>Applicant Last Name:</b><?php echo $last_name; ?></label>
         </div>
-        
         <div class="col-md-3">
             <label><b>Client Order ID/Applicant ID:</b><?php echo $order_id ?></label>
         </div>
@@ -557,7 +556,7 @@ echo '
             </tr>
             <tr>
                 <th class="form_left">Closed Date</th>
-                <td><input type="date" class="form-control" id="of_closure_date" name="of_closure_date" value="<?php echo @$of_closure_date; ?>" readonly /></td>
+                <td><input type="text" class="form-control" id="of_closure_date" name="of_closure_date" placeholder="DD-MM-YYYY" value="<?php echo @$of_closure_date; ?>" readonly /></td>
                 <td>&nbsp;</td>
             </tr>
         </table>
@@ -719,6 +718,8 @@ echo '
         if(of_qc_order_status == 'Verifier Initiated ') { order_status = 'In Progress'; }
         if(of_qc_order_status == 'Verifier Completed') { order_status = 'In Progress'; }
         if(of_qc_order_status == 'Verified Clear') { order_status = 'Completed'; }
+        if(order_status == 'Completed'){ $('#of_closure_date').val('<?php echo date('Y-m-d'); ?>'); }
+        else { $('#of_closure_date').val(''); }
         $('#order_status').html('<option>'+order_status+'</option>');
     }
 
@@ -1368,11 +1369,11 @@ if($_POST['action'] == 'load_attached_documents')
     {
         $document_print.='<h4 class="selection" style="margin:6px 0;">'.$row_1['document_name'].'</h4><hr class="col12" style="margin:4px 0">';
     }
-    $check_1='SELECT ad.file_name, ad.document_file, ad.order_master_uploaded_document_id, ad.verifier_user_id, ad.user_id FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
+    $check_1='SELECT ad.file_name, ad.document_file, ad.file_ext, ad.order_master_uploaded_document_id, ad.verifier_user_id, ad.user_id FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
     $resul_1 = mysqli_query($db,$check_1);
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     {
-        echo "<tr><td class='form_left'>".$row_1['file_name']."<br><a target='_blank' download href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a></td>";
+        echo "<tr><td class='form_left'>".$row_1['file_name']."<br><a target='_blank' download='".$row_1['file_name']."' href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a></td>";
         if($user_id == $row_1['user_id'])
         {
             $delete_client_documents = '<a onclick="delete_client_document('.$row_1['order_master_uploaded_document_id'].');" style="margin:0;" class="btn btn-danger btn-xs pull-right"><i class="fa fa-trash"></i></a>';
@@ -1443,7 +1444,7 @@ if($_POST['action'] == 'load_attached_documents')
             <th style="width:5%;">&nbsp;</th>
         </tr>
         ';
-        $check_1="SELECT ad.order_annexure_document_id, ad.file_name, ad.document_file, ad.user_id FROM order_annexure_documents ad WHERE ad.order_id = '$order_id' AND ad.order_service_details_id = '$order_service_details_id' ";
+        $check_1="SELECT ad.order_annexure_document_id, ad.file_name, ad.document_file, ad.file_ext, ad.user_id FROM order_annexure_documents ad WHERE ad.order_id = '$order_id' AND ad.order_service_details_id = '$order_service_details_id' ";
         $resul_1 = mysqli_query($db,$check_1);
         while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
         {
@@ -1456,7 +1457,7 @@ if($_POST['action'] == 'load_attached_documents')
                 $delete_annexure_documents = '';
             }
             echo "<tr><td class='form_left'><label>".$row_1['file_name']."</label></td>";
-            echo "<td><a target='_blank' download href='../order_master_annexure/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a></td>
+            echo "<td><a target='_blank' download='".$row_1['file_name']."' href='../order_master_annexure/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a></td>
             <td>".$delete_annexure_documents."</td>
             ";
             echo '<tr>';
@@ -1550,9 +1551,33 @@ if($_POST['action'] == 'load_notes_con')
         <hr style="margin:3px 0;">
         <b>- '.$user_name.'</b>
         <a style="margin:0;" class="pull-right btn btn-round btn_link btn-xs"><i class="fa fa-calendar"></i> '.$added_date_time.'</a>
-        
         </div>
         ';
+    }
+
+    if($condition == "of_comments")
+    {
+        $check = "SELECT n.note_type, n.note_description, n.note_date, n.added_date_time, u.Client_Name FROM order_notes_master n INNER JOIN client u ON u.id = n.user_id WHERE n.order_service_details_id = '$order_service_details_id' AND n.note_type = 'client_comments' ORDER BY n.order_notes_id DESC ";
+        $resul = mysqli_query($db,$check);
+        while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+        {
+            $note_type = $row['note_type'];
+            $note_description = $row['note_description'];
+            $note_date = date('d-m-Y', strtotime($row['note_date']));
+            $added_date_time = date('d-m-Y H:i', strtotime($row['added_date_time']));
+            $eta_text = "";
+            if($note_type == "eta") { $eta_text = "ETA Date - ".$note_date.' '; }
+            $user_name = $row["Client_Name"];
+            echo '
+            <div style="box-shadow:0 0 10px #aaa; border:solid 1px #ccc; border-radius:4px; width:100%;float:left; padding:8px;" >
+            <div><b>'.$eta_text.'</b>'.$note_description.' 
+            </div>
+            <hr style="margin:3px 0;">
+            <b>- '.$user_name.'</b>
+            <a style="margin:0;" class="pull-right btn btn-round btn_link btn-xs"><i class="fa fa-calendar"></i> '.$added_date_time.'</a>
+            </div>
+            ';
+        }
     }
 }
 

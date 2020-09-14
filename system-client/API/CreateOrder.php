@@ -275,6 +275,12 @@ if($_POST['action'] == "save_form")
                     $service_id_1 = $row_2['service_id'];
                     $sql = "INSERT INTO order_service_details (order_id, service_id, package_id, assign_service_id, assign_package_id) VALUES('$order_id', '$service_id_1', '$package_id_1', '0', '".$assign_package_id[$i]."') ";
                     $result = mysqli_query($db,$sql);
+                    $order_service_details_id = $db->insert_id;
+                    if($additional_comments != "")
+                    {
+                        $check = "INSERT INTO order_notes_master (order_service_details_id, order_id, note_type, note_description, user_id) VALUES('$order_service_details_id', '$order_id', 'client_comments', '$additional_comments', '$client_id') ";
+                        $result = mysqli_query($db,$check);
+                    }
 
                     $check_3 = "SELECT service_field_id FROM service_field_master WHERE service_id = '".$row_2['service_id']."' ";
                     $resul_3 = mysqli_query($db,$check_3); 

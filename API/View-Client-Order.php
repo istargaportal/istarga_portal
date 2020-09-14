@@ -342,22 +342,88 @@ $print_form = "'print_form'";
 	    	$note_description = $row_2['note_description'];
 	        $added_date_time = date('d-m-Y H:i', strtotime($row_2['added_date_time']));
 	        echo '
-	        <div class="col-md-12">
-	            <b>'.$added_date_time.'</b> - '.$note_description.'
+	        <div class="col-md-12 no_padding" style="border-bottom:dashed 1px #aaa;">
+	            <u>'.$row_2["first_name"].' '.$row_2["last_name"].'</u><br>
+	            '.$note_description.'<br>
+	            <small><b>'.$added_date_time.'</b></small>
 	        </div>
 	        ';
 	    }
+
+	    $check_2 = "SELECT n.note_type, n.note_description, n.note_date, n.added_date_time, u.Client_Name FROM order_notes_master n INNER JOIN client u ON u.id = n.user_id WHERE n.order_service_details_id = '$order_service_details_id' AND n.note_type = 'client_comments' ORDER BY n.order_notes_id DESC ";
+	    $resul_2 = mysqli_query($db,$check_2);
+	    while($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
+	    {
+	    	$note_description = $row_2['note_description'];
+	        $added_date_time = date('d-m-Y H:i', strtotime($row_2['added_date_time']));
+	        echo '
+	        <div class="col-md-12 no_padding" style="border-bottom:dashed 1px #aaa;">
+	            <u>'.$row_2["Client_Name"].'</u><br>
+	            '.$note_description.'<br>
+	            <small><b>'.$added_date_time.'</b></small>
+			</div>
+	        ';
+	    }
+		echo '</div>';
+		if(isset($_SESSION['uid']))
+      	{
+      	?>
+      		<div class="row col-md-12 no_padding">
+	      		<div class="col-md-6">
+			        <b>Additional Comments</b>
+			        <textarea class="custom-select" rows="3" id="additional_comments_<?php echo $order_id; ?>_<?php echo $order_service_details_id; ?>" style="background:transparent;"></textarea>
+			    </div>
+			    <div class="col-md-2">
+			        <br>
+			        <a href="javascript:add_additional_comments(<?php echo $order_id; ?>, <?php echo $order_service_details_id; ?>)" class="btn btn-sm btn-success"><i class="fa fa-plus"></i> Add</a>
+			    </div>
+		    </div>
+
+      <?php
+      	}
 		echo '
-		</div>
         </div>
         </div>
         </div>
         </div>
         </div>
         ';
-      }
-    	echo $download_button.' '.$print_button;
+      	}
+
+      	if(isset($_SESSION['uid']))
+      	{
       ?>
+	  	<script>
+		    function add_additional_comments(order_id, order_service_details_id)
+		    {
+		        var additional_comments = $('#additional_comments_'+order_id+'_'+order_service_details_id).val().trim();
+		        
+		        if(additional_comments == "")
+		        {
+		            alert('Please enter additional comment!');
+		            $('#additional_comments_'+order_id+'_'+order_service_details_id).focus();
+		        }
+		        else
+		        {
+		            $('#additional_comments_'+order_id+'_'+order_service_details_id).val('');
+		            var action = 'additional_comments';
+		            $.ajax({
+		                type:'POST',
+		                url:'./API/Additional-Comment.php',
+		                data:{action, additional_comments, order_id, order_service_details_id},
+		                success:function(html){
+		                    alert('Additional comment added!');
+		                    view_order_details(order_id);
+		                }
+		            });
+		        }
+		    }
+	    </script>
+  	<?php
+  		}
+
+	  	echo $download_button.' '.$print_button;
+	?>
 <?php
 	echo '	</div>
 			</div>

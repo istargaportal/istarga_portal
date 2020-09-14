@@ -137,7 +137,7 @@ if($_POST['action'] == 'load_service_order')
     }
 
     require_once '../../../config/comman_js.php';
-    $check = "SELECT os.color_code, os.order_creation_date_cleared, os.of_closure_date, os.of_qc_order_status, o.case_reference_no, os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.assign_service_id, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_qc, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.service_id = '$service_id' AND os.order_service_details_id = '$order_service_details_id' ";
+    $check = "SELECT os.color_code, os.order_creation_date_cleared, os.of_closure_date, os.of_qc_order_status, o.case_reference_no, os.order_service_details_id, os.service_id, o.order_id, o.internal_reference_id, o.first_name, o.middle_name, o.last_name, c.Client_Name, s.service_name, st.name, os.order_creation_date, os.assign_service_id, os.order_status, s.service_type_id, os.verifier_details, os.verifier_comments, os.currency_id, os.additional_fees, os.additional_comments_qc, o.is_rush, o.email_id FROM order_master o INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN client c ON c.id = o.client_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN service_type st ON st.id = s.service_type_id WHERE os.order_service_details_id = '$order_service_details_id' ";
     $resul = mysqli_query($db,$check); 
     if($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
     {
@@ -1368,13 +1368,13 @@ if($_POST['action'] == 'load_attached_documents')
     {
         $document_print.='<h4 class="selection" style="margin:6px 0;">'.$row_1['document_name'].'</h4><hr class="col12" style="margin:4px 0">';
     }
-    $check_1='SELECT ad.file_name, ad.document_file, ad.order_master_uploaded_document_id, ad.verifier_user_id, ad.user_id FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
+    $check_1='SELECT ad.file_ext, ad.file_name, ad.document_file, ad.order_master_uploaded_document_id, ad.verifier_user_id, ad.user_id FROM order_master_uploded_documents ad WHERE ad.order_id = '.$order_id.'  ';
     $resul_1 = mysqli_query($db,$check_1);
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     {
         echo "<tr><td class='form_left'>".$row_1['file_name']."</td>";
         $delete_client_documents = '<a onclick="delete_client_document('.$row_1['order_master_uploaded_document_id'].');" style="margin:0;" class="btn btn-danger btn-xs pull-right"><i class="fa fa-trash"></i></a>';
-        echo "<td><a target='_blank' download href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a></td>".'<td>'.$delete_client_documents.'</td>';
+        echo "<td><a target='_blank' download='".$row_1['file_name']."' href='../../system-client/assets/order_master_documents/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a></td>".'<td>'.$delete_client_documents.'</td>';
         echo '<tr>';
     }
     echo '</table>
@@ -1420,13 +1420,14 @@ if($_POST['action'] == 'load_attached_documents')
             <th style="width:5%;">&nbsp;</th>
         </tr>
         ';
-        $check_1="SELECT ad.order_annexure_document_id, ad.file_name, ad.document_file, ad.user_id FROM order_annexure_documents ad WHERE ad.order_id = '$order_id' AND ad.order_service_details_id = '$order_service_details_id' ";
+
+        $check_1="SELECT ad.file_ext, ad.order_annexure_document_id, ad.file_name, ad.document_file, ad.user_id FROM order_annexure_documents ad WHERE ad.order_id = '$order_id' AND ad.order_service_details_id = '$order_service_details_id' ";
         $resul_1 = mysqli_query($db,$check_1);
         while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
         {    
             $delete_annexure_documents = '<a onclick="delete_annexure_document('.$row_1['order_annexure_document_id'].');" style="margin:0;" class="btn btn-danger btn-xs pull-right"><i class="fa fa-trash"></i></a>';
             echo "<tr><td class='form_left'><label>".$row_1['file_name']."</label></td>";
-            echo "<td><a target='_blank' download href='../order_master_annexure/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a></td>
+            echo "<td><a target='_blank' download='".$row_1['file_name']."' href='../order_master_annexure/".$row_1['document_file']."' class='btn btn-primary btn-xs'><i class='fa fa-download'></i> Download</a></td>
             <td>".$delete_annexure_documents."</td>
             ";
             echo '<tr>';

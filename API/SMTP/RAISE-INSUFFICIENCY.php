@@ -20,9 +20,16 @@ In addition to details provided for the check, kindly include below mentioned in
 <br><br>
 <b>* ".@$insufficiency_comment."</b>
 <br><br>
-<b>Your Login Credentials:</b><br>
-<b>Login Name:</b> ".@$username."<br>
-<b>Password:</b> ".@$password."<br><br>
+";
+if($insufficiency_contact != "Client")
+{
+	$print_var.='
+	<b>Your Login Credentials:</b><br>
+	<b>Login Name:</b> ".@$username."<br>
+	<b>Password:</b> ".@$password."<br><br>
+	';
+}
+$print_var.="
 Have a great day!
 <br><br>
 Regards<br>

@@ -250,6 +250,13 @@ if(@$load_condition == "import_bulk_order")
 							    	$sql = "INSERT INTO order_service_details (order_id, service_id, package_id, assign_service_id, assign_package_id) VALUES('$order_id', '$service_id', '0', '$assign_service_id', '0') ";
 									$query_res4 = $db->query($sql);
 
+									$order_service_details_id = $db->insert_id;
+				                    if($additional_comments != "")
+				                    {
+				                        $check = "INSERT INTO order_notes_master (order_service_details_id, order_id, note_type, note_description, user_id) VALUES('$order_service_details_id', '$order_id', 'client_comments', '$additional_comments', '$client_id') ";
+				                        $result = mysqli_query($db,$check);
+				                    }
+
 									$sq="SELECT documentlist_id FROM service_list_documents WHERE service_id = '$service_id' ";
 									$resul = mysqli_query($db,$sq); 
 									while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
