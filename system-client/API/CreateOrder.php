@@ -93,13 +93,14 @@ if($_POST['action']=='select_package')
             echo '<input type="hidden" class="assign_service_id" value="'.$row['service_id'].'" />';
             echo '<input type="hidden" class="service_id_doc service_id" value="'.$row['service_id'].'" />';
         }
-        $all_documents = "";
+        $all_documents = "<ul>";
         $check_1='SELECT d.document_name FROM service_list_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.service_id = '.$row['service_id'].'  ';
         $resul_1 = mysqli_query($db,$check_1);
         while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
         {
-          $all_documents.="<a class='btn btn-default btn-small'>".$row_1['document_name']."</a>";
+          $all_documents.="<li>".$row_1['document_name']."</li>";
         }
+        $all_documents.= "</ul>";
         echo '
             <div class="row">
                 <div class="col-md-4">
@@ -154,13 +155,14 @@ if($_POST['action']=='select_service')
         $country_name = $row['country_name'];
         $currency_name = $row['currency_name'];
 
-        $all_documents = "";
+        $all_documents = "<ul>";
         $check_1='SELECT d.document_name FROM service_list_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.service_id = '.$row['service_id'].'  ';
         $resul_1 = mysqli_query($db,$check_1);
         while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
         {
-          $all_documents.="<a class='btn btn-default btn-small'>".$row_1['document_name']."</a>";
+          $all_documents.="<li>".$row_1['document_name']."</li>";
         }
+        $all_documents.='</ul>';
         echo '
             <div class="row">
                 <div class="col-md-3">
@@ -199,13 +201,18 @@ if($_POST['action']=='load_document')
             <div class="col-md-6">
                 <h6 class="selection">Mandatory Documents</h6>
             ';
+    if(@$sub_action == "preview_document")
+    {
+        echo '<ul>';
+    }
+
     $check_1='SELECT d.document_name, ad.documentlist_id FROM service_list_documents ad INNER JOIN documentlist d ON d.id= ad.documentlist_id WHERE ad.service_id IN ('.$all_service_id_doc.') GROUP BY d.id ';
     $resul_1 = mysqli_query($db,$check_1);
     while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     {
         if(@$sub_action == "preview_document")
         {
-            echo '<a class="btn btn-default btn-xs">'.$row_1["document_name"].'</a>';
+            echo '<li>'.$row_1["document_name"].'</li>';
         }
         else
         {
@@ -214,6 +221,11 @@ if($_POST['action']=='load_document')
         }
     }
 
+    if(@$sub_action == "preview_document")
+    {
+        echo '</ul>';
+    }
+    
     echo '</div>';
     if(@$sub_action != "preview_document")
     {

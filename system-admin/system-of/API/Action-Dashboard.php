@@ -795,22 +795,25 @@ echo '
                     order_master_uploaded_document_id = order_master_uploaded_document_id+","+$(this).val();
                 }
             })
-            if(order_master_uploaded_document_id == "0")
-            {
-                alert("Please select at least one document!");
-            }
-            else
-            {
+            // if(order_master_uploaded_document_id == "0")
+            // {
+            //     alert("Please select at least one document!");
+            // }
+            // else
+            // {
                 var action = 'assign_to_verifier';
                 $.ajax({
                     type:'POST',
                     url:'./API/Action-Dashboard.php',
                     data:{order_master_uploaded_document_id, verifier_id, order_id, order_service_details_id, action},
                     success:function(html){
+                        <?php
+                            echo @$onclick_next;
+                        ?>
                         $('#print_result').html(html);
                     }
                 });
-            }
+            // }
         }
     }
 
