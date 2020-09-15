@@ -14,7 +14,7 @@ if(!isset($_SESSION['order_id']))
 {
   echo '
   <script>
-  window.location.href = "Index.php";
+  window.location.href = "index.php";
   </script>
   ';
 }

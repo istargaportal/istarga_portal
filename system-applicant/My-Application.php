@@ -9,7 +9,7 @@ if(!isset($_GET['encrypted_key']))
   {
     echo '
     <script>
-    window.location.href = "Index.php";
+    window.location.href = "index.php";
     </script>
     ';
   }

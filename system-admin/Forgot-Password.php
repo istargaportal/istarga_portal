@@ -4,15 +4,15 @@ if(isset($_GET['forgot_type']))
   $forgot_type = base64_decode($_GET['forgot_type']);
   if($forgot_type == "client_forgot")
   {
-    $cancel_link = '../system-client/Index.php';
+    $cancel_link = '../system-client/index.php';
   }
   if($forgot_type == "admin_forgot")
   {
-    $cancel_link = 'Index.php';
+    $cancel_link = 'index.php';
   }
   if($forgot_type == "applicant_forgot")
   {
-    $cancel_link = '../system-applicant/Index.php';
+    $cancel_link = '../system-applicant/index.php';
   }
 }
 else

@@ -5,13 +5,13 @@ class connectdb
   private $excel_pass = "bvg-orion";
   private $servername='localhost';
   
-  private $user='pesrsxttfd';
-  private $password='Demo@123';
-  private $dbname='pesrsxttfd';
+  // private $user='pesrsxttfd';
+  // private $password='Demo@123';
+  // private $dbname='pesrsxttfd';
 
-  // private $dbname='instagra_db';
-  // private $user='root';
-  // private $password='';
+  private $dbname='instagra_db';
+  private $user='root';
+  private $password='';
 
   private $conn;
   

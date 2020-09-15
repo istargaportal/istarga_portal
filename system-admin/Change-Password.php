@@ -39,7 +39,7 @@ if(isset($_GET['encrypted_platrom_key_generation']))
         echo '
         <script>
           alert("This link is expired");
-          window.location.href="Index.php";
+          window.location.href="index.php";
         </script>
         ';
       }
@@ -50,7 +50,7 @@ if(isset($_GET['encrypted_platrom_key_generation']))
     echo '
     <script>
       alert("Invalid Link");
-      window.location.href="Index.php";
+      window.location.href="index.php";
     </script>
     ';
   }
@@ -60,7 +60,7 @@ else
   echo '
   <script>
     alert("Invalid Link");
-    window.location.href="Index.php";
+    window.location.href="index.php";
   </script>
   ';
 }

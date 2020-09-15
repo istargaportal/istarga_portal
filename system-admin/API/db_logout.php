@@ -1,5 +1,5 @@
 <?php
 session_start();
 session_destroy();
-header("location:../Index.php?msg=Success");
+header("location:../index.php?msg=Success");
 ?>
