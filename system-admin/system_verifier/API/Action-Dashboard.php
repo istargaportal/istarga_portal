@@ -494,7 +494,6 @@ echo '
 
 <script>
 
-
     var order_id = $('#order_id').val();
     var order_service_details_id = $('#order_service_details_id').val();
     var order_verify_id = $('#order_verify_id').val();
@@ -524,6 +523,7 @@ echo '
                     if(html == "updated")
                     {
                         alert('Verifier Details Updated!');
+                        window.location.href = "Dashboard.php";
                     }
                     else
                     {

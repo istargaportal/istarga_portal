@@ -246,11 +246,11 @@ if($_POST['action'] == "save_form")
     $username = randomPassword();
     $password = randomPassword().rand(111111,999999);
 
-    $check_2 = "SELECT Inv_Code FROM Client WHERE id = '".$client_id."' ";
+    $check_2 = "SELECT Client_Code FROM Client WHERE id = '".$client_id."' ";
     $resul_2 = mysqli_query($db,$check_2); 
     if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
     {
-        $Inv_Code = $row_2['Inv_Code'];
+        $Client_Code = $row_2['Client_Code'];
     }
     $check_2 = "SELECT count(order_id) AS order_id_auto FROM order_master WHERE client_id = '".$client_id."' ";
     $resul_2 = mysqli_query($db,$check_2); 
@@ -261,13 +261,21 @@ if($_POST['action'] == "save_form")
     $order_id_auto++;
     if($order_id_auto <= 9)
     {
-        $order_id_auto = '00'.$order_id_auto;
+        $order_id_auto = '0000'.$order_id_auto;
     }
     else if($order_id_auto <= 99)
     {
+        $order_id_auto = '000'.$order_id_auto;
+    }
+    else if($order_id_auto <= 999)
+    {
+        $order_id_auto = '00'.$order_id_auto;
+    }
+    else if($order_id_auto <= 9999)
+    {
         $order_id_auto = '0'.$order_id_auto;
     }
-    $case_reference_no = $Inv_Code.date('dmY').$order_id_auto;
+    $case_reference_no = $Client_Code.'-'.date('my').'-'.$order_id_auto;
     
     $sql = "INSERT INTO order_master (case_reference_no, first_name, middle_name, last_name, alias_first_name, alias_middle_name, alias_last_name, email_id, internal_reference_id, joining_location, joining_date, additional_comments, client_id, is_rush, insufficiency_contact, username, password) VALUES('$case_reference_no', '$first_name', '$middle_name', '$last_name', '$alias_first_name', '$alias_middle_name', '$alias_last_name', '$email_id', '$internal_reference_id', '$joining_location', '$joining_date', '$additional_comments', '$client_id', '$is_rush', '$insufficiency_contact', '$username', '$password') ";
     $result = mysqli_query($db,$sql);
