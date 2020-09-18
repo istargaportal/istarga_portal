@@ -199,7 +199,7 @@ include 'Header.php';
                         while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
                         {
                           $selected = "";
-                          if($timezone_id == $row['id']) { $selected = "selected"; }
+                          if(@$timezone_id == $row['id']) { $selected = "selected"; }
                           echo '<option '.$selected.' value="'.$row['id'].'">'.$row['value'].' '.$row['label'].'</option>';
                         }
                       ?>
