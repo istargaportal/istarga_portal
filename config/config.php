@@ -1,5 +1,5 @@
 <?php
- 
+
 class connectdb
 {
   private $excel_pass = "bvg-orion";
