@@ -358,7 +358,8 @@ if(@$page_name_compare == "attendance master")
           <div class="ripple-container"></div>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-         <!-- <a class="dropdown-item" href="#">Profile</a> -->
+         <a onclick="two_steps_auth()" class="dropdown-item" href="#">2-Step Verification</a>
+         <div class="dropdown-divider"></div>
          <a onclick="change_password()" class="dropdown-item" href="#">Settings</a>
          <div class="dropdown-divider"></div>
          <a class="dropdown-item" href="API/db_logout.php">Log out</a>
@@ -372,4 +373,5 @@ if(@$page_name_compare == "attendance master")
 <?php
   $admin_status = 1;
   include 'Change-Password-Functions.php';
+  include 'Two-Step-Verification-Functions.php';
 ?>
