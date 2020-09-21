@@ -234,7 +234,7 @@ if(@$load_condition == "import_bulk_order")
 											// register_number	
 											if($row_3['service_field_id'] == "16") { $service_field_value = $year_of_passing; }		
 											// country
-											if($row_3['service_field_id'] == "24") { $service_field_value = $country_id; }
+											if($row_3['service_field_id'] == "24") { $service_field_value = $country; }
 											// graduated	
 											if($row_3['service_field_id'] == "19") { $service_field_value = $graduated; }		
 										}
@@ -247,7 +247,7 @@ if(@$load_condition == "import_bulk_order")
 											// address
 											if($row_3['service_field_id'] == "101") { $service_field_value = $address; }	
 											// country
-											if($row_3['service_field_id'] == "102") { $service_field_value = $country_id; }
+											if($row_3['service_field_id'] == "102") { $service_field_value = $country; }
 										}
 				                    	$service_field_value = addslashes($service_field_value);
 
