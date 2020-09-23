@@ -556,3 +556,7 @@ else
         </div>
       </div>
     </nav>
+
+  <?php
+    include '../API/Validations.php';
+  ?>

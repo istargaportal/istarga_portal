@@ -375,3 +375,6 @@ if(@$page_name_compare == "attendance master")
   include 'Change-Password-Functions.php';
   include 'Two-Step-Verification-Functions.php';
 ?>
+<?php
+  include '../API/Validations.php';
+?>

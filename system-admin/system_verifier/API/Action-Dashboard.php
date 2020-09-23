@@ -491,7 +491,9 @@ echo '
 <?php
     include '../../../API/ETA-Macros.php';
 ?>
-
+<?php
+  include '../../../API/Validations.php';
+?>
 <script>
 
     var order_id = $('#order_id').val();

@@ -48,5 +48,4 @@
     {
         $('#eta_macro_master_modal').css('display', 'none');
     }
-        
 </script>

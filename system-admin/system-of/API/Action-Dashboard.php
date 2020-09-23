@@ -687,7 +687,9 @@ echo '
 <?php
     include '../../../API/ETA-Macros.php';
 ?>
-
+<?php
+  include '../../../API/Validations.php';
+?>
 <script>
     <?php
     if(@$category_print == 'Closed')

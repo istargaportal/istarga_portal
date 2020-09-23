@@ -332,6 +332,9 @@ else
 
     }
   </script>
+  <?php
+    include '../API/Validations.php';
+  ?>
 </body>
 
 

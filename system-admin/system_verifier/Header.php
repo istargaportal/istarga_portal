@@ -156,3 +156,6 @@ $page_name_compare = strtolower(@$page_name);
 </div>
 </div>
 </nav>
+<?php
+  include '../../API/Validations.php';
+?>

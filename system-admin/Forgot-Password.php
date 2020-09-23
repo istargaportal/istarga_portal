@@ -202,8 +202,8 @@ else
     $(this).attr("autocomplete", "off");
   })
 </script>
-
-
+<?php
+  include '../API/Validations.php';
+?>
 </body>
-
 </html>
