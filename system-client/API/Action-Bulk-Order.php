@@ -86,11 +86,11 @@ if(@$load_condition == "import_bulk_order")
 	$from_date_time = $from_date.' '.$from_time;
 	$to_date_time = $to_date.' '.$to_time;
 
-	echo $check_2 = "SELECT Client_Code, email FROM Client WHERE id = '".$client_id."' ";
+	$check_2 = "SELECT Client_Code, email FROM client WHERE id = '".$client_id."' ";
     $resul_2 = mysqli_query($db,$check_2); 
     if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
     {
-        echo $Client_Code = $row_2['Client_Code'];
+        $Client_Code = $row_2['Client_Code'];
         $client_email_id = $row_2['email'];
     }
     
@@ -129,8 +129,6 @@ if(@$load_condition == "import_bulk_order")
 		        $order_id_auto = '0'.$order_id_auto;
 		    }
 		    $case_reference_no = $Client_Code.'-'.date('my').'-'.$order_id_auto;
-		    echo $case_reference_no;
-		    exit();
 		    if (strpos($applicant_name, '.') !== false)
 			{
 			    $str = $applicant_name;
