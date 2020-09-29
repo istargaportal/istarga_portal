@@ -436,6 +436,15 @@ else
     {
       font-size: 9pt !important;
     }
+    .custom_table_t{
+      width: 100%;
+    }
+    .custom_table_t, .custom_table_t tbody, .custom_table_t td, .custom_table_t tr{
+      padding: 2px !important;
+    }
+    .custom_table_t td{
+      text-align: left !important;
+    }
   </style>  
 </head>
 

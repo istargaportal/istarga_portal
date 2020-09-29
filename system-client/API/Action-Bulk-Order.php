@@ -158,7 +158,7 @@ if(@$load_condition == "import_bulk_order")
 				$graduated = addslashes($allDataInSheet[$i]["K"]);
 				$customer_type = addslashes($allDataInSheet[$i]["L"]);
 				$additional_comments = addslashes($allDataInSheet[$i]["M"]);
-				$other_details = "College name".$college_name.'<br>'."University".$university.'<br>'."Degree".$degree.'<br>'."Year of passing".$year_of_passing.'<br>'."Register number".$register_number.'<br>'."Researcher name".$researcher_name.'<br>'."Employee id".$employee_id.'<br>'."Country".$country.'<br>'."Graduated".$graduated.'<br>'."Customer type".$customer_type.'<br>'."Additional comments".$additional_comments;
+				$other_details = "<table class='custom_table_t'><tr><td>College name</td><td>".$college_name.'</td></tr>'."<tr><td>University</td><td>".$university.'</td></tr>'."<tr><td>Degree</td><td>".$degree.'</td></tr>'."<tr><td>Year of passing</td><td>".$year_of_passing.'</td></tr>'."<tr><td>Register number</td><td>".$register_number.'</td></tr>'."<tr><td>Researcher name</td><td>".$researcher_name.'</td></tr>'."<tr><td>Employee id</td><td>".$employee_id.'</td></tr>'."<tr><td>Country</td><td>".$country.'</td></tr>'."<tr><td>Graduated</td><td>".$graduated.'</td></tr>'."<tr><td>Additional comments</td><td>".$additional_comments.'</td></tr></table>';
 			}
 			else
 			{
@@ -169,7 +169,7 @@ if(@$load_condition == "import_bulk_order")
 				$customer_type = addslashes($allDataInSheet[$i]["F"]);
 				$additional_comments = addslashes($allDataInSheet[$i]["G"]);
 				$country = addslashes($allDataInSheet[$i]["H"]);
-				$other_details = "Date of birth".$date_of_birth.'<br>'."Date of birth".$date_of_birth.'<br>'."Address".$address.'<br>'."Father name".$father_name.'<br>'."Customer type".$customer_type.'<br>'."Additional comments".$additional_comments.'<br>'."Country".$country;
+				$other_details = "<table class='custom_table_t'><tr><td>Date of birth</td><td>".$date_of_birth.'</td></tr>'."<tr><td>Address</td><td>".$address.'</td></tr>'."<tr><td>Father name</td><td>".$father_name.'</td></tr>'."<tr><td>Customer type</td><td>".$customer_type.'</td></tr>'."<tr><td>Additional comments</td><td>".$additional_comments.'</td></tr>'."<tr><td>Country".$country.'</td></tr></table>';
 			}
 
 			if($customer_type == ""){ $customer_type = "Regular"; }
@@ -275,28 +275,40 @@ if(@$load_condition == "import_bulk_order")
 									}
 								}
 						    }
-						    else
-						    {
-						    	$error_code = 0;
-						    }
 							$count=$count+1;
 						}
+						else
+					    {
+					    	$error_code = 0;
+					    	$sql = "INSERT INTO rejected_order_master (internal_reference_id, first_name, last_name, country, other_details, bulk_order_id, client_id, reject_reason) VALUES('$internal_reference_id', '$first_name', '$last_name', '$country', '$other_details', '$bulk_order_id', '$client_id', 'Service Not Assigned to Client')  ";
+							$query_res6 = $db->query($sql);
+							$rejected_orders++;
+					    }
 						
 					// }
 				}
 				else
 				{
 					$error_code = 0;
+			    	$sql = "INSERT INTO rejected_order_master (internal_reference_id, first_name, last_name, country, other_details, bulk_order_id, client_id, reject_reason) VALUES('$internal_reference_id', '$first_name', '$last_name', '$country', '$other_details', '$bulk_order_id', '$client_id', 'Invalid Country')  ";
+					$query_res6 = $db->query($sql);
+					$rejected_orders++;
 				}		
 			}
 			else
 			{
+				$reject_reason = "";
+				if($first_name == '') { $reject_reason.= 'Missing First Name!<br>'; }
+				if($country == '') { $reject_reason.= 'Missing Country!<br>'; }
+				if($internal_reference_id == '') { $reject_reason.= 'Missing Internal Reference ID!<br>'; }
 				$error_code = 0;
-				$sql = "INSERT INTO rejected_order_master (internal_reference_id, first_name, last_name, country, other_details, bulk_order_id, client_id) VALUES('$internal_reference_id', '$first_name', '$last_name', '$country', '$other_details', '$bulk_order_id', '$client_id')  ";
+		    	$sql = "INSERT INTO rejected_order_master (internal_reference_id, first_name, last_name, country, other_details, bulk_order_id, client_id, reject_reason) VALUES('$internal_reference_id', '$first_name', '$last_name', '$country', '$other_details', '$bulk_order_id', '$client_id', '$reject_reason')  ";
 				$query_res6 = $db->query($sql);
+				$rejected_orders++;
 			}
 		}
-		$sql = "UPDATE bulk_order SET total_orders = '$count' WHERE bulk_order_id = '$bulk_order_id' ";
+
+		$sql = "UPDATE bulk_order SET total_orders = '$count', rejected_orders = '$rejected_orders' WHERE bulk_order_id = '$bulk_order_id' ";
 		$query_res6 = $db->query($sql);
 		if ($query_res6 > 0) 
     	{
@@ -350,14 +362,17 @@ if(@$load_condition == "load_orders")
 	<div class="modal" style="display:block">
 		<div class="row">
 		<div class="col-md-1"><br></div>
-		<div class="col-md-10 no_padding card">
+		<div class="col-md-10 no_padding card" style="background:#fff !important;">
 			<div class="card-header card-header-primary" style="padding-bottom:0">
 	        	<h4 class="card-title"><i class="fa fa-edit"></i> View Orders
 	        		<a onclick="close_modal()" style="margin-top:0;" class="btn btn-danger btn-sm pull-right"><i class="fa fa-remove"></i></a>
 	        	</h4>
 	      	</div>
 	      	<div class="col-md-12" id="data_table">
-		<table id="datatable_tbl" style="width:100%;" class="table col-md-12 table-hover" >
+	';
+	if($condition == '1')
+	{
+		echo '<table id="datatable_tbl" style="width:100%;" class="table col-md-12 table-hover" >
             <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.822) !important;">
             <th>Case Reference</th>
             <th>Applicant Name</th>
@@ -387,7 +402,39 @@ if(@$load_condition == "load_orders")
                     ';
                 }
             }
-    echo '</table></div>
+    	echo '</table>';
+	}
+	if($condition == '2')
+	{
+		echo '<table id="datatable_tbl" style="width:100%;" class="table col-md-12 table-hover" >
+            <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.822) !important;">
+            <th>Internal Ref. ID</th>
+            <th>Applicant Name</th>
+            <th>Country</th>
+            <th>Other Details</th>
+            <th>Reject Reason</th>
+            </thead>';
+            $query="SELECT internal_reference_id, first_name, last_name, country, other_details, reject_reason FROM rejected_order_master WHERE bulk_order_id = '$bulk_order_id' ";
+            $result=$db->query($query);
+            if($result->num_rows>0)
+            {
+                while($row = $result->fetch_assoc())
+                {
+                    echo '
+                    <tr>
+	                    <td class="tablehead1"><a>'.$row["internal_reference_id"].'</a></td>
+	                    <td class="tablehead1 form_left">'.$row["first_name"].' '.$row["last_name"].' </td>
+	                    <td class="tablehead1">'.$row['country'].'</td>
+	                    <td class="tablehead1 form_left">'.$row["other_details"].'</td>
+	                    <td class="tablehead1 form_left"><b style="color:red;">'.$row["reject_reason"].'</b></td>
+                    </tr>
+                    ';
+                }
+            }
+    	echo '</table>';
+	}
+	
+    echo '</div>
     </div>
     </div>
     </div>
