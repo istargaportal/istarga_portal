@@ -129,6 +129,8 @@ if(@$load_condition == "import_bulk_order")
 		        $order_id_auto = '0'.$order_id_auto;
 		    }
 		    $case_reference_no = $Client_Code.'-'.date('my').'-'.$order_id_auto;
+		    echo $case_reference_no;
+		    exit();
 		    if (strpos($applicant_name, '.') !== false)
 			{
 			    $str = $applicant_name;
