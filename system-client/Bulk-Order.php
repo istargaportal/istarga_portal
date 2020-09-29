@@ -159,6 +159,24 @@ include '../datatable/_datatable.php';
   }
   load_bulk_order();
 
+  function view_all_orders(bulk_order_id, condition)
+  {
+    var load_condition = "load_orders";
+    $.ajax({
+      type:'POST',
+      url:'./API/Action-Bulk-Order.php',
+      data:{load_condition, bulk_order_id, condition},
+      success:function(html){
+        $('#print_result').html(html);
+      }
+    });
+  }
+
+  function close_modal()
+  {
+    $('#print_result').html('');
+  }
+
   function download_service()
   {
     let service_id = $('#service_id').val();

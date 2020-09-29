@@ -22,10 +22,11 @@ if(@$load_condition == "load_bulk_order")
 	<th>File</th>
 	<th>Added Date Time</th>
 	<th>NO. of Orders</th>
+	<th>Rejected Orders</th>
 	</thead>
 	';
 	$i = 0;
-	$check = "SELECT b.file_name, b.from_date, b.from_time, b.to_date, b.to_time, b.total_orders, s.service_name, b.added_datetime, b.from_date_time, b.to_date_time FROM bulk_order b INNER JOIN service_list s ON s.id = b.service_id WHERE b.client_id = '$client_id' ";
+	$check = "SELECT b.bulk_order_id, b.file_name, b.from_date, b.from_time, b.to_date, b.to_time, b.total_orders, s.service_name, b.added_datetime, b.from_date_time, b.to_date_time, b.rejected_orders FROM bulk_order b INNER JOIN service_list s ON s.id = b.service_id WHERE b.client_id = '$client_id' ";
 	$resul = mysqli_query($db,$check); 
 	while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 	{
@@ -36,7 +37,8 @@ if(@$load_condition == "load_bulk_order")
 		<td>'.$row["service_name"].'</td>
 		<td>'.$row["file_name"].'</td>
 		<td>'.$row["added_datetime"].'</td>
-		<td>'.$row["total_orders"].'</td>
+		<td><a onclick="view_all_orders('.$row["bulk_order_id"].', 1)" class="btn_link">'.$row["total_orders"].'</a></td>
+		<td><a onclick="view_all_orders('.$row["bulk_order_id"].', 2)" class="btn_link">'.$row["rejected_orders"].'</a></td>
 		</tr>
 		';
 		// <td>'.$row["from_date_time"].'</td>
@@ -98,8 +100,7 @@ if(@$load_condition == "import_bulk_order")
     if ($query_res1 > 0) 
     {
     	$service_error = "";
-    	$order_list = "";
-		for($i=2;$i<=$arrayCount;$i++)
+    	for($i=2;$i<=$arrayCount;$i++)
 		{
 			$internal_reference_id = addslashes($allDataInSheet[$i]["A"]);
 			$applicant_name = addslashes($allDataInSheet[$i]["B"]);
@@ -128,8 +129,7 @@ if(@$load_condition == "import_bulk_order")
 		        $order_id_auto = '0'.$order_id_auto;
 		    }
 		    $case_reference_no = $Client_Code.'-'.date('my').'-'.$order_id_auto;
-		    
-			if (strpos($applicant_name, '.') !== false)
+		    if (strpos($applicant_name, '.') !== false)
 			{
 			    $str = $applicant_name;
 				$str = explode(".",$str);
@@ -158,16 +158,18 @@ if(@$load_condition == "import_bulk_order")
 				$graduated = addslashes($allDataInSheet[$i]["K"]);
 				$customer_type = addslashes($allDataInSheet[$i]["L"]);
 				$additional_comments = addslashes($allDataInSheet[$i]["M"]);
+				$other_details = "College name".$college_name.'<br>'."University".$university.'<br>'."Degree".$degree.'<br>'."Year of passing".$year_of_passing.'<br>'."Register number".$register_number.'<br>'."Researcher name".$researcher_name.'<br>'."Employee id".$employee_id.'<br>'."Country".$country.'<br>'."Graduated".$graduated.'<br>'."Customer type".$customer_type.'<br>'."Additional comments".$additional_comments;
 			}
 			else
 			{
 				$date_of_birth = addslashes($allDataInSheet[$i]["C"]);
-			    $date_of_birth = str_replace('/', '-', $date_of_birth);
-                $address = addslashes($allDataInSheet[$i]["D"]);
+				$date_of_birth = str_replace('/', '-', $date_of_birth);
+				$address = addslashes($allDataInSheet[$i]["D"]);
 				$father_name = addslashes($allDataInSheet[$i]["E"]);
 				$customer_type = addslashes($allDataInSheet[$i]["F"]);
 				$additional_comments = addslashes($allDataInSheet[$i]["G"]);
 				$country = addslashes($allDataInSheet[$i]["H"]);
+				$other_details = "Date of birth".$date_of_birth.'<br>'."Date of birth".$date_of_birth.'<br>'."Address".$address.'<br>'."Father name".$father_name.'<br>'."Customer type".$customer_type.'<br>'."Additional comments".$additional_comments.'<br>'."Country".$country;
 			}
 
 			if($customer_type == ""){ $customer_type = "Regular"; }
@@ -207,7 +209,6 @@ if(@$load_condition == "import_bulk_order")
 
 						if($assign_service_id > 0)
 						{
-							$order_list.= "<tr><td style='border:solid 1px #000; border-collapse:collapse;'>".$case_reference_no."</td><td style='border:solid 1px #000; border-collapse:collapse;'>".$first_name." ".$last_name."</td></tr>";
 							$sql = "INSERT INTO order_master (case_reference_no, internal_reference_id, first_name, last_name, customer_type, additional_comments, bulk_order_id, order_type, client_id, username, password, insufficiency_contact) VALUES('$case_reference_no','$internal_reference_id', '$first_name', '$last_name', '$customer_type', '$additional_comments', '$bulk_order_id', 'Bulk', '$client_id', '$username', '$password', '$insufficiency_contact')";
 							$query_res2 = $db->query($sql);
 							$order_id = $db->insert_id;
@@ -291,6 +292,8 @@ if(@$load_condition == "import_bulk_order")
 			else
 			{
 				$error_code = 0;
+				$sql = "INSERT INTO rejected_order_master (internal_reference_id, first_name, last_name, country, other_details, bulk_order_id, client_id) VALUES('$internal_reference_id', '$first_name', '$last_name', '$country', '$other_details', '$bulk_order_id', '$client_id')  ";
+				$query_res6 = $db->query($sql);
 			}
 		}
 		$sql = "UPDATE bulk_order SET total_orders = '$count' WHERE bulk_order_id = '$bulk_order_id' ";
@@ -339,6 +342,59 @@ if(@$load_condition == "import_bulk_order")
     {
     	echo "<script>alert('Error occurred!'); </script>";
     }
+}
+
+if(@$load_condition == "load_orders")
+{
+	echo '
+	<div class="modal" style="display:block">
+		<div class="row">
+		<div class="col-md-1"><br></div>
+		<div class="col-md-10 no_padding card">
+			<div class="card-header card-header-primary" style="padding-bottom:0">
+	        	<h4 class="card-title"><i class="fa fa-edit"></i> View Orders
+	        		<a onclick="close_modal()" style="margin-top:0;" class="btn btn-danger btn-sm pull-right"><i class="fa fa-remove"></i></a>
+	        	</h4>
+	      	</div>
+	      	<div class="col-md-12" id="data_table">
+		<table id="datatable_tbl" style="width:100%;" class="table col-md-12 table-hover" >
+            <thead class="text-primary" style="background-color: rgba(15, 13, 13, 0.822) !important;">
+            <th>Case Reference</th>
+            <th>Applicant Name</th>
+            <th>Is a Rush Order</th>
+            <th>Order Creation</th>
+            <th>Order Status</th>
+            </thead>';
+            $query="SELECT o.*, os.order_service_details_id, c.Client_Name, s.service_name, os.order_status, os.of_user_id, os.lock_status FROM `order_master` o INNER JOIN client c ON c.id = o.client_id INNER JOIN order_service_details os ON os.order_id = o.order_id INNER JOIN service_list s ON s.id = os.service_id INNER JOIN assigned_service sa ON sa.service_id = os.service_id WHERE o.client_id = '$client_id' AND o.bulk_order_id = '$bulk_order_id' ";
+            $query.="GROUP BY os.order_service_details_id";
+            $result=$db->query($query);
+            if($result->num_rows>0)
+            {
+                while($row = $result->fetch_assoc())
+                {
+                    if($row['is_rush'] == "1") { $row['is_rush'] = "Yes"; } else { $row['is_rush'] = "No"; }
+
+                    $order_status = $row['order_status'];
+                    
+                    echo '
+                    <tr>
+                    <td class="tablehead1"><a>'.$row["case_reference_no"].'</a></td>
+                    <td class="tablehead1 form_left">'.$row["first_name"].' '.$row["last_name"].' </td>
+                    <td class="tablehead1">'.$row['is_rush'].'</td>
+                    <td class="tablehead1">'.$row["order_creation_date_time"].'</td>
+                    <td class="tablehead1">'.$order_status.'</td>
+                    </tr>
+                    ';
+                }
+            }
+    echo '</table></div>
+    </div>
+    </div>
+    </div>
+    <script>
+	    load_datatable();
+    </script>
+    ';
 }
 
 ?>

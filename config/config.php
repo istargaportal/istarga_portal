@@ -9,7 +9,7 @@ class connectdb
   private $password='Demo@123';
   private $dbname='qcyuwjfxph';
 
-  // private $dbname='instagra_db';
+  // private $dbname='istarga_online_db';
   // private $user='root';
   // private $password='';
 
