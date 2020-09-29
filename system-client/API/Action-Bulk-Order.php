@@ -86,11 +86,11 @@ if(@$load_condition == "import_bulk_order")
 	$from_date_time = $from_date.' '.$from_time;
 	$to_date_time = $to_date.' '.$to_time;
 
-	$check_2 = "SELECT Client_Code, email FROM Client WHERE id = '".$client_id."' ";
+	echo $check_2 = "SELECT Client_Code, email FROM Client WHERE id = '".$client_id."' ";
     $resul_2 = mysqli_query($db,$check_2); 
     if ($row_2 = mysqli_fetch_array($resul_2, MYSQLI_ASSOC))
     {
-        $Client_Code = $row_2['Client_Code'];
+        echo $Client_Code = $row_2['Client_Code'];
         $client_email_id = $row_2['email'];
     }
     
