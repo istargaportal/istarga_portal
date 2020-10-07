@@ -358,6 +358,8 @@ if(@$load_condition == "import_bulk_order")
 
 if(@$load_condition == "load_orders")
 {
+	include '../../datatable/_datatable.php';
+
 	echo '
 	<div class="modal" style="display:block">
 		<div class="row">
@@ -441,6 +443,18 @@ if(@$load_condition == "load_orders")
     <script>
 	    load_datatable();
     </script>
+    <style>
+	    .export_excel, .export_print{
+	    	position: absolute !important;
+	    	bottom:0 !important;
+	    }
+	    .export_excel{
+	    	width:135px;
+	    }
+	    .export_print{
+	    	width:100px;
+	    }
+    </style>
     ';
 }
 

@@ -83,7 +83,7 @@ include 'Header.php';
       </div>
       <br>
       <div class="table-responsive row col-md-12">
-        <div class="col-md-12" id="data_table"></div>
+        <div class="col-md-12" id="data_table1"></div>
       </div>
     </div>
   </div>
@@ -152,7 +152,7 @@ include '../datatable/_datatable.php';
       url:'./API/Action-Bulk-Order.php',
       data:{load_condition},
       success:function(html){
-        $('#data_table').html(html);
+        $('#data_table1').html(html);
         load_datatable();
       }
     });

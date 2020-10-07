@@ -932,7 +932,13 @@ else
       }
     })
   }
-  validate_form_components();
+
+  <?php
+    if(!isset($_GET['encrypted_key']))
+    {
+      echo 'validate_form_components();';
+    }
+  ?>
 
   function save_my_application()
   {
