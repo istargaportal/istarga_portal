@@ -343,7 +343,7 @@ include 'Header.php';
                           <div class="form-group1">
                             <label for="Password" class="bmd-label-floating">Password <i class="fa fa-star"></i></label>
                             <div class="input-group">
-                              <input name="Password" id="password" <?php echo @$readonly; ?> type="password" class="form-control" minlength="12" autocomplete="off" required value="<?php echo @$password; ?>" />
+                              <input name="Password" id="password" type="password" class="form-control" minlength="12" autocomplete="off" required value="<?php echo @$password; ?>" />
                               <div class="input-group-addon eye">
                                 <i class="fas fa-eye"></i>
                               </div>

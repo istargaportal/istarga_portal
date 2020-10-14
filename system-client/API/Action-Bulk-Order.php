@@ -158,7 +158,7 @@ if(@$load_condition == "import_bulk_order")
 				$graduated = addslashes($allDataInSheet[$i]["K"]);
 				$customer_type = addslashes($allDataInSheet[$i]["L"]);
 				$additional_comments = addslashes($allDataInSheet[$i]["M"]);
-				$other_details = "<table class='custom_table_t'><tr><td>College name</td><td>".$college_name.'</td></tr>'."<tr><td>University</td><td>".$university.'</td></tr>'."<tr><td>Degree</td><td>".$degree.'</td></tr>'."<tr><td>Year of passing</td><td>".$year_of_passing.'</td></tr>'."<tr><td>Register number</td><td>".$register_number.'</td></tr>'."<tr><td>Researcher name</td><td>".$researcher_name.'</td></tr>'."<tr><td>Employee id</td><td>".$employee_id.'</td></tr>'."<tr><td>Country</td><td>".$country.'</td></tr>'."<tr><td>Graduated</td><td>".$graduated.'</td></tr>'."<tr><td>Additional comments</td><td>".$additional_comments.'</td></tr></table>';
+				$other_details = "<table><tr><td>College name</td><td>".$college_name.'</td></tr>'."<tr><td>University</td><td>".$university.'</td></tr>'."<tr><td>Degree</td><td>".$degree.'</td></tr>'."<tr><td>Year of passing</td><td>".$year_of_passing.'</td></tr>'."<tr><td>Register number</td><td>".$register_number.'</td></tr>'."<tr><td>Researcher name</td><td>".$researcher_name.'</td></tr>'."<tr><td>Employee id</td><td>".$employee_id.'</td></tr>'."<tr><td>Country</td><td>".$country.'</td></tr>'."<tr><td>Graduated</td><td>".$graduated.'</td></tr>'."<tr><td>Additional comments</td><td>".$additional_comments.'</td></tr></table>';
 			}
 			else
 			{
@@ -169,7 +169,7 @@ if(@$load_condition == "import_bulk_order")
 				$customer_type = addslashes($allDataInSheet[$i]["F"]);
 				$additional_comments = addslashes($allDataInSheet[$i]["G"]);
 				$country = addslashes($allDataInSheet[$i]["H"]);
-				$other_details = "<table class='custom_table_t'><tr><td>Date of birth</td><td>".$date_of_birth.'</td></tr>'."<tr><td>Address</td><td>".$address.'</td></tr>'."<tr><td>Father name</td><td>".$father_name.'</td></tr>'."<tr><td>Customer type</td><td>".$customer_type.'</td></tr>'."<tr><td>Additional comments</td><td>".$additional_comments.'</td></tr>'."<tr><td>Country".$country.'</td></tr></table>';
+				$other_details = "<table><tr><td>Date of birth</td><td>".$date_of_birth.'</td></tr>'."<tr><td>Address</td><td>".$address.'</td></tr>'."<tr><td>Father name</td><td>".$father_name.'</td></tr>'."<tr><td>Customer type</td><td>".$customer_type.'</td></tr>'."<tr><td>Additional comments</td><td>".$additional_comments.'</td></tr>'."<tr><td>Country".$country.'</td></tr></table>';
 			}
 
 			if($customer_type == ""){ $customer_type = "Regular"; }
@@ -280,6 +280,7 @@ if(@$load_condition == "import_bulk_order")
 						else
 					    {
 					    	$error_code = 0;
+							$reject_reason = addslashes($reject_reason);					    
 					    	$sql = "INSERT INTO rejected_order_master (internal_reference_id, first_name, last_name, country, other_details, bulk_order_id, client_id, reject_reason) VALUES('$internal_reference_id', '$first_name', '$last_name', '$country', '$other_details', '$bulk_order_id', '$client_id', 'Service Not Assigned to Client')  ";
 							$query_res6 = $db->query($sql);
 							$rejected_orders++;
@@ -290,7 +291,8 @@ if(@$load_condition == "import_bulk_order")
 				else
 				{
 					$error_code = 0;
-			    	$sql = "INSERT INTO rejected_order_master (internal_reference_id, first_name, last_name, country, other_details, bulk_order_id, client_id, reject_reason) VALUES('$internal_reference_id', '$first_name', '$last_name', '$country', '$other_details', '$bulk_order_id', '$client_id', 'Invalid Country')  ";
+					$reject_reason = addslashes($reject_reason);
+					$sql = "INSERT INTO rejected_order_master (internal_reference_id, first_name, last_name, country, other_details, bulk_order_id, client_id, reject_reason) VALUES('$internal_reference_id', '$first_name', '$last_name', '$country', '$other_details', '$bulk_order_id', '$client_id', 'Invalid Country')  ";
 					$query_res6 = $db->query($sql);
 					$rejected_orders++;
 				}		
@@ -302,6 +304,7 @@ if(@$load_condition == "import_bulk_order")
 				if($country == '') { $reject_reason.= 'Missing Country!<br>'; }
 				if($internal_reference_id == '') { $reject_reason.= 'Missing Internal Reference ID!<br>'; }
 				$error_code = 0;
+				$reject_reason = addslashes($reject_reason);
 		    	$sql = "INSERT INTO rejected_order_master (internal_reference_id, first_name, last_name, country, other_details, bulk_order_id, client_id, reject_reason) VALUES('$internal_reference_id', '$first_name', '$last_name', '$country', '$other_details', '$bulk_order_id', '$client_id', '$reject_reason')  ";
 				$query_res6 = $db->query($sql);
 				$rejected_orders++;
