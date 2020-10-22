@@ -159,7 +159,7 @@
                       </div>
                       <b ><a style="color: #fff;" href="../system-admin/Forgot-Password.php?forgot_type=<?php echo base64_encode('applicant_forgot'); ?>" class="forgot-password-link">Forgot password?</a></b>
                       <br> <br>
-                      <button type='submit' class="btn btn-default login-btn mb-4">Login</button>
+                      <a href="javascript:login_click()" type='submit' class="btn btn-default login-btn mb-4">Login</a>
                       <a href="" class="btn btn-default btn-reset mb-4">Reset</a>
                     </form>
                   </div>

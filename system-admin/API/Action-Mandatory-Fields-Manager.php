@@ -183,4 +183,5 @@ if($_POST['load_condition'] == "save_mandatory_field")
 	$result = mysqli_query($db,$sql);
 }
 
+  include '../../API/Validations.php';
 ?>

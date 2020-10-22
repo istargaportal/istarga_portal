@@ -3,7 +3,8 @@
 $print_var = "
 <div style='background:#eee; width:90%; padding:2% 5%; float:left'>
 <div style='background:#fff; width:96%; padding:1% 2%; float:left'>
-<h3>BULK ORDER - Employment Background Screening</h3>
+<b>Hello Team,</b>
+<p>Your bulk upload request has been processed successfully.</p>
 <table style='border:solid 1px #000; border-collapse:collapse;'>
 <tr>
 	<td style='border:solid 1px #000; border-collapse:collapse;'>Reference ID</td>

@@ -55,7 +55,7 @@ class States
                   $order_status = $row['order_status'];
 
                   $selected_packages = "";
-                  $query_1="SELECT p.package_name FROM order_service_details os INNER JOIN package_list p ON p.id = os.package_id WHERE os.order_id = '".$row['order_id']."' ";
+                  $query_1="SELECT p.package_name FROM order_service_details os INNER JOIN package_list p ON p.id = os.package_id WHERE os.order_id = '".$row['order_id']."' GROUP BY os.package_id ";
                   $result_1=$this->conn->query($query_1);
                   if($result_1->num_rows>0)
                   {

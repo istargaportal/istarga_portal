@@ -173,6 +173,7 @@ if(@$load_condition == "import_bulk_order")
 			}
 
 			if($customer_type == ""){ $customer_type = "Regular"; }
+
 			if($first_name != "" && $country != "" && $internal_reference_id != "")
 			{
 				$country_id = 0;
@@ -280,6 +281,7 @@ if(@$load_condition == "import_bulk_order")
 						else
 					    {
 					    	$error_code = 0;
+					    	$reject_reason.= 'Service Not Assigned!<br>';
 							$reject_reason = addslashes($reject_reason);					    
 					    	$sql = "INSERT INTO rejected_order_master (internal_reference_id, first_name, last_name, country, other_details, bulk_order_id, client_id, reject_reason) VALUES('$internal_reference_id', '$first_name', '$last_name', '$country', '$other_details', '$bulk_order_id', '$client_id', 'Service Not Assigned to Client')  ";
 							$query_res6 = $db->query($sql);
@@ -291,6 +293,7 @@ if(@$load_condition == "import_bulk_order")
 				else
 				{
 					$error_code = 0;
+					$reject_reason.= 'Missing Country!<br>';
 					$reject_reason = addslashes($reject_reason);
 					$sql = "INSERT INTO rejected_order_master (internal_reference_id, first_name, last_name, country, other_details, bulk_order_id, client_id, reject_reason) VALUES('$internal_reference_id', '$first_name', '$last_name', '$country', '$other_details', '$bulk_order_id', '$client_id', 'Invalid Country')  ";
 					$query_res6 = $db->query($sql);

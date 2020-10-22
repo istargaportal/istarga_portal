@@ -82,9 +82,9 @@ if($report_status == "Inconclusive") { $default_report_color_id_temp = "8"; }
 if($report_status == "UTV") { $default_report_color_id_temp = "5"; }
 if($report_status == "Verified Clear") { $default_report_color_id_temp = "2"; }
 
-if($default_report_color == 0)
+if(@$default_report_color == 0)
 {
-    $check="SELECT color_code FROM default_report_color WHERE default_report_color_id = '$default_report_color_id_temp' ";
+    $check="SELECT color_code FROM default_report_color WHERE default_report_color_id = '".@$default_report_color_id_temp."' ";
 }
 else
 {
@@ -475,7 +475,6 @@ while ($row_1 = mysqli_fetch_array($resul_1, MYSQLI_ASSOC))
     $html.=$footer;
 	$i++;
 }
-
 
 include("mpdf60/mpdf.php");
 

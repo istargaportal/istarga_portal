@@ -583,8 +583,8 @@ else
                   </div>
                   <div class="col-md-4">
                     <div class="">
-                      <label class="bmd-label-floating">Middle Name <i class="fa fa-star"></i></label>
-                      <input name="middle_name" id="middle_name" value="<?php echo @$middle_name; ?>" required type="text" class="form-control">
+                      <label class="bmd-label-floating">Middle Name </label>
+                      <input name="middle_name" id="middle_name" value="<?php echo @$middle_name; ?>" type="text" class="form-control">
                     </div>
                   </div>
                   <div class="col-md-4">
@@ -598,20 +598,20 @@ else
                 <div class="row" style="margin-top: 1%;">
                   <div class="col-md-4">
                     <div class="">
-                      <label class="bmd-label-floating">Alias First Name <i class="fa fa-star"></i></label>
-                      <input name="alias_first_name" id="alias_first_name" value="<?php echo @$alias_first_name; ?>" required type="text" class="form-control">
+                      <label class="bmd-label-floating">Alias First Name</label>
+                      <input name="alias_first_name" id="alias_first_name" value="<?php echo @$alias_first_name; ?>" type="text" class="form-control">
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="">
-                      <label class="bmd-label-floating">Alias Middle Name <i class="fa fa-star"></i></label>
-                      <input name="alias_middle_name" id="alias_middle_name" value="<?php echo @$alias_middle_name; ?>" type="text" required class="form-control">
+                      <label class="bmd-label-floating">Alias Middle Name</label>
+                      <input name="alias_middle_name" id="alias_middle_name" value="<?php echo @$alias_middle_name; ?>" type="text" class="form-control">
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="">
-                      <label class="bmd-label-floating">Alias Last Name <i class="fa fa-star"></i></label>
-                      <input name="alias_last_name" id="alias_last_name" value="<?php echo @$alias_last_name; ?>" type="text" class="form-control" required>
+                      <label class="bmd-label-floating">Alias Last Name</label>
+                      <input name="alias_last_name" id="alias_last_name" value="<?php echo @$alias_last_name; ?>" type="text" class="form-control">
                     </div>
                   </div>
                 </div>
