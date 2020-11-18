@@ -102,7 +102,7 @@ else if(@$color_code_default == "Gray"){ $color_code_default = "#ccc"; }
 else
 {
 	$report_status = $order_status;
-	// $color_code_default = "#eee";
+	$color_code_default = "#eee";
 }
 if($default_report_color_id == "0")
 {
