@@ -65,7 +65,7 @@ class login
           } 
           else if($data['user-type']=='Employee')
           {
-            $check='SELECT user_id, username, first_name, last_name, password, role_id FROM user_master WHERE username="'.$email.'" AND password="'.$password.'"';
+            $check='SELECT user_id, username, first_name, last_name, password, role_id FROM user_master WHERE username="'.$email.'" AND password="'.$password.'" AND status = 1 ';
             $result=$this->conn->query($check);
             if($result->num_rows==1)
             {

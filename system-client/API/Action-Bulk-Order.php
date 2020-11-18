@@ -302,15 +302,15 @@ if(@$load_condition == "import_bulk_order")
 			}
 			else
 			{
-				$reject_reason = "";
-				if($first_name == '') { $reject_reason.= 'Missing First Name!<br>'; }
-				if($country == '') { $reject_reason.= 'Missing Country!<br>'; }
-				if($internal_reference_id == '') { $reject_reason.= 'Missing Internal Reference ID!<br>'; }
-				$error_code = 0;
-				$reject_reason = addslashes($reject_reason);
-		    	$sql = "INSERT INTO rejected_order_master (internal_reference_id, first_name, last_name, country, other_details, bulk_order_id, client_id, reject_reason) VALUES('$internal_reference_id', '$first_name', '$last_name', '$country', '$other_details', '$bulk_order_id', '$client_id', '$reject_reason')  ";
-				$query_res6 = $db->query($sql);
-				$rejected_orders++;
+				// $reject_reason = "";
+				// if($first_name == '') { $reject_reason.= 'Missing First Name!<br>'; }
+				// if($country == '') { $reject_reason.= 'Missing Country!<br>'; }
+				// if($internal_reference_id == '') { $reject_reason.= 'Missing Internal Reference ID!<br>'; }
+				// $error_code = 0;
+				// $reject_reason = addslashes($reject_reason);
+		  //   	$sql = "INSERT INTO rejected_order_master (internal_reference_id, first_name, last_name, country, other_details, bulk_order_id, client_id, reject_reason) VALUES('$internal_reference_id', '$first_name', '$last_name', '$country', '$other_details', '$bulk_order_id', '$client_id', '$reject_reason')  ";
+				// $query_res6 = $db->query($sql);
+				// $rejected_orders++;
 			}
 		}
 

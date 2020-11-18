@@ -20,6 +20,11 @@ if(@$page_name_compare == "modify client")
   $client_collapse = "";
   $modify_client_active = "active";
 }
+if(@$page_name_compare == "client email config")
+{
+  $client_collapse = "";
+  $client_email_config_active = "active";
+}
 if(@$page_name_compare == "search order")
 {
   $client_collapse = "";
@@ -193,6 +198,9 @@ if(@$page_name_compare == "attendance master")
           <li class="nav-item <?php echo @$modify_client_active; ?>">
             <a class="nav-link" href="./modifyClient.php"><i class="material-icons icon">launch</i> Modify Client</a>
           </li>
+          <li class="nav-item <?php echo @$client_email_config_active; ?>">
+            <a class="nav-link" href="./Client-Email-Config.php"><i class="material-icons icon">launch</i> Client Email Config</a>
+          </li>
           <li class="nav-item <?php echo @$search_order_active; ?>">
             <a class="nav-link" href="./vieworder.php"><i class="material-icons icon">launch</i> Search Order</a>
           </li>
@@ -360,7 +368,8 @@ if(@$page_name_compare == "attendance master")
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
          <!-- <a onclick="two_steps_auth()" class="dropdown-item" href="#">2-Step Verification</a> -->
          <!-- <div class="dropdown-divider"></div> -->
-         <a onclick="change_password()" class="dropdown-item" href="#">Settings</a>
+         <a onclick="change_password()" class="dropdown-item" href="#">Change Password</a>
+         <a onclick="email_setting()" class="dropdown-item" href="#">Email Setting</a>
          <div class="dropdown-divider"></div>
          <a class="dropdown-item" href="API/db_logout.php">Log out</a>
        </div>
@@ -373,6 +382,7 @@ if(@$page_name_compare == "attendance master")
 <?php
   $admin_status = 1;
   include 'Change-Password-Functions.php';
+  include 'Email-Setting-Functions.php';
   include 'Two-Step-Verification-Functions.php';
 ?>
 <?php

@@ -73,7 +73,7 @@ while ($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
 }
 
 ksort($of_qc_order_status_temp);
-$report_status =  reset($of_qc_order_status_temp);
+$report_status = reset($of_qc_order_status_temp);
 
 if($report_status == "Discrepancy") { $default_report_color_id_temp = "4"; }
 if($report_status == "Minor Discrepancy") { $default_report_color_id_temp = "1"; }

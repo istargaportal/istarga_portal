@@ -112,7 +112,7 @@ const popuTable = () => {
       cell1.setAttribute("id",stat[i].id)
       var btn1= document.createElement('button');
       btn1.type = "button";
-      btn1.className = "btn btn-warning btn-sm "+disabled_btn;
+      btn1.className = "btn btn-warning btn-sm ";
       btn1.innerHTML = "<i class='material-icons icon'>edit</i> EDIT";
       btn1.onclick = (() => { onEdit(stat[i].id, "edit")});
       cell2.appendChild(btn1);
