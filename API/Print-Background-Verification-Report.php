@@ -106,7 +106,8 @@ else
 }
 if($default_report_color_id == "0")
 {
-	// $color_code = "#eee";
+	$color_code = "#eee";
+	$color_code_default = "#eee";
 }
 
 $header = '<div class="page-border">';
