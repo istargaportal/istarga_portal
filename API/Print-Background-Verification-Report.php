@@ -102,11 +102,11 @@ else if(@$color_code_default == "Gray"){ $color_code_default = "#ccc"; }
 else
 {
 	$report_status = $order_status;
-	// $color_code_default = "#eee";
+	$color_code_default = "#000";
 }
 if($default_report_color_id == "0")
 {
-	// $color_code = "#eee";
+	$color_code = "#000";
 }
 
 $header = '<div class="page-border">';
