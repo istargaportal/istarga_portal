@@ -15,18 +15,20 @@ include 'Header.php';
     </div> 
   </div>
 </div>
-<div class="modal" style="display: block;">
+<div class="modal" id="client_email_id_modal">
   <div class="row">
   <div class="col-md-4"><br></div>
   <div class="col-md-4">
     <div class="modal-content">
       <h4 style="margin: 4px 0; border-bottom: solid 1px #000; " id="process_title" class="card-title"><i class="fa fa-cogs" aria-hidden="true"></i> Add Email ID</h4>
+      <input type="hidden" id="add_condition">
+      <input type="hidden" id="client_id_email">
       <label>Enter Email ID</label>
-      <input type="text" class="form-control" name="">
+      <input type="email" class="form-control email" id="client_email_id">
       <div class="col-md-12 no_padding">
         <br>
-        <a class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Save</a>
-        <a class="btn btn-default btn-sm"><i class="fa fa-close"></i> Close</a>
+        <a href="javascript:save_client_email_id()" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Save</a>
+        <a href="javascript:close_client_modal()" class="btn btn-default btn-sm"><i class="fa fa-close"></i> Close</a>
         <br>
       </div>
     </div>
@@ -83,6 +85,66 @@ include 'Header.php';
   });
  }
  load_client_email();
+
+ function delete_client_email_id(client_email_id) {
+   var r = confirm('Are you sure to delete this email id?')
+   if(r == true)
+   {
+      var load_condition = "delete_client_email_id";
+     $.ajax({
+      type:'POST',
+      url:'./API/Client-Email-Config.php',
+      data:{load_condition, client_email_id},
+      success:function(html){
+        load_client_email();
+      }
+    });
+   }
+ }
+
+ function save_client_email_id() {
+   let email_id = $('#client_email_id').val().trim();
+   let client_id = $('#client_id_email').val();
+   if(email_id == "")
+   {
+    $('#client_email_id').focus();
+   }
+   else
+   {
+      var load_condition = "save_client_email_id";
+      var add_condition = $('#add_condition').val();
+     $.ajax({
+      type:'POST',
+      url:'./API/Client-Email-Config.php',
+      data:{load_condition, email_id, client_id, add_condition},
+      success:function(html){
+        if(html == "0")
+        {
+          alert('This email id already exists');
+        }
+        else
+        {
+          load_client_email();
+          close_client_modal(); 
+        }
+      }
+    });
+   }
+ }
+
+ function add_more_client_email_id(id, client_id) {
+   $('#client_email_id_modal').css('display', 'block');
+   $('#add_condition').val(id);
+   $('#client_id_email').val(client_id);
+ }
+
+  function close_client_modal() {
+    $('#client_email_id_modal').css('display', 'none');
+    $('#add_condition').val('');
+    $('#client_id_email').val('');
+    $('#client_email_id').val('');
+  }
+
 </script>
 
 <script src="assets/js/core/jquery.min.js"></script>

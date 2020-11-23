@@ -6,6 +6,9 @@
     function smtpmailer($to, $from, $from_name = '', $subject, $body, $is_gmail = true)
     {
         global $company_name;
+        global $to_mul;
+        global $cc;
+        global $bcc;
 
         $name = $company_name;
         $from_name = $company_name;
@@ -36,8 +39,39 @@
         
         $mail->Subject = $subject;
         $mail->Body = $body;
+
         $mail->AddAddress($to);
-      
+        if(is_array($to_mul) == '1')
+        {
+            foreach ($to_mul as $to_email) {
+                $mail->AddAddress($to_email);
+            }
+        }
+        else
+        {
+            $mail->AddAddress($to_mul);
+        }
+        
+        if(is_array($cc) == '1')
+        {
+            foreach ($cc as $cc_email) {
+                $mail->AddCC($cc_email);
+            }
+        }
+        else
+        {
+            $mail->AddBCC($cc);
+        }
+        if(is_array($bcc) == '1')
+        {
+            foreach ($bcc as $bcc_email) {
+                $mail->AddBCC($bcc_email);
+            }
+        }
+        else
+        {
+            $mail->AddBCC($bcc);
+        }
         if(!$mail->Send())
         {
             $error = 'Mail error: '.$mail->ErrorInfo;

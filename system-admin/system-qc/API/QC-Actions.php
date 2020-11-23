@@ -144,6 +144,16 @@ if($_POST['action'] == 'update_applicant_details')
         include '../../../API/SMTP/ORDER-COMPLETED.php';
         $subject = $company_name." : ORDER COMPLETED";
         $send_file = $case_reference_no.'.pdf'; 
+
+        $to_mul = $cc = $bcc = array();
+        $check = "SELECT email_id, email_type FROM client_email_config WHERE client_id = '$client_id' ";
+        $resul = mysqli_query($db,$check);
+        while($row = mysqli_fetch_array($resul, MYSQLI_ASSOC))
+        {
+            if($row['email_type'] == "TO"){ array_push($to_mul, $row['email_id']); }
+            if($row['email_type'] == "CC"){ array_push($cc, $row['email_id']); }
+            if($row['email_type'] == "BCC"){ array_push($bcc, $row['email_id']); }
+        }
         $error = smtpmailer($email_id, $from, $name, $subject, @$print_var);
         if($error = "Message sent!")
         {
