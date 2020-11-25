@@ -291,6 +291,12 @@ if(@$page_name_compare == "attendance master")
 </ul>
 </div>
 </li>
+<li class="nav-item <?php if($page_name == "Reports") { echo 'active'; } ?>">
+  <a class="nav-link" href="Download-Reports.php">
+    <i class="material-icons">bubble_chart</i>
+    <p>Reports</p>
+  </a>
+</li>
 <li class="nav-item <?php echo @$calendar_active; ?>">
   <a class="nav-link" href="./Attendance-Master.php"><i class="fa fa-calendar"></i> Attendance Master</a>
 </ul>
