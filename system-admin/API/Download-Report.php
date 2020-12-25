@@ -56,7 +56,7 @@ echo '
 	while($row = $result->fetch_assoc())
 	{
 		$sla = $row['sla'];
-    	$sla_final_date = date('Y-m-d', strtotime(' + '.$sla.' days'.$row['order_creation_date']));
+    	$expected_closed_date = date('Y-m-d', strtotime(' + '.$sla.' days'.$row['order_creation_date']));
     	$lob_name = "";
     	$of_user_id = $row['of_user_id'];
 		$selected_packages = "";
@@ -129,13 +129,17 @@ echo '
 			$last_private_note_added_by = $row_1['first_name'].' '.$row_1['last_name'];
 		}
 
-		if(strtotime($sla_final_date) < strtotime(date('Y-m-d')))
+		if(strtotime($expected_closed_date) < strtotime($row["order_completion_date"]))
 		{
 			$sla_print = "Out of SLA";
 		}
 		else
 		{
 			$sla_print = "With in SLA";
+		}
+		if($row["order_completion_date"] == "")
+		{
+			$sla_print = "-";
 		}
 	    if($row['is_rush'] == "1") { $row['is_rush'] = "Yes"; } else { $row['is_rush'] = "No"; }
 	    $color_code = $row['color_code'];
@@ -195,7 +199,7 @@ echo '
 			<td>'.$row["of_qc_order_status"].'</td>
 			<td>'.$row["order_status"].'</td>
 			<td>'.$row["order_creation_date"].'</td>
-			<td>'.$row["of_closure_date"].'</td>
+			<td>'.$expected_closed_date.'</td>
 			<td>'.$sla.'</td>
 			<td>'.$sla_print.'</td>
 			<td>'.$row["order_completion_date"].'</td>
