@@ -5,9 +5,9 @@ class connectdb
   private $excel_pass = "bvg-orion";
   private $servername='localhost';
   
-  private $user='qcyuwjfxph';
-  private $password='Demo@123';
-  private $dbname='qcyuwjfxph';
+  private $user='uzxaacrnse';
+  private $password='2RqmHmwsJT';
+  private $dbname='uzxaacrnse';
 
   // private $dbname='istarga_online_db';
   // private $user='root';
